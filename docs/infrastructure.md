@@ -94,6 +94,14 @@ All infrastructure modifications must be recorded there.
 
 ## 7. Next Phase
 
-Planned:
-- Deploy first long-running containerized service
-- Begin using Docker Compose for service definitions
+Deploy Uptime Kuma using Docker Compose.
+
+Goals:
+- Introduce Docker Compose workflow
+- Implement persistent volume storage
+- Configure automatic container restart policy
+- Expose web interface via mapped port
+- Begin basic service monitoring
+
+Rationale:
+Establish monitoring foundation and transition from single-container commands to infrastructure-as-code patterns.
