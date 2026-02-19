@@ -12,7 +12,13 @@ Operating System: Ubuntu Server 24.04.4 LTS (Noble Numbat)
 Kernel: 6.8.0-100-generic  
 Primary Interface: enp0s25  
 IP Address: 10.0.0.136  
-Gateway: 10.0.0.1  
+Gateway: 10.0.0.1
+Disk Layout:
+- Root filesystem on 250GB SSD
+- No separate data partition (current state) 
+Memory:
+- 8GB RAM available
+- No swap adjustments made
 
 ---
 
@@ -83,3 +89,11 @@ Server-side operational log maintained at:
 ~/homelab/docs/changes.log
 
 All infrastructure modifications must be recorded there.
+
+---
+
+## 7. Next Phase
+
+Planned:
+- Deploy first long-running containerized service
+- Begin using Docker Compose for service definitions
