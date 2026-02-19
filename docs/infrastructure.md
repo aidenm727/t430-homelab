@@ -13,6 +13,7 @@ Kernel: 6.8.0-100-generic
 Primary Interface: enp0s25  
 IP Address: 10.0.0.136  
 Gateway: 10.0.0.1
+
 Disk Layout:
 - Root filesystem on 250GB SSD
 - No separate data partition (current state) 
