@@ -1,7 +1,7 @@
 # T430 Homelab Infrastructure Record
 
-Last Updated: 2026-02-18  
-Phase: Docker Baseline Complete  
+Last Updated: 2026-03-10  
+Phase: Initial Services Deployment  
 
 ---
 
@@ -16,7 +16,8 @@ Gateway: 10.0.0.1
 
 Disk Layout:
 - Root filesystem on 250GB SSD
-- No separate data partition (current state) 
+- No separate data partition (current state)
+
 Memory:
 - 8GB RAM available
 - No swap adjustments made
@@ -43,7 +44,7 @@ Memory:
 - Firewall: UFW enabled
 - SSH enabled and persistent at boot
 
-Rationale:
+Rationale:  
 Ethernet-only configuration reduces IP switching and improves reliability for service hosting.
 
 ---
@@ -78,12 +79,47 @@ Post-install configuration:
 - Log rotation: 10MB max size, 3 files
 - Verified with `docker run hello-world`
 
-Result:
+Result:  
 System functioning as stable container host.
 
 ---
 
-## 6. Operational Logging
+## 6. Deployed Services
+
+### Uptime Kuma
+
+Purpose:  
+Network and service uptime monitoring dashboard.
+
+Deployment Method:  
+Docker Compose
+
+Container Image:  
+louislam/uptime-kuma:latest
+
+Location:
+~/homelab/services/uptime-kuma
+
+Port Mapping:
+3001 → 3001
+
+Persistent Data:
+~/homelab/services/uptime-kuma/data
+
+Access URL:
+http://10.0.0.136:3001
+
+Configuration Details:
+- Restart policy: `unless-stopped`
+- Data persistence through mounted Docker volume
+- Service deployed using `docker compose up -d`
+
+Result:
+First persistent Docker Compose service successfully deployed on the homelab host.
+
+---
+
+## 7. Operational Logging
 
 Server-side operational log maintained at:
 
@@ -93,16 +129,16 @@ All infrastructure modifications must be recorded there.
 
 ---
 
-## 7. Next Phase
+## 8. Next Phase
 
-Deploy Uptime Kuma using Docker Compose.
+Introduce additional infrastructure services to expand the homelab environment.
 
-Goals:
-- Introduce Docker Compose workflow
-- Implement persistent volume storage
-- Configure automatic container restart policy
-- Expose web interface via mapped port
-- Begin basic service monitoring
+Planned areas:
 
-Rationale:
-Establish monitoring foundation and transition from single-container commands to infrastructure-as-code patterns.
+- Reverse proxy (Traefik or Nginx Proxy Manager)
+- Central service dashboard
+- System monitoring stack (Prometheus + Grafana)
+- Static IP / DHCP reservation stabilization
+
+Goal:
+Gradually evolve the host from a single-service container machine into a structured multi-service homelab platform.
