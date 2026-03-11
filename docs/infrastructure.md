@@ -171,6 +171,24 @@ Central dashboard deployed for service discovery and navigation.
 
 ---
 
+Monitoring Stack
+
+Node Exporter
+Collects host-level metrics (CPU, memory, disk, network).
+
+Prometheus
+Scrapes metrics from exporters and stores time-series data.
+
+Grafana
+Visualization platform connected to Prometheus.
+
+Routes:
+- prom.home.lab → Prometheus
+- grafana.home.lab → Grafana
+
+Dashboard:
+- Node Exporter Full (ID 1860)
+
 # 7. Operational Logging
 
 Server-side operational log maintained at:
