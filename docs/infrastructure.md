@@ -1,7 +1,7 @@
 # T430 Homelab Infrastructure Record
 
 Last Updated: 2026-03-10  
-Phase: Initial Services Deployment
+Phase: Core Platform Established
 
 ---
 
@@ -10,9 +10,10 @@ Phase: Initial Services Deployment
 Hostname: t430-beast  
 Operating System: Ubuntu Server 24.04.4 LTS (Noble Numbat)  
 Kernel: 6.8.0-100-generic  
+
 Primary Interface: enp0s25  
 IP Address: 10.0.0.136  
-Gateway: 10.0.0.1
+Gateway: 10.0.0.1  
 
 Disk Layout
 - Root filesystem on 250GB SSD
@@ -40,7 +41,7 @@ Memory
 # 3. Network Configuration
 
 - Ethernet-only configuration (WiFi disabled for stability)
-- DHCP lease via Xfinity router
+- DHCP lease provided by Xfinity router
 - Firewall: UFW enabled
 - SSH enabled and persistent at boot
 
@@ -62,30 +63,30 @@ Reboot performed after major updates.
 
 # 5. Docker Platform
 
-Docker installed from official Docker APT repository.
+Docker installed from the official Docker APT repository.
 
-Installed components
+Installed Components
 - docker-ce
 - docker-ce-cli
 - containerd.io
 - docker buildx plugin
 - docker compose plugin
 
-Post-install configuration
+Post-install Configuration
 - Docker service enabled at boot
 - Non-root Docker usage configured
 - Logging driver: `json-file`
-- Log rotation: 10MB max size, 3 files
-- Verified with `docker run hello-world`
+- Log rotation: `10MB` max size, `3` files
+- Verified installation using `docker run hello-world`
 
 Result  
-System functioning as stable container host.
+System functioning as a stable container host.
 
 ---
 
 # 6. Core Infrastructure
 
-## Reverse Proxy
+## Reverse Proxy (Traefik)
 
 Traefik v3.6.1 deployed via Docker Compose.
 
@@ -98,12 +99,15 @@ Shared Docker Network
 Configuration
 - Docker provider enabled
 - `exposedbydefault=false`
-- Host-based routing
+- Host-based routing enabled
 
-Routes
-- `kuma.home.lab` → Uptime Kuma
-- `traefik.home.lab` → Traefik dashboard
-- `dash.home.lab` → Homepage
+Routing Rules
+
+| Hostname | Destination |
+|--------|-------------|
+| kuma.home.lab | Uptime Kuma |
+| traefik.home.lab | Traefik dashboard |
+| dash.home.lab | Homepage dashboard |
 
 ---
 
@@ -130,7 +134,7 @@ Access
 
 Configuration Details
 - Restart policy: `unless-stopped`
-- Data persistence through mounted Docker volume
+- Persistent storage via mounted Docker volume
 
 Result  
 Service monitoring platform successfully deployed.
@@ -151,16 +155,16 @@ Container Image
 Location  
 `~/homelab/services/homepage`
 
-Configuration
+Persistent Configuration  
+`~/homelab/services/homepage/config`
+
+Configuration Details
 - Connected to shared Docker network: `proxy`
-- Routed through Traefik
+- Routed through Traefik using host-based routing
 - Host validation enabled via `HOMEPAGE_ALLOWED_HOSTS`
 
 Access  
 `http://dash.home.lab`
-
-Persistent Config
-`~/homelab/services/homepage/config`
 
 Result  
 Central dashboard deployed for service discovery and navigation.
@@ -172,7 +176,7 @@ Central dashboard deployed for service discovery and navigation.
 Server-side operational log maintained at:
 ~/homelab/docs/changes.log
 
-All infrastructure modifications must be recorded there.
+All infrastructure modifications must be recorded in this file.
 
 ---
 
@@ -194,5 +198,4 @@ Future Expansion Areas
 - Static IP or DHCP reservation stabilization
 
 Goal  
-Gradually evolve the host from a small service host into a structured multi-service homelab platform with proper observability and management tooling.
-
+Gradually evolve the host from a small service host into a structured multi-service homelab platform with proper observability, monitoring, and management tooling.
