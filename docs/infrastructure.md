@@ -89,6 +89,10 @@ System functioning as a stable container host.
 ## Reverse Proxy (Traefik)
 
 Traefik v3.6.1 deployed via Docker Compose.
+Traefik
+- Dashboard routed at `http://traefik.home.lab`
+- Ping endpoint enabled for internal health monitoring
+- Uptime Kuma monitor checks `http://traefik/ping`
 
 Location  
 `~/homelab/services/traefik`
@@ -138,6 +142,13 @@ Configuration Details
 
 Result  
 Service monitoring platform successfully deployed.
+
+Uptime Kuma
+- Internal monitors configured for:
+  - Homepage
+  - Prometheus
+  - Grafana
+  - Traefik
 
 ---
 
