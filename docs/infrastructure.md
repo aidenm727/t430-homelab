@@ -186,6 +186,7 @@ Routes:
 - prom.home.lab → Prometheus
 - grafana.home.lab → Grafana
 
+
 Dashboard:
 - Node Exporter Full (ID 1860)
 
