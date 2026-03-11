@@ -117,6 +117,17 @@ Configuration Details:
 Result:
 First persistent Docker Compose service successfully deployed on the homelab host.
 
+Reverse Proxy
+
+Traefik v3.6.1 deployed via Docker Compose.
+Shared Docker network: proxy.
+
+Routing:
+- kuma.home.lab -> uptime-kuma container (port 3001)
+- traefik.home.lab -> Traefik dashboard
+
+Traefik configured with Docker provider and exposedbydefault=false.
+
 ---
 
 ## 7. Operational Logging
