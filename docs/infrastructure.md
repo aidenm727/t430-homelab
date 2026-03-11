@@ -129,7 +129,31 @@ Routing:
 Traefik configured with Docker provider and exposedbydefault=false.
 
 ---
+Homepage Dashboard
 
+Purpose:
+Central entry point for homelab services.
+
+Deployment Method:
+Docker Compose
+
+Container Image:
+ghcr.io/gethomepage/homepage:latest
+
+Location:
+~/homelab/services/homepage
+
+Routing:
+dash.home.lab -> homepage container
+
+Configuration Details:
+- Connected to shared Docker network: proxy
+- Routed through Traefik using host-based rule
+- Homepage host validation enabled via HOMEPAGE_ALLOWED_HOSTS
+- Config stored in ~/homelab/services/homepage/config
+
+Result:
+Central dashboard successfully deployed for homelab service access and future expansion.
 ## 7. Operational Logging
 
 Server-side operational log maintained at:
