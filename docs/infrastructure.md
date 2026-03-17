@@ -1,7 +1,7 @@
 # T430 Homelab Infrastructure Record
 
 Last Updated: 2026-03-10  
-Phase: Core Platform Established
+Phase: Core Platform Established / DNS Integration In Progress
 
 ---
 
@@ -182,6 +182,37 @@ Central dashboard deployed for service discovery and navigation.
 
 ---
 
+## Pi-hole
+
+Purpose
+Local DNS service for homelab name resolution and future network-wide DNS control.
+
+Deployment Method
+Docker Compose
+
+Container Image
+`pihole/pihole:latest`
+
+Location
+`~/homelab/services/pihole`
+
+Persistent Data
+- `~/homelab/services/pihole/etc-pihole`
+- `~/homelab/services/pihole/etc-dnsmasq.d`
+
+Ports
+- `53/tcp`
+- `53/udp`
+
+Configuration Notes
+- Host port 53 was freed by disabling `systemd-resolved`
+- Temporary resolver set to `1.1.1.1` in `/etc/resolv.conf` before Pi-hole takeover
+- Connected to shared Docker network: `proxy`
+- Intended routed hostname: `pihole.home.lab`
+
+Result
+Foundation in place for centralized homelab DNS and removal of per-device hosts-file dependencies.
+
 Monitoring Stack
 
 Node Exporter
@@ -226,6 +257,11 @@ Future Expansion Areas
 - Container management interface (Portainer)
 - Additional monitoring integrations
 - Static IP or DHCP reservation stabilization
+
+Current DNS Work
+- Validate Pi-hole health
+- Create local DNS records for homelab services
+- Transition clients from hosts-file overrides to Pi-hole-based resolution
 
 Goal  
 Gradually evolve the host from a small service host into a structured multi-service homelab platform with proper observability, monitoring, and management tooling.
