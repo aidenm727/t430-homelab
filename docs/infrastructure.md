@@ -304,6 +304,19 @@ Update (2026-03-17):
   - Internal DNS resolution (kuma.home.lab → Tailscale IP)
 - Enabled proper Pi-hole → Traefik routing path for shared users
 
+### Shared User Access Validation (Finalized)
+
+- Added DNS access (`udp:53`, `tcp:53`) for `group:web` in Tailscale ACLs so restricted users can use Pi-hole through the tailnet
+- Verified external DNS resolution and internal `.home.lab` resolution for restricted users
+- Verified restricted users can access:
+  - `http://kuma.home.lab`
+  - `http://traefik.home.lab`
+- Removed temporary direct access to Uptime Kuma on `tcp:3001`
+- Confirmed direct access to `http://<tailscale-ip>:3001` no longer works for `group:web`
+
+Result:
+Restricted users now reach shared services only through DNS + Traefik on ports 80/443, while SSH and unintended service access remain restricted.
+
 Monitoring Stack
 
 Node Exporter
