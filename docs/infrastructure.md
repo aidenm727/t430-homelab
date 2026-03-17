@@ -277,6 +277,24 @@ Security Model
 Result
 Secure multi-user architecture established for controlled homelab access.
 
+### Shared User Validation
+
+A secondary user was added to the tailnet to validate restricted-access behavior.
+
+Validation Results
+- Confirmed invited user devices must join the same tailnet as the server
+- Confirmed `group:web` users were blocked until explicitly granted access
+- Updated `group:web` grant to allow `tcp:3001` for direct Uptime Kuma access
+- Verified remote off-network access to Kuma using `http://<tailscale-ip>:3001`
+
+Current Limitation
+- Shared-user access is currently validated via direct Tailscale IP and service port
+- DNS-based shared access (`kuma.home.lab`) still requires tailnet DNS alignment for the invited user path
+
+Security Note
+- Allowing `tcp:3001` exposes Kuma directly to approved `group:web` users within the tailnet
+- A cleaner long-term model is to route shared access through Traefik on `80/443` and remove direct app-port exposure
+
 Monitoring Stack
 
 Node Exporter
