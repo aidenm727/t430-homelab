@@ -218,6 +218,11 @@ System Integration
 Authentication
 - Admin password configured using `pihole setpassword` inside container due to persistent config overriding environment variable
 
+Client Integration
+- Test client configured to use Pi-hole (10.0.0.136) as DNS server
+- Verified resolution of internal domains (e.g., grafana.home.lab)
+- Confirmed full DNS → Traefik → service routing flow
+
 Result
 DNS foundation is now deployed, enabling migration away from per-device hosts-file entries toward centralized homelab name resolution.
 
