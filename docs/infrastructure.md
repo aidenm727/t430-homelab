@@ -211,6 +211,10 @@ Configuration Details
 - Intended routed hostname: `pihole.home.lab`
 - Container health verified after deployment
 
+System Integration
+- Host system resolver updated to use Pi-hole (127.0.0.1)
+- Verified external DNS resolution via Pi-hole
+
 Result
 DNS foundation is now deployed, enabling migration away from per-device hosts-file entries toward centralized homelab name resolution.
 
