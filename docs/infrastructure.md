@@ -295,6 +295,15 @@ Security Note
 - Allowing `tcp:3001` exposes Kuma directly to approved `group:web` users within the tailnet
 - A cleaner long-term model is to route shared access through Traefik on `80/443` and remove direct app-port exposure
 
+Update (2026-03-17):
+
+- Added DNS access (tcp/udp 53) for group:web in Tailscale ACL
+- Resolved issue where restricted users could not perform DNS queries
+- Verified:
+  - External DNS resolution (google.com)
+  - Internal DNS resolution (kuma.home.lab → Tailscale IP)
+- Enabled proper Pi-hole → Traefik routing path for shared users
+
 Monitoring Stack
 
 Node Exporter
