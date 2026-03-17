@@ -1,7 +1,7 @@
 # T430 Homelab Infrastructure Record
 
 Last Updated: 2026-03-17 
-Phase: Core Platform Established / DNS Integration In Progress
+Phase: Phase: Core Platform Established (Stable)
 
 ---
 
@@ -60,6 +60,16 @@ sudo apt autoremove -y
 Reboot performed after major updates.
 
 ---
+
+# System Architecture
+
+The homelab follows a centralized routing and DNS model:
+
+Client → Pi-hole (DNS) → Traefik (Reverse Proxy) → Docker Services
+
+- Pi-hole resolves internal domains (e.g., grafana.home.lab)
+- Traefik routes HTTP requests to the correct container
+- Services run in isolated Docker containers on a shared network
 
 # 5. Docker Platform
 
@@ -206,7 +216,7 @@ Ports
 
 Configuration Details
 - Host port 53 was freed by disabling `systemd-resolved`
-- Temporary resolver was set manually in `/etc/resolv.conf`
+- Host resolver configured to use Pi-hole for local DNS resolution
 - Connected to shared Docker network: `proxy`
 - Intended routed hostname: `pihole.home.lab`
 - Container health verified after deployment
