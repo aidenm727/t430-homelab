@@ -237,6 +237,29 @@ Client Integration
 Result
 DNS foundation is now deployed, enabling migration away from per-device hosts-file entries toward centralized homelab name resolution.
 
+## Tailscale VPN
+
+Purpose  
+Provides secure remote access to the homelab without exposing services to the public internet.
+
+Deployment Method  
+Installed via official Tailscale install script.
+
+Configuration Details
+- Node joined to tailnet using Google authentication
+- Tailscale IP assigned (100.x.x.x range)
+- MagicDNS enabled for device name resolution
+- Pi-hole configured as DNS server for tailnet
+- Local DNS records updated to use Tailscale IP instead of LAN IP
+
+Capabilities Enabled
+- Remote SSH access to server
+- Remote access to all services via .home.lab domains
+- Secure device-to-device communication using WireGuard
+
+Result  
+Homelab is now accessible securely from any network without port forwarding.
+
 Monitoring Stack
 
 Node Exporter
