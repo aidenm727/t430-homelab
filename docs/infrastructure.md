@@ -220,6 +220,7 @@ Configuration Details
 - Connected to shared Docker network: `proxy`
 - Intended routed hostname: `pihole.home.lab`
 - Container health verified after deployment
+- Adjusted DNS listening mode to allow queries from all interfaces, resolving LAN accessibility issue
 
 System Integration
 - Host system resolver updated to use Pi-hole (127.0.0.1)
