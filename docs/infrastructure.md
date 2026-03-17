@@ -260,6 +260,23 @@ Capabilities Enabled
 Result  
 Homelab is now accessible securely from any network without port forwarding.
 
+### Access Control (ACLs)
+
+Tailscale ACLs implemented to enforce principle of least privilege.
+
+Configuration
+- `group:admin` → full network access
+- `group:web` → restricted to HTTP/HTTPS (ports 80/443) on server
+- Default open access rule removed
+
+Security Model
+- Only admin devices can SSH into the server
+- Future users (friends, guests) will be placed in `group:web`
+- Ensures safe sharing of services without exposing system-level access
+
+Result
+Secure multi-user architecture established for controlled homelab access.
+
 Monitoring Stack
 
 Node Exporter
