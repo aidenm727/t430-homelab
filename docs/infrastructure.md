@@ -215,6 +215,9 @@ System Integration
 - Host system resolver updated to use Pi-hole (127.0.0.1)
 - Verified external DNS resolution via Pi-hole
 
+Authentication
+- Admin password configured using `pihole setpassword` inside container due to persistent config overriding environment variable
+
 Result
 DNS foundation is now deployed, enabling migration away from per-device hosts-file entries toward centralized homelab name resolution.
 
