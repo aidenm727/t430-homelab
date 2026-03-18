@@ -2,7 +2,18 @@
 
 A self-hosted, production-style homelab built on Ubuntu Server using Docker, Traefik, Pi-hole, and Tailscale.
 
-This system simulates real-world infrastructure by implementing secure remote access (VPN-only), centralized DNS, reverse-proxied services, and full observability with Prometheus and Grafana — all without exposing services to the public internet.
+This system implements real-world infrastructure patterns by providing secure remote access (VPN-only), centralized DNS, reverse-proxied services, and full observability with Prometheus and Grafana — all without exposing services to the public internet.
+
+---
+
+## Summary
+
+- Self-hosted homelab on Ubuntu Server (ThinkPad T430)
+- Docker-based services behind Traefik reverse proxy
+- Centralized DNS with Pi-hole (`.home.lab`)
+- Secure remote access via Tailscale VPN (no public exposure)
+- Monitoring stack with Prometheus, Grafana, and Uptime Kuma
+- Hosts multiple services behind a centralized reverse proxy
 
 ---
 
