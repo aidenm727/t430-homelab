@@ -191,6 +191,18 @@ Service and uptime monitoring dashboard.
 - Grafana
 - Traefik
 
+### Current Monitors
+
+Uptime Kuma monitors the following internal services using stable Docker-network targets where appropriate:
+
+- Grafana → `http://grafana:3000`
+- Homepage → `http://homepage:3000`
+- Pi-hole → `http://pihole/admin/login`
+- Prometheus → `http://prometheus:9090`
+- Traefik → `http://traefik/ping`
+
+This monitoring approach avoids dependence on LAN IPs, Tailscale IPs, or external DNS for internal health checks.
+
 Result:  
 Service monitoring platform successfully deployed.
 
