@@ -17,11 +17,14 @@ This project simulates a production-style infrastructure environment focused on 
 ---
 
 ## Architecture
+
+```
 Client → Tailscale → Pi-hole (DNS) → Traefik → Docker Services
-↓
-Prometheus → Grafana
-↓
-Uptime Kuma
+                                      ↓
+                                Prometheus → Grafana
+                                      ↓
+                                   Uptime Kuma
+```
 
 ---
 
