@@ -40,7 +40,7 @@ Client → Tailscale → Pi-hole (DNS) → Traefik → Docker Services
 ![Homepage](./docs/images/homepage.png)
 
 ### Physical System
-![Homepage](./docs/images/physical.png)
+![Physical](./docs/images/physical.jpg)
 
 ---
 
