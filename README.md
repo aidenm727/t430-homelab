@@ -1,8 +1,8 @@
 # T430 Homelab Infrastructure
 
-Personal infrastructure lab built on a ThinkPad T430 running Ubuntu Server 24.04 LTS.
+A self-hosted, production-style homelab built on Ubuntu Server using Docker, Traefik, Pi-hole, and Tailscale.
 
-This project simulates a production-style infrastructure environment focused on networking, service routing, monitoring, and secure access.
+This system simulates real-world infrastructure by implementing secure remote access (VPN-only), centralized DNS, reverse-proxied services, and full observability with Prometheus and Grafana — all without exposing services to the public internet.
 
 ---
 
@@ -28,6 +28,22 @@ Client → Tailscale → Pi-hole (DNS) → Traefik → Docker Services
 
 ---
 
+## Screenshots
+
+### Grafana Dashboard
+![Grafana](./docs/images/grafana.png)
+
+### Uptime Kuma Monitoring
+![Kuma](./docs/images/kuma.png)
+
+### Service Dashboard
+![Homepage](./docs/images/homepage.png)
+
+### Physical System
+![Homepage](./docs/images/physical.png)
+
+---
+
 ## System Capabilities
 
 - Containerized service platform using Docker
@@ -49,6 +65,15 @@ Client → Tailscale → Pi-hole (DNS) → Traefik → Docker Services
 - Monitoring uses internal Docker networking instead of LAN or VPN IPs for stability
 - Tailscale ACLs enforce least-privilege access for shared users
 - Services are only exposed through controlled entrypoints (Traefik on ports 80/443)
+
+---
+
+## Challenges & Learning
+
+- Designed a secure access model using Tailscale ACLs instead of exposing services via port forwarding
+- Debugged service routing and DNS resolution across Docker, Pi-hole, and Traefik layers
+- Learned to use internal container networking for stable monitoring instead of relying on host/VPN IPs
+- Balanced usability (clean `.home.lab` domains) with security constraints (no public exposure)
 
 ---
 
