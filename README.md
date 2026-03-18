@@ -2,31 +2,140 @@
 
 Personal infrastructure lab built on a ThinkPad T430 running Ubuntu Server 24.04 LTS.
 
+This project simulates a production-style infrastructure environment focused on networking, service routing, monitoring, and secure access.
+
+---
+
 ## Objectives
 
-- Develop hands-on DevOps and Cloud infrastructure skills
-- Practice containerization and service orchestration
-- Maintain production-style documentation discipline
-- Build resume-ready infrastructure experience
+- Develop hands-on DevOps and infrastructure skills
+- Practice containerization and service architecture
+- Implement secure access patterns without public exposure
+- Maintain production-style documentation and operational discipline
+- Build a resume-ready infrastructure project
+
+---
+
+## Architecture
+Client → Tailscale → Pi-hole (DNS) → Traefik → Docker Services
+↓
+Prometheus → Grafana
+↓
+Uptime Kuma
+
+---
+
+## System Capabilities
+
+- Containerized service platform using Docker
+- Reverse proxy routing with Traefik (host-based routing)
+- Centralized DNS using Pi-hole for `.home.lab` domains
+- Secure remote access via Tailscale VPN (zero public exposure)
+- ACL-based multi-user access control model
+- Full observability stack (Prometheus, Grafana, Node Exporter)
+- Service uptime monitoring with Uptime Kuma
+- Central dashboard for service discovery (Homepage)
+
+---
+
+## Key Design Decisions
+
+- No public port forwarding; all access is secured through Tailscale VPN
+- Internal DNS enables clean service access via `.home.lab` domains
+- Reverse proxy centralizes routing and removes the need for direct port exposure
+- Monitoring uses internal Docker networking instead of LAN or VPN IPs for stability
+- Tailscale ACLs enforce least-privilege access for shared users
+- Services are only exposed through controlled entrypoints (Traefik on ports 80/443)
+
+---
+
+## Technologies
+
+- Docker / Docker Compose
+- Traefik (Reverse Proxy)
+- Pi-hole (DNS)
+- Tailscale (VPN + ACLs)
+- Prometheus (Metrics collection)
+- Grafana (Metrics visualization)
+- Node Exporter (Host metrics)
+- Uptime Kuma (Service monitoring)
+- Ubuntu Server 24.04 LTS
+
+---
+
+## Core Services
+
+| Service     | Purpose                    | Access                       |
+|------------|--------------------------|-----------------------------|
+| Homepage   | Central dashboard         | http://dash.home.lab        |
+| Uptime Kuma| Service monitoring        | http://kuma.home.lab        |
+| Traefik    | Reverse proxy             | http://traefik.home.lab     |
+| Prometheus | Metrics collection        | http://prom.home.lab        |
+| Grafana    | Metrics visualization     | http://grafana.home.lab     |
+| Pi-hole    | DNS management            | http://pihole.home.lab/admin|
+
+---
+
+## Security Model
+
+- All services are private and not exposed to the public internet
+- Access is restricted through Tailscale VPN
+- ACL-based permissions:
+  - Admin users: full access
+  - Restricted users: web services + DNS only
+- SSH access limited to authorized users only
+- Direct container ports are not exposed to shared users
+
+---
+
+## Monitoring Strategy
+
+- Prometheus collects system and service metrics
+- Grafana provides visualization dashboards
+- Uptime Kuma performs service-level health checks
+- Monitoring uses internal container networking for reliability
+
+---
 
 ## Hardware
 
-- ThinkPad T430
-- Intel i5-3320M
+- Lenovo ThinkPad T430
+- Intel i5-3320M (2C / 4T)
 - 8GB RAM
 - 250GB SSD
-- Ethernet: enp0s25
-- IP: 10.0.0.136
+- Ethernet connection (enp0s25)
 
-## Current Status
-
-- Ubuntu Server 24.04 LTS installed
-- SSH operational
-- Ethernet networking stable
-- Docker installed from official repository
-- Non-root Docker usage enabled
-- Log rotation configured
+---
 
 ## Documentation
 
-Detailed documentation is maintained in the `/docs` directory.
+Detailed infrastructure and operational records are maintained in:
+
+`/docs/infrastructure.md`
+
+Server-side change log:
+
+`~/homelab/docs/changes.log`
+
+---
+
+## Current Status
+
+Core platform established and stable.
+
+The system provides:
+
+- Secure remote access via VPN
+- Centralized DNS and service routing
+- Containerized service deployment
+- Integrated monitoring and observability
+- Multi-user access with enforced restrictions
+
+---
+
+## Next Steps
+
+- Implement internal HTTPS / TLS for all services
+- Introduce backup strategy for service data
+- Add container management tooling (e.g., Portainer)
+- Expand service offerings through Traefik routing
