@@ -1,6 +1,6 @@
 # T430 Homelab Infrastructure Record
 
-Last Updated: 2026-03-17  
+Last Updated: 2026-03-19  
 Phase: Core Platform Established (Stable)
 
 ---
@@ -202,6 +202,12 @@ Uptime Kuma monitors the following internal services using stable Docker-network
 - Traefik → `http://traefik/ping`
 
 This monitoring approach avoids dependence on LAN IPs, Tailscale IPs, or external DNS for internal health checks.
+
+### Uptime Kuma Routing Fix
+- Resolved a Traefik routing issue affecting `kuma.home.lab`
+- Root cause: the Uptime Kuma container was attached to both `proxy` and `uptime-kuma_default`, which created network ambiguity for Traefik
+- Fix: removed the extra default network and attached Uptime Kuma only to the shared `proxy` network
+- Verified routed access at `http://kuma.home.lab`
 
 Result:  
 Service monitoring platform successfully deployed.
