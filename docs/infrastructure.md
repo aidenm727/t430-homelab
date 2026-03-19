@@ -287,6 +287,12 @@ Provides centralized DNS for homelab hostname resolution.
 Result:  
 Centralized DNS is established for both local and tailnet clients.
 
+### Temporary Bootstrap Access
+- Pi-hole web UI was temporarily exposed on host port `8080` for DNS bootstrap and troubleshooting.
+- Temporary access URL: `http://100.105.40.106:8080/admin`
+- Purpose: allow access to Pi-hole before `.home.lab` DNS records were established.
+- This exposure is intended to be removed after DNS records are added and routed access is working.
+
 ---
 
 ## Tailscale VPN
