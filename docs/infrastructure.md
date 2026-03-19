@@ -337,6 +337,14 @@ Installed via the official Tailscale install method.
 - Device-to-device encrypted communication
 - No public port forwarding required
 
+### Cross-Device Tailscale DNS Validation
+- Added `home.lab` as a Tailscale DNS search domain alongside the tailnet domain
+- Verified iPhone resolution and access to `pihole.home.lab` over Tailscale
+- Confirmed cross-device internal service discovery now works through:
+  - Tailscale
+  - Pi-hole DNS
+  - Traefik host-based routing
+
 Result:  
 Homelab services are securely accessible over Tailscale.
 
