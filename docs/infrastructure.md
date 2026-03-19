@@ -284,14 +284,26 @@ Provides centralized DNS for homelab hostname resolution.
 
 - Admin password configured with `pihole setpassword` inside the container
 
-Result:  
-Centralized DNS is established for both local and tailnet clients.
+### Pi-hole Local DNS Records
+- Added Pi-hole local DNS records for homelab service domains:
+  - `pihole.home.lab`
+  - `kuma.home.lab`
+  - `grafana.home.lab`
+  - `prom.home.lab`
+  - `dash.home.lab`
+  - `traefik.home.lab`
+- All records currently resolve to the server Tailscale IP: `100.105.40.106`
+- Verified routed access through Traefik using service hostnames, including `pihole.home.lab` and `grafana.home.lab`
+- Direct host-port access is not required for services that are reverse-proxied through Traefik
 
 ### Temporary Bootstrap Access
 - Pi-hole web UI was temporarily exposed on host port `8080` for DNS bootstrap and troubleshooting.
 - Temporary access URL: `http://100.105.40.106:8080/admin`
 - Purpose: allow access to Pi-hole before `.home.lab` DNS records were established.
 - This exposure is intended to be removed after DNS records are added and routed access is working.
+
+Result:  
+Centralized DNS is established for both local and tailnet clients.
 
 ---
 
