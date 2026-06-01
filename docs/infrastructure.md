@@ -512,6 +512,15 @@ Monitoring stack is now accessible over trusted internal HTTPS.
 Result:  
 Homepage now acts as the HTTPS entry point for homelab service navigation.
 
+### Pi-hole HTTPS
+
+- Added HTTPS router for Pi-hole at `https://pihole.home.lab/admin`
+- HTTP route remains available during transition
+- Verified HTTPS access returns expected `/admin/` redirect
+
+Result:  
+Pi-hole admin interface is now accessible over trusted internal HTTPS.
+
 # 8. Operational Logging
 
 Server-side operational log maintained at:
