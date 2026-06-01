@@ -503,6 +503,15 @@ Current state:
 Result:  
 Monitoring stack is now accessible over trusted internal HTTPS.
 
+### Homepage HTTPS
+
+- Added HTTPS router for Homepage at `https://dash.home.lab`
+- Updated Homepage dashboard links to use HTTPS for homelab services
+- Verified Homepage responds over HTTPS
+
+Result:  
+Homepage now acts as the HTTPS entry point for homelab service navigation.
+
 # 8. Operational Logging
 
 Server-side operational log maintained at:
