@@ -492,6 +492,17 @@ Current state:
 - Internal PKI operational
 - Trusted TLS available for homelab services
 
+### Monitoring HTTPS
+
+- Added HTTPS router for Grafana at `https://grafana.home.lab`
+- Added HTTPS router for Prometheus at `https://prom.home.lab`
+- HTTP routes remain available during transition
+- Verified Grafana HTTPS login redirect
+- Verified Prometheus HTTPS health endpoint
+
+Result:  
+Monitoring stack is now accessible over trusted internal HTTPS.
+
 # 8. Operational Logging
 
 Server-side operational log maintained at:
