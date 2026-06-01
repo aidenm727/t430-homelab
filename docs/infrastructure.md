@@ -440,6 +440,13 @@ Restic is installed for encrypted homelab backups.
 - `~/homelab/services`
 - `~/homelab/docs`
 
+### Restore Verification
+
+- Restore test completed successfully
+- Latest snapshot restored into `~/homelab/restore-test`
+- Confirmed restored `docs` and `services` directories
+- Test restore directory removed after verification
+
 ### Current Status
 
 - First clean backup snapshot created: `10282baa`
