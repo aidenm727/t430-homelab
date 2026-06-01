@@ -466,6 +466,18 @@ Initial encrypted backup system established for service configuration, persisten
 Result:  
 Traefik is prepared to serve HTTPS traffic, pending certificate configuration.
 
+### Internal TLS / PKI
+
+- Created internal Root CA: `Aiden Homelab Root CA`
+- Issued wildcard certificate for `*.home.lab` and `home.lab`
+- Traefik now loads TLS certificates through the file provider
+- Uptime Kuma has both HTTP and HTTPS routers
+- Verified `https://kuma.home.lab` routes successfully using the wildcard certificate
+- Client devices must trust the internal Root CA before browsers show the connection as fully trusted
+
+Security note:
+- Private key files must not be committed to GitHub
+
 ---
 
 # 8. Operational Logging
