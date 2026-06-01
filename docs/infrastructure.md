@@ -456,6 +456,16 @@ Restic is installed for encrypted homelab backups.
 Result:  
 Initial encrypted backup system established for service configuration, persistent service data, and operational documentation.
 
+### HTTPS/TLS Preparation
+
+- Added Traefik `websecure` entrypoint on port `443`
+- Published host port `443:443`
+- Existing HTTP routing remains active on `web`
+- TLS certificates and HTTPS routers are not yet configured
+
+Result:  
+Traefik is prepared to serve HTTPS traffic, pending certificate configuration.
+
 ---
 
 # 8. Operational Logging
