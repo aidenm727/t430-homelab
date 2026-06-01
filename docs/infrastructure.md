@@ -209,6 +209,15 @@ This monitoring approach avoids dependence on LAN IPs, Tailscale IPs, or externa
 - Fix: removed the extra default network and attached Uptime Kuma only to the shared `proxy` network
 - Verified routed access at `http://kuma.home.lab`
 
+### Network Exposure
+
+- Uptime Kuma no longer publishes host port `3001`
+- Access is provided only through Traefik at `http://kuma.home.lab`
+- Container port `3001/tcp` remains internal to Docker networking
+
+Result:  
+Direct app-port exposure removed; Uptime Kuma now follows the reverse-proxy-only access model.
+
 Result:  
 Service monitoring platform successfully deployed.
 
