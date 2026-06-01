@@ -480,6 +480,18 @@ Security note:
 
 ---
 
+### Trusted HTTPS
+
+Client trust established for the internal PKI.
+
+- Root CA imported into Windows trust store
+- Browser validates `*.home.lab` certificate chain
+- Verified trusted HTTPS access to `https://kuma.home.lab`
+
+Current state:
+- Internal PKI operational
+- Trusted TLS available for homelab services
+
 # 8. Operational Logging
 
 Server-side operational log maintained at:
