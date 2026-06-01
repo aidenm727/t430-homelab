@@ -521,6 +521,15 @@ Homepage now acts as the HTTPS entry point for homelab service navigation.
 Result:  
 Pi-hole admin interface is now accessible over trusted internal HTTPS.
 
+### Traefik Dashboard HTTPS
+
+- Added HTTPS router for Traefik dashboard at `https://traefik.home.lab`
+- HTTP route remains available during transition
+- Verified dashboard responds over HTTPS
+
+Result:  
+Traefik dashboard is now accessible over trusted internal HTTPS.
+
 # 8. Operational Logging
 
 Server-side operational log maintained at:
