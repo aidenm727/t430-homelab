@@ -601,6 +601,25 @@ A validation script checks backup freshness:
 
 The script returns success when the most recent backup is less than 25 hours old and failure otherwise.
 
+### Backup Monitoring
+
+Backup status is exposed through a dedicated health endpoint.
+
+Service:
+- health-endpoint (nginx)
+
+Purpose:
+- Serves backup status files from ~/homelab/health
+
+URL:
+- https://health.home.lab/backup.txt
+
+Monitoring:
+- Uptime Kuma monitor: Backup Health
+- Internal target: http://health-endpoint/backup.txt
+
+This provides automated monitoring of the backup subsystem.
+
 ---
 
 # 14. Operational Procedures
