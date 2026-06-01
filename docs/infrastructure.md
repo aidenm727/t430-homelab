@@ -569,6 +569,26 @@ Validated:
 * Backup monitoring
 * External backup storage
 
+### Automation
+
+Backups are executed automatically through systemd.
+
+Service:
+- homelab-restic-backup.service
+
+Timer:
+- homelab-restic-backup.timer
+
+Schedule:
+- Daily at 03:00 local server time
+
+Retention:
+- 7 daily snapshots
+- 4 weekly snapshots
+- 6 monthly snapshots
+
+The timer uses Persistent=true so missed backups run automatically after the system comes back online.
+
 ---
 
 # 14. Operational Procedures
