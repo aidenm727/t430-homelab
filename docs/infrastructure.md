@@ -1,157 +1,405 @@
 # T430 Homelab Infrastructure Record
 
-Last Updated: 2026-03-19  
-Phase: Core Platform Established (Stable)
+**Last Updated:** 2026-06-01
+**Current Phase:** Platform Foundation Established (Monitoring, DNS, HTTPS, and Backups)
 
 ---
 
-# 1. System Overview
+# 1. Purpose
 
-Hostname: t430-beast  
-Operating System: Ubuntu Server 24.04.4 LTS (Noble Numbat)  
-Kernel: 6.8.0-100-generic  
+This document is the canonical infrastructure record for the T430 homelab.
 
-Primary Interface: enp0s25  
-IP Address: 10.0.0.136  
-Gateway: 10.0.0.1  
+It describes:
 
-## Disk Layout
-- Root filesystem on 250GB SSD
-- No separate data partition
+* Current deployed infrastructure
+* Service inventory
+* Network architecture
+* Access model
+* Backup strategy
+* Security controls
+* Operational procedures
+* Future roadmap
 
-## Memory
-- 8GB RAM
-- No swap adjustments
+Chronological history is maintained separately in:
 
----
-
-# 2. Hardware Specifications
-
-- Lenovo ThinkPad T430
-- Intel i5-3320M (2C / 4T)
-- 8GB RAM
-- 250GB Samsung 840 Pro SSD
-- UEFI Boot
-- VT-x Enabled
-- VT-d Enabled
-- Secure Boot Disabled
-
----
-
-# 3. Network Configuration
-
-- Ethernet-only configuration (WiFi disabled)
-- DHCP lease via Xfinity router
-- Firewall: UFW enabled
-- SSH enabled and persistent at boot
-
-Rationale:  
-Ethernet-only configuration improves stability for service hosting.
-
----
-
-# 4. System Maintenance Baseline
-
-System maintained with:
-
-```bash
-sudo apt update
-sudo apt upgrade -y
-sudo apt autoremove -y
+```text
+~/homelab/docs/changes.log
 ```
 
-Reboot performed after major updates.
+---
+
+# 2. System Overview
+
+| Item              | Value                     |
+| ----------------- | ------------------------- |
+| Hostname          | `t430-beast`              |
+| Hardware          | Lenovo ThinkPad T430      |
+| Operating System  | Ubuntu Server 24.04.4 LTS |
+| Primary Interface | `enp0s25`                 |
+| Remote Access     | Tailscale                 |
+| DNS Domain        | `home.lab`                |
+| Deployment Method | Docker Compose            |
+
+## Hardware
+
+* Lenovo ThinkPad T430
+* Intel i5-3320M
+* 2 Cores / 4 Threads
+* 8 GB RAM
+* 250 GB Samsung 840 Pro SSD
+* UEFI Boot
+* VT-x Enabled
+* VT-d Enabled
+* Secure Boot Disabled
+
+## Storage
+
+* Root filesystem on internal SSD
+* No dedicated data partition
+* Service data footprint currently under 1 GB
+* Local Restic backup repository configured
+
+## Maintenance Notes
+
+A newer kernel package is installed and pending activation.
+
+A reboot should be scheduled during a maintenance window.
 
 ---
 
-# 5. System Architecture
+# 3. Service Inventory
 
-The homelab follows a centralized DNS and reverse-proxy model:
-
-**Client → Tailscale → Pi-hole (DNS) → Traefik → Docker Services**
-
-## Responsibilities
-
-- **Tailscale**: Secure remote access and network segmentation
-- **Pi-hole**: Internal DNS resolution for `.home.lab` domains
-- **Traefik**: Reverse proxy for HTTP routing
-- **Docker**: Containerized service runtime
-
-## Key Behavior
-
-- All shared services are accessed via domain names
-- Internal traffic is routed through Traefik on ports 80/443
-- DNS resolution is centralized through Pi-hole
-- Direct application port exposure is not used for shared users
+| Service           | Purpose                 | Access                          |
+| ----------------- | ----------------------- | ------------------------------- |
+| Homepage          | Service dashboard       | `https://dash.home.lab`         |
+| Uptime Kuma       | Uptime monitoring       | `https://kuma.home.lab`         |
+| Grafana           | Metrics visualization   | `https://grafana.home.lab`      |
+| Prometheus        | Metrics collection      | `https://prom.home.lab`         |
+| Pi-hole           | DNS management          | `https://pihole.home.lab/admin` |
+| Traefik Dashboard | Reverse proxy dashboard | `https://traefik.home.lab`      |
 
 ---
 
-# 6. Docker Platform
+# 4. Directory Layout
 
-Docker installed via the official APT repository.
+## Root Directory
 
-## Installed Components
+```text
+~/homelab
+```
 
-- docker-ce
-- docker-ce-cli
-- containerd.io
-- docker buildx plugin
-- docker compose plugin
+## Primary Directories
 
-## Configuration
+```text
+~/homelab/docs
+~/homelab/services
+~/homelab/backups
+```
 
-- Docker enabled at boot
-- Non-root Docker usage configured
-- Logging driver: `json-file`
-- Log rotation: `10MB` max size, `3` files
+## Service Directories
 
-## Verification
+```text
+~/homelab/services/traefik
+~/homelab/services/uptime-kuma
+~/homelab/services/homepage
+~/homelab/services/pihole
+~/homelab/services/monitoring
+```
 
-- `docker run hello-world` completed successfully
+## Documentation
 
-Result:  
-Stable container host established.
+```text
+~/homelab/docs/changes.log
+```
 
 ---
 
-# 7. Core Infrastructure
+# 5. Architecture
 
-## Reverse Proxy — Traefik
+## High-Level Flow
 
-Traefik v3.6.1 deployed via Docker Compose.
+```text
+Client Device
+    │
+    ▼
+ Tailscale
+    │
+    ▼
+  Pi-hole
+    │
+    ▼
+  Traefik
+    │
+    ▼
+ Docker Services
+```
 
-### Features
+## Design Principles
 
-- Docker provider enabled
-- `exposedbydefault=false`
-- Host-based routing
-- Ping endpoint enabled for internal health monitoring
+* Services are accessed through DNS names rather than IP addresses.
+* Shared web services are routed through Traefik.
+* Tailscale provides secure remote access.
+* Pi-hole provides internal DNS resolution.
+* Docker Compose manages deployments.
+* Infrastructure changes are documented immediately after verification.
 
-### Access
+---
 
-- Dashboard: `http://traefik.home.lab`
+# 6. Network and Access Model
+
+## Physical Network
+
+* Wired Ethernet only
+* Wi-Fi disabled
+* DHCP provided by home router
+
+## Firewall
+
+UFW is enabled.
+
+### Current Policy
+
+```text
+Default Incoming: Deny
+Default Outgoing: Allow
+Allowed Service: OpenSSH
+```
+
+### Note
+
+Docker publishes ports using its own iptables rules.
+
+Any future hardening should verify both:
+
+* UFW configuration
+* Docker port exposure
+
+## Published Host Ports
+
+| Port      | Purpose       |
+| --------- | ------------- |
+| `53/tcp`  | Pi-hole DNS   |
+| `53/udp`  | Pi-hole DNS   |
+| `80/tcp`  | Traefik HTTP  |
+| `443/tcp` | Traefik HTTPS |
+
+Uptime Kuma host port `3001` has been removed.
+
+---
+
+# 7. DNS
+
+## Pi-hole
+
+Pi-hole provides internal DNS resolution for homelab services.
 
 ### Location
 
-`~/homelab/services/traefik`
+```text
+~/homelab/services/pihole
+```
 
-### Network
+### Persistent Data
 
-- Shared Docker network: `proxy`
+```text
+~/homelab/services/pihole/etc-pihole
+~/homelab/services/pihole/etc-dnsmasq.d
+```
 
-### Routing Rules
+## DNS Records
 
-| Hostname | Destination |
-|---|---|
-| `kuma.home.lab` | Uptime Kuma |
-| `traefik.home.lab` | Traefik dashboard |
-| `dash.home.lab` | Homepage dashboard |
-| `prom.home.lab` | Prometheus |
-| `grafana.home.lab` | Grafana |
+```text
+dash.home.lab
+grafana.home.lab
+kuma.home.lab
+pihole.home.lab
+prom.home.lab
+traefik.home.lab
+```
 
-### Monitoring Integration
+All service records resolve to the homelab server through Pi-hole.
 
-- Uptime Kuma monitors Traefik via `http://traefik/ping`
+## Tailscale Integration
+
+* MagicDNS enabled
+* Pi-hole used as DNS resolver
+* `home.lab` configured as a search domain
+* Cross-device DNS resolution verified
+
+---
+
+# 8. Tailscale
+
+Tailscale provides secure remote access without public port forwarding.
+
+## Access Groups
+
+| Group         | Purpose                    |
+| ------------- | -------------------------- |
+| `group:admin` | Full administrative access |
+| `group:web`   | Restricted web access      |
+
+Restricted users should only access approved services through:
+
+```text
+80/tcp
+443/tcp
+```
+
+SSH access remains restricted.
+
+---
+
+# 9. Docker Platform
+
+Docker is installed from the official Docker repository.
+
+## Components
+
+* Docker Engine
+* Docker Compose Plugin
+* Docker Buildx
+* Containerd
+
+## Configuration
+
+* Docker enabled at boot
+* Non-root Docker access configured
+* JSON log rotation enabled
+
+### Log Rotation
+
+```text
+Max Size: 10 MB
+Max Files: 3
+```
+
+## Networks
+
+| Network      | Purpose                     |
+| ------------ | --------------------------- |
+| `proxy`      | Shared Traefik network      |
+| `monitoring` | Internal monitoring network |
+
+---
+
+# 10. Reverse Proxy and HTTPS
+
+## Traefik
+
+Traefik v3.6.1 serves as the reverse proxy for all routed services.
+
+### Location
+
+```text
+~/homelab/services/traefik
+```
+
+### Features
+
+* Docker provider enabled
+* File provider enabled
+* Host-based routing
+* HTTP and HTTPS entrypoints
+* Internal health endpoint enabled
+* Shared proxy network
+
+## Entrypoints
+
+| Entrypoint  | Port | Purpose |
+| ----------- | ---- | ------- |
+| `web`       | 80   | HTTP    |
+| `websecure` | 443  | HTTPS   |
+
+---
+
+## Internal PKI
+
+An internal Public Key Infrastructure (PKI) is used for trusted HTTPS.
+
+### Root CA
+
+```text
+Aiden Homelab Root CA
+```
+
+### Wildcard Certificate
+
+```text
+*.home.lab
+home.lab
+```
+
+### Certificate Storage
+
+```text
+~/homelab/services/traefik/certs/ca
+~/homelab/services/traefik/certs/live
+~/homelab/services/traefik/dynamic/tls.yml
+```
+
+### Security Requirements
+
+* Never commit private keys
+* Never commit certificate secrets
+* Never commit backup passwords
+* Root CA certificate may be installed on trusted devices
+
+### Trusted Device Status
+
+The Root CA has been successfully installed and validated on trusted client systems.
+
+---
+
+# 11. Routed Services
+
+| Service     | HTTP                           | HTTPS                           | Backend            |
+| ----------- | ------------------------------ | ------------------------------- | ------------------ |
+| Homepage    | `http://dash.home.lab`         | `https://dash.home.lab`         | `homepage:3000`    |
+| Uptime Kuma | `http://kuma.home.lab`         | `https://kuma.home.lab`         | `uptime-kuma:3001` |
+| Grafana     | `http://grafana.home.lab`      | `https://grafana.home.lab`      | `grafana:3000`     |
+| Prometheus  | `http://prom.home.lab`         | `https://prom.home.lab`         | `prometheus:9090`  |
+| Pi-hole     | `http://pihole.home.lab/admin` | `https://pihole.home.lab/admin` | `pihole:80`        |
+| Traefik     | `http://traefik.home.lab`      | `https://traefik.home.lab`      | `api@internal`     |
+
+## HTTPS Status
+
+All routed services are operational over HTTPS using the internal wildcard certificate.
+
+HTTP remains available during the transition period.
+
+Future decision:
+
+* Keep dual-stack HTTP/HTTPS
+* Or force HTTP → HTTPS redirects
+
+---
+
+# 12. Services
+
+## Homepage
+
+### Purpose
+
+Central dashboard for homelab services.
+
+### Location
+
+```text
+~/homelab/services/homepage
+```
+
+### Access
+
+```text
+https://dash.home.lab
+```
+
+### Notes
+
+* Routed through Traefik
+* Connected to `proxy`
+* Dashboard links use HTTPS
 
 ---
 
@@ -159,247 +407,31 @@ Traefik v3.6.1 deployed via Docker Compose.
 
 ### Purpose
 
-Service and uptime monitoring dashboard.
-
-### Deployment
-
-- Docker Compose
-- Image: `louislam/uptime-kuma:latest`
+Uptime monitoring and health verification.
 
 ### Location
 
-`~/homelab/services/uptime-kuma`
-
-### Persistent Data
-
-`~/homelab/services/uptime-kuma/data`
+```text
+~/homelab/services/uptime-kuma
+```
 
 ### Access
 
-- Internal container/service port: `3001`
-- Routed access: `http://kuma.home.lab`
-
-### Configuration
-
-- Restart policy: `unless-stopped`
-- Persistent storage enabled
-
-### Monitoring Targets
-
-- Homepage
-- Prometheus
-- Grafana
-- Traefik
-
-### Current Monitors
-
-Uptime Kuma monitors the following internal services using stable Docker-network targets where appropriate:
-
-- Grafana → `http://grafana:3000`
-- Homepage → `http://homepage:3000`
-- Pi-hole → `http://pihole/admin/login`
-- Prometheus → `http://prometheus:9090`
-- Traefik → `http://traefik/ping`
-
-This monitoring approach avoids dependence on LAN IPs, Tailscale IPs, or external DNS for internal health checks.
-
-### Uptime Kuma Routing Fix
-- Resolved a Traefik routing issue affecting `kuma.home.lab`
-- Root cause: the Uptime Kuma container was attached to both `proxy` and `uptime-kuma_default`, which created network ambiguity for Traefik
-- Fix: removed the extra default network and attached Uptime Kuma only to the shared `proxy` network
-- Verified routed access at `http://kuma.home.lab`
-
-### Network Exposure
-
-- Uptime Kuma no longer publishes host port `3001`
-- Access is provided only through Traefik at `http://kuma.home.lab`
-- Container port `3001/tcp` remains internal to Docker networking
-
-Result:  
-Direct app-port exposure removed; Uptime Kuma now follows the reverse-proxy-only access model.
-
-Result:  
-Service monitoring platform successfully deployed.
-
----
-
-## Homepage Dashboard
-
-### Purpose
-
-Central entry point for homelab services.
-
-### Deployment
-
-- Docker Compose
-- Image: `ghcr.io/gethomepage/homepage:latest`
-
-### Location
-
-`~/homelab/services/homepage`
-
-### Persistent Configuration
-
-`~/homelab/services/homepage/config`
-
-### Access
-
-- `http://dash.home.lab`
-
-### Configuration
-
-- Connected to the shared `proxy` network
-- Routed through Traefik using host-based routing
-- Host validation enabled via `HOMEPAGE_ALLOWED_HOSTS`
-
-Result:  
-Dashboard deployed for service discovery and navigation.
-
----
-
-## Pi-hole
-
-### Purpose
-
-Provides centralized DNS for homelab hostname resolution.
-
-### Deployment
-
-- Docker Compose
-- Image: `pihole/pihole:latest`
-
-### Location
-
-`~/homelab/services/pihole`
+```text
+https://kuma.home.lab
+```
 
 ### Persistent Data
 
-- `~/homelab/services/pihole/etc-pihole`
-- `~/homelab/services/pihole/etc-dnsmasq.d`
+```text
+~/homelab/services/uptime-kuma/data
+```
 
-### Ports
+### Notes
 
-- `53/tcp`
-- `53/udp`
-
-### Configuration Details
-
-- Host port 53 was freed by disabling `systemd-resolved`
-- Host resolver configured to use Pi-hole locally
-- Pi-hole listens on all interfaces
-- Connected to the shared `proxy` network
-
-### System Integration
-
-- Host resolver uses Pi-hole at `127.0.0.1`
-- External DNS resolution verified through Pi-hole
-- Internal `.home.lab` resolution verified
-
-### Authentication
-
-- Admin password configured with `pihole setpassword` inside the container
-
-### Pi-hole Local DNS Records
-- Added Pi-hole local DNS records for homelab service domains:
-  - `pihole.home.lab`
-  - `kuma.home.lab`
-  - `grafana.home.lab`
-  - `prom.home.lab`
-  - `dash.home.lab`
-  - `traefik.home.lab`
-- All records currently resolve to the server Tailscale IP: `100.105.40.106`
-- Verified routed access through Traefik using service hostnames, including `pihole.home.lab` and `grafana.home.lab`
-- Direct host-port access is not required for services that are reverse-proxied through Traefik
-
-### Temporary Bootstrap Access
-- Pi-hole web UI was temporarily exposed on host port `8080` for DNS bootstrap and troubleshooting.
-- Temporary access URL: `http://100.105.40.106:8080/admin`
-- Purpose: allow access to Pi-hole before `.home.lab` DNS records were established.
-- This exposure is intended to be removed after DNS records are added and routed access is working.
-
-Result:  
-Centralized DNS is established for both local and tailnet clients.
-
----
-
-## Tailscale VPN
-
-### Purpose
-
-Provides secure remote access to the homelab without exposing services to the public internet.
-
-### Deployment
-
-Installed via the official Tailscale install method.
-
-### Configuration Details
-
-- Node joined to tailnet using Google authentication
-- Tailscale IP assigned in the `100.x.x.x` range
-- MagicDNS enabled
-- Pi-hole configured as DNS for the tailnet
-- Internal DNS records use the Tailscale IP for shared remote access
-
-### Capabilities Enabled
-
-- Secure remote access from any network
-- Device-to-device encrypted communication
-- No public port forwarding required
-
-### Cross-Device Tailscale DNS Validation
-- Added `home.lab` as a Tailscale DNS search domain alongside the tailnet domain
-- Verified iPhone resolution and access to `pihole.home.lab` over Tailscale
-- Confirmed cross-device internal service discovery now works through:
-  - Tailscale
-  - Pi-hole DNS
-  - Traefik host-based routing
-
-Result:  
-Homelab services are securely accessible over Tailscale.
-
-### Access Control (ACLs)
-
-Tailscale ACLs enforce least privilege.
-
-#### Groups
-
-- `group:admin` → full network access
-- `group:web` → restricted shared-service access
-
-#### Allowed Access Model
-
-| Group | Access |
-|---|---|
-| `group:admin` | Full network access |
-| `group:web` | `tcp:80`, `tcp:443`, `udp:53`, `tcp:53` to `100.105.40.106` |
-
-#### Security Model
-
-- Only admin users can access SSH
-- Restricted users can access DNS and web-routed services only
-- Shared users cannot access direct application ports
-- Shared access is routed through Pi-hole + Traefik
-
-Result:  
-Secure multi-user access control is established.
-
-### Shared User Validation
-
-A secondary user was added to the tailnet to validate restricted-access behavior.
-
-#### Verified Results
-
-- Invited user devices must join the same tailnet as the server
-- Restricted users can resolve DNS through Pi-hole over Tailscale
-- Restricted users can access:
-  - `http://kuma.home.lab`
-  - `http://traefik.home.lab`
-- Restricted users cannot access:
-  - `http://<tailscale-ip>:3001`
-  - SSH or unintended services
-
-Result:  
-Shared users now reach approved services only through DNS + Traefik on ports 80/443.
+* No direct host port exposure
+* Routed through Traefik
+* Uses Docker-network targets where possible
 
 ---
 
@@ -407,176 +439,275 @@ Shared users now reach approved services only through DNS + Traefik on ports 80/
 
 ### Components
 
-- **Node Exporter**: Host-level metrics (CPU, memory, disk, network)
-- **Prometheus**: Metrics collection and storage
-- **Grafana**: Visualization layer for metrics
+| Component     | Purpose               |
+| ------------- | --------------------- |
+| Node Exporter | Host metrics          |
+| Prometheus    | Metrics collection    |
+| Grafana       | Metrics visualization |
 
-### Routes
+### Grafana
 
-- `prom.home.lab`
-- `grafana.home.lab`
+Access:
 
-### Dashboard
+```text
+https://grafana.home.lab
+```
 
-- Node Exporter Full (ID 1860)
+Persistent Data:
 
-Result:  
-Baseline observability stack deployed and integrated into the homelab.
+```text
+~/homelab/services/monitoring/grafana/data
+```
 
----
+### Prometheus
 
-## Backup System
+Access:
 
-Restic is installed for encrypted homelab backups.
+```text
+https://prom.home.lab
+```
 
-### Repository
+Configuration:
 
-- Local repository: `~/homelab/backups/restic-repo`
-- Password file: `~/homelab/backups/restic-password`
-- Password file permissions: `600`
+```text
+~/homelab/services/monitoring/prometheus/prometheus.yml
+```
 
-### Backed Up Paths
+Storage:
 
-- `~/homelab/services`
-- `~/homelab/docs`
-
-### Restore Verification
-
-- Restore test completed successfully
-- Latest snapshot restored into `~/homelab/restore-test`
-- Confirmed restored `docs` and `services` directories
-- Test restore directory removed after verification
-
-### Current Status
-
-- First clean backup snapshot created: `10282baa`
-- Backups currently run manually with `sudo restic`
-- Future improvement: automate backups and move repository to dedicated external storage
-
-Result:  
-Initial encrypted backup system established for service configuration, persistent service data, and operational documentation.
-
-### HTTPS/TLS Preparation
-
-- Added Traefik `websecure` entrypoint on port `443`
-- Published host port `443:443`
-- Existing HTTP routing remains active on `web`
-- TLS certificates and HTTPS routers are not yet configured
-
-Result:  
-Traefik is prepared to serve HTTPS traffic, pending certificate configuration.
-
-### Internal TLS / PKI
-
-- Created internal Root CA: `Aiden Homelab Root CA`
-- Issued wildcard certificate for `*.home.lab` and `home.lab`
-- Traefik now loads TLS certificates through the file provider
-- Uptime Kuma has both HTTP and HTTPS routers
-- Verified `https://kuma.home.lab` routes successfully using the wildcard certificate
-- Client devices must trust the internal Root CA before browsers show the connection as fully trusted
-
-Security note:
-- Private key files must not be committed to GitHub
+```text
+Docker volume: prometheus_data
+```
 
 ---
 
-### Trusted HTTPS
+## Pi-hole
 
-Client trust established for the internal PKI.
+### Purpose
 
-- Root CA imported into Windows trust store
-- Browser validates `*.home.lab` certificate chain
-- Verified trusted HTTPS access to `https://kuma.home.lab`
+Internal DNS and DNS management.
 
-Current state:
-- Internal PKI operational
-- Trusted TLS available for homelab services
+### Access
 
-### Monitoring HTTPS
+```text
+https://pihole.home.lab/admin
+```
 
-- Added HTTPS router for Grafana at `https://grafana.home.lab`
-- Added HTTPS router for Prometheus at `https://prom.home.lab`
-- HTTP routes remain available during transition
-- Verified Grafana HTTPS login redirect
-- Verified Prometheus HTTPS health endpoint
+### Notes
 
-Result:  
-Monitoring stack is now accessible over trusted internal HTTPS.
+* Publishes DNS on port 53
+* Routed through Traefik
+* Attached to proxy network
+* Local host uses Pi-hole DNS
 
-### Homepage HTTPS
+---
 
-- Added HTTPS router for Homepage at `https://dash.home.lab`
-- Updated Homepage dashboard links to use HTTPS for homelab services
-- Verified Homepage responds over HTTPS
+# 13. Backup System
 
-Result:  
-Homepage now acts as the HTTPS entry point for homelab service navigation.
+Restic is used for encrypted homelab backups.
 
-### Pi-hole HTTPS
+## Repository
 
-- Added HTTPS router for Pi-hole at `https://pihole.home.lab/admin`
-- HTTP route remains available during transition
-- Verified HTTPS access returns expected `/admin/` redirect
+```text
+~/homelab/backups/restic-repo
+```
 
-Result:  
-Pi-hole admin interface is now accessible over trusted internal HTTPS.
+## Password File
 
-### Traefik Dashboard HTTPS
+```text
+~/homelab/backups/restic-password
+```
 
-- Added HTTPS router for Traefik dashboard at `https://traefik.home.lab`
-- HTTP route remains available during transition
-- Verified dashboard responds over HTTPS
+Permissions:
 
-Result:  
-Traefik dashboard is now accessible over trusted internal HTTPS.
+```text
+600
+```
 
-# 8. Operational Logging
+## Protected Paths
 
-Server-side operational log maintained at:
+```text
+~/homelab/services
+~/homelab/docs
+```
+
+## Current State
+
+* Repository initialized
+* Backup verified
+* Restore verified
+* Backups currently manual
+
+## Restore Test
+
+A full restore test was successfully completed.
+
+Restore target:
+
+```text
+~/homelab/restore-test
+```
+
+Validated:
+
+```text
+~/homelab/docs
+~/homelab/services
+```
+
+## Current Limitations
+
+* Local repository only
+* No scheduling
+* No retention policy
+* No off-device copy
+
+## Planned Improvements
+
+* Systemd timer
+* Retention policy
+* Backup monitoring
+* External backup storage
+
+---
+
+# 14. Operational Procedures
+
+## Standard Change Workflow
+
+```text
+Deploy / Configure
+       ↓
+Verify Functionality
+       ↓
+Document Immediately
+```
+
+## Required Documentation
+
+### Server
+
+Append:
 
 ```text
 ~/homelab/docs/changes.log
 ```
 
-All meaningful infrastructure modifications must be recorded in this file.
+### GitHub
+
+Update:
+
+```text
+docs/infrastructure.md
+```
+
+### Version Control
+
+Commit and push using a professional commit message.
+
+## Repository
+
+```text
+https://github.com/aidenm727/t430-homelab
+```
+
+Canonical documentation is maintained in GitHub.
 
 ---
 
-# 9. Current State Summary
+# 15. Security Notes
+
+## Strengths
+
+* No public port forwarding
+* Tailscale-secured access
+* ACL separation
+* UFW enabled
+* Internal trusted HTTPS
+* Reverse proxy architecture
+* Encrypted backups
+* Restore-tested backups
+
+## Critical Rules
+
+Never commit:
+
+* Passwords
+* API keys
+* Tokens
+* `.env` files
+* Certificate private keys
+* Restic password files
+
+The Root CA private key must remain offline and protected.
+
+---
+
+# 16. Current State Summary
 
 The homelab currently provides:
 
-- Stable Ubuntu Server host on dedicated hardware
-- Docker-based service platform
-- Centralized internal DNS via Pi-hole
-- Reverse proxy routing via Traefik
-- Secure remote access via Tailscale
-- Multi-user access control using Tailscale ACLs
-- Central dashboard and monitoring services
-- Shared service access without public exposure or direct app-port sharing
+* Ubuntu Server host
+* Docker Compose platform
+* Internal DNS
+* Reverse proxy routing
+* Trusted HTTPS
+* Internal PKI
+* Secure remote access
+* Service dashboard
+* Uptime monitoring
+* Metrics collection
+* Metrics visualization
+* Encrypted backups
+* Verified restores
+* Operational documentation
 
 ---
 
-# 10. Next Phase
+# 17. Known Gaps and Next Phase
 
-Focus: **Platform Maturity and Expansion**
+## Immediate Priority
 
-## Immediate Priorities
+Automate Restic backups.
 
-- Keep documentation aligned with deployed state
-- Continue validating service health and routing behavior
-- Improve understanding and organization of the existing monitoring stack
+### Recommended Next Task
 
-## Potential Next Additions
+```text
+Scheduled Restic backups with retention policy and monitoring
+```
 
-- Portainer or another container management interface
-- Internal HTTPS / TLS for routed services
-- Backup strategy for service data and configuration
-- DHCP reservation or static addressing improvements
-- Additional user-facing services exposed through Traefik
+## Near-Term Improvements
+
+* Systemd backup timer
+* Retention policy
+* Backup monitoring
+* HTTP → HTTPS decision
+* External backup storage
+* Remove obsolete Compose version fields
+* Reboot into updated kernel
+
+## Future Platform Additions
+
+* Ansible
+* Centralized logging
+* Alerting
+* Vaultwarden
+* Paperless-ngx
+* Immich
+* Jellyfin
+* Additional storage
+* Infrastructure automation
 
 ---
 
-# Goal
+# 18. Long-Term Goal
 
-Continue evolving the system from a small service host into a structured, production-style homelab platform with strong security, clear documentation, centralized routing, and scalable service management.
+Continue evolving the T430 into a production-style homelab platform focused on:
+
+* Clear documentation
+* Secure access
+* Trusted HTTPS
+* Reliable backups
+* Restore validation
+* Intentional service deployment
+* Scalable operational practices
