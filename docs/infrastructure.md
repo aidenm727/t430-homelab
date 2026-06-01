@@ -589,6 +589,18 @@ Retention:
 
 The timer uses Persistent=true so missed backups run automatically after the system comes back online.
 
+### Backup Health Monitoring
+
+Successful backups update:
+
+~/homelab/backups/last-successful-backup.txt
+
+A validation script checks backup freshness:
+
+~/homelab/scripts/check-backup-freshness.sh
+
+The script returns success when the most recent backup is less than 25 hours old and failure otherwise.
+
 ---
 
 # 14. Operational Procedures
