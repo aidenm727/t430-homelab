@@ -425,6 +425,32 @@ Baseline observability stack deployed and integrated into the homelab.
 
 ---
 
+## Backup System
+
+Restic is installed for encrypted homelab backups.
+
+### Repository
+
+- Local repository: `~/homelab/backups/restic-repo`
+- Password file: `~/homelab/backups/restic-password`
+- Password file permissions: `600`
+
+### Backed Up Paths
+
+- `~/homelab/services`
+- `~/homelab/docs`
+
+### Current Status
+
+- First clean backup snapshot created: `10282baa`
+- Backups currently run manually with `sudo restic`
+- Future improvement: automate backups and move repository to dedicated external storage
+
+Result:  
+Initial encrypted backup system established for service configuration, persistent service data, and operational documentation.
+
+---
+
 # 8. Operational Logging
 
 Server-side operational log maintained at:
