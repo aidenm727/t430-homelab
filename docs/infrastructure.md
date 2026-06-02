@@ -736,6 +736,7 @@ Status:
 - Webhook connectivity verified
 - Uptime Kuma notification delivery verified
 - End-to-end Discord alert path verified
+- Controlled failure/recovery alert test completed successfully using the Backup Health monitor and health-endpoint container.
 
 ---
 
