@@ -61,9 +61,9 @@ Chronological history is maintained separately in:
 
 ## Maintenance Notes
 
-A newer kernel package is installed and pending activation.
+System successfully rebooted into kernel 6.8.0-117-generic after scheduled maintenance.
 
-A reboot should be scheduled during a maintenance window.
+All containerized services recovered automatically and were verified operational after reboot.
 
 ---
 
