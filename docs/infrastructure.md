@@ -479,6 +479,28 @@ Storage:
 Docker volume: prometheus_data
 ```
 
+Logging Stack
+
+Components:
+- Grafana Loki
+- Grafana Alloy
+
+Purpose:
+- Centralized Docker container log aggregation
+- Historical log retention
+- Grafana-based log exploration and filtering
+
+Verified Log Sources:
+- Homepage
+- Pi-hole
+- Uptime Kuma
+
+Capabilities:
+- Container log search
+- Log filtering
+- Error investigation
+- Centralized troubleshooting
+
 ---
 
 ## Pi-hole
