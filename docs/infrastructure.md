@@ -721,6 +721,28 @@ Monitoring:
 
 This provides automated monitoring of the backup subsystem.
 
+### Off-Site Backup
+
+Backblaze B2 is configured as an off-site Restic backup target.
+
+Bucket:
+- t430-homelab-backups
+
+Repository:
+- b2:t430-homelab-backups:restic
+
+Credentials:
+- Stored on the server at ~/homelab/secrets/backblaze-b2.env
+- File permissions: 600
+- Directory permissions: 700
+- Credentials must never be committed
+
+Status:
+- B2 repository initialized
+- Clean backup uploaded successfully
+- Snapshot listing verified
+- Restore from B2 verified
+
 ### Alerting
 
 Uptime Kuma supports Discord notifications through a dedicated Discord webhook.
@@ -738,6 +760,15 @@ Status:
 - End-to-end Discord alert path verified
 - Controlled failure/recovery alert test completed successfully using the Backup Health monitor and health-endpoint container.
 
+
+Critical monitors using Discord Alerts:
+
+- Backup Health
+- Grafana
+- Homepage
+- Pi-hole
+- Prometheus
+- Traefik
 ---
 
 # 14. Operational Procedures
