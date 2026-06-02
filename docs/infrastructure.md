@@ -743,6 +743,24 @@ Status:
 - Snapshot listing verified
 - Restore from B2 verified
 
+Automation:
+
+Service:
+- homelab-restic-backup-b2.service
+
+Timer:
+- homelab-restic-backup-b2.timer
+
+Schedule:
+- Daily at 04:00 local server time
+
+Retention:
+- 7 daily snapshots
+- 4 weekly snapshots
+- 6 monthly snapshots
+
+The timer uses Persistent=true so missed off-site backups run automatically after the system comes back online.
+
 ### Alerting
 
 Uptime Kuma supports Discord notifications through a dedicated Discord webhook.
