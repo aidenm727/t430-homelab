@@ -248,6 +248,61 @@ Restricted users should only access approved services through:
 
 SSH access remains restricted.
 
+# Ansible Automation
+
+## Control Node
+
+Ansible is managed from a WSL Ubuntu 22.04 environment on the administrator's laptop.
+
+Control Node:
+
+* WSL Ubuntu 22.04
+* Ansible Core 2.17
+* Transport: SSH over Tailscale
+* Authentication: SSH key-based
+
+Managed Node:
+
+* t430-beast
+
+## Inventory
+
+Production inventory is maintained on the control node and currently contains:
+
+* t430-beast
+
+## Verification
+
+Connectivity has been verified using:
+
+ansible -m ping
+
+Result:
+
+* Successful Ansible communication
+* SSH key authentication confirmed
+
+## Baseline Playbooks
+
+Current playbooks:
+
+* facts.yml
+
+  * Collects host facts and system information
+
+* health-check.yml
+
+  * Verifies Docker service status
+  * Reports running containers
+  * Reports root filesystem utilization
+  * Reports memory utilization
+  * Displays operational health summary
+
+## Purpose
+
+Ansible will be used to gradually transition the homelab from manually managed infrastructure to reproducible, documented Infrastructure-as-Code workflows.
+
+
 ---
 
 # 9. Docker Platform
