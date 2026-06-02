@@ -298,6 +298,13 @@ Current playbooks:
   * Reports memory utilization
   * Displays operational health summary
 
+* backup-health.yml
+
+  * Verifies homelab-restic-backup.timer is active
+  * Runs the backup freshness validation script
+  * Reports backup health summary
+  * Read-only validation playbook
+
 ## Purpose
 
 Ansible will be used to gradually transition the homelab from manually managed infrastructure to reproducible, documented Infrastructure-as-Code workflows.
