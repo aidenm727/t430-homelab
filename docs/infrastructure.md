@@ -686,6 +686,15 @@ https://github.com/aidenm727/t430-homelab
 
 Canonical documentation is maintained in GitHub.
 
+Ansible control node initialized on laptop WSL Ubuntu environment.
+
+Connectivity:
+- Control node: WSL Ubuntu 22.04 on personal laptop
+- Managed node: t430-beast
+- Transport: SSH over Tailscale
+- Authentication: SSH key-based
+- Verified: ansible ping successful
+
 ---
 
 # 15. Security Notes
