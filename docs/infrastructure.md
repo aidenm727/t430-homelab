@@ -721,6 +721,22 @@ Monitoring:
 
 This provides automated monitoring of the backup subsystem.
 
+### Alerting
+
+Uptime Kuma supports Discord notifications through a dedicated Discord webhook.
+
+Current configuration:
+
+- Discord notification channel: homelab-alerts
+- Notification integration: Discord Alerts
+- Initial monitor attached: Backup Health
+
+Status:
+
+- Webhook connectivity verified
+- Uptime Kuma notification delivery verified
+- End-to-end Discord alert path verified
+
 ---
 
 # 14. Operational Procedures
