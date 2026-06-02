@@ -77,6 +77,7 @@ All containerized services recovered automatically and were verified operational
 | Prometheus        | Metrics collection      | `https://prom.home.lab`         |
 | Pi-hole           | DNS management          | `https://pihole.home.lab/admin` |
 | Traefik Dashboard | Reverse proxy dashboard | `https://traefik.home.lab`      |
+| Vaultwarden       | Password Manager        | `https://vault.home.lab         |
 
 ---
 
@@ -215,6 +216,7 @@ kuma.home.lab
 pihole.home.lab
 prom.home.lab
 traefik.home.lab
+vault.home.lab
 ```
 
 All service records resolve to the homelab server through Pi-hole.
@@ -440,6 +442,7 @@ The Root CA has been successfully installed and validated on trusted client syst
 | Prometheus  | `http://prom.home.lab`         | `https://prom.home.lab`         | `prometheus:9090`  |
 | Pi-hole     | `http://pihole.home.lab/admin` | `https://pihole.home.lab/admin` | `pihole:80`        |
 | Traefik     | `http://traefik.home.lab`      | `https://traefik.home.lab`      | `api@internal`     |
+| Vaultwarden | `http://vault.home.lab`        | `http://vault.home.lab          | `vaultwarden:80`   |
 
 ## HTTPS Status
 
@@ -600,6 +603,26 @@ https://pihole.home.lab/admin
 * Routed through Traefik
 * Attached to proxy network
 * Local host uses Pi-hole DNS
+
+## Vaultwarden
+
+Purpose:
+- Self-hosted Bitwarden-compatible password manager
+
+Location:
+~/homelab/services/vaultwarden
+
+Access:
+https://vault.home.lab
+
+Persistent Data:
+~/homelab/services/vaultwarden/data
+
+Notes:
+- Routed through Traefik
+- HTTPS enabled
+- Public registrations disabled
+- Protected by existing backup system
 
 ---
 
