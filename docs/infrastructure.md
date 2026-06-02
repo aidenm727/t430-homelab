@@ -302,6 +302,16 @@ Current playbooks:
 
 Ansible will be used to gradually transition the homelab from manually managed infrastructure to reproducible, documented Infrastructure-as-Code workflows.
 
+Added docker-health.yml Ansible playbook for Docker platform validation.
+
+The playbook checks:
+- Docker service active state
+- Full container status list
+- Unhealthy containers
+- Restarting containers
+
+The playbook is read-only and fails intentionally if unhealthy or restarting containers are detected.
+
 
 ---
 
