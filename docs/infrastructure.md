@@ -803,15 +803,17 @@ The homelab currently provides:
 
 # 17. Known Gaps and Next Phase
 
-## Immediate Priority
+Immediate Priority
 
-Automate Restic backups.
+Expand Infrastructure Automation with Ansible
 
-### Recommended Next Task
+Recommended Next Task
 
-```text
-Scheduled Restic backups with retention policy and monitoring
-```
+Create operational health-check playbooks for:
+- Docker platform
+- Container health
+- Backup validation
+- Service status verification
 
 ## Near-Term Improvements
 
