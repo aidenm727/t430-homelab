@@ -305,6 +305,13 @@ Current playbooks:
   * Reports backup health summary
   * Read-only validation playbook
 
+* service-health.yml
+
+  * Verifies expected core service containers are running
+  * Reports missing services
+  * Fails if required containers are absent
+  * Read-only validation playbook
+
 ## Purpose
 
 Ansible will be used to gradually transition the homelab from manually managed infrastructure to reproducible, documented Infrastructure-as-Code workflows.
