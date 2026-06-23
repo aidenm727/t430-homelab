@@ -1,6 +1,12 @@
-# Aiden Context
+from pathlib import Path
+from datetime import date
 
-Generated: 2026-06-23
+ROOT = Path(__file__).resolve().parents[1]
+DOCS = ROOT / "docs"
+
+output = f"""# Aiden Context
+
+Generated: {date.today().isoformat()}
 
 ## Purpose
 
@@ -104,3 +110,7 @@ gamer-pve
 ## Next Milestone
 
 Deploy the first VM on gamer-pve and document the VM architecture using the new documentation workflow.
+"""
+
+(DOCS / "aiden-context.md").write_text(output, encoding="utf-8")
+print("Generated docs/aiden-context.md")
