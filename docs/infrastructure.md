@@ -52,6 +52,27 @@ Chronological history is maintained separately in:
 * VT-d Enabled
 * Secure Boot Disabled
 
+Host: gamer-pve
+Role: Proxmox Virtualization Host
+
+Hardware:
+- Ryzen 5 2600
+- 16 GB DDR4
+- RTX 4060-class GPU
+- 500 GB WDC SSD (Proxmox OS)
+- 1 TB SPCC NVMe SSD
+- 2 TB WD Blue SA510 SSD
+
+Network:
+- Hostname: gamer-pve.home.lab
+- Management IP: 10.0.0.178
+
+Purpose:
+- VM and container hosting
+- Future Immich deployment
+- AI experimentation
+- Homelab expansion platform
+
 ## Storage
 
 * Root filesystem on internal SSD
