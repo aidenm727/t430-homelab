@@ -4,6 +4,20 @@ from datetime import date
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 
+change_session_path = DOCS / "change-session.md"
+
+if change_session_path.exists():
+    change_session = change_session_path.read_text(encoding="utf-8")
+else:
+    change_session = "No active change session found."
+
+mission_path = DOCS / "current-mission.md"
+
+if mission_path.exists():
+    mission = mission_path.read_text(encoding="utf-8")
+else:
+    mission = "Mission document missing."
+
 output = f"""# Aiden Context
 
 Generated: {date.today().isoformat()}
@@ -16,14 +30,7 @@ It summarizes the current state, active priorities, and operating rules so an AI
 
 ## Current Mission
 
-Platform Expansion & AI Workflow Foundation
-
-## Current Focus
-
-- Learn and establish Proxmox virtualization workflows
-- Expand homelab capacity beyond the T430
-- Build AI-assisted documentation and context workflows
-- Build foundations for Aiden OS
+{mission}
 
 ## Infrastructure Snapshot
 
@@ -106,6 +113,10 @@ gamer-pve
 - gamer-pve should be used for virtualization, experimentation, and heavier workloads
 - changes.log currently lives only on the server
 - GitHub documentation remains the canonical public documentation source
+
+## Active Change Session
+
+{change_session}
 
 ## Next Milestone
 

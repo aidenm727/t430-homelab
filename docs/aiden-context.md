@@ -10,14 +10,37 @@ It summarizes the current state, active priorities, and operating rules so an AI
 
 ## Current Mission
 
-Platform Expansion & AI Workflow Foundation
+\# Current Mission
 
-## Current Focus
 
-- Learn and establish Proxmox virtualization workflows
-- Expand homelab capacity beyond the T430
-- Build AI-assisted documentation and context workflows
-- Build foundations for Aiden OS
+
+Phase:
+
+Platform Expansion \& AI Workflow Foundation
+
+
+
+Current Focus:
+
+
+
+\- Learn and establish Proxmox virtualization workflows
+
+\- Expand homelab capacity beyond the T430
+
+\- Build AI-assisted documentation and context workflows
+
+\- Build foundations for Aiden OS
+
+
+
+Next Milestone:
+
+
+
+Deploy first VM on gamer-pve.
+
+
 
 ## Infrastructure Snapshot
 
@@ -100,6 +123,30 @@ gamer-pve
 - gamer-pve should be used for virtualization, experimentation, and heavier workloads
 - changes.log currently lives only on the server
 - GitHub documentation remains the canonical public documentation source
+
+## Active Change Session
+
+# Homelab Change Session
+
+Started: 2026-06-23 14:23:50
+
+## Change Title
+
+Test change capture workflow
+
+## Intent
+
+## Notes
+- [2026-06-23 14:31:34] Updated finish workflow to regenerate AI context
+- [2026-06-23 14:23:50] Created initial homelab-change.py script
+
+## Verification
+- [2026-06-23 14:31:50] finish command ran generate-context.py successfully
+- [2026-06-23 14:23:50] Script generated docs/change-session.md successfully
+
+## Documentation Outputs
+
+
 
 ## Next Milestone
 

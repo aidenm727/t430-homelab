@@ -1,6 +1,7 @@
 from pathlib import Path
 from datetime import datetime
 import sys
+import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
@@ -68,6 +69,14 @@ def finish():
 
     print("Change session ready for documentation review:")
     print(SESSION)
+
+    generator = ROOT / "tools" / "generate-context.py"
+
+    if generator.exists():
+        subprocess.run([sys.executable, str(generator)], check=True)
+        print("Regenerated docs/aiden-context.md")
+    else:
+        print("Context generator not found; skipped context regeneration.")
 
 
 def main():
