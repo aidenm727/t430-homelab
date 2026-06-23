@@ -1,6 +1,6 @@
 # T430 Homelab Infrastructure Record
 
-**Last Updated:** 2026-06-01
+**Last Updated:** 2026-06-23
 **Current Phase:** Platform Foundation Established (Monitoring, DNS, HTTPS, and Backups)
 
 ---
@@ -75,10 +75,18 @@ Purpose:
 
 ## Storage
 
-* Root filesystem on internal SSD
-* No dedicated data partition
-* Service data footprint currently under 1 GB
-* Local Restic backup repository configured
+- 500 GB WDC SSD
+  - Proxmox OS
+  - local-lvm storage
+- 1 TB SPCC NVMe SSD
+  - Volume Group: nvme-vg
+  - Proxmox Storage: nvme-lvm
+  - Content: VM disks and LXC root disks
+  - Intended for high-performance workloads such as Immich, AI experiments, and VM/container storage
+- 2 TB WD Blue SA510 SSD
+  - Canonical Preservation archive drive
+  - Preservation archive size: ~348 GB
+  - Free space after verification: ~1.5 TB
 
 ## Maintenance Notes
 
