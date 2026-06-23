@@ -1,0 +1,31 @@
+date: 2026-06-23
+title: Homelab documentation and AI context system v1
+change_type: documentation
+status: completed
+
+hosts:
+  - t430-beast
+  - gamer-pve
+
+summary: >
+  Created the first version of the homelab documentation and AI context system.
+
+files_created:
+  - docs/current-mission.md
+  - docs/infrastructure-snapshot.md
+  - docs/change-session.md
+  - tools/generate-context.py
+  - tools/homelab-change.py
+
+files_generated:
+  - aiden-context.md
+
+verification:
+  - generate-context.py successfully builds aiden-context.md
+  - current-mission.md exists
+  - infrastructure-snapshot.md exists
+  - change-session.md exists
+
+follow_up:
+  - Teach generate-context.py to read structured change records
+  - Validate workflow during future infrastructure changes

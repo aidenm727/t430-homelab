@@ -18,6 +18,13 @@ if mission_path.exists():
 else:
     mission = "Mission document missing."
 
+snapshot_path = DOCS / "infrastructure-snapshot.md"
+
+if snapshot_path.exists():
+    snapshot = snapshot_path.read_text(encoding="utf-8")
+else:
+    snapshot = "Infrastructure snapshot missing."
+
 output = f"""# Aiden Context
 
 Generated: {date.today().isoformat()}
@@ -34,56 +41,7 @@ It summarizes the current state, active priorities, and operating rules so an AI
 
 ## Infrastructure Snapshot
 
-### Production Host
-
-t430-beast
-
-- Role: Production services host
-- OS: Ubuntu Server 24.04 LTS
-- LAN IP: 10.0.0.136
-- Responsibilities:
-  - Pi-hole
-  - Traefik
-  - Grafana
-  - Prometheus
-  - Loki
-  - Alloy
-  - Uptime Kuma
-  - Vaultwarden
-  - Backup infrastructure
-
-### Virtualization Host
-
-gamer-pve
-
-- Role: Proxmox virtualization host
-- OS: Proxmox VE 9.2
-- LAN IP: 10.0.0.178
-- Hardware:
-  - Ryzen 5 2600
-  - 16 GB DDR4
-  - RTX 4060-class GPU
-- Storage:
-  - 500 GB WDC SSD: Proxmox OS
-  - 1 TB SPCC NVMe SSD: preserved storage
-  - 2 TB WD Blue SA510 SSD: preserved storage
-- Purpose:
-  - VM hosting
-  - Container hosting
-  - Future Immich deployment
-  - Future AI workloads
-
-## Active Services
-
-- Pi-hole
-- Traefik
-- Homepage
-- Uptime Kuma
-- Grafana
-- Prometheus
-- Loki
-- Alloy
-- Vaultwarden
+{snapshot}
 
 ## Authoritative Sources
 
