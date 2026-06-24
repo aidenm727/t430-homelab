@@ -1,0 +1,25 @@
+date: 2026-06-24
+title: Improve generated AI context formatting
+change_type: documentation
+status: verified
+
+intent:
+  - Clean generated AI-facing context so ChatGPT project sources are easier to read and less stale
+
+
+summary:
+  - Updated generate-context.py to demote embedded markdown headings safely
+  - Updated generate-context.py to strip embedded document titles
+  - Cleaned current-mission.md and infrastructure-snapshot.md source formatting
+
+
+verification:
+  - Verified aiden-context.md has clean nested heading structure
+  - Verified regenerated aiden-context.md no longer contains escaped markdown or duplicate top-level titles
+
+
+documentation_outputs:
+  - Updated generated AI context files and context generation logic
+
+
+source_session: docs/change-session.md

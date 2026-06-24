@@ -10,145 +10,101 @@ It summarizes the current state, active priorities, and operating rules so an AI
 
 ## Current Mission
 
-\# Current Mission
-
-
-
-Phase:
-
-Platform Expansion \& AI Workflow Foundation
-
-
+Phase: Platform Expansion & AI Workflow Foundation
 
 Current Focus:
 
+- Learn and establish Proxmox virtualization workflows
+- Expand homelab capacity beyond the T430
+- Build AI-assisted documentation and context workflows
+- Build foundations for Aiden OS
 
+Current Status:
 
-\- Learn and establish Proxmox virtualization workflows
-
-\- Expand homelab capacity beyond the T430
-
-\- Build AI-assisted documentation and context workflows
-
-\- Build foundations for Aiden OS
-
-
+- t430-beast remains the stable production services host
+- gamer-pve is online as the Proxmox virtualization host
+- Immich has been deployed as LXC 200 on gamer-pve
+- Project documentation has been split into infrastructure, gamer-pve, and services records
+- ChatGPT project sources and instructions have been updated to match the new documentation structure
 
 Next Milestone:
 
-
-
-Deploy first VM on gamer-pve.
-
-
+Improve generated AI context formatting and infrastructure snapshot quality.
 
 ## Infrastructure Snapshot
 
-\# Infrastructure Snapshot
-
-
-
-\## Production Host
-
-
+### Production Host
 
 t430-beast
 
+* Role: Production services host
+* OS: Ubuntu Server 24.04.4 LTS
+* LAN IP: 10.0.0.136
 
+Responsibilities:
 
-\- Role: Production services host
+* Pi-hole
+* Traefik
+* Homepage
+* Grafana
+* Prometheus
+* Loki
+* Alloy
+* Uptime Kuma
+* Vaultwarden
+* Backup infrastructure
 
-\- OS: Ubuntu Server 24.04 LTS
-
-\- LAN IP: 10.0.0.136
-
-\- Responsibilities:
-
-&#x20; - Pi-hole
-
-&#x20; - Traefik
-
-&#x20; - Grafana
-
-&#x20; - Prometheus
-
-&#x20; - Loki
-
-&#x20; - Alloy
-
-&#x20; - Uptime Kuma
-
-&#x20; - Vaultwarden
-
-&#x20; - Backup infrastructure
-
-
-
-\## Virtualization Host
-
-
+### Virtualization Host
 
 gamer-pve
 
+* Role: Proxmox virtualization host
+* OS: Proxmox VE 9
+* LAN IP: 10.0.0.178
+* Tailscale IP: 100.80.182.80
 
+Hardware:
 
-\- Role: Proxmox virtualization host
+* Ryzen 5 2600
+* 16 GB DDR4
+* RTX 4060-class GPU
 
-\- OS: Proxmox VE 9.2
+Storage:
 
-\- LAN IP: 10.0.0.178
+* 500 GB SSD (Proxmox OS)
+* 1 TB NVMe SSD
+* 2 TB SATA SSD
 
-\- Hardware:
+Purpose:
 
-&#x20; - Ryzen 5 2600
+* VM hosting
+* LXC hosting
+* Immich
+* AI experimentation
+* Future workloads
 
-&#x20; - 16 GB DDR4
+### Active Workloads
 
-&#x20; - RTX 4060-class GPU
+#### LXC 200 - Immich
 
-\- Storage:
+* Debian 12
+* Docker Engine
+* Docker Compose
+* 128 GB root disk
+* LAN IP: 10.0.0.132
 
-&#x20; - 500 GB WDC SSD: Proxmox OS
+### Active Services
 
-&#x20; - 1 TB SPCC NVMe SSD: preserved storage
-
-&#x20; - 2 TB WD Blue SA510 SSD: preserved storage
-
-\- Purpose:
-
-&#x20; - VM hosting
-
-&#x20; - Container hosting
-
-&#x20; - Future Immich deployment
-
-&#x20; - Future AI workloads
-
-
-
-\## Active Services
-
-
-
-\- Pi-hole
-
-\- Traefik
-
-\- Homepage
-
-\- Uptime Kuma
-
-\- Grafana
-
-\- Prometheus
-
-\- Loki
-
-\- Alloy
-
-\- Vaultwarden
-
-
+* Pi-hole
+* Traefik
+* Homepage
+* Uptime Kuma
+* Grafana
+* Prometheus
+* Loki
+* Alloy
+* Vaultwarden
+* Immich
 
 ## Authoritative Sources
 
@@ -183,31 +139,30 @@ gamer-pve
 
 # Homelab Change Session
 
-Started: 2026-06-24 10:20:56
+Started: 2026-06-24 11:27:15
 
 ## Change Title
 
-Refine infrastructure documentation structure
+Improve generated AI context formatting
 
 ## Change Type
 
 documentation
 
 ## Intent
-- [2026-06-24 10:20:56] Reduce infrastructure.md overlap by separating high-level homelab overview from gamer-pve Proxmox workload details
+- [2026-06-24 11:27:15] Clean generated AI-facing context so ChatGPT project sources are easier to read and less stale
 
 ## Notes
-- [2026-06-24 10:58:12] Moved gamer-pve host and workload details into docs/infrastructure-gamer-pve.md
-- [2026-06-24 10:58:12] Moved detailed service documentation from infrastructure.md into docs/services.md
-- [2026-06-24 10:43:54] Identified duplication between Service Inventory and detailed service documentation sections
-- [2026-06-24 10:25:37] Created infrastructure-gamer-pve.md as the target document for Proxmox host and workload details
-- [2026-06-24 10:25:37] Identified infrastructure.md overlap between t430-beast overview and gamer-pve workload details
+- [2026-06-24 11:33:52] Updated generate-context.py to demote embedded markdown headings safely
+- [2026-06-24 11:29:36] Updated generate-context.py to strip embedded document titles
+- [2026-06-24 11:29:35] Cleaned current-mission.md and infrastructure-snapshot.md source formatting
 
 ## Verification
-- [2026-06-24 10:58:12] Verified infrastructure.md now points to dedicated service and gamer-pve documentation
+- [2026-06-24 11:33:52] Verified aiden-context.md has clean nested heading structure
+- [2026-06-24 11:29:36] Verified regenerated aiden-context.md no longer contains escaped markdown or duplicate top-level titles
 
 ## Documentation Outputs
-- [2026-06-24 10:58:12] Updated infrastructure.md, docs/services.md, and docs/infrastructure-gamer-pve.md
+- [2026-06-24 11:33:52] Updated generated AI context files and context generation logic
 
 
 

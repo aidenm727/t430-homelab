@@ -1,104 +1,74 @@
-\# Infrastructure Snapshot
+# Infrastructure Snapshot
 
-
-
-\## Production Host
-
-
+## Production Host
 
 t430-beast
 
+* Role: Production services host
+* OS: Ubuntu Server 24.04.4 LTS
+* LAN IP: 10.0.0.136
 
+Responsibilities:
 
-\- Role: Production services host
+* Pi-hole
+* Traefik
+* Homepage
+* Grafana
+* Prometheus
+* Loki
+* Alloy
+* Uptime Kuma
+* Vaultwarden
+* Backup infrastructure
 
-\- OS: Ubuntu Server 24.04 LTS
-
-\- LAN IP: 10.0.0.136
-
-\- Responsibilities:
-
-&#x20; - Pi-hole
-
-&#x20; - Traefik
-
-&#x20; - Grafana
-
-&#x20; - Prometheus
-
-&#x20; - Loki
-
-&#x20; - Alloy
-
-&#x20; - Uptime Kuma
-
-&#x20; - Vaultwarden
-
-&#x20; - Backup infrastructure
-
-
-
-\## Virtualization Host
-
-
+## Virtualization Host
 
 gamer-pve
 
+* Role: Proxmox virtualization host
+* OS: Proxmox VE 9
+* LAN IP: 10.0.0.178
+* Tailscale IP: 100.80.182.80
 
+Hardware:
 
-\- Role: Proxmox virtualization host
+* Ryzen 5 2600
+* 16 GB DDR4
+* RTX 4060-class GPU
 
-\- OS: Proxmox VE 9.2
+Storage:
 
-\- LAN IP: 10.0.0.178
+* 500 GB SSD (Proxmox OS)
+* 1 TB NVMe SSD
+* 2 TB SATA SSD
 
-\- Hardware:
+Purpose:
 
-&#x20; - Ryzen 5 2600
+* VM hosting
+* LXC hosting
+* Immich
+* AI experimentation
+* Future workloads
 
-&#x20; - 16 GB DDR4
+## Active Workloads
 
-&#x20; - RTX 4060-class GPU
+### LXC 200 - Immich
 
-\- Storage:
+* Debian 12
+* Docker Engine
+* Docker Compose
+* 128 GB root disk
+* LAN IP: 10.0.0.132
 
-&#x20; - 500 GB WDC SSD: Proxmox OS
+## Active Services
 
-&#x20; - 1 TB SPCC NVMe SSD: preserved storage
-
-&#x20; - 2 TB WD Blue SA510 SSD: preserved storage
-
-\- Purpose:
-
-&#x20; - VM hosting
-
-&#x20; - Container hosting
-
-&#x20; - Future Immich deployment
-
-&#x20; - Future AI workloads
-
-
-
-\## Active Services
-
-
-
-\- Pi-hole
-
-\- Traefik
-
-\- Homepage
-
-\- Uptime Kuma
-
-\- Grafana
-
-\- Prometheus
-
-\- Loki
-
-\- Alloy
-
-\- Vaultwarden
-
+* Pi-hole
+* Traefik
+* Homepage
+* Uptime Kuma
+* Grafana
+* Prometheus
+* Loki
+* Alloy
+* Vaultwarden
+* Immich

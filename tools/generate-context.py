@@ -4,6 +4,24 @@ from datetime import date
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 
+def prepare_embedded_markdown(text):
+    lines = text.splitlines()
+
+    if lines and lines[0].startswith("# "):
+        lines = lines[1:]
+
+    prepared = []
+
+    for line in lines:
+        if line.startswith("### "):
+            prepared.append("#" + line)
+        elif line.startswith("## "):
+            prepared.append("#" + line)
+        else:
+            prepared.append(line)
+
+    return "\n".join(prepared).strip()
+
 change_session_path = DOCS / "change-session.md"
 
 if change_session_path.exists():
@@ -14,14 +32,14 @@ else:
 mission_path = DOCS / "current-mission.md"
 
 if mission_path.exists():
-    mission = mission_path.read_text(encoding="utf-8")
+    mission = prepare_embedded_markdown(mission_path.read_text(encoding="utf-8"))
 else:
     mission = "Mission document missing."
 
 snapshot_path = DOCS / "infrastructure-snapshot.md"
 
 if snapshot_path.exists():
-    snapshot = snapshot_path.read_text(encoding="utf-8")
+    snapshot = prepare_embedded_markdown(snapshot_path.read_text(encoding="utf-8"))
 else:
     snapshot = "Infrastructure snapshot missing."
 

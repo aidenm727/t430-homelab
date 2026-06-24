@@ -1,28 +1,27 @@
 # Homelab Change Session
 
-Started: 2026-06-24 10:20:56
+Started: 2026-06-24 11:27:15
 
 ## Change Title
 
-Refine infrastructure documentation structure
+Improve generated AI context formatting
 
 ## Change Type
 
 documentation
 
 ## Intent
-- [2026-06-24 10:20:56] Reduce infrastructure.md overlap by separating high-level homelab overview from gamer-pve Proxmox workload details
+- [2026-06-24 11:27:15] Clean generated AI-facing context so ChatGPT project sources are easier to read and less stale
 
 ## Notes
-- [2026-06-24 10:58:12] Moved gamer-pve host and workload details into docs/infrastructure-gamer-pve.md
-- [2026-06-24 10:58:12] Moved detailed service documentation from infrastructure.md into docs/services.md
-- [2026-06-24 10:43:54] Identified duplication between Service Inventory and detailed service documentation sections
-- [2026-06-24 10:25:37] Created infrastructure-gamer-pve.md as the target document for Proxmox host and workload details
-- [2026-06-24 10:25:37] Identified infrastructure.md overlap between t430-beast overview and gamer-pve workload details
+- [2026-06-24 11:33:52] Updated generate-context.py to demote embedded markdown headings safely
+- [2026-06-24 11:29:36] Updated generate-context.py to strip embedded document titles
+- [2026-06-24 11:29:35] Cleaned current-mission.md and infrastructure-snapshot.md source formatting
 
 ## Verification
-- [2026-06-24 10:58:12] Verified infrastructure.md now points to dedicated service and gamer-pve documentation
+- [2026-06-24 11:33:52] Verified aiden-context.md has clean nested heading structure
+- [2026-06-24 11:29:36] Verified regenerated aiden-context.md no longer contains escaped markdown or duplicate top-level titles
 
 ## Documentation Outputs
-- [2026-06-24 10:58:12] Updated infrastructure.md, docs/services.md, and docs/infrastructure-gamer-pve.md
+- [2026-06-24 11:33:52] Updated generated AI context files and context generation logic
 
