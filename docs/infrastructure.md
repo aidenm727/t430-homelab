@@ -71,9 +71,34 @@ Network:
 
 Purpose:
 - VM and container hosting
-- Future Immich deployment
+- Immich photo management platform
 - AI experimentation
 - Homelab expansion platform
+
+Immich Deployment
+
+Container:
+- LXC 200
+- Debian 12 (Bookworm)
+
+Resources:
+- 4 vCPU
+- 6 GB RAM
+- 2 GB Swap
+- 128 GB root disk (nvme-lvm)
+
+Application:
+- Immich v2
+- Docker Compose deployment
+
+Network:
+- Internal IP: 10.0.0.132
+- Service Port: 2283
+
+Status:
+- Operational
+- All containers healthy
+- External access integration pending
 
 ## Storage
 
@@ -85,6 +110,8 @@ Purpose:
   - Proxmox Storage: nvme-lvm
   - Content: VM disks and LXC root disks
   - Intended for high-performance workloads such as Immich, AI experiments, and VM/container storage
+Current Allocations:
+- Immich LXC 200 root disk (128 GB)
 - 2 TB WD Blue SA510 SSD
   - Canonical Preservation archive drive
   - Preservation archive size: ~348 GB
@@ -688,10 +715,9 @@ Permissions:
 
 ## Current State
 
-* Repository initialized
-* Backup verified
-* Restore verified
-* Backups currently manual
+* Proxmox virtualization host
+* Dedicated NVMe workload storage
+* Immich photo management platform
 
 ## Restore Test
 
@@ -976,7 +1002,6 @@ Create operational health-check playbooks for:
 * Alerting
 * Vaultwarden
 * Paperless-ngx
-* Immich
 * Jellyfin
 * Additional storage
 * Infrastructure automation
