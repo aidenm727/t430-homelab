@@ -33,6 +33,8 @@ Improve generated AI context formatting and infrastructure snapshot quality.
 
 ## Infrastructure Snapshot
 
+> Generated context artifact.
+> Do not edit directly; update canonical infrastructure records instead.
 ### Production Host
 
 t430-beast

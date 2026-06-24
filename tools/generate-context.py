@@ -41,7 +41,7 @@ snapshot_path = DOCS / "infrastructure-snapshot.md"
 if snapshot_path.exists():
     snapshot = prepare_embedded_markdown(snapshot_path.read_text(encoding="utf-8"))
 else:
-    snapshot = "Infrastructure snapshot missing."
+    snapshot = "Infrastructure snapshot missing. Regenerate or restore docs/infrastructure-snapshot.md."
 
 output = f"""# Aiden Context
 
