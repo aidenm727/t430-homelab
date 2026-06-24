@@ -1,0 +1,25 @@
+date: 2026-06-23
+title: Add change type support
+change_type: documentation
+status: verified
+
+intent:
+  - Allow structured change records to distinguish documentation, infrastructure, service, automation, network, and storage changes
+
+
+summary:
+  - Added change type extraction for YAML generation
+  - Added change type argument parsing for start command
+  - Added Change Type section to session template
+
+
+verification:
+  - Verified default start command uses documentation change type
+  - Verified start infrastructure creates infrastructure change sessions
+
+
+documentation_outputs:
+  - Updated homelab-change.py to support structured change types
+
+
+source_session: docs/change-session.md

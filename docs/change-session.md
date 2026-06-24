@@ -1,22 +1,27 @@
 # Homelab Change Session
 
-Started: 2026-06-23 20:20:39
+Started: 2026-06-23 20:55:50
 
 ## Change Title
 
-Improve change capture workflow
+Add change type support
+
+## Change Type
+
+documentation
 
 ## Intent
-- [2026-06-23 20:20:44] Improve structured change records after testing the workflow during the gamer-pve NVMe storage deployment
+- [2026-06-23 20:55:50] Allow structured change records to distinguish documentation, infrastructure, service, automation, network, and storage changes
 
 ## Notes
-- [2026-06-23 20:27:29] Added intent extraction to YAML change records
-- [2026-06-23 20:21:24] Updated CLI usage text to include intent command
-- [2026-06-23 20:21:24] Added intent command to homelab-change.py
+- [2026-06-23 20:55:50] Added change type extraction for YAML generation
+- [2026-06-23 20:55:50] Added change type argument parsing for start command
+- [2026-06-23 20:55:50] Added Change Type section to session template
 
 ## Verification
-- [2026-06-23 20:21:24] Verified intent command appends entries under the Intent section
+- [2026-06-23 20:55:50] Verified default start command uses documentation change type
+- [2026-06-23 20:55:50] Verified start infrastructure creates infrastructure change sessions
 
 ## Documentation Outputs
-- [2026-06-23 20:28:46] Updated YAML generation to include Intent section
+- [2026-06-23 20:55:50] Updated homelab-change.py to support structured change types
 

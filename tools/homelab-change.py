@@ -72,7 +72,7 @@ def yaml_list(items):
     return "".join(f"  - {item}\n" for item in cleaned)
 
 
-def start(title):
+def start(title, change_type="documentation"):
     DOCS.mkdir(exist_ok=True)
     SESSION.write_text(
         f"""# Homelab Change Session
@@ -82,6 +82,10 @@ Started: {timestamp()}
 ## Change Title
 
 {title}
+
+## Change Type
+
+{change_type}
 
 ## Intent
 
@@ -122,6 +126,8 @@ def write_change_record(content):
     title = title_lines[0] if title_lines else "Homelab Change"
 
     notes = extract_section(content, "Notes")
+    change_type_lines = extract_section(content, "Change Type")
+    change_type = change_type_lines[0] if change_type_lines else "documentation"
     verification = extract_section(content, "Verification")
     documentation = extract_section(content, "Documentation Outputs")
     intent = extract_section(content, "Intent")
@@ -131,7 +137,7 @@ def write_change_record(content):
 
     yaml = f"""date: {today()}
 title: {title}
-change_type: documentation
+change_type: {change_type}
 status: verified
 
 intent:
@@ -189,7 +195,19 @@ def main():
     command = sys.argv[1]
 
     if command == "start":
-        start(require_text(sys.argv[2:], 'Usage: homelab-change.py start "Change title"'))
+        args = sys.argv[2:]
+        usage = 'Usage: homelab-change.py start [change_type] "Change title"'
+
+        if not args:
+            print(usage)
+            sys.exit(1)
+
+        allowed_types = {"documentation", "infrastructure", "service", "automation", "network", "storage"}
+
+        if len(args) >= 2 and args[0] in allowed_types:
+            start(" ".join(args[1:]), args[0])
+        else:
+            start(" ".join(args))
     elif command == "intent":
         append("Intent", require_text(sys.argv[2:], 'Usage: homelab-change.py intent "Why this change is being made"'))
     elif command == "note":
