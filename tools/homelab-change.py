@@ -124,6 +124,7 @@ def write_change_record(content):
     notes = extract_section(content, "Notes")
     verification = extract_section(content, "Verification")
     documentation = extract_section(content, "Documentation Outputs")
+    intent = extract_section(content, "Intent")
 
     filename = f"{today()}-{slugify(title)}.yml"
     path = CHANGES_DIR / filename
@@ -133,15 +134,20 @@ title: {title}
 change_type: documentation
 status: verified
 
+intent:
+{yaml_list(intent)}
+
 summary:
 {yaml_list(notes)}
+
 verification:
 {yaml_list(verification)}
+
 documentation_outputs:
 {yaml_list(documentation)}
+
 source_session: docs/change-session.md
 """
-
     path.write_text(yaml, encoding="utf-8")
     return path, title
 
@@ -177,13 +183,15 @@ def finish():
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: homelab-change.py start|note|verify|doc|finish ...")
+        print("Usage: homelab-change.py start|intent|note|verify|doc|finish ...")
         sys.exit(1)
 
     command = sys.argv[1]
 
     if command == "start":
         start(require_text(sys.argv[2:], 'Usage: homelab-change.py start "Change title"'))
+    elif command == "intent":
+        append("Intent", require_text(sys.argv[2:], 'Usage: homelab-change.py intent "Why this change is being made"'))
     elif command == "note":
         append("Notes", require_text(sys.argv[2:], 'Usage: homelab-change.py note "What changed"'))
     elif command == "verify":

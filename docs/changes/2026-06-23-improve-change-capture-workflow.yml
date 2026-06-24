@@ -1,0 +1,24 @@
+date: 2026-06-23
+title: Improve change capture workflow
+change_type: documentation
+status: verified
+
+intent:
+  - Improve structured change records after testing the workflow during the gamer-pve NVMe storage deployment
+
+
+summary:
+  - Added intent extraction to YAML change records
+  - Updated CLI usage text to include intent command
+  - Added intent command to homelab-change.py
+
+
+verification:
+  - Verified intent command appends entries under the Intent section
+
+
+documentation_outputs:
+  - Updated YAML generation to include Intent section
+
+
+source_session: docs/change-session.md
