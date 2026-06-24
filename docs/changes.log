@@ -1,3 +1,5 @@
 2026-06-23 19:54:53 - Add NVMe Proxmox Storage Pool
 2026-06-23 20:28:46 - Improve change capture workflow
 2026-06-23 20:55:58 - Add change type support
+2026-06-24 09:42:11 - Deploy Immich on gamer-pve
+2026-06-24 09:46:02 - Add Tailscale remote management for gamer-pve

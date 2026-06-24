@@ -66,6 +66,8 @@ Hardware:
 Network:
 - Hostname: gamer-pve.home.lab
 - Management IP: 10.0.0.178
+- Tailscale IP: 100.80.182.80
+- Remote Proxmox management available over Tailscale
 
 Purpose:
 - VM and container hosting
