@@ -1,0 +1,22 @@
+date: 2026-06-24
+title: Improve recent changes ordering
+change_type: automation
+status: verified
+
+intent:
+  - Make generated Recent Changes ordering more reliable for AI project memory
+
+
+summary:
+  - Confirmed repository was clean before changing recent change ordering logic
+
+
+verification:
+  - Verified Recent Changes now orders records by file modification time
+
+
+documentation_outputs:
+  - Updated generate-context.py recent change loading order
+
+
+source_session: docs/change-session.md

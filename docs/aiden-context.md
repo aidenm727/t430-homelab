@@ -111,11 +111,11 @@ Purpose:
 
 ## Recent Changes
 
-- 2026-06-24 — Refine infrastructure documentation structure
-- 2026-06-24 — Improve generated AI context formatting
+- 2026-06-24 — Improve recent changes ordering
+- 2026-06-24 — Add recent changes to generated AI context
 - 2026-06-24 — Generate infrastructure snapshot from context tool
-- 2026-06-24 — Deploy Immich on gamer-pve
-- 2026-06-24 — Add Tailscale remote management for gamer-pve
+- 2026-06-24 — Improve generated AI context formatting
+- 2026-06-24 — Refine infrastructure documentation structure
 
 ## Authoritative Sources
 
@@ -150,27 +150,27 @@ Purpose:
 
 # Homelab Change Session
 
-Started: 2026-06-24 16:42:08
+Started: 2026-06-24 16:49:25
 
 ## Change Title
 
-Add recent changes to generated AI context
+Improve recent changes ordering
 
 ## Change Type
 
 automation
 
 ## Intent
-- [2026-06-24 16:42:08] Use structured change records as project memory for generated AI context
+- [2026-06-24 16:49:25] Make generated Recent Changes ordering more reliable for AI project memory
 
 ## Notes
-- [2026-06-24 16:42:08] Confirmed docs/changes YAML records consistently include date, title, change_type, and status
+- [2026-06-24 16:49:25] Confirmed repository was clean before changing recent change ordering logic
 
 ## Verification
-- [2026-06-24 16:46:52] Verified aiden-context.md now includes a Recent Changes section generated from docs/changes YAML records
+- [2026-06-24 16:51:45] Verified Recent Changes now orders records by file modification time
 
 ## Documentation Outputs
-- [2026-06-24 16:46:52] Updated generate-context.py to read structured change records and include recent changes in generated AI context
+- [2026-06-24 16:51:46] Updated generate-context.py recent change loading order
 
 
 

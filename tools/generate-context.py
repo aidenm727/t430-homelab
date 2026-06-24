@@ -111,7 +111,7 @@ def load_recent_changes(limit=5):
 
     changes = []
 
-    for path in sorted(changes_dir.glob("*.yml"), reverse=True):
+    for path in sorted(changes_dir.glob("*.yml"), key=lambda p: p.stat().st_mtime, reverse=True):
         text = path.read_text(encoding="utf-8")
 
         title_match = re.search(r"^title:\s*(.+)$", text, re.MULTILINE)
