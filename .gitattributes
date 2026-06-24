@@ -1,0 +1,15 @@
+# Normalize text files to LF in the repository
+* text=auto eol=lf
+
+# Keep binary/document artifacts untouched
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
