@@ -1,0 +1,23 @@
+date: 2026-06-24
+title: Add gamer-pve node monitoring
+change_type: infrastructure
+status: verified
+
+intent:
+  - Bring gamer-pve into the existing Prometheus monitoring model
+
+
+summary:
+  - Verified node_exporter is not currently installed on gamer-pve
+  - Verified Prometheus currently scrapes only itself and the t430-beast node_exporter target
+
+
+verification:
+  - Verified Prometheus is scraping gamer-pve node_exporter at 100.80.182.80:9100
+
+
+documentation_outputs:
+  - Updated Prometheus configuration to include gamer-pve node_exporter target
+
+
+source_session: docs/change-session.md

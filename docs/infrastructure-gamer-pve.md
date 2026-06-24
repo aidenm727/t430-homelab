@@ -91,8 +91,8 @@ Status:
 
 Operational
 
-## Known Gaps
+## Current Status
 
+- Prometheus node monitoring enabled via node_exporter
 - External access integration pending
 - Backup strategy not yet implemented
-- Monitoring not yet implemented
