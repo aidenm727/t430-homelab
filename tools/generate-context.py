@@ -1,5 +1,6 @@
 from pathlib import Path
 from datetime import date
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
@@ -102,6 +103,27 @@ Purpose:
 * Immich
 """
 
+def load_recent_changes(limit=5):
+    changes_dir = DOCS / "changes"
+
+    if not changes_dir.exists():
+        return ["No structured change records found."]
+
+    changes = []
+
+    for path in sorted(changes_dir.glob("*.yml"), reverse=True):
+        text = path.read_text(encoding="utf-8")
+
+        title_match = re.search(r"^title:\s*(.+)$", text, re.MULTILINE)
+        date_match = re.search(r"^date:\s*(.+)$", text, re.MULTILINE)
+
+        if title_match and date_match:
+            changes.append(
+                f"- {date_match.group(1)} — {title_match.group(1)}"
+            )
+
+    return changes[:limit]
+
 change_session_path = DOCS / "change-session.md"
 
 if change_session_path.exists():
@@ -119,6 +141,7 @@ else:
 snapshot_path = DOCS / "infrastructure-snapshot.md"
 snapshot_path.write_text(build_infrastructure_snapshot(), encoding="utf-8")
 snapshot = prepare_embedded_markdown(snapshot_path.read_text(encoding="utf-8"))
+recent_changes = "\n".join(load_recent_changes())
 
 output = f"""# Aiden Context
 
@@ -137,6 +160,10 @@ It summarizes the current state, active priorities, and operating rules so an AI
 ## Infrastructure Snapshot
 
 {snapshot}
+
+## Recent Changes
+
+{recent_changes}
 
 ## Authoritative Sources
 

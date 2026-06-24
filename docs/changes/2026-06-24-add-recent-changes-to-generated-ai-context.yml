@@ -1,0 +1,22 @@
+date: 2026-06-24
+title: Add recent changes to generated AI context
+change_type: automation
+status: verified
+
+intent:
+  - Use structured change records as project memory for generated AI context
+
+
+summary:
+  - Confirmed docs/changes YAML records consistently include date, title, change_type, and status
+
+
+verification:
+  - Verified aiden-context.md now includes a Recent Changes section generated from docs/changes YAML records
+
+
+documentation_outputs:
+  - Updated generate-context.py to read structured change records and include recent changes in generated AI context
+
+
+source_session: docs/change-session.md
