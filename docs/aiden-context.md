@@ -183,38 +183,31 @@ gamer-pve
 
 # Homelab Change Session
 
-Started: 2026-06-24 09:48:59
+Started: 2026-06-24 10:20:56
 
 ## Change Title
 
-Deploy Immich on gamer-pve
+Refine infrastructure documentation structure
 
 ## Change Type
 
-service
+documentation
 
 ## Intent
-- [2026-06-24 09:48:59] Deploy Immich as the first real application workload on gamer-pve using the dedicated NVMe storage pool
+- [2026-06-24 10:20:56] Reduce infrastructure.md overlap by separating high-level homelab overview from gamer-pve Proxmox workload details
 
 ## Notes
-- [2026-06-24 10:04:57] Deployed Immich stack using Docker Compose
-- [2026-06-24 10:02:00] Configured Immich upload location and randomized database password
-- [2026-06-24 09:59:47] Downloaded Immich Docker Compose and environment files to /opt/immich
-- [2026-06-24 09:57:02] Installed Docker Engine and Docker Compose inside Immich LXC
-- [2026-06-24 09:55:49] Updated Immich LXC base packages and installed curl, ca-certificates, and gnupg
-- [2026-06-24 09:53:36] Created Immich LXC 200 on nvme-lvm with 128 GB root disk
-- [2026-06-24 09:51:32] Downloaded Debian 12 LXC template for Immich deployment
+- [2026-06-24 10:58:12] Moved gamer-pve host and workload details into docs/infrastructure-gamer-pve.md
+- [2026-06-24 10:58:12] Moved detailed service documentation from infrastructure.md into docs/services.md
+- [2026-06-24 10:43:54] Identified duplication between Service Inventory and detailed service documentation sections
+- [2026-06-24 10:25:37] Created infrastructure-gamer-pve.md as the target document for Proxmox host and workload details
+- [2026-06-24 10:25:37] Identified infrastructure.md overlap between t430-beast overview and gamer-pve workload details
 
 ## Verification
-- [2026-06-24 10:11:41] Verified Immich responds with HTTP 200 from both localhost and the container LAN IP
-- [2026-06-24 10:04:57] Verified all Immich containers report healthy status
-- [2026-06-24 09:57:02] Verified Docker and Docker Compose are installed and docker.service is running
-- [2026-06-24 09:55:49] Verified Immich LXC is Debian 12 and curl is installed
-- [2026-06-24 09:54:27] Verified Immich LXC received LAN IP 10.0.0.132
-- [2026-06-24 09:53:36] Verified Immich LXC 200 is running with pct status and pct config
+- [2026-06-24 10:58:12] Verified infrastructure.md now points to dedicated service and gamer-pve documentation
 
 ## Documentation Outputs
-- [2026-06-24 10:12:24] Added Immich LXC deployment details to infrastructure.md
+- [2026-06-24 10:58:12] Updated infrastructure.md, docs/services.md, and docs/infrastructure-gamer-pve.md
 
 
 

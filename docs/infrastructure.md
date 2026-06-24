@@ -52,70 +52,34 @@ Chronological history is maintained separately in:
 * VT-d Enabled
 * Secure Boot Disabled
 
-Host: gamer-pve
-Role: Proxmox Virtualization Host
+## Infrastructure Nodes
 
-Hardware:
-- Ryzen 5 2600
-- 16 GB DDR4
-- RTX 4060-class GPU
-- 500 GB WDC SSD (Proxmox OS)
-- 1 TB SPCC NVMe SSD
-- 2 TB WD Blue SA510 SSD
+### t430-beast
 
-Network:
-- Hostname: gamer-pve.home.lab
-- Management IP: 10.0.0.178
-- Tailscale IP: 100.80.182.80
-- Remote Proxmox management available over Tailscale
+Primary production homelab host.
 
-Purpose:
-- VM and container hosting
-- Immich photo management platform
-- AI experimentation
-- Homelab expansion platform
+Responsibilities:
+- Docker service hosting
+- Monitoring
+- DNS
+- Reverse proxy
+- Backups
+- Operational tooling
 
-Immich Deployment
+### gamer-pve
 
-Container:
-- LXC 200
-- Debian 12 (Bookworm)
+Secondary infrastructure host.
 
-Resources:
-- 4 vCPU
-- 6 GB RAM
-- 2 GB Swap
-- 128 GB root disk (nvme-lvm)
+Responsibilities:
+- Proxmox virtualization
+- LXC workloads
+- VM workloads
+- Immich
+- Future AI experimentation
 
-Application:
-- Immich v2
-- Docker Compose deployment
+Detailed host documentation:
 
-Network:
-- Internal IP: 10.0.0.132
-- Service Port: 2283
-
-Status:
-- Operational
-- All containers healthy
-- External access integration pending
-
-## Storage
-
-- 500 GB WDC SSD
-  - Proxmox OS
-  - local-lvm storage
-- 1 TB SPCC NVMe SSD
-  - Volume Group: nvme-vg
-  - Proxmox Storage: nvme-lvm
-  - Content: VM disks and LXC root disks
-  - Intended for high-performance workloads such as Immich, AI experiments, and VM/container storage
-Current Allocations:
-- Immich LXC 200 root disk (128 GB)
-- 2 TB WD Blue SA510 SSD
-  - Canonical Preservation archive drive
-  - Preservation archive size: ~348 GB
-  - Free space after verification: ~1.5 TB
+docs/infrastructure-gamer-pve.md
 
 ## Maintenance Notes
 
@@ -308,7 +272,7 @@ Restricted users should only access approved services through:
 
 SSH access remains restricted.
 
-# Ansible Automation
+# 9. Ansible Automation
 
 ## Control Node
 
@@ -389,7 +353,7 @@ The playbook is read-only and fails intentionally if unhealthy or restarting con
 
 ---
 
-# 9. Docker Platform
+# 10. Docker Platform
 
 Docker is installed from the official Docker repository.
 
@@ -422,7 +386,7 @@ Max Files: 3
 
 ---
 
-# 10. Reverse Proxy and HTTPS
+# 11. Reverse Proxy and HTTPS
 
 ## Traefik
 
@@ -490,7 +454,7 @@ The Root CA has been successfully installed and validated on trusted client syst
 
 ---
 
-# 11. Routed Services
+# 12. Routed Services
 
 | Service     | HTTP                           | HTTPS                           | Backend            |
 | ----------- | ------------------------------ | ------------------------------- | ------------------ |
@@ -515,176 +479,17 @@ Future decision:
 
 ---
 
-# 12. Services
+# 13. Service Details
 
-## Homepage
+Detailed service documentation is maintained in:
 
-### Purpose
+docs/services.md
 
-Central dashboard for homelab services.
-
-### Location
-
-```text
-~/homelab/services/homepage
-```
-
-### Access
-
-```text
-https://dash.home.lab
-```
-
-### Notes
-
-* Routed through Traefik
-* Connected to `proxy`
-* Dashboard links use HTTPS
+The quick service inventory remains in Section 3.
 
 ---
 
-## Uptime Kuma
-
-### Purpose
-
-Uptime monitoring and health verification.
-
-### Location
-
-```text
-~/homelab/services/uptime-kuma
-```
-
-### Access
-
-```text
-https://kuma.home.lab
-```
-
-### Persistent Data
-
-```text
-~/homelab/services/uptime-kuma/data
-```
-
-### Notes
-
-* No direct host port exposure
-* Routed through Traefik
-* Uses Docker-network targets where possible
-
----
-
-## Monitoring Stack
-
-### Components
-
-| Component     | Purpose               |
-| ------------- | --------------------- |
-| Node Exporter | Host metrics          |
-| Prometheus    | Metrics collection    |
-| Grafana       | Metrics visualization |
-
-### Grafana
-
-Access:
-
-```text
-https://grafana.home.lab
-```
-
-Persistent Data:
-
-```text
-~/homelab/services/monitoring/grafana/data
-```
-
-### Prometheus
-
-Access:
-
-```text
-https://prom.home.lab
-```
-
-Configuration:
-
-```text
-~/homelab/services/monitoring/prometheus/prometheus.yml
-```
-
-Storage:
-
-```text
-Docker volume: prometheus_data
-```
-
-Logging Stack
-
-Components:
-- Grafana Loki
-- Grafana Alloy
-
-Purpose:
-- Centralized Docker container log aggregation
-- Historical log retention
-- Grafana-based log exploration and filtering
-
-Verified Log Sources:
-- Homepage
-- Pi-hole
-- Uptime Kuma
-
-Capabilities:
-- Container log search
-- Log filtering
-- Error investigation
-- Centralized troubleshooting
-
----
-
-## Pi-hole
-
-### Purpose
-
-Internal DNS and DNS management.
-
-### Access
-
-```text
-https://pihole.home.lab/admin
-```
-
-### Notes
-
-* Publishes DNS on port 53
-* Routed through Traefik
-* Attached to proxy network
-* Local host uses Pi-hole DNS
-
-## Vaultwarden
-
-Purpose:
-- Self-hosted Bitwarden-compatible password manager
-
-Location:
-~/homelab/services/vaultwarden
-
-Access:
-https://vault.home.lab
-
-Persistent Data:
-~/homelab/services/vaultwarden/data
-
-Notes:
-- Routed through Traefik
-- HTTPS enabled
-- Public registrations disabled
-- Protected by existing backup system
-
----
-
-# 13. Backup System
+# 14. Backup System
 
 Restic is used for encrypted homelab backups.
 
@@ -869,7 +674,7 @@ Critical monitors using Discord Alerts:
 - Traefik
 ---
 
-# 14. Operational Procedures
+# 15. Operational Procedures
 
 ## Standard Change Workflow
 
@@ -922,7 +727,7 @@ Connectivity:
 
 ---
 
-# 15. Security Notes
+# 16. Security Notes
 
 ## Strengths
 
@@ -950,7 +755,7 @@ The Root CA private key must remain offline and protected.
 
 ---
 
-# 16. Current State Summary
+# 17. Current State Summary
 
 The homelab currently provides:
 
@@ -971,7 +776,7 @@ The homelab currently provides:
 
 ---
 
-# 17. Known Gaps and Next Phase
+# 18. Known Gaps and Next Phase
 
 Immediate Priority
 
@@ -1008,7 +813,7 @@ Create operational health-check playbooks for:
 
 ---
 
-# 18. Long-Term Goal
+# 19. Long-Term Goal
 
 Continue evolving the T430 into a production-style homelab platform focused on:
 

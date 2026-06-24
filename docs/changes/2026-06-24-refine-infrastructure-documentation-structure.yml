@@ -1,0 +1,26 @@
+date: 2026-06-24
+title: Refine infrastructure documentation structure
+change_type: documentation
+status: verified
+
+intent:
+  - Reduce infrastructure.md overlap by separating high-level homelab overview from gamer-pve Proxmox workload details
+
+
+summary:
+  - Moved gamer-pve host and workload details into docs/infrastructure-gamer-pve.md
+  - Moved detailed service documentation from infrastructure.md into docs/services.md
+  - Identified duplication between Service Inventory and detailed service documentation sections
+  - Created infrastructure-gamer-pve.md as the target document for Proxmox host and workload details
+  - Identified infrastructure.md overlap between t430-beast overview and gamer-pve workload details
+
+
+verification:
+  - Verified infrastructure.md now points to dedicated service and gamer-pve documentation
+
+
+documentation_outputs:
+  - Updated infrastructure.md, docs/services.md, and docs/infrastructure-gamer-pve.md
+
+
+source_session: docs/change-session.md
