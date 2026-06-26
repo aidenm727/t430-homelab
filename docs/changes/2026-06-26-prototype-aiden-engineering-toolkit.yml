@@ -1,0 +1,22 @@
+date: 2026-06-26
+title: Prototype Aiden engineering toolkit
+change_type: automation
+status: verified
+
+intent:
+  - Begin organizing existing repository tools into a future Aiden engineering toolkit
+
+
+summary:
+  - Updated aiden-context-loader.py to summarize engineering state instead of dumping full source documents
+
+
+verification:
+  - Ran python3 tools/aiden-context-loader.py and verified it reports git status, active change session, recent changes, architecture docs, context docs, roadmaps, tools, and next step
+
+
+documentation_outputs:
+  - Updated tools/aiden-context-loader.py as the first prototype of the Aiden engineering toolkit
+
+
+source_session: docs/change-session.md
