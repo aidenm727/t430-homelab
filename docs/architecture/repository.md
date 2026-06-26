@@ -57,6 +57,7 @@ Current documents:
 * `docs/architecture/compute.md`
 * `docs/architecture/ai.md`
 * `docs/architecture/repository.md`
+* `docs/architecture/atlas.md`
 
 Architecture documents should not become service inventories.
 
@@ -124,12 +125,12 @@ Future toolkit direction may include a unified `aiden` CLI.
 Possible future commands:
 
 ```text
-aiden status
-aiden context
-aiden change
-aiden docs
-aiden roadmap
-aiden doctor
+atlas status
+atlas context
+atlas change
+atlas docs
+atlas roadmap
+atlas doctor
 ```
 
 ## Generated Content

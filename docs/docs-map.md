@@ -100,11 +100,15 @@ A new human or AI reader should read the repository in this order:
 3. `docs/architecture/platform.md`
 4. `docs/architecture/engineering.md`
 5. `docs/architecture/capabilities.md`
-6. `docs/current-mission.md`
-7. `docs/infrastructure.md`
-8. `docs/infrastructure-gamer-pve.md`
-9. `docs/services.md`
-10. `docs/aiden-context.md`
+6. `docs/architecture/compute.md
+7. `docs/architecture/ai.md
+8. `docs/architecture/repository.md
+9. `docs/architecture/atlas.md
+10. `docs/current-mission.md`
+11. `docs/infrastructure.md`
+12. `docs/infrastructure-gamer-pve.md`
+13. `docs/services.md`
+14. `docs/aiden-context.md`
 
 ## Source of Truth Rules
 

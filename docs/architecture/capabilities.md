@@ -246,7 +246,7 @@ The capability is deeply integrated into the platform and improves other capabil
 | Observability               |          Level 3 | Metrics, logs, alerts, and health checks exist for core services.           |
 | Automation                  |          Level 2 | Ansible and scripts exist, but deployment automation is still early.        |
 | Knowledge and Documentation |          Level 3 | Documentation system is becoming a core platform strength.                  |
-| Engineering                 |          Level 1 | Atlas architecture has been defined; initial toolkit implementation is beginning. 
+| Engineering                 |          Level 1 | Atlas architecture has been defined; initial toolkit implementation is beginning. |
 | Personal Services           |          Level 2 | Several useful services exist, but the service layer is still growing.      |
 | AI and Aiden OS             |          Level 1 | Strong concept and workflow foundation, but local implementation is early.  |
 
