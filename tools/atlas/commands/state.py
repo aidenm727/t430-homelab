@@ -11,15 +11,13 @@ def register(subparsers):
 
 
 def run(args):
-    mission = platform.mission_text()
-
     print("Atlas Engineering State")
     print()
     print(f"Repository: {platform.repo_root()}")
-    print(f"Current mission: {platform.current_mission()}")
     print()
-    print("Mission Preview")
-    print("---------------")
-    print(mission.splitlines()[2])
+    print("Mission")
+    print("-------")
+    print(f"Phase: {platform.mission_phase()}")
+    print(f"Next Milestone: {platform.next_milestone()}")
     print()
     print("Status: OK")
