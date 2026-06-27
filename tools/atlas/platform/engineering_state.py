@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from atlas.platform import docs
 from atlas import platform
+from atlas.platform import discovery
 
 
 @dataclass(frozen=True)
@@ -15,6 +15,8 @@ class EngineeringState:
     architecture_sources: list[str]
     infrastructure_sources: list[str]
     operations_sources: list[str]
+    roadmap_sources: list[str]
+    current_context_sources: list[str]
 
 
 def load() -> EngineeringState:
@@ -25,13 +27,9 @@ def load() -> EngineeringState:
         latest_commit=platform.latest_commit(),
         mission_phase=platform.mission_phase(),
         next_milestone=platform.next_milestone(),
-        architecture_sources=docs.relative_paths(
-            docs.architecture_sources()
-        ),
-        infrastructure_sources=docs.relative_paths(
-            docs.infrastructure_sources()
-        ),
-        operations_sources=docs.relative_paths(
-            docs.operations_sources()
-        ),
+        architecture_sources=discovery.architecture_documents(),
+        infrastructure_sources=discovery.infrastructure_documents(),
+        operations_sources=discovery.operations_documents(),
+        roadmap_sources=discovery.roadmap_documents(),
+        current_context_sources=discovery.current_context_documents(),
     )

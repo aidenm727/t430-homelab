@@ -69,6 +69,16 @@ def run(args):
     print_paths(state.operations_sources)
     print()
 
+    print("Roadmap Sources")
+    print("---------------")
+    print_paths(state.roadmap_sources)
+    print()
+
+    print("Current Context Sources")
+    print("-----------------------")
+    print_paths(state.current_context_sources)
+    print()
+
     print("Engineering Readiness")
     print("---------------------")
     print(readiness_message(state))
