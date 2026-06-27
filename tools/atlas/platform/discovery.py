@@ -1,0 +1,93 @@
+from dataclasses import dataclass
+from pathlib import Path
+
+from atlas.platform.repository import architecture_dir, docs_dir, repo_root
+
+
+@dataclass(frozen=True)
+class DocumentLayer:
+    name: str
+    paths: list[str]
+
+
+def relative(path: Path) -> str:
+    return str(path.relative_to(repo_root()))
+
+
+def markdown_files(path: Path) -> list[str]:
+    if not path.exists():
+        return []
+
+    return sorted(
+        relative(item)
+        for item in path.glob("*.md")
+        if item.is_file()
+    )
+
+
+def architecture_documents() -> list[str]:
+    return markdown_files(architecture_dir())
+
+
+def infrastructure_documents() -> list[str]:
+    names = [
+        "infrastructure.md",
+        "infrastructure-gamer-pve.md",
+        "services.md",
+        "infrastructure-snapshot.md",
+    ]
+
+    return [
+        relative(docs_dir() / name)
+        for name in names
+        if (docs_dir() / name).exists()
+    ]
+
+
+def operations_documents() -> list[str]:
+    names = [
+        "change-session.md",
+        "change-schema.md",
+        "changes.log",
+    ]
+
+    discovered = [
+        relative(docs_dir() / name)
+        for name in names
+        if (docs_dir() / name).exists()
+    ]
+
+    changes_dir = docs_dir() / "changes"
+
+    if changes_dir.exists():
+        discovered.extend(markdown_files(changes_dir))
+
+    return discovered
+
+
+def roadmap_documents() -> list[str]:
+    return markdown_files(docs_dir() / "roadmaps")
+
+
+def current_context_documents() -> list[str]:
+    names = [
+        "current-mission.md",
+        "aiden-context.md",
+        "infrastructure-snapshot.md",
+    ]
+
+    return [
+        relative(docs_dir() / name)
+        for name in names
+        if (docs_dir() / name).exists()
+    ]
+
+
+def document_layers() -> list[DocumentLayer]:
+    return [
+        DocumentLayer("Architecture", architecture_documents()),
+        DocumentLayer("Infrastructure", infrastructure_documents()),
+        DocumentLayer("Operations", operations_documents()),
+        DocumentLayer("Roadmaps", roadmap_documents()),
+        DocumentLayer("Current Context", current_context_documents()),
+    ]
