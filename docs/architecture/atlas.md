@@ -18,6 +18,42 @@ Atlas is the deterministic engineering toolkit.
 
 Atlas does not replace architectural judgment. It supports engineering judgment by exposing state, checking consistency, preparing context, and automating repeatable workflows.
 
+## Engineering Workflow Awareness
+
+Atlas should model engineering workflow, not only repository state.
+
+Git status, documentation state, active change sessions, generated context, and verification results are signals that help Atlas understand where engineering work currently stands.
+
+Atlas should eventually help answer:
+
+- Am I starting new work?
+- Am I in the middle of an active change?
+- Has the change been verified?
+- Has documentation been updated?
+- Is AI context stale?
+- Is the repository ready to commit?
+- What is the next responsible engineering action?
+
+Atlas should not merely report that the working tree is dirty. It should help interpret whether that state is expected, incomplete, risky, or ready to finalize.
+
+The long-term goal is for Atlas to guide the platform through the engineering lifecycle:
+
+Design
+↓
+Implement
+↓
+Verify
+↓
+Document
+↓
+Synchronize
+↓
+Commit
+↓
+Push
+
+This keeps Atlas aligned with the Aiden Platform methodology while preserving human architectural judgment.
+
 ## Core Responsibilities
 
 Atlas may provide capabilities such as:
