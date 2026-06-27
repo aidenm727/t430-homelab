@@ -35,4 +35,4 @@ Current Status:
 
 Next Milestone:
 
-Implement the first useful Atlas capability by integrating existing repository information into a coherent engineering interface without duplicating existing tools.
+Expand Atlas into the primary engineering interface by adding repository discovery, documentation navigation, and engineering workflow capabilities built on the shared engineering-state model.
