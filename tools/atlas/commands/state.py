@@ -1,4 +1,5 @@
 from atlas import platform
+from atlas.platform import docs
 
 
 NAME = "state"
@@ -23,6 +24,15 @@ def readiness_message() -> str:
     return "Ready for engineering work."
 
 
+def print_paths(paths: list[str]) -> None:
+    if not paths:
+        print("- None found")
+        return
+
+    for path in paths:
+        print(f"- {path}")
+
+
 def run(args):
     clean = platform.repository_clean()
 
@@ -45,6 +55,22 @@ def run(args):
     print(f"Working Tree: {'Clean' if clean else 'Dirty'}")
     print()
 
+    print("Architecture Sources")
+    print("--------------------")
+    print_paths(docs.relative_paths(docs.architecture_sources()))
+    print()
+
+    print("Infrastructure Sources")
+    print("----------------------")
+    print_paths(docs.relative_paths(docs.infrastructure_sources()))
+    print()
+
+    print("Operations Sources")
+    print("------------------")
+    print_paths(docs.relative_paths(docs.operations_sources()))
+    print()
+
     print("Engineering Readiness")
     print("---------------------")
     print(readiness_message())
+    
