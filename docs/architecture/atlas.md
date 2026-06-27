@@ -54,6 +54,29 @@ Push
 
 This keeps Atlas aligned with the Aiden Platform methodology while preserving human architectural judgment.
 
+## Engineering Questions
+
+Atlas exists to answer deterministic engineering questions.
+
+Every Atlas capability should answer one engineering question.
+
+Examples include:
+
+- Where am I?
+  - `atlas state`
+- Is my engineering environment healthy?
+  - `atlas doctor`
+- What changed?
+  - `atlas change`
+- Is documentation synchronized?
+  - `atlas docs`
+- What should I do next?
+  - `atlas next`
+- Prepare engineering context.
+  - `atlas context`
+
+Future capabilities should begin by identifying the engineering question being answered rather than proposing a command directly.
+
 ## Core Responsibilities
 
 Atlas may provide capabilities such as:

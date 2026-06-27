@@ -43,9 +43,9 @@ Create a future unified toolkit that can answer:
 Possible future commands:
 
 ```text
-aiden status
-aiden context
-aiden change
-aiden docs
-aiden roadmap
-aiden doctor
+atlas state
+atlas context
+atlas change
+atlas docs
+atlas next
+atlas doctor

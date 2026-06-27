@@ -1,10 +1,11 @@
 import argparse
 
-from atlas.commands import state
+from atlas.commands import doctor, state
 
 
 COMMANDS = [
     state,
+    doctor,
 ]
 
 
