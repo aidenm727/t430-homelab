@@ -144,6 +144,29 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/infrastructure.md": DocumentDefinition(
+        path="docs/infrastructure.md",
+        purpose="Canonical infrastructure record for deployed homelab hosts, services, networking, access, backups, and operations.",
+        capability="Infrastructure",
+        tags=["infrastructure", "t430-beast", "services", "backups", "networking"],
+        related=[
+            "docs/infrastructure-gamer-pve.md",
+            "docs/services.md",
+            "docs/infrastructure-snapshot.md",
+        ],
+    ),
+    "docs/infrastructure-gamer-pve.md": DocumentDefinition(
+        path="docs/infrastructure-gamer-pve.md",
+        purpose="Infrastructure record for the gamer-pve Proxmox virtualization host and its workloads.",
+        capability="Compute",
+        tags=["infrastructure", "proxmox", "compute", "gamer-pve", "immich"],
+        related=[
+            "docs/infrastructure.md",
+            "docs/architecture/compute.md",
+            "docs/infrastructure-snapshot.md",
+        ],
+    ),
+
     "docs/services.md": DocumentDefinition(
         path="docs/services.md",
         purpose="Describes the deployed homelab services and their operational details.",
