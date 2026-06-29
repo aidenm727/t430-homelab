@@ -176,6 +176,59 @@ DOCUMENT_DEFINITIONS = {
             "docs/infrastructure-snapshot.md",
         ],
     ),
+
+    "docs/change-session.md": DocumentDefinition(
+        path="docs/change-session.md",
+        purpose="Tracks the currently active engineering change session before it is finalized into permanent change records.",
+        capability="Engineering Workflow",
+        tags=["operations", "change-session", "workflow"],
+        related=[
+            "docs/change-schema.md",
+            "docs/changes.log",
+        ],
+    ),
+    "docs/change-schema.md": DocumentDefinition(
+        path="docs/change-schema.md",
+        purpose="Defines the structured schema used for homelab and platform change records.",
+        capability="Engineering Workflow",
+        tags=["operations", "change-management", "schema"],
+        related=[
+            "docs/change-session.md",
+            "docs/changes.log",
+        ],
+    ),
+    "docs/changes.log": DocumentDefinition(
+        path="docs/changes.log",
+        purpose="Human-readable operational history log for platform and homelab changes.",
+        capability="Engineering Workflow",
+        tags=["operations", "change-log", "history"],
+        related=[
+            "docs/change-session.md",
+            "docs/change-schema.md",
+            "docs/changes",
+        ],
+    ),
+    "docs/roadmaps/ai-engineering.md": DocumentDefinition(
+        path="docs/roadmaps/ai-engineering.md",
+        purpose="Roadmap for future AI engineering capabilities and long-term intelligence workflows.",
+        capability="Artificial Intelligence",
+        tags=["roadmap", "ai", "future-work"],
+        related=[
+            "docs/architecture/ai.md",
+            "docs/architecture/platform.md",
+        ],
+    ),
+    "docs/roadmaps/engineering-toolkit.md": DocumentDefinition(
+        path="docs/roadmaps/engineering-toolkit.md",
+        purpose="Roadmap for Atlas and the Aiden engineering toolkit.",
+        capability="Engineering",
+        tags=["roadmap", "atlas", "engineering-toolkit"],
+        related=[
+            "docs/architecture/atlas.md",
+            "docs/architecture/engineering.md",
+            "docs/architecture/repository.md",
+        ],
+    ),
 }
 
 
