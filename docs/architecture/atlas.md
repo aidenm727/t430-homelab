@@ -77,6 +77,84 @@ Examples include:
 
 Future capabilities should begin by identifying the engineering question being answered rather than proposing a command directly.
 
+## Repository Knowledge Model
+
+Atlas should maintain an internal understanding of repository knowledge rather than treating the repository as a collection of files.
+
+### Repository Discovery
+
+Repository discovery identifies engineering artifacts and classifies them into documentation layers such as Architecture, Infrastructure, Operations, Roadmaps, Current Context, and future categories.
+
+Discovery answers:
+
+- What exists?
+- Where is it located?
+- Which layer does it belong to?
+
+### Document Catalog
+
+The Document Catalog builds on repository discovery by describing each document as an engineering artifact.
+
+Each document should expose metadata such as:
+
+- Name
+- Documentation layer
+- Purpose
+- Canonical status
+- Generated status
+- Primary engineering capability
+- Related documents
+- Validation rules (future)
+
+The Document Catalog should become the primary source of repository knowledge for Atlas.
+
+Commands should consume the Document Catalog rather than independently traversing the repository.
+
+### Design Principles
+
+The repository should not contain engineering knowledge that Atlas cannot discover, classify, or explain.
+
+Repository understanding should be capability-driven rather than command-driven.
+
+As the repository evolves, Atlas should evolve by improving its repository knowledge model instead of accumulating command-specific logic.
+
+## Internal Architecture
+
+Atlas should be organized as a layered engineering system.
+
+### Presentation Layer
+
+The presentation layer contains user-facing commands such as:
+
+- atlas state
+- atlas doctor
+- atlas next
+- atlas docs
+
+Commands should remain thin. They should present engineering information rather than independently rediscovering repository state.
+
+### Capability Layer
+
+The capability layer contains reusable engineering concepts such as:
+
+- EngineeringState
+- Discovery
+- RepositoryHealth (future)
+- DocumentManagement (future)
+- ChangeHistory (future)
+
+Capabilities should answer deterministic engineering questions and be reused by multiple commands where appropriate.
+
+### Platform Adapter Layer
+
+The platform adapter layer contains low-level readers for Git, mission files, repository paths, filesystem state, and future operational signals.
+
+Adapters expose platform facts.
+
+Capabilities interpret those facts.
+
+Commands present the results.
+
 ## Core Responsibilities
 
 Atlas may provide capabilities such as:
