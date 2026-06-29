@@ -4,17 +4,18 @@ Phase: Engineering Platform Implementation
 
 Current Focus:
 
-- Implement Atlas as the engineering toolkit for the Aiden Platform
+- Build Atlas as the deterministic engineering interface for the Aiden Platform
+- Strengthen the repository knowledge model
 - Reduce friction between an idea and a well-engineered implementation
-- Consolidate existing tools into a coherent engineering workflow
 - Keep architecture, documentation, implementation, verification, commits, and AI context aligned
 
 Current Priorities:
 
-1. Build Atlas incrementally as the engineering toolkit.
-2. Consolidate existing engineering tools rather than replacing them.
-3. Strengthen engineering capabilities before expanding platform services.
-4. Keep the ChatGPT Project environment synchronized with the repository.
+1. Build reusable Atlas capabilities before adding command-specific logic.
+2. Use Atlas to discover, explain, and navigate repository knowledge.
+3. Consolidate existing engineering tools into a coherent engineering workflow.
+4. Strengthen validation and reasoning capabilities before expanding platform services.
+5. Keep the ChatGPT Project environment synchronized with the repository.
 
 Current Non-Priorities:
 
@@ -26,13 +27,16 @@ Current Non-Priorities:
 
 Current Status:
 
-- The Aiden Platform architecture layer has been established
-- Engineering is now defined as a first-class platform capability
-- Atlas architecture has been added
-- Atlas CLI skeleton has been implemented
-- Repository hygiene has been improved with Python cache ignores
-- Existing tools include context generation, change logging, and prototype engineering-state loading
+- The Aiden Platform architecture layer has been established.
+- Engineering is defined as a first-class platform capability.
+- Atlas architecture has been added and expanded.
+- Atlas CLI supports state, doctor, next, docs, explain, missing, and open.
+- Atlas has a shared engineering-state model.
+- Atlas has repository discovery and document catalog capabilities.
+- Atlas has metadata definitions for all discovered documents.
+- Atlas can explain and open repository documents by engineering name.
+- Existing tools include context generation, change logging, and prototype engineering-state loading.
 
 Next Milestone:
 
-Expand Atlas into the primary engineering interface by adding repository discovery, documentation navigation, and engineering workflow capabilities built on the shared engineering-state model.
+Build higher-level Atlas reasoning capabilities on top of the Repository Knowledge Layer, beginning with document relationships, validation, and synchronization awareness.

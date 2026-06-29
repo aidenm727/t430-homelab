@@ -40,44 +40,76 @@ Create a future unified toolkit that can answer:
 
 ## Current Progress
 
-Atlas has begun replacing standalone engineering utilities with a unified engineering interface.
+Atlas has evolved from a prototype engineering-state tool into the beginning of a deterministic engineering interface for the Aiden Platform.
 
-Current implemented commands:
+Implemented capabilities include:
+
+### Repository Knowledge
+
+* Shared engineering-state model
+* Repository discovery
+* Document Catalog
+* Structured document metadata
+* Document definitions
+* Repository navigation
+
+### Current Commands
 
 ```text
 atlas state
 atlas doctor
 atlas next
+atlas docs
+atlas explain
+atlas missing
+atlas open
 ```
 
-Current focus:
+Current engineering focus:
 
-* Expand deterministic engineering-state capabilities.
-* Reuse existing repository information rather than duplicate it.
+* Continue building reusable capabilities before adding new commands.
+* Strengthen the Repository Knowledge Layer.
+* Expand engineering reasoning rather than command-specific logic.
 * Keep Atlas architecture-first and capability-driven.
 
 ## Future CLI Shape
 
-Possible future commands:
+Potential future commands include:
 
 ```text
 atlas state
 atlas doctor
 atlas next
-atlas context
 atlas docs
+atlas explain
+atlas missing
+atlas open
+
+atlas validate
+atlas recommend
+atlas impact
+atlas search
+atlas context
 atlas change
 atlas roadmap
 atlas inbox
 ```
 
+These commands should remain thin presentation layers built on reusable engineering capabilities.
+
 ## Candidate Future Capabilities
 
-The following ideas are intentionally tracked as roadmap items rather than architecture. They represent potential capabilities that may be promoted into the platform after further engineering review.
+Future capability work includes:
 
-* Shared engineering-state model used by all Atlas commands.
-* Engineering Inbox for capturing and organizing ideas before they become roadmap or architecture.
-* Documentation discovery and validation.
-* Repository consistency checks.
-* Context preparation for AI assistants.
-* Architecture-aware engineering guidance.
+* Repository relationship graph
+* Documentation validation
+* Repository synchronization analysis
+* Engineering recommendations
+* Impact analysis
+* Repository search
+* Context preparation for AI assistants
+* Architecture-aware engineering guidance
+* Engineering Inbox for capturing ideas before they become roadmap or architecture
+* Repository health scoring
+* Documentation lifecycle management
+* Change impact prediction
