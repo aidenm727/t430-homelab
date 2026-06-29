@@ -1,6 +1,6 @@
 import argparse
 
-from atlas.commands import docs, doctor, explain, next, state
+from atlas.commands import docs, doctor, explain, missing, next, state
 
 
 COMMANDS = [
@@ -9,6 +9,7 @@ COMMANDS = [
     next,
     docs,
     explain,
+    missing,
 ]
 
 
