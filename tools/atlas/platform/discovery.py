@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from atlas.platform.document_catalog import Document, DocumentCatalog
+from atlas.platform.document_catalog import Document, DocumentCatalog, make_document
 from atlas.platform.repository import architecture_dir, docs_dir, repo_root
 
 
@@ -100,7 +100,7 @@ def document_catalog() -> DocumentCatalog:
     for layer in document_layers():
         for path in layer.paths:
             documents.append(
-                Document(
+                make_document(
                     name=path.split("/")[-1],
                     path=path,
                     layer=layer.name,
@@ -108,4 +108,3 @@ def document_catalog() -> DocumentCatalog:
             )
 
     return DocumentCatalog(documents)
-    
