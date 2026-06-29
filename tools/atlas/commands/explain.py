@@ -57,7 +57,13 @@ def run(args):
     print(f"Canonical: {'Yes' if definition.canonical else 'No'}")
     print(f"Generated: {'Yes' if definition.generated else 'No'}")
     print(f"Capability: {definition.capability or 'Unknown'}")
+    print(f"Status: {definition.status}")
+    print(f"Managed By: {definition.managed_by or 'Not managed by a tool'}")
     print()
 
     print_list("Related Documents", definition.related)
+    print()
+    print_list("Tags", definition.tags)
+    print()
+    print_list("Generated From", definition.generated_from)
     

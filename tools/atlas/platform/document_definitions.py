@@ -8,7 +8,11 @@ class DocumentDefinition:
     canonical: bool = True
     generated: bool = False
     capability: str | None = None
+    status: str = "active"
+    tags: list[str] = field(default_factory=list)
     related: list[str] = field(default_factory=list)
+    generated_from: list[str] = field(default_factory=list)
+    managed_by: str | None = None
 
 
 DOCUMENT_DEFINITIONS = {
@@ -46,10 +50,17 @@ DOCUMENT_DEFINITIONS = {
         canonical=False,
         generated=True,
         capability="AI Context",
+        status="generated",
+        tags=["ai-context", "generated-context", "engineering"],
         related=[
             "docs/current-mission.md",
             "docs/infrastructure-snapshot.md",
         ],
+        generated_from=[
+            "docs/current-mission.md",
+            "docs/infrastructure-snapshot.md",
+        ],
+        managed_by="tools/generate-context.py",
     ),
     "docs/infrastructure-snapshot.md": DocumentDefinition(
         path="docs/infrastructure-snapshot.md",
@@ -57,11 +68,19 @@ DOCUMENT_DEFINITIONS = {
         canonical=False,
         generated=True,
         capability="Knowledge and Documentation",
+        status="generated",
+        tags=["infrastructure", "generated-context"],
         related=[
             "docs/infrastructure.md",
             "docs/infrastructure-gamer-pve.md",
             "docs/services.md",
         ],
+        generated_from=[
+            "docs/infrastructure.md",
+            "docs/infrastructure-gamer-pve.md",
+            "docs/services.md",
+        ],
+        managed_by="tools/generate-context.py",
     ),
 
     "docs/architecture/capabilities.md": DocumentDefinition(
@@ -84,6 +103,47 @@ DOCUMENT_DEFINITIONS = {
             "docs/roadmaps/engineering-toolkit.md",
         ],
     ),
+
+    "docs/architecture/engineering.md": DocumentDefinition(
+        path="docs/architecture/engineering.md",
+        purpose="Defines the engineering methodology and workflow used to evolve the Aiden Platform.",
+        capability="Engineering",
+        related=[
+            "docs/architecture/platform.md",
+            "docs/architecture/atlas.md",
+            "docs/architecture/repository.md",
+        ],
+    ),
+    "docs/architecture/engineering-environment.md": DocumentDefinition(
+        path="docs/architecture/engineering-environment.md",
+        purpose="Defines the engineering environment, tooling, and development workflow.",
+        capability="Engineering",
+        related=[
+            "docs/architecture/engineering.md",
+            "docs/architecture/repository.md",
+        ],
+    ),
+    "docs/architecture/compute.md": DocumentDefinition(
+        path="docs/architecture/compute.md",
+        purpose="Defines the platform's compute architecture and the roles of compute resources.",
+        capability="Compute",
+        related=[
+            "docs/architecture/platform.md",
+            "docs/infrastructure.md",
+            "docs/infrastructure-gamer-pve.md",
+        ],
+    ),
+    "docs/architecture/ai.md": DocumentDefinition(
+        path="docs/architecture/ai.md",
+        purpose="Defines the AI architecture and long-term direction for intelligence capabilities across the platform.",
+        capability="Artificial Intelligence",
+        related=[
+            "docs/architecture/platform.md",
+            "docs/architecture/atlas.md",
+            "docs/roadmaps/ai-engineering.md",
+        ],
+    ),
+
     "docs/services.md": DocumentDefinition(
         path="docs/services.md",
         purpose="Describes the deployed homelab services and their operational details.",
