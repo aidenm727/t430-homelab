@@ -118,6 +118,25 @@ Repository understanding should be capability-driven rather than command-driven.
 
 As the repository evolves, Atlas should evolve by improving its repository knowledge model instead of accumulating command-specific logic.
 
+## AI-Assisted Engineering Interface
+
+Atlas should serve as the deterministic bridge between AI assistants and the Aiden Platform repository.
+
+AI assistants should use Atlas to inspect current engineering state, discover repository artifacts, explain documents, navigate canonical sources, and identify missing repository knowledge before proposing implementation work.
+
+This keeps AI-assisted engineering grounded in repository state rather than chat memory alone.
+
+Atlas should eventually help AI assistants answer:
+
+- What is the current engineering state?
+- Which documents are relevant to this task?
+- Which artifact owns this capability?
+- What documentation may need synchronization after a change?
+- Which generated context may be stale?
+- What should be verified before committing?
+
+The long-term goal is for AI assistants to use Atlas as the primary deterministic interface for planning, editing, validating, documenting, and synchronizing Aiden Platform engineering work.
+
 ## Internal Architecture
 
 Atlas should be organized as a layered engineering system.
