@@ -32,6 +32,21 @@ class DocumentCatalog:
             for document in self.by_layer(layer)
         ]
 
+    def find(self, query: str) -> Document | None:
+        normalized = query.strip()
+
+        for document in self.documents:
+            if document.path == normalized:
+                return document
+
+            if document.name == normalized:
+                return document
+
+            if document.name.removesuffix(".md") == normalized:
+                return document
+
+        return None 
+
     def with_definitions(self) -> list[Document]:
         return [
             document
