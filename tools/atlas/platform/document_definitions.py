@@ -63,9 +63,38 @@ DOCUMENT_DEFINITIONS = {
             "docs/services.md",
         ],
     ),
+
+    "docs/architecture/capabilities.md": DocumentDefinition(
+        path="docs/architecture/capabilities.md",
+        purpose="Defines the platform capability map and capability-driven planning model.",
+        capability="Platform",
+        related=[
+            "docs/architecture/platform.md",
+            "docs/architecture/engineering.md",
+            "docs/roadmaps/engineering-toolkit.md",
+        ],
+    ),
+    "docs/architecture/repository.md": DocumentDefinition(
+        path="docs/architecture/repository.md",
+        purpose="Defines how the repository is organized and how repository layers should evolve.",
+        capability="Engineering",
+        related=[
+            "docs/architecture/atlas.md",
+            "docs/docs-map.md",
+            "docs/roadmaps/engineering-toolkit.md",
+        ],
+    ),
+    "docs/services.md": DocumentDefinition(
+        path="docs/services.md",
+        purpose="Describes the deployed homelab services and their operational details.",
+        capability="Personal Services",
+        related=[
+            "docs/infrastructure.md",
+            "docs/infrastructure-snapshot.md",
+        ],
+    ),
 }
 
 
 def definition_for(path: str) -> DocumentDefinition | None:
     return DOCUMENT_DEFINITIONS.get(path)
-    
