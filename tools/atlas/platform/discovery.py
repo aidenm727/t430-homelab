@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
+from atlas.platform.document_catalog import Document, DocumentCatalog
 from atlas.platform.repository import architecture_dir, docs_dir, repo_root
 
 
@@ -91,3 +92,20 @@ def document_layers() -> list[DocumentLayer]:
         DocumentLayer("Roadmaps", roadmap_documents()),
         DocumentLayer("Current Context", current_context_documents()),
     ]
+
+
+def document_catalog() -> DocumentCatalog:
+    documents: list[Document] = []
+
+    for layer in document_layers():
+        for path in layer.paths:
+            documents.append(
+                Document(
+                    name=path.split("/")[-1],
+                    path=path,
+                    layer=layer.name,
+                )
+            )
+
+    return DocumentCatalog(documents)
+    

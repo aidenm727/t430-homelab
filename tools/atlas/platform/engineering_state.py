@@ -20,6 +20,7 @@ class EngineeringState:
 
 
 def load() -> EngineeringState:
+    catalog = discovery.document_catalog()
     return EngineeringState(
         repository=str(platform.repo_root()),
         repository_clean=platform.repository_clean(),
@@ -27,9 +28,9 @@ def load() -> EngineeringState:
         latest_commit=platform.latest_commit(),
         mission_phase=platform.mission_phase(),
         next_milestone=platform.next_milestone(),
-        architecture_sources=discovery.architecture_documents(),
-        infrastructure_sources=discovery.infrastructure_documents(),
-        operations_sources=discovery.operations_documents(),
-        roadmap_sources=discovery.roadmap_documents(),
-        current_context_sources=discovery.current_context_documents(),
+        architecture_sources=catalog.paths_by_layer("Architecture"),
+        infrastructure_sources=catalog.paths_by_layer("Infrastructure"),
+        operations_sources=catalog.paths_by_layer("Operations"),
+        roadmap_sources=catalog.paths_by_layer("Roadmaps"),
+        current_context_sources=catalog.paths_by_layer("Current Context"),
     )
