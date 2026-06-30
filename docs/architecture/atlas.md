@@ -150,6 +150,42 @@ Future commands should begin by identifying the engineering question they answer
 
 ---
 
+# Execution Model
+
+Atlas is currently executed as a repository-local engineering tool.
+
+The canonical local invocation is:
+
+    ./atlas <command>
+
+Examples:
+
+    ./atlas validate
+    ./atlas doctor
+    ./atlas docs
+    ./atlas state
+
+The repository-local launcher exists so engineers and AI assistants do not need to remember Python import paths or environment variables.
+
+Internally, the launcher sets the repository tooling path and executes Atlas through Python.
+
+This is the current development execution model, not necessarily the final packaging model.
+
+Future execution models may include:
+
+- an installable Python package
+- a console entrypoint
+- pipx-based installation
+- workstation PATH integration
+
+The long-term target interface is:
+
+    atlas <command>
+
+Until Atlas packaging is intentionally designed, repository-local execution through `./atlas` is the canonical interface.
+
+---
+
 # Engineering Workflow Awareness
 
 Atlas models engineering workflow rather than repository state alone.
