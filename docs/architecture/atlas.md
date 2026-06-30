@@ -2,253 +2,317 @@
 
 ## Purpose
 
-Atlas is the engineering toolkit for the Aiden Platform.
+Atlas is the deterministic engineering interface for the Aiden Platform.
 
-It exists to reduce friction between an idea and a well-engineered implementation while increasing understanding of the platform.
+Its purpose is to reduce friction between engineering intent and implementation while increasing understanding of the platform.
 
-Atlas should become the primary command-line interface for inspecting, validating, documenting, and preparing engineering work on the Aiden Platform.
+Atlas provides a consistent engineering interface for inspecting repository state, understanding architecture, validating engineering work, preparing AI context, and guiding engineers through the engineering lifecycle.
 
-## Role in the Platform
+Atlas does not replace architectural judgment.
 
-The Aiden Platform is the overall personal infrastructure system.
+Instead, it exposes deterministic repository knowledge and engineering reasoning so that humans and AI assistants can make better engineering decisions.
 
-Aiden is the future intelligence and assistant layer.
+---
 
-Atlas is the deterministic engineering toolkit.
+# Role in the Aiden Platform
 
-Atlas does not replace architectural judgment. It supports engineering judgment by exposing state, checking consistency, preparing context, and automating repeatable workflows.
+The Aiden Platform consists of several complementary systems.
 
-## Engineering Workflow Awareness
+The repository is the canonical engineering record.
 
-Atlas should model engineering workflow, not only repository state.
+Aiden represents the long-term intelligence and assistant capabilities of the platform.
 
-Git status, documentation state, active change sessions, generated context, and verification results are signals that help Atlas understand where engineering work currently stands.
+Atlas is the deterministic engineering interface that allows engineers and AI assistants to understand, inspect, validate, and evolve the repository.
 
-Atlas should eventually help answer:
+Rather than becoming another engineering tool, Atlas is intended to become the primary interface through which engineering work is performed.
 
-- Am I starting new work?
-- Am I in the middle of an active change?
-- Has the change been verified?
-- Has documentation been updated?
-- Is AI context stale?
-- Is the repository ready to commit?
-- What is the next responsible engineering action?
+---
 
-Atlas should not merely report that the working tree is dirty. It should help interpret whether that state is expected, incomplete, risky, or ready to finalize.
+# Architectural Position
 
-The long-term goal is for Atlas to guide the platform through the engineering lifecycle:
+Atlas is organized as a layered engineering system.
 
-Design
+```text
+Engineering Interface
+
 ↓
-Implement
-↓
-Verify
-↓
-Document
-↓
-Synchronize
-↓
-Commit
-↓
-Push
 
-This keeps Atlas aligned with the Aiden Platform methodology while preserving human architectural judgment.
+Repository Reasoning Layer
 
-## Engineering Questions
+↓
 
-Atlas exists to answer deterministic engineering questions.
+Repository Knowledge Layer
 
-Every Atlas capability should answer one engineering question.
+↓
+
+Repository
+```
+
+Each layer has a distinct responsibility.
+
+The repository stores engineering knowledge.
+
+The Repository Knowledge Layer understands repository entities.
+
+The Repository Reasoning Layer evaluates engineering implications.
+
+The Engineering Interface exposes deterministic capabilities through user-facing commands.
+
+Each layer builds upon the one below it without duplicating responsibility.
+
+---
+
+# Repository
+
+The repository remains the canonical source of engineering truth.
+
+Architecture documents define engineering intent.
+
+Infrastructure documents describe implementation.
+
+Operations documents describe engineering workflow.
+
+Roadmaps describe future engineering direction.
+
+Generated context summarizes canonical sources but never replaces them.
+
+Atlas should always prefer canonical repository knowledge over generated artifacts.
+
+---
+
+# Repository Knowledge Layer
+
+The Repository Knowledge Layer provides a structured understanding of repository contents.
+
+Rather than treating the repository as a collection of Markdown files, Atlas understands repository artifacts as engineering entities with defined roles and relationships.
+
+Repository Knowledge currently includes:
+
+- Repository discovery
+- Document catalog
+- Structured document metadata
+- Documentation layers
+- Canonical versus generated artifacts
+- Engineering capabilities
+- Document relationships
+- Generated artifact ownership
+
+Repository Knowledge describes what exists without making engineering conclusions.
+
+Its responsibility is understanding.
+
+---
+
+# Repository Reasoning Layer
+
+The Repository Reasoning Layer consumes Repository Knowledge and produces deterministic engineering conclusions.
+
+Rather than rediscovering repository state, reasoning evaluates repository knowledge to help engineers understand engineering implications.
+
+Current reasoning capabilities include:
+
+- Impact analysis
+- Engineering guidance
+- Repository validation
+
+Future reasoning capabilities may include:
+
+- Repository synchronization
+- Documentation consistency analysis
+- Capability-aware planning
+- Repository health assessment
+- Change impact prediction
+- Engineering recommendations
+
+Reasoning should remain deterministic, explainable, and directly traceable to repository knowledge.
+
+---
+
+# Engineering Interface
+
+The Engineering Interface exposes repository capabilities through lightweight commands.
+
+Commands should remain presentation layers.
+
+They should request engineering information from reusable capabilities instead of implementing engineering logic directly.
 
 Examples include:
 
-- Where am I?
-  - `atlas state`
-- Is my engineering environment healthy?
-  - `atlas doctor`
-- What changed?
-  - `atlas change`
-- Is documentation synchronized?
-  - `atlas docs`
-- What should I do next?
-  - `atlas next`
-- Prepare engineering context.
-  - `atlas context`
-
-Future capabilities should begin by identifying the engineering question being answered rather than proposing a command directly.
-
-## Repository Knowledge Model
-
-Atlas should maintain an internal understanding of repository knowledge rather than treating the repository as a collection of files.
-
-### Repository Discovery
-
-Repository discovery identifies engineering artifacts and classifies them into documentation layers such as Architecture, Infrastructure, Operations, Roadmaps, Current Context, and future categories.
-
-Discovery answers:
-
-- What exists?
-- Where is it located?
-- Which layer does it belong to?
-
-### Document Catalog
-
-The Document Catalog builds on repository discovery by describing each document as an engineering artifact.
-
-Each document should expose metadata such as:
-
-- Name
-- Documentation layer
-- Purpose
-- Canonical status
-- Generated status
-- Primary engineering capability
-- Related documents
-- Validation rules (future)
-
-The Document Catalog should become the primary source of repository knowledge for Atlas.
-
-Commands should consume the Document Catalog rather than independently traversing the repository.
-
-### Design Principles
-
-The repository should not contain engineering knowledge that Atlas cannot discover, classify, or explain.
-
-Repository understanding should be capability-driven rather than command-driven.
-
-As the repository evolves, Atlas should evolve by improving its repository knowledge model instead of accumulating command-specific logic.
-
-## AI-Assisted Engineering Interface
-
-Atlas should serve as the deterministic bridge between AI assistants and the Aiden Platform repository.
-
-AI assistants should use Atlas to inspect current engineering state, discover repository artifacts, explain documents, navigate canonical sources, and identify missing repository knowledge before proposing implementation work.
-
-This keeps AI-assisted engineering grounded in repository state rather than chat memory alone.
-
-Atlas should eventually help AI assistants answer:
-
-- What is the current engineering state?
-- Which documents are relevant to this task?
-- Which artifact owns this capability?
-- What documentation may need synchronization after a change?
-- Which generated context may be stale?
-- What should be verified before committing?
-
-The long-term goal is for AI assistants to use Atlas as the primary deterministic interface for planning, editing, validating, documenting, and synchronizing Aiden Platform engineering work.
-
-## Internal Architecture
-
-Atlas should be organized as a layered engineering system.
-
-### Presentation Layer
-
-The presentation layer contains user-facing commands such as:
-
 - atlas state
 - atlas doctor
-- atlas next
 - atlas docs
+- atlas explain
+- atlas impact
+- atlas validate
+- atlas next
 
-Commands should remain thin. They should present engineering information rather than independently rediscovering repository state.
+Future commands should begin by identifying the engineering question they answer rather than introducing new command-specific logic.
 
-### Capability Layer
+---
 
-The capability layer contains reusable engineering concepts such as:
+# Engineering Workflow Awareness
 
-- EngineeringState
-- Discovery
-- RepositoryHealth (future)
-- DocumentManagement (future)
-- ChangeHistory (future)
+Atlas models engineering workflow rather than repository state alone.
 
-Capabilities should answer deterministic engineering questions and be reused by multiple commands where appropriate.
+Engineering state includes signals such as:
 
-### Platform Adapter Layer
+- Git status
+- Current mission
+- Active engineering phase
+- Documentation synchronization
+- Generated context freshness
+- Validation status
+- Verification progress
 
-The platform adapter layer contains low-level readers for Git, mission files, repository paths, filesystem state, and future operational signals.
+Atlas should eventually help answer questions such as:
 
-Adapters expose platform facts.
+- Am I beginning new engineering work?
+- Which architecture documents should be reviewed?
+- Which generated artifacts are now stale?
+- Has this engineering change been documented?
+- Is the repository ready to commit?
+- What is the next responsible engineering action?
 
-Capabilities interpret those facts.
+Atlas should guide engineers through the engineering lifecycle:
 
-Commands present the results.
+```text
+Design
 
-## Core Responsibilities
+↓
 
-Atlas may provide capabilities such as:
+Implement
 
-- Engineering state inspection
-- Context generation and preparation
-- Change workflow assistance
-- Documentation validation
+↓
+
+Verify
+
+↓
+
+Document
+
+↓
+
+Synchronize
+
+↓
+
+Commit
+
+↓
+
+Push
+```
+
+This keeps Atlas aligned with the engineering methodology of the Aiden Platform while preserving human architectural judgment.
+
+---
+
+# AI-Assisted Engineering
+
+Atlas serves as the deterministic bridge between AI assistants and the Aiden Platform repository.
+
+Rather than relying on conversational memory, AI assistants should consult Atlas to understand current engineering state before proposing implementation work.
+
+Atlas should help AI assistants determine:
+
+- Current engineering state
+- Relevant architecture
+- Repository ownership
+- Documentation responsibilities
+- Generated artifacts requiring synchronization
+- Repository validation status
+- Recommended engineering workflow
+
+The long-term objective is for Atlas to become the primary deterministic interface through which AI assistants understand the engineering platform.
+
+---
+
+# Internal Implementation
+
+Atlas should remain organized around reusable engineering capabilities rather than commands.
+
+Conceptually, Atlas consists of:
+
+```text
+commands/
+
+↓
+
+reasoning/
+
+↓
+
+knowledge/
+
+↓
+
+platform adapters
+```
+
+Commands present information.
+
+Reasoning evaluates engineering implications.
+
+Knowledge understands repository entities.
+
+Platform adapters expose deterministic platform facts such as Git state, repository contents, mission documents, and filesystem information.
+
+Each layer should remain independently reusable.
+
+---
+
+# Core Responsibilities
+
+Atlas is responsible for:
+
+- Repository discovery
+- Repository knowledge
+- Engineering reasoning
 - Repository validation
-- Architecture awareness
-- Operational readiness checks
-- Future unified engineering CLI
+- Engineering state inspection
+- Documentation awareness
+- AI context preparation
+- Engineering workflow guidance
 
-## Non-Responsibilities
+---
+
+# Non-Responsibilities
 
 Atlas should not:
 
-- Make major architecture decisions automatically
+- Replace architectural judgment
 - Replace canonical documentation
 - Store secrets
-- Become a general chatbot
-- Duplicate existing tools without clear reason
-- Hide infrastructure complexity when understanding is needed
+- Become a conversational assistant
+- Duplicate existing platform capabilities
+- Hide engineering complexity when understanding is more valuable
 
-## Design Principles
+---
 
-Atlas should follow the Aiden Platform engineering methodology:
+# Design Principles
 
-1. Learn
-2. Design
-3. Implement
-4. Verify
-5. Document
-6. Commit
+Atlas should evolve according to the engineering methodology of the Aiden Platform.
 
-Before implementing a new Atlas feature, first determine whether the capability already exists elsewhere in the platform.
+Architecture should guide implementation.
 
-If the capability exists, Atlas should integrate with it rather than duplicate it.
+Repository knowledge should precede reasoning.
 
-If the capability does not exist, Atlas should add the smallest useful improvement that can be verified.
+Reasoning should precede user interfaces.
 
-## Initial Capability Model
+Capabilities should be reusable across commands.
 
-### Engineering State
+Implementation should strengthen architecture rather than accumulate command-specific behavior.
 
-Atlas should answer:
+Atlas should become smarter by improving its understanding of the repository rather than by increasing command complexity.
 
-- What is the current mission?
-- What infrastructure exists?
-- What changed recently?
-- Is there an active change session?
-- What is the next milestone?
+---
 
-### Context Management
+# Long-Term Direction
 
-Atlas should help prepare AI-readable context from canonical documentation.
+Atlas is intended to become the deterministic engineering interface for the Aiden Platform.
 
-Generated context should summarize authoritative sources, not replace them.
+Its long-term purpose is not autonomous engineering.
 
-### Change Management
+Its purpose is to expose deterministic engineering knowledge and reasoning that improves both human and AI-assisted engineering.
 
-Atlas should support the structured change workflow.
-
-It should help make changes easier to start, verify, document, commit, and push.
-
-### Documentation Assistance
-
-Atlas should help identify documentation gaps, outdated records, and missing updates.
-
-### Repository Validation
-
-Atlas should help verify that the repository is organized, consistent, and ready for engineering work.
-
-## First Implementation Target
-
-The first Atlas command should be:
-
-python tools/atlas.py state
+As the repository evolves, Atlas should evolve by strengthening its Repository Knowledge Layer and Repository Reasoning Layer while keeping engineering interfaces thin, predictable, and reusable.

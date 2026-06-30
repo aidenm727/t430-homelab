@@ -2,114 +2,227 @@
 
 ## Purpose
 
-The Aiden Engineering Toolkit is the software layer that helps maintain a coherent understanding of the Aiden Platform.
+The Aiden Engineering Toolkit is the engineering software layer of the Aiden Platform.
 
-Its purpose is to reduce friction, prevent duplicated work, expose current engineering state, and help humans and AI assistants understand what has already been built.
+Its purpose is to reduce engineering friction, expose deterministic repository knowledge, guide engineering workflow, and provide a consistent interface for both humans and AI assistants.
 
-## Current Tools
+The long-term objective is to make engineering work increasingly capability-driven rather than tool-driven.
 
-### generate-context.py
+---
 
-Generates AI-facing context documents.
+# Vision
 
-### homelab-change.py
+Atlas is evolving into the deterministic engineering interface for the Aiden Platform.
 
-Manages change sessions, structured change records, changes.log updates, and context regeneration.
+Rather than becoming a collection of independent utilities, Atlas should become a layered engineering platform that understands repository knowledge, performs deterministic reasoning, and exposes reusable engineering capabilities through a unified interface.
 
-### aiden-context-loader.py
+Engineering capabilities should evolve before engineering commands.
 
-Prototype engineering state summary tool.
+Commands should remain lightweight interfaces over reusable platform capabilities.
 
-## Problem
+---
 
-The repository now contains architecture documents, infrastructure records, generated AI context, change workflows, roadmaps, and tools.
+# Current Toolkit
 
-These pieces are useful, but they are not yet unified into one clear engineering interface.
+The engineering toolkit currently includes:
 
-## Goal
+## Atlas
 
-Create a future unified toolkit that can answer:
+Deterministic engineering interface for repository inspection, reasoning, validation, and workflow guidance.
 
-- What is the current engineering state?
-- What change session is active?
-- Which documents exist?
-- Which tools exist?
-- What changed recently?
-- What should happen next?
-- Which existing tool should be used?
+## generate-context.py
 
-## Current Progress
+Generates AI-readable engineering context from canonical documentation.
 
-Atlas has evolved from a prototype engineering-state tool into the beginning of a deterministic engineering interface for the Aiden Platform.
+## homelab-change.py
 
-Implemented capabilities include:
+Supports structured engineering change sessions, change history, and documentation synchronization.
 
-### Repository Knowledge
+## aiden-context-loader.py
 
-* Shared engineering-state model
-* Repository discovery
-* Document Catalog
-* Structured document metadata
-* Document definitions
-* Repository navigation
+Prototype engineering-state summary utility.
 
-### Current Commands
+---
+
+# Current Architecture
+
+Atlas currently consists of four conceptual layers.
 
 ```text
-atlas state
-atlas doctor
-atlas next
-atlas docs
-atlas explain
-atlas missing
-atlas open
+Engineering Interface
+
+↓
+
+Repository Reasoning Layer
+
+↓
+
+Repository Knowledge Layer
+
+↓
+
+Repository
 ```
 
-Current engineering focus:
+Current engineering work expands these layers rather than introducing command-specific behavior.
 
-* Continue building reusable capabilities before adding new commands.
-* Strengthen the Repository Knowledge Layer.
-* Expand engineering reasoning rather than command-specific logic.
-* Keep Atlas architecture-first and capability-driven.
+---
 
-## Future CLI Shape
+# Completed Capabilities
 
-Potential future commands include:
+## Repository Knowledge
+
+Completed:
+
+- Repository discovery
+- Documentation layer classification
+- Document Catalog
+- Structured document metadata
+- Repository navigation
+- Canonical versus generated document awareness
+- Engineering capability metadata
+
+---
+
+## Repository Reasoning
+
+Completed:
+
+- Repository impact analysis
+- Engineering guidance
+- Repository validation
+
+These capabilities provide deterministic engineering reasoning built on Repository Knowledge.
+
+---
+
+## Engineering Interface
+
+Implemented commands:
 
 ```text
 atlas state
 atlas doctor
-atlas next
 atlas docs
 atlas explain
-atlas missing
-atlas open
-
-atlas validate
-atlas recommend
 atlas impact
-atlas search
-atlas context
-atlas change
-atlas roadmap
-atlas inbox
+atlas validate
+atlas missing
+atlas open
+atlas next
 ```
 
-These commands should remain thin presentation layers built on reusable engineering capabilities.
+Commands remain presentation layers over reusable engineering capabilities.
 
-## Candidate Future Capabilities
+---
 
-Future capability work includes:
+# Current Engineering Milestone
 
-* Repository relationship graph
-* Documentation validation
-* Repository synchronization analysis
-* Engineering recommendations
-* Impact analysis
-* Repository search
-* Context preparation for AI assistants
-* Architecture-aware engineering guidance
-* Engineering Inbox for capturing ideas before they become roadmap or architecture
-* Repository health scoring
-* Documentation lifecycle management
-* Change impact prediction
+The active engineering milestone is:
+
+## Repository Synchronization Reasoning
+
+Goals include:
+
+- Detect documentation requiring synchronization
+- Detect stale generated artifacts
+- Detect architecture and implementation drift
+- Detect roadmap synchronization opportunities
+- Recommend engineering synchronization actions
+
+---
+
+# Upcoming Capabilities
+
+Following Synchronization Reasoning, planned capability work includes:
+
+## Repository Reasoning
+
+- Planning Reasoning
+- Documentation consistency analysis
+- Repository health assessment
+- Engineering recommendation engine
+- Capability-aware planning
+- Change impact prediction
+
+## Repository Knowledge
+
+- Relationship-aware repository model
+- Repository relationship graph
+- Capability graph
+- Dependency graph
+- Rich repository metadata
+
+## Engineering Interface
+
+Future interface capabilities may include:
+
+- Repository search
+- Engineering inbox
+- Context preparation
+- Roadmap inspection
+- Architecture navigation
+- Repository synchronization
+- Workflow automation
+
+These interfaces should remain thin wrappers over reusable engineering capabilities.
+
+---
+
+# Engineering Principles
+
+Atlas should continue evolving according to the engineering methodology of the Aiden Platform.
+
+Development should follow:
+
+```text
+Architecture
+
+↓
+
+Capability
+
+↓
+
+Implementation
+
+↓
+
+Verification
+
+↓
+
+Documentation
+
+↓
+
+Synchronization
+
+↓
+
+Commit
+```
+
+Capabilities should always precede interfaces.
+
+Architecture should guide implementation.
+
+Repository knowledge should strengthen reasoning.
+
+Reasoning should strengthen engineering interfaces.
+
+---
+
+# Long-Term Direction
+
+The long-term objective is for Atlas to become the deterministic engineering interface for the entire Aiden Platform.
+
+As the platform evolves, Atlas should improve by:
+
+- Strengthening Repository Knowledge
+- Expanding Repository Reasoning
+- Keeping engineering interfaces lightweight
+- Increasing deterministic understanding of repository state
+- Improving AI-assisted engineering without replacing architectural judgment
+
+Every engineering improvement should make Atlas better at understanding the repository rather than simply increasing the number of available commands.
