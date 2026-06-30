@@ -11,6 +11,20 @@ class ImpactReport:
     suggested_actions: list[str] = field(default_factory=list)
 
 
+def unique_documents(documents: list[Document]) -> list[Document]:
+    seen: set[str] = set()
+    unique: list[Document] = []
+
+    for document in documents:
+        if document.path in seen:
+            continue
+
+        seen.add(document.path)
+        unique.append(document)
+
+    return unique
+
+
 def analyze_impact(catalog: DocumentCatalog, target: Document) -> ImpactReport:
     definition = target.definition
 
@@ -30,6 +44,9 @@ def analyze_impact(catalog: DocumentCatalog, target: Document) -> ImpactReport:
 
         if target.path in document.definition.generated_from:
             generated_outputs.append(document)
+
+    related_documents = unique_documents(related_documents)
+    generated_outputs = unique_documents(generated_outputs)
 
     if target.definition and target.definition.canonical:
         suggested_actions.append("Review related canonical and generated documents.")

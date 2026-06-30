@@ -229,6 +229,18 @@ DOCUMENT_DEFINITIONS = {
             "docs/architecture/repository.md",
         ],
     ),
+
+    "docs/architecture/reasoning.md": DocumentDefinition(
+        path="docs/architecture/reasoning.md",
+        purpose="Defines the repository reasoning layer that turns repository knowledge into engineering implications and guidance.",
+        capability="Engineering",
+        related=[
+            "docs/architecture/atlas.md",
+            "docs/architecture/repository.md",
+            "docs/roadmaps/engineering-toolkit.md",
+        ],
+        tags=["atlas", "reasoning", "engineering"],
+    ),
 }
 
 
