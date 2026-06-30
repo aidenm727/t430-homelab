@@ -57,6 +57,7 @@ def build_guidance(catalog: DocumentCatalog, state: EngineeringState) -> Guidanc
         relevant_documents=relevant_documents,
         suggested_commands=[
             "python3 tools/atlas.py state",
+            "python3 tools/atlas.py validate",
             "python3 tools/atlas.py impact docs/architecture/reasoning.md",
             "python3 tools/atlas.py explain docs/architecture/reasoning.md",
         ],
