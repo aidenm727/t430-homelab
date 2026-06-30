@@ -241,6 +241,19 @@ DOCUMENT_DEFINITIONS = {
         ],
         tags=["atlas", "reasoning", "engineering"],
     ),
+
+    "docs/architecture/repository-synchronization.md": DocumentDefinition(
+        path="docs/architecture/repository-synchronization.md",
+        purpose="Defines Repository Synchronization Reasoning as an Atlas reasoning capability for detecting drift across repository layers.",
+        capability="Engineering",
+        tags=["atlas", "repository-reasoning", "synchronization"],
+        related=[
+            "docs/architecture/atlas.md",
+            "docs/architecture/repository.md",
+            "docs/current-mission.md",
+            "docs/aiden-context.md",
+        ],
+    ),
 }
 
 
