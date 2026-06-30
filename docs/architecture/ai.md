@@ -2,223 +2,284 @@
 
 ## Purpose
 
-This document defines how AI fits into the Aiden Platform.
+Artificial Intelligence is a first-class capability of the Aiden Platform.
 
-AI is not treated as a single service, subscription, model, or vendor.
+Its purpose is to increase the owner's agency by improving learning, engineering, knowledge management, planning, automation, creativity, and decision support.
 
-AI is a platform capability that helps the Aiden Platform understand itself, improve itself, and help its owner learn, build, operate, and evolve the system more effectively.
+AI is not treated as a single application, subscription, model, or provider.
 
-## Core Principle
+Instead, the platform is designed around AI capabilities that can evolve independently of the underlying technologies that implement them.
 
-AI should amplify understanding, not replace it.
+The objective is not to automate life.
 
-The platform should use AI to reduce friction, improve documentation, support learning, assist engineering decisions, and eventually enable personal orchestration.
+The objective is to continuously increase the owner's ability to understand, learn, build, create, and make well-informed decisions while preserving human judgment and ownership.
 
-Human understanding, review, and ownership remain central.
+---
 
-## AI Capability Areas
+# AI Philosophy
 
-## 1. Engineering Assistance
+The Aiden Platform is guided by several principles when integrating artificial intelligence.
 
-AI should help design, build, troubleshoot, and evolve the platform.
+## Increase Agency
 
-Includes:
+AI should increase capability rather than replace responsibility.
 
-* Architecture discussions
-* Design review
-* Implementation planning
-* Command generation
-* Troubleshooting
-* Documentation drafting
-* Change review
+The platform should help the owner think better—not think less.
 
-Current implementations:
+AI should reduce friction while preserving:
 
-* ChatGPT Project workflow
-* Architecture-first conversations
-* AI-assisted documentation updates
-* AI-readable project sources
+- curiosity
+- creativity
+- understanding
+- ownership
+- judgment
+- exploration
 
-## 2. Knowledge and Context
+---
 
-AI should help the platform explain itself.
+## Capability Before Models
 
-Includes:
+The platform depends on AI capabilities rather than individual AI providers.
 
-* Reading architecture documents
-* Summarizing current infrastructure
-* Understanding current mission
-* Tracking recent changes
-* Answering platform questions
-* Helping future assistants quickly regain context
+Models will improve.
 
-Current implementations:
+Providers will change.
 
-* docs/aiden-context.md
-* docs/current-mission.md
-* docs/infrastructure-snapshot.md
-* docs/docs-map.md
+Capabilities should remain stable.
 
-## 3. Automation
+The architecture should allow models to evolve without requiring fundamental platform redesign.
 
-AI should reduce repetitive work without hiding important engineering decisions.
+---
 
-Includes:
-
-* Drafting documentation updates
-* Suggesting change log entries
-* Summarizing health checks
-* Identifying stale documentation
-* Generating implementation checklists
-* Future workflow orchestration
-
-Current implementations:
-
-* generate-context.py
-* homelab-change.py
-* AI-assisted change workflow
-
-## 4. Learning
-
-AI should help the owner understand the platform and the technologies behind it.
-
-Includes:
-
-* Explaining Linux, Docker, Proxmox, networking, storage, and AI
-* Quizzing the owner on the platform
-* Turning real infrastructure work into learning material
-* Supporting CS, cloud, DevOps, and SRE growth
-* Future interview preparation
-
-## 5. Personal Assistance
-
-AI should eventually support broader personal workflows.
-
-Includes:
-
-* Daily briefings
-* Search and retrieval
-* Project planning
-* Gym, guitar, travel, and learning workflows
-* Media and interest tracking
-* Future Aiden OS experiences
-
-This capability should grow only after the platform has strong foundations in documentation, storage, compute, security, and automation.
-
-## AI Deployment Strategy
-
-## Cloud AI
-
-Cloud AI is useful for high-quality reasoning, architecture discussions, writing, planning, coding assistance, and research.
-
-Strengths:
-
-* Strong reasoning
-* Large context windows
-* High-quality writing
-* Fast access to frontier models
-* Low maintenance
-
-Tradeoffs:
-
-* Ongoing subscription cost
-* External dependency
-* Privacy considerations
-* Vendor lock-in risk
-
-## Local AI
-
-Local AI is useful for private, low-latency, self-hosted, or platform-integrated workflows.
-
-Strengths:
-
-* Privacy
-* Local control
-* Offline potential
-* Integration with homelab services
-* Reduced dependence on external vendors
-
-Tradeoffs:
-
-* Hardware requirements
-* Maintenance overhead
-* Lower model quality in some cases
-* Power and storage cost
-* More operational complexity
-
-## Hybrid AI
-
-The long-term strategy should be hybrid.
-
-The platform may use cloud AI when quality and reasoning matter most, local AI when privacy or integration matters most, and future orchestration to route tasks to the best available model.
-
-The platform should depend on AI capabilities, not one specific provider.
-
-## Model Selection Philosophy
-
-Choose the simplest AI system that meaningfully improves the workflow.
-
-Before adopting a new AI tool, model, subscription, or service, ask:
-
-1. Which platform capability does this improve?
-2. Does it reduce meaningful friction?
-3. Does it improve learning, operation, documentation, or automation?
-4. What are the privacy, cost, quality, and maintenance tradeoffs?
-5. Can an existing tool already do this well enough?
-6. Is this an experiment or a production platform dependency?
-
-AI tools should be adopted deliberately, not because they are new or impressive.
-
-## Human Responsibilities
+## Human-Centered Engineering
 
 The owner remains responsible for:
 
-* Architectural decisions
-* Security-sensitive changes
-* Reviewing generated documentation
-* Approving infrastructure changes
-* Understanding important system behavior
-* Deciding when automation is appropriate
+- architectural decisions
+- security-sensitive changes
+- validating important outputs
+- determining long-term direction
+- deciding when automation is appropriate
 
-AI may suggest, draft, explain, summarize, and automate.
+AI should explain, suggest, summarize, teach, critique, and assist.
 
-AI should not silently make permanent platform changes without human review.
+It should not silently replace meaningful engineering decisions.
 
-## Context Architecture
+---
 
-AI assistants should understand the platform through layered context:
+# AI Capability Architecture
 
-1. Architecture documents
-2. Current mission
-3. Generated AI context
-4. Infrastructure documentation
-5. Recent conversation
-6. Live system verification
+The platform develops AI capabilities across multiple domains.
 
-Generated context should summarize canonical documentation.
+## Engineering Intelligence
 
-Generated context should not replace the repository as the source of truth.
+AI should improve engineering by helping with:
 
-## Relationship to Aiden OS
+- architecture
+- design review
+- implementation planning
+- repository reasoning
+- documentation
+- troubleshooting
+- synchronization
+- impact analysis
+- engineering guidance
 
-Aiden OS is a future interface and orchestration layer for the Aiden Platform.
+Atlas serves as the deterministic engineering interface built upon these capabilities.
 
-AI architecture should support Aiden OS by gradually improving:
+---
 
-* Context management
-* Memory
-* Search
-* Automation
-* Personal workflows
-* Platform understanding
-* Human-computer interaction
+## Knowledge Intelligence
 
-Aiden OS should emerge from mature platform capabilities rather than being forced too early.
+AI should improve understanding of both the platform and personal knowledge.
 
-## Long-Term Vision
+Capabilities include:
 
-The long-term objective is for the Aiden Platform to become progressively easier to understand, operate, extend, and learn through AI assistance.
+- repository understanding
+- document relationships
+- search
+- context management
+- summarization
+- knowledge retrieval
+- memory augmentation
+- future RAG capabilities
 
-AI should evolve from an external assistant into an integrated platform capability that helps manage documentation, context, automation, learning, and engineering workflows.
+---
 
-The platform should remain understandable without AI, but become more powerful with AI.
+## Learning Intelligence
+
+AI should become an adaptive tutor.
+
+Capabilities include:
+
+- structured learning
+- personalized explanations
+- quizzes
+- project-based learning
+- interview preparation
+- curriculum generation
+- concept reinforcement
+
+Learning should remain an active process.
+
+AI accelerates learning rather than replacing it.
+
+---
+
+## Personal Capability Systems
+
+AI should eventually support broader personal systems including:
+
+- health
+- nutrition
+- fitness
+- finance
+- business
+- planning
+- creativity
+- research
+- travel
+- productivity
+- personal knowledge
+
+These systems should improve decision quality rather than automate life.
+
+---
+
+## Automation Intelligence
+
+AI should reduce repetitive engineering and operational work.
+
+Examples include:
+
+- documentation generation
+- context generation
+- engineering summaries
+- operational reporting
+- workflow orchestration
+- future engineering agents
+
+Automation should remain transparent and reviewable.
+
+---
+
+# AI Deployment Strategy
+
+The Aiden Platform intentionally supports multiple forms of AI deployment.
+
+## Cloud AI
+
+Cloud models provide frontier reasoning, research, writing, coding assistance, and large-context understanding.
+
+Advantages include:
+
+- state-of-the-art reasoning
+- large context windows
+- minimal maintenance
+- rapid access to new capabilities
+
+Tradeoffs include:
+
+- subscription costs
+- external dependency
+- privacy considerations
+
+---
+
+## Local AI
+
+Local models provide privacy, integration, experimentation, and platform control.
+
+Advantages include:
+
+- data ownership
+- local execution
+- offline operation
+- custom integration
+- self-hosting flexibility
+
+Tradeoffs include:
+
+- hardware requirements
+- operational complexity
+- model maintenance
+- potentially lower capability than frontier cloud models
+
+---
+
+## Hybrid AI
+
+The long-term architecture is hybrid.
+
+The platform should intelligently route work to the most appropriate capability rather than favoring a particular provider.
+
+Examples include:
+
+- cloud reasoning
+- local automation
+- specialized coding agents
+- research systems
+- future orchestration layers
+
+The platform should optimize for capability—not vendor.
+
+---
+
+# Model Evaluation
+
+New AI technologies should be evaluated deliberately.
+
+Questions include:
+
+- Which platform capability improves?
+- Does this increase agency?
+- Does it reduce meaningful engineering friction?
+- Does it improve learning?
+- Does it improve long-term leverage?
+- Can existing tools already satisfy this need?
+- Is this experimental or production-ready?
+
+The platform should adopt technologies because they create lasting value, not because they are popular.
+
+---
+
+# Context Architecture
+
+AI systems should understand the platform through layered context.
+
+1. Personal Engineering Philosophy
+2. Platform Architecture
+3. Architecture Documents
+4. Current Mission
+5. Repository Knowledge
+6. Generated Context
+7. Infrastructure Documentation
+8. Live System Verification
+
+Generated context summarizes canonical knowledge.
+
+It never replaces it.
+
+---
+
+# Long-Term Direction
+
+The long-term objective is to build an AI ecosystem that continuously improves the owner's ability to engineer, learn, create, and operate increasingly capable systems.
+
+Over time this ecosystem may include:
+
+- engineering agents
+- adaptive tutors
+- personal assistants
+- local AI infrastructure
+- knowledge systems
+- business systems
+- health systems
+- research assistants
+- future orchestration capabilities
+
+The platform should become progressively more capable without becoming progressively more dependent.
+
+AI should always remain a source of leverage.
+
+Never a replacement for human agency.

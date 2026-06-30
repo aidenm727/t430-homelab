@@ -2,137 +2,184 @@
 
 ## Purpose
 
-The Aiden Platform exists to make the bridge between physical life and digital life powerful, private, personal, and simple.
+The Aiden Platform is a long-term personal capability platform.
 
-It should become the primary home for the owner's digital life: services, photos, media, projects, documents, knowledge, automation, and AI-assisted workflows.
+Its purpose is to increase the owner's ability to understand, learn, build, create, organize, automate, and improve every meaningful area of life through thoughtfully engineered systems.
 
-The platform should feel easy to use, clean, personalized, and exciting to return to.
+The platform is not a single application, server, or AI system.
 
-## Design Vision
+It is an evolving ecosystem of capabilities that work together to increase human agency while preserving curiosity, understanding, and personal ownership.
 
-The platform is not just a collection of self-hosted services.
+Technology is the leverage.
 
-It is intended to become a personal operating environment: a home OS that makes digital life easier to access, understand, customize, and control.
+Engineering is the process.
 
-AI should eventually abstract complexity where appropriate while preserving transparency and user control.
+Agency is the outcome.
 
-## Core Principles
+---
 
-### Data Ownership
+# Vision
 
-Important personal data should remain under the owner's control whenever practical.
+The Aiden Platform exists to bridge physical life and digital life through systems that are:
 
-The platform should reduce dependence on external cloud services without rejecting them unnecessarily.
+- personal
+- private
+- understandable
+- extensible
+- reliable
+- enjoyable to use
 
-### Privacy
+The platform should continuously evolve alongside its owner, becoming more capable as new knowledge, technologies, and engineering practices emerge.
 
-Services should be private by default.
+Rather than collecting software, the platform intentionally develops capabilities that compound over time.
 
-Remote access should use secure private networking rather than public exposure unless there is a clear reason to do otherwise.
+---
 
-### Simplicity
+# Platform Philosophy
 
-The platform should be easy to use and easy to understand.
+The platform is guided by several fundamental beliefs.
 
-Complexity is acceptable behind the scenes only when it creates meaningful reliability, security, or capability.
+## Increase Agency
 
-### Personalization
+Every meaningful addition to the platform should increase the owner's capability rather than replace their judgment.
 
-The platform should reflect the owner's workflows, interests, projects, and life.
+Technology should amplify human ability—not encourage dependence.
 
-It should become more useful as it learns the owner's systems and preferences.
+## Capability First
 
-### Data Outlives Compute
+The platform grows by developing capabilities rather than accumulating services or tools.
 
-Servers, virtual machines, containers, and applications are replaceable.
+Individual technologies are implementation details.
 
-Personal data, photos, documents, archives, project history, and knowledge should survive hardware changes.
+Capabilities are long-term investments.
 
-### Capability-Driven Growth
+## Architecture Before Implementation
 
-New services should be added because they provide a meaningful platform capability, not simply because they are interesting to install.
+Architecture should guide implementation whenever practical.
 
-## Platform Capabilities
+Intentional design creates systems that are easier to understand, maintain, extend, and teach.
 
-Current and planned capabilities include:
+## Continuous Improvement
 
-- Networking and secure access
-- Internal DNS
-- Reverse proxy and HTTPS
-- Monitoring and observability
-- Backups and restore validation
-- Virtualization
-- Documentation and operational history
-- AI-readable context generation
-- Long-term storage
-- Personal cloud services
-- Local AI and automation
-- AidenOS orchestration
+The platform should improve itself over time.
 
-## Current Implementation
+Documentation, automation, engineering workflows, AI capabilities, and infrastructure should continuously reduce friction while increasing understanding.
 
-### t430-beast
+## Ownership
 
-Primary stable infrastructure host.
+Personal knowledge, data, workflows, and infrastructure should remain under the owner's control whenever practical.
 
-Responsibilities include:
+The platform should reduce unnecessary dependence on external providers without rejecting them when they provide meaningful value.
 
-- DNS
-- Reverse proxy
-- Monitoring
-- Core Docker services
-- Backup infrastructure
-- Operational tooling
+---
 
-### gamer-pve
+# Platform Capability Model
 
-Proxmox compute and virtualization host.
+The Aiden Platform develops capabilities across multiple domains.
 
-Responsibilities include:
+Current and future capability areas include:
 
-- VMs
-- LXC containers
-- Immich
-- Future AI workloads
-- Resource-intensive services
+- Engineering
+- Artificial Intelligence
+- Knowledge Management
+- Documentation
+- Learning
+- Automation
+- Infrastructure
+- Compute
+- Storage
+- Networking
+- Security
+- Personal Services
+- Health
+- Finance
+- Business
+- Creativity
+- Research
 
-### Future NAS
+Each capability should exist because it meaningfully improves the platform rather than because a particular technology is interesting.
 
-Planned dedicated storage layer.
+---
 
-Responsibilities may include:
+# Artificial Intelligence
 
-- Photos and videos
-- Documents
-- Media
-- Archives
-- Preservation migration target
-- VM and LXC backups
-- Shared storage
-- Off-site backup source
+Artificial intelligence is treated as a first-class platform capability.
 
-## Long-Term Direction
+AI exists to improve learning, engineering, documentation, automation, planning, and personal workflows.
 
-The long-term direction is to evolve from a homelab into a personal digital infrastructure platform.
+The platform should remain understandable without AI while becoming significantly more capable with it.
 
-The platform should support:
+The platform depends on AI capabilities rather than any individual model or provider.
 
-- replacing selected cloud services,
-- preserving important personal data,
-- improving daily workflows,
-- supporting AI-assisted learning and automation,
-- and eventually forming the foundation for AidenOS.
+---
 
-## Build Philosophy
+# Infrastructure
 
-Prefer deliberate capability growth over reactive service installation.
+Infrastructure exists to support platform capabilities.
 
-The standard project loop should be:
+Servers, virtual machines, containers, networking, storage, and cloud services are implementation details that enable higher-level capabilities.
 
-1. Learn
+Infrastructure should remain:
+
+- understandable
+- recoverable
+- secure
+- documented
+- intentionally designed
+
+Infrastructure serves the platform.
+
+It is not the platform itself.
+
+---
+
+# Engineering
+
+Engineering is the mechanism through which the platform evolves.
+
+Engineering work follows a deliberate lifecycle:
+
+1. Understand
 2. Design
 3. Implement
 4. Verify
 5. Document
+6. Synchronize
+7. Improve
 
-Infrastructure should remain understandable, recoverable, and intentionally designed.
+The repository is the canonical engineering record.
+
+Architecture guides implementation.
+
+Atlas provides deterministic engineering assistance.
+
+Automation reduces friction.
+
+Documentation preserves understanding.
+
+---
+
+# Long-Term Direction
+
+The long-term objective is to build a platform that continuously increases capability across every meaningful area of life.
+
+Future systems may include:
+
+- personal AI assistants
+- engineering agents
+- educational systems
+- health systems
+- knowledge systems
+- business systems
+- robotics
+- local AI infrastructure
+- self-hosted services
+- future Aiden OS experiences
+
+These are not independent goals.
+
+They are expressions of the same underlying philosophy.
+
+The platform should become progressively more capable without becoming unnecessarily more complex.
+
+Every improvement should make future improvements easier.
