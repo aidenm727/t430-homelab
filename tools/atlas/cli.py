@@ -1,6 +1,6 @@
 import argparse
 
-from .commands import docs, doctor, explain, impact, missing, next, open, state
+from .commands import docs, doctor, explain, impact, missing, next, open, state, validate
 
 
 COMMANDS = [
@@ -12,6 +12,7 @@ COMMANDS = [
     impact,
     missing,
     open,
+    validate,
 ]
 
 

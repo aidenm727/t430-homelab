@@ -19,3 +19,20 @@ class GuidanceReport:
     reasoning_context: list[str] = field(default_factory=list)
     relevant_documents: list[Document] = field(default_factory=list)
     suggested_commands: list[str] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class ValidationFinding:
+    severity: str
+    message: str
+
+
+@dataclass(frozen=True)
+class ValidationReport:
+    errors: list[ValidationFinding] = field(default_factory=list)
+    warnings: list[ValidationFinding] = field(default_factory=list)
+    recommendations: list[str] = field(default_factory=list)
+
+    @property
+    def valid(self) -> bool:
+        return not self.errors
