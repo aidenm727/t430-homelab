@@ -254,6 +254,20 @@ DOCUMENT_DEFINITIONS = {
             "docs/aiden-context.md",
         ],
     ),
+
+    "docs/architecture/engineering-sessions.md": DocumentDefinition(
+        path="docs/architecture/engineering-sessions.md",
+        purpose="Defines how engineering sessions begin, how startup context is established, and how Atlas should support deterministic session bootstrap.",
+        capability="Engineering",
+        tags=["atlas", "engineering-workflow", "session-bootstrap"],
+        related=[
+            "docs/architecture/engineering.md",
+            "docs/architecture/atlas.md",
+            "docs/architecture/repository.md",
+            "docs/architecture/repository-synchronization.md",
+            "docs/current-mission.md",
+        ],
+    ),
 }
 
 
