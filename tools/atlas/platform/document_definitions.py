@@ -135,6 +135,19 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/mission-advancement.md": DocumentDefinition(
+        path="docs/architecture/mission-advancement.md",
+        purpose="Defines Mission Advancement as the capability for recommending whether the active engineering mission should advance based on Engineering Intelligence.",
+        capability="Engineering",
+        tags=["mission-advancement", "engineering-intelligence", "engineering-review"],
+        related=[
+            "docs/architecture/engineering-intelligence.md",
+            "docs/architecture/milestone-completion.md",
+            "docs/architecture/engineering-review.md",
+            "docs/current-mission.md",
+        ],
+    ),
+
     "docs/architecture/capabilities.md": DocumentDefinition(
         path="docs/architecture/capabilities.md",
         purpose="Defines the platform capability map and capability-driven planning model.",
