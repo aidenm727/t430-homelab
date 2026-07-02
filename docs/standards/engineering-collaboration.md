@@ -1,94 +1,139 @@
-# Engineering Collaboration Standard
+# Engineering Collaboration Contract
 
 ## Purpose
 
-This document defines how AI-assisted engineering sessions should be conducted for the Aiden Platform.
+This document defines how the human engineer, Atlas, ChatGPT, and the repository collaborate to evolve the Aiden Platform.
 
-Its purpose is to reduce friction, preserve engineering judgment, and make implementation work easier to copy, verify, document, commit, and continue.
+Its purpose is to make engineering sessions deterministic, low-friction, verifiable, and aligned with platform architecture.
 
 ## Core Principle
 
-AI assistance should improve engineering agency, not create confusion.
+AI assistance should increase engineering agency, not replace judgment or create confusion.
 
-Engineering responses should be clear, copy-safe, verifiable, and aligned with the platform architecture.
+No implementation-focused engineering work should begin until current engineering state is established according to:
 
-## Default Response Structure
+    docs/architecture/engineering-sessions.md
 
-During implementation sessions, AI engineering responses should normally use this structure:
+## Responsibilities
 
-1. Why
-2. Change
-3. Verify
-4. Next
+The human engineer owns goals, judgment, execution, verification, review, commits, and final decisions.
 
-## Copy-Safe Implementation Rule
+The repository preserves canonical engineering truth through architecture, infrastructure records, operations history, roadmaps, standards, generated context, and engineering tools.
 
-When providing repository-ready documentation, scripts, commands, or code, the primary artifact must be directly copyable.
+Atlas provides deterministic engineering awareness from the repository and working tree.
 
-The assistant must not use nested markdown code fences inside a copyable artifact.
+ChatGPT assists with architecture, planning, explanation, documentation, and implementation artifacts.
 
-If an inserted document needs to show an example command, file path, or output, use indented text instead of nested fences.
+## Relationship to Engineering Sessions
 
-## Implementation Scope
+Session startup, session readiness, source-of-truth order, and Atlas bootstrap architecture are defined by:
 
-Prefer one complete implementation artifact over scattered fragments.
+    docs/architecture/engineering-sessions.md
 
-For large files, provide one complete section replacement rather than many small edits.
+This contract does not replace session architecture.
 
-Avoid making the user reconstruct a change from multiple partial snippets.
+It defines how ChatGPT should collaborate with the human engineer and Atlas once session context is established.
 
-## Architecture Before Implementation
+## Engineering Mode
 
-Before implementation, identify the relevant platform capability and determine whether architecture or standards need to change first.
+Engineering Mode begins once enough state is known to work deliberately.
 
-Implementation should reinforce architecture rather than bypass it.
+Lifecycle:
 
-## Verification Requirement
+    Understand
+    Design
+    Accept Decision
+    Implement
+    Verify
+    Document
+    Synchronize
+    Commit
+    Push
 
-Every meaningful implementation response should include exact verification commands.
+Once Engineering Mode has begun, conversational acceptance phrases authorize progress to the next engineering checkpoint.
 
-Verification should check the thing that changed, not just confirm that a command ran.
+Examples:
 
-## Documentation Responsibility
+- let's do it
+- go ahead
+- continue
+- sounds good
+- yep
+- okay
 
-Meaningful engineering changes should be documented immediately after verification.
+ChatGPT should pause only when an architectural decision is required, live state is missing, verification fails, documentation conflicts exist, or genuine user input is required.
 
-Generated context should summarize canonical documentation but never replace it.
+## Implementation Artifact Standard
 
-## Ambiguity Handling
+Implementation artifacts should prioritize low-friction terminal execution.
 
-Pause and ask for clarification when:
+Preferred formats:
 
-- An architectural decision is genuinely unresolved
-- Verification fails
-- Documentation conflicts exist
-- User input is required to avoid guessing
+1. Terminal-native command block
+2. Complete file replacement
+3. Complete section replacement
+4. Exact verification command sequence
 
-Otherwise, continue toward the next responsible engineering checkpoint.
+Manual editing should be the fallback, not the default.
+
+ChatGPT should choose the safest transport format for the artifact size and complexity.
+
+Default transport guidance:
+
+1. Use shell commands for simple changes.
+2. Use heredoc file replacement for straightforward documents.
+3. Use Python writers for large, brittle, or escaping-sensitive documents.
+4. Use future Atlas apply-style artifacts when structured repository artifact application exists.
+
+Terminal-native artifacts should avoid nested Markdown fences.
+
+When generating Markdown files through shell heredocs, prefer indented code blocks inside the document instead of triple-backtick fences.
 
 ## Formatting Standard
 
-Engineering output should minimize copy/paste friction.
+During implementation-focused engineering sessions, ChatGPT should optimize formatting for engineering execution rather than conversational presentation.
+
+Engineering output should be easy to copy, paste, run, verify, and review.
 
 Avoid:
 
-- Nested markdown fences inside copyable artifacts
-- Multiple disconnected snippets when one block would work
-- Decorative formatting that makes terminal or editor paste unreliable
-- Ambiguous placeholders that require unnecessary manual repair
+- fragile nested Markdown formatting
+- multiple disconnected snippets when one block would work
+- mixing explanation, file content, and verification inside one confusing artifact
+- executable commands for unverified future capabilities
+- decorative formatting that makes terminal execution harder
 
 Prefer:
 
-- One contiguous copyable block
-- Plain markdown
-- Indented examples inside markdown documents
-- Explicit verification commands
-- Clear next checkpoints
+- one clean terminal-native block per implementation step
+- exact verification commands
+- clear file paths
+- explicit next checkpoints
+- repository-supported commands
 
-## Atlas Integration Direction
+## Workflow Calibration
 
-Atlas should eventually understand this standard as repository knowledge.
+Recurring collaboration friction should be treated as an engineering problem.
 
-Future Atlas capabilities may validate whether repository changes, generated context, or engineering workflows follow documented standards.
+During workflow calibration sessions:
 
-This standard should become part of the platform's deterministic engineering context rather than remaining only a conversational preference.
+- recurring issues should be integrated into this contract before continuing,
+- improvements should be documented as engineering refinements,
+- the objective is to improve future engineering sessions rather than merely complete the current task.
+
+## Completion Standard
+
+Implementation responses should conclude with only:
+
+    Verify
+    Next
+
+Verify contains exact checks.
+
+Next identifies the next engineering checkpoint.
+
+## Long-Term Direction
+
+This contract should make future engineering sessions easier to start, verify, continue, and transfer across chats.
+
+The long-term goal is for Atlas and the repository to provide enough deterministic context that ChatGPT can enter Engineering Mode with minimal conversational setup while preserving human judgment and architectural discipline.

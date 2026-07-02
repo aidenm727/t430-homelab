@@ -8,6 +8,19 @@ Defines how the Aiden Platform evolves from idea to architecture to implementati
 
 The platform evolves by improving capabilities, not by randomly installing services.
 
+
+## Collaboration Contract
+
+Engineering sessions are governed by:
+
+    docs/standards/engineering-collaboration.md
+
+That document defines the execution protocol for human, Atlas, ChatGPT, and repository collaboration.
+
+This architecture document defines engineering intent.
+
+The collaboration contract defines how that intent is applied during active engineering work.
+
 ## Default Workflow
 
 1. Learn

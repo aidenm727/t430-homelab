@@ -249,6 +249,12 @@ Atlas serves as the deterministic bridge between AI assistants and the Aiden Pla
 
 Rather than relying on conversational memory, AI assistants should consult Atlas to understand current engineering state before proposing implementation work.
 
+Atlas startup behavior and human-AI engineering session behavior are governed by:
+
+    docs/standards/engineering-collaboration.md
+
+Atlas should provide the deterministic live-state inputs required by that collaboration contract.
+
 Atlas should help AI assistants determine:
 
 - Current engineering state
