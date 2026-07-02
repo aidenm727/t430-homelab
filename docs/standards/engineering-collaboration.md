@@ -10,7 +10,9 @@ Its purpose is to make engineering sessions deterministic, low-friction, verifia
 
 AI assistance should increase engineering agency, not replace judgment or create confusion.
 
-No implementation-focused engineering work should begin until current engineering state is established according to:
+No implementation-focused engineering work should begin until live engineering state has been established.
+
+Engineering session startup is defined by:
 
     docs/architecture/engineering-sessions.md
 

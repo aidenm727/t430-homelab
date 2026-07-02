@@ -1,9 +1,10 @@
 import argparse
 
-from .commands import docs, doctor, explain, impact, missing, next, open, review, state, sync, validate
+from .commands import bootstrap, docs, doctor, explain, impact, missing, next, open, review, state, sync, validate
 
 
 COMMANDS = [
+    bootstrap,
     state,
     doctor,
     next,

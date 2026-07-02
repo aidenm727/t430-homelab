@@ -69,20 +69,22 @@ The current repository-local Atlas invocation is:
 
     ./atlas <command>
 
-Useful startup commands include:
+The current canonical startup command is:
 
-    ./atlas doctor
-    ./atlas validate
-    ./atlas state
+    ./atlas bootstrap
+
+This command establishes live engineering state before Engineering Mode begins.
+
+Supporting startup commands include:
+
+    ./atlas review
     ./atlas next
+    ./atlas validate
+    ./atlas sync
 
-Future Atlas work may provide a dedicated session bootstrap command such as:
+Future Atlas work may expand bootstrap behavior with a dedicated interactive session command such as:
 
     ./atlas session
-
-or:
-
-    ./atlas start
 
 Such commands should remain thin interfaces over reusable repository knowledge and reasoning capabilities.
 
