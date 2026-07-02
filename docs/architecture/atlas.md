@@ -138,6 +138,7 @@ They should request engineering information from reusable capabilities instead o
 
 Examples include:
 
+- atlas bootstrap
 - atlas state
 - atlas doctor
 - atlas docs
@@ -163,7 +164,7 @@ Examples:
     ./atlas validate
     ./atlas doctor
     ./atlas docs
-    ./atlas state
+    ./atlas bootstrap
 
 The repository-local launcher exists so engineers and AI assistants do not need to remember Python import paths or environment variables.
 

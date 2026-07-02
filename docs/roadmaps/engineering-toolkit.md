@@ -101,6 +101,7 @@ These capabilities provide deterministic engineering reasoning built on Reposito
 Implemented commands:
 
 ```text
+atlas bootstrap
 atlas state
 atlas doctor
 atlas docs

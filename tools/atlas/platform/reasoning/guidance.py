@@ -46,7 +46,7 @@ def build_guidance(catalog: DocumentCatalog, state: EngineeringState) -> Guidanc
             reason="Atlas avoids recommending new work while the repository has uncommitted changes.",
             reasoning_context=reasoning_context(catalog, reasoning_doc),
             relevant_documents=relevant_documents,
-            suggested_commands=["git status", "git diff", "./atlas review", "./atlas state"],
+            suggested_commands=["git status", "git diff", "./atlas bootstrap", "./atlas review"],
         )
 
     return GuidanceReport(
@@ -63,7 +63,7 @@ def build_guidance(catalog: DocumentCatalog, state: EngineeringState) -> Guidanc
             "./atlas review",
             "./atlas validate",
             "./atlas sync",
-            "./atlas state",
+            "./atlas bootstrap",
             "./atlas impact docs/architecture/engineering-review.md",
             "./atlas explain docs/architecture/engineering-review.md",
         ],

@@ -181,6 +181,7 @@ Early but useful.
 
 Current interface:
 
+- atlas bootstrap
 - atlas state
 
 Purpose:

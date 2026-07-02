@@ -48,7 +48,7 @@ def build_engineering_intelligence(
     suggested_commands = (
         ["./atlas validate", "./atlas sync", "git status"]
         if blockers
-        else ["./atlas validate", "./atlas sync", "./atlas state", "./atlas next"]
+        else ["./atlas bootstrap", "./atlas validate", "./atlas sync", "./atlas next"]
     )
 
     return EngineeringIntelligenceReport(
