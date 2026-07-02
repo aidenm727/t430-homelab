@@ -5,6 +5,20 @@ from atlas.platform.reasoning.models import MilestoneCompletionReport
 
 
 SYNCHRONIZATION_MILESTONE_TEXT = "Build Repository Synchronization Reasoning"
+ENGINEERING_REVIEW_MILESTONE_TEXT = "Strengthen Engineering Review as the primary Atlas engineering checkpoint"
+
+
+def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
+    evidence: list[str] = []
+    missing: list[str] = []
+
+    for path in required_paths:
+        if (repo_root() / path).exists():
+            evidence.append(f"{path} exists.")
+        else:
+            missing.append(f"{path} is missing.")
+
+    return evidence, missing
 
 
 def build_milestone_completion(
@@ -13,43 +27,69 @@ def build_milestone_completion(
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
 
-    evidence: list[str] = []
-    missing: list[str] = []
+    if ENGINEERING_REVIEW_MILESTONE_TEXT in milestone:
+        required_paths = [
+            "docs/architecture/engineering-review.md",
+            "docs/architecture/engineering-intelligence.md",
+            "tools/atlas/platform/reasoning/review.py",
+            "tools/atlas/platform/reasoning/intelligence.py",
+            "tools/atlas/commands/review.py",
+            "tools/atlas/commands/bootstrap.py",
+        ]
 
-    if SYNCHRONIZATION_MILESTONE_TEXT not in milestone:
+        evidence, missing = _path_evidence(required_paths)
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="In Progress",
+                confidence="Medium",
+                evidence=evidence,
+                missing_evidence=missing,
+                recommendation=(
+                    "Engineering Review foundation exists. Continue strengthening the review "
+                    "checkpoint by improving its milestone evidence, recommendation quality, "
+                    "and readiness reporting before advancing the mission."
+                ),
+            )
+
         return MilestoneCompletionReport(
-            status="Unknown",
-            confidence="Low",
-            evidence=[f"Current milestone is not recognized by this initial reasoning rule: {milestone}"],
-            missing_evidence=[],
-            recommendation="No milestone completion recommendation available.",
-        )
-
-    required_paths = [
-        "docs/architecture/repository-synchronization.md",
-        "tools/atlas/platform/reasoning/synchronization.py",
-        "tools/atlas/commands/sync.py",
-    ]
-
-    for path in required_paths:
-        if (repo_root() / path).exists():
-            evidence.append(f"{path} exists.")
-        else:
-            missing.append(f"{path} is missing.")
-
-    if not missing:
-        return MilestoneCompletionReport(
-            status="Complete",
-            confidence="High",
+            status="In Progress",
+            confidence="Medium",
             evidence=evidence,
             missing_evidence=missing,
-            recommendation="Current milestone appears complete. Consider advancing docs/current-mission.md.",
+            recommendation="Continue implementing the Engineering Review foundation before advancing the mission.",
+        )
+
+    if SYNCHRONIZATION_MILESTONE_TEXT in milestone:
+        required_paths = [
+            "docs/architecture/repository-synchronization.md",
+            "tools/atlas/platform/reasoning/synchronization.py",
+            "tools/atlas/commands/sync.py",
+        ]
+
+        evidence, missing = _path_evidence(required_paths)
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=missing,
+                recommendation="Current milestone appears complete. Consider advancing docs/current-mission.md.",
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            recommendation="Continue implementing Repository Synchronization Reasoning before advancing the mission.",
         )
 
     return MilestoneCompletionReport(
-        status="In Progress",
-        confidence="Medium",
-        evidence=evidence,
-        missing_evidence=missing,
-        recommendation="Continue implementing Repository Synchronization Reasoning before advancing the mission.",
+        status="Unknown",
+        confidence="Low",
+        evidence=[f"Current milestone is not recognized by milestone reasoning: {milestone}"],
+        missing_evidence=[],
+        recommendation="No milestone completion recommendation available.",
     )
