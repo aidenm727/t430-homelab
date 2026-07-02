@@ -95,22 +95,34 @@ def check_current_mission() -> list[SynchronizationFinding]:
     )
 
     sync_architecture_exists = repository_file_exists("docs/architecture/repository-synchronization.md")
-    milestone_mentions_sync = "synchronization" in milestone.lower()
+    mission_text = read_repository_file("docs/current-mission.md").lower()
+    milestone_text = milestone.lower()
+
+    mission_acknowledges_sync = (
+        "repository synchronization reasoning" in mission_text
+        or "synchronization reasoning" in mission_text
+    )
+    mission_targets_engineering_review = "engineering review" in milestone_text
+
+    aligned = sync_architecture_exists and (
+        mission_acknowledges_sync or mission_targets_engineering_review
+    )
 
     findings.append(
         finding(
             domain="Architecture ↔ Current Mission",
-            severity="OK" if sync_architecture_exists and milestone_mentions_sync else "Warning",
-            summary="Current mission is aligned with Repository Synchronization architecture."
-            if sync_architecture_exists and milestone_mentions_sync
-            else "Current mission may not align with Repository Synchronization architecture.",
+            severity="OK" if aligned else "Warning",
+            summary="Current mission is aligned with repository reasoning architecture."
+            if aligned
+            else "Current mission may not align with repository reasoning architecture.",
             evidence=(
                 f"Synchronization architecture exists: {'Yes' if sync_architecture_exists else 'No'}; "
-                f"milestone references synchronization: {'Yes' if milestone_mentions_sync else 'No'}"
+                f"mission acknowledges synchronization reasoning: {'Yes' if mission_acknowledges_sync else 'No'}; "
+                f"milestone targets Engineering Review: {'Yes' if mission_targets_engineering_review else 'No'}"
             ),
             recommended_action="No action required."
-            if sync_architecture_exists and milestone_mentions_sync
-            else "Review docs/current-mission.md and docs/architecture/repository-synchronization.md for alignment.",
+            if aligned
+            else "Review docs/current-mission.md and repository reasoning architecture for alignment.",
         )
     )
 

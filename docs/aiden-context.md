@@ -1,6 +1,6 @@
 # Aiden Context
 
-Generated: 2026-06-30
+Generated: 2026-07-02
 
 ## Purpose
 
@@ -12,38 +12,52 @@ It summarizes the current state, active priorities, and operating rules so an AI
 
 ### Phase
 
-Platform Alignment and Engineering Intelligence
+Platform Engineering Intelligence
 
 ---
 
 ### Mission
 
-Align the Aiden Platform architecture, AI architecture, engineering workflow, and Atlas development around the Personal Engineering Philosophy.
+Continue evolving Atlas into the primary deterministic engineering interface for the Aiden Platform.
 
-The immediate objective is to ensure the platform grows from a coherent architectural foundation before expanding into additional capabilities.
+The immediate objective is to strengthen Atlas from a set of useful commands into a reusable engineering intelligence system that can inspect repository state, reason about engineering readiness, recommend responsible next actions, and keep AI-assisted engineering aligned with canonical documentation.
 
-Atlas remains the primary engineering project because it reduces engineering friction, preserves repository understanding, and enables increasingly capable engineering workflows.
+The platform architecture is established enough to guide implementation. The current focus is now improving the engineering engine that helps the platform evolve deliberately.
 
 ---
 
 ### Current Focus
 
-- Synchronize philosophy, architecture, documentation, and implementation.
-- Continue evolving Atlas into the deterministic engineering interface for the Aiden Platform.
-- Strengthen repository reasoning before expanding platform capabilities.
-- Improve engineering leverage through reusable capabilities rather than isolated features.
-- Keep repository documentation, generated context, and AI environments synchronized.
+- Strengthen Atlas Engineering Intelligence.
+- Keep commands thin and reasoning capabilities reusable.
+- Improve mission-aware engineering workflows.
+- Continue reducing drift between architecture, implementation, documentation, generated context, and AI-assisted engineering.
+- Make every engineering checkpoint easier to verify, document, synchronize, commit, and push.
 
 ---
 
 ### Current Priorities
 
-1. Expand Atlas reasoning capabilities.
-2. Build repository synchronization awareness.
-3. Strengthen repository validation.
-4. Continue separating architecture from implementation.
-5. Improve AI-assisted engineering workflows.
+1. Strengthen Engineering Review as the primary Atlas checkpoint.
+2. Improve Mission Advancement Reasoning.
+3. Improve milestone-aware engineering recommendations.
+4. Improve generated AI context so it reflects current engineering intelligence.
+5. Continue separating repository knowledge, reasoning, and interface layers.
 6. Maintain documentation as the canonical engineering source of truth.
+
+---
+
+### Recently Completed
+
+- Repository Synchronization Reasoning
+- Mission Advancement Reasoning
+- Milestone Completion Reasoning
+- Engineering Review integration
+- Engineering Intelligence composition
+- Repository validation
+- Repository impact analysis
+- Engineering-state awareness
+- Context generation workflows
 
 ---
 
@@ -69,34 +83,36 @@ The platform has established:
 - Repository Knowledge Layer
 - Repository Reasoning Layer
 - Repository validation
-- Repository impact analysis
-- Engineering-state awareness
+- Repository synchronization reasoning
+- Milestone completion reasoning
+- Mission advancement reasoning
+- Engineering Review
+- Engineering Intelligence
 - Context generation workflows
 
-The current engineering objective is no longer establishing architecture.
-
-It is applying that architecture consistently across the platform while expanding Atlas into a reusable engineering capability.
+The current engineering objective is to make Atlas increasingly capable of guiding responsible engineering work without turning commands into isolated logic.
 
 ---
 
 ### Next Milestone
 
-Build Repository Synchronization Reasoning.
+Strengthen Engineering Review as the primary Atlas engineering checkpoint.
 
-Atlas should understand not only repository relationships, but also whether architecture, documentation, generated artifacts, implementation, and engineering context remain synchronized.
+Engineering Review should become the normal entry point for starting engineering work. It should compose repository validation, synchronization, engineering state, milestone completion, mission advancement, and guidance into one evidence-backed recommendation.
 
-This capability should become the foundation for future engineering intelligence across the Aiden Platform.
+This capability should make it easier for both humans and AI assistants to begin from the same engineering reality.
 
 ---
 
 ### Success Criteria
 
-The current phase is complete when:
+The current phase is successful when:
 
-- Platform architecture reflects the Personal Engineering Philosophy.
-- AI architecture reflects the platform vision.
-- Atlas reasons about repository synchronization.
-- Documentation remains continuously synchronized.
+- Engineering Review is the default checkpoint before new implementation work.
+- Engineering Review clearly explains repository health, synchronization, mission state, blockers, and recommended action.
+- Mission Advancement Reasoning remains separate from Engineering Review presentation.
+- Atlas commands continue to expose reusable reasoning rather than duplicating engineering logic.
+- Generated AI context reflects the active engineering mission.
 - New engineering work naturally follows the platform architecture rather than redefining it.
 
 ## Infrastructure Snapshot
