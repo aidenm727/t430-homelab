@@ -39,8 +39,6 @@ def build_engineering_intelligence(
             f"Working tree clean: {'Yes' if state.repository_clean else 'No'}",
             f"Current phase: {state.mission_phase}",
             f"Next milestone: {state.next_milestone}",
-            f"Milestone completion: {milestone.status} ({milestone.confidence} confidence)",
-            f"Milestone recommendation: {milestone.recommendation}",
             f"Mission advancement: {mission_advancement.recommendation} ({mission_advancement.confidence} confidence)",
         ]
     )
