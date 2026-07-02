@@ -54,6 +54,7 @@ Current documents:
 * `docs/architecture/engineering.md`
 * `docs/architecture/engineering-capabilities.md`
 * `docs/architecture/engineering-review.md`
+* `docs/architecture/engineering-intelligence.md`
 * `docs/architecture/capabilities.md`
 * `docs/architecture/compute.md`
 * `docs/architecture/ai.md`
