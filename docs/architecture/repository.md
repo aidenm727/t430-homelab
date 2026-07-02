@@ -64,6 +64,7 @@ Current documents:
 * `docs/architecture/milestone-completion.md`
 * `docs/architecture/mission-advancement.md`
 * `docs/architecture/engineering-lifecycle.md`
+* `docs/architecture/architecture-registration.md`
 
 Architecture documents should not become service inventories.
 

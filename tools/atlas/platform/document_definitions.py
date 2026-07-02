@@ -161,6 +161,19 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/architecture-registration.md": DocumentDefinition(
+        path="docs/architecture/architecture-registration.md",
+        purpose="Defines Architecture Registration for integrating new architecture documents into repository maps, metadata, validation, and Engineering Review.",
+        capability="Engineering",
+        tags=["architecture-registration", "repository-registration", "engineering-lifecycle"],
+        related=[
+            "docs/architecture/repository.md",
+            "docs/architecture/engineering-lifecycle.md",
+            "docs/architecture/engineering-intelligence.md",
+            "docs/architecture/repository-metadata.md",
+        ],
+    ),
+
     "docs/architecture/capabilities.md": DocumentDefinition(
         path="docs/architecture/capabilities.md",
         purpose="Defines the platform capability map and capability-driven planning model.",
