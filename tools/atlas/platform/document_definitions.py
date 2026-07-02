@@ -109,6 +109,19 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/engineering-intelligence.md": DocumentDefinition(
+        path="docs/architecture/engineering-intelligence.md",
+        purpose="Defines Engineering Intelligence as the shared structured understanding consumed by Atlas, AI assistants, local agents, and future interfaces.",
+        capability="Engineering",
+        tags=["engineering-intelligence", "engineering-engine", "atlas"],
+        related=[
+            "docs/architecture/engineering-review.md",
+            "docs/architecture/engineering-capabilities.md",
+            "docs/architecture/reasoning.md",
+            "docs/architecture/atlas.md",
+        ],
+    ),
+
     "docs/architecture/milestone-completion.md": DocumentDefinition(
         path="docs/architecture/milestone-completion.md",
         purpose="Defines milestone completion reasoning for determining whether the active engineering milestone appears complete based on repository evidence.",
