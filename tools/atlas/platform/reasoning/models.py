@@ -88,3 +88,24 @@ class EngineeringReviewReport:
         if self.synchronization_status != "Synchronized":
             return "Needs attention"
         return "Ready"
+
+
+@dataclass(frozen=True)
+class EngineeringIntelligenceReport:
+    validation_status: str
+    synchronization_status: str
+    repository_clean: bool
+    current_phase: str
+    next_milestone: str
+    blockers: list[str] = field(default_factory=list)
+    evidence: list[str] = field(default_factory=list)
+    relevant_documents: list[Document] = field(default_factory=list)
+    suggested_commands: list[str] = field(default_factory=list)
+
+    @property
+    def health(self) -> str:
+        if self.blockers:
+            return "Blocked"
+        if self.synchronization_status != "Synchronized":
+            return "Needs attention"
+        return "Ready"
