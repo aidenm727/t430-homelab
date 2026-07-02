@@ -96,6 +96,19 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/engineering-review.md": DocumentDefinition(
+        path="docs/architecture/engineering-review.md",
+        purpose="Defines Engineering Review as the capability for composing validation, synchronization, state, and guidance into evidence-backed engineering recommendations.",
+        capability="Engineering",
+        tags=["engineering-review", "engineering-capabilities", "atlas"],
+        related=[
+            "docs/architecture/engineering-capabilities.md",
+            "docs/architecture/repository-synchronization.md",
+            "docs/architecture/reasoning.md",
+            "docs/architecture/atlas.md",
+        ],
+    ),
+
     "docs/architecture/capabilities.md": DocumentDefinition(
         path="docs/architecture/capabilities.md",
         purpose="Defines the platform capability map and capability-driven planning model.",
