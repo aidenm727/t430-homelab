@@ -57,6 +57,7 @@ Current documents:
 * `docs/architecture/ai.md`
 * `docs/architecture/repository.md`
 * `docs/architecture/atlas.md`
+* `docs/architecture/repository-metadata.md`
 
 Architecture documents should not become service inventories.
 

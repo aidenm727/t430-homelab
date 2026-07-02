@@ -37,6 +37,7 @@ Primary documents:
 * `docs/architecture/platform.md`
 * `docs/architecture/engineering.md`
 * `docs/architecture/capabilities.md`
+* `docs/architecture/repository-metadata.md`
 
 These documents should describe principles, relationships, capabilities, and decision-making rules.
 
@@ -115,12 +116,13 @@ A new human or AI reader should read the repository in this order:
 7. `docs/architecture/ai.md`
 8. `docs/architecture/repository.md`
 9. `docs/architecture/atlas.md`
-10. `docs/standards/engineering-collaboration.md`
-11. `docs/current-mission.md`
-12. `docs/infrastructure.md`
-13. `docs/infrastructure-gamer-pve.md`
-14. `docs/services.md`
-15. `docs/aiden-context.md`
+10. `docs/architecture/repository-metadata.md`
+11. `docs/standards/engineering-collaboration.md`
+12. `docs/current-mission.md`
+13. `docs/infrastructure.md`
+14. `docs/infrastructure-gamer-pve.md`
+15. `docs/services.md`
+16. `docs/aiden-context.md`
 
 ## Source of Truth Rules
 
