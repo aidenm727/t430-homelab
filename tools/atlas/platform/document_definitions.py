@@ -255,6 +255,29 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/repository-metadata.md": DocumentDefinition(
+        path="docs/architecture/repository-metadata.md",
+        purpose="Defines the architecture for repository-owned machine-readable metadata used by Atlas.",
+        capability="Engineering",
+        tags=["atlas", "repository-knowledge", "metadata"],
+        related=[
+            "docs/architecture/atlas.md",
+            "docs/architecture/repository.md",
+            "docs/standards/engineering-collaboration.md",
+        ],
+    ),
+    "docs/standards/engineering-collaboration.md": DocumentDefinition(
+        path="docs/standards/engineering-collaboration.md",
+        purpose="Defines the standard for AI-assisted and human engineering collaboration on the Aiden Platform.",
+        capability="Engineering",
+        tags=["standards", "engineering-workflow", "collaboration"],
+        related=[
+            "docs/architecture/engineering.md",
+            "docs/architecture/repository.md",
+            "docs/architecture/repository-metadata.md",
+        ],
+    ),
+
     "docs/architecture/engineering-sessions.md": DocumentDefinition(
         path="docs/architecture/engineering-sessions.md",
         purpose="Defines how engineering sessions begin, how startup context is established, and how Atlas should support deterministic session bootstrap.",

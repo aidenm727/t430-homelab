@@ -70,6 +70,10 @@ def roadmap_documents() -> list[str]:
     return markdown_files(docs_dir() / "roadmaps")
 
 
+def standards_documents() -> list[str]:
+    return markdown_files(docs_dir() / "standards")
+
+
 def current_context_documents() -> list[str]:
     names = [
         "current-mission.md",
@@ -87,6 +91,7 @@ def current_context_documents() -> list[str]:
 def document_layers() -> list[DocumentLayer]:
     return [
         DocumentLayer("Architecture", architecture_documents()),
+        DocumentLayer("Standards", standards_documents()),
         DocumentLayer("Infrastructure", infrastructure_documents()),
         DocumentLayer("Operations", operations_documents()),
         DocumentLayer("Roadmaps", roadmap_documents()),
