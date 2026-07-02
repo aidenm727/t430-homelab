@@ -1,5 +1,6 @@
 from atlas.platform.reasoning.guidance import build_guidance
 from atlas.platform.reasoning.impact import analyze_impact
+from atlas.platform.reasoning.review import build_engineering_review
 from atlas.platform.reasoning.synchronization import analyze_synchronization
 from atlas.platform.reasoning.models import (
     GuidanceReport,
@@ -8,6 +9,7 @@ from atlas.platform.reasoning.models import (
     ValidationReport,
     SynchronizationFinding,
     SynchronizationReport,
+    EngineeringReviewReport,
 )
 from atlas.platform.reasoning.validation import validate_repository
 
@@ -20,4 +22,5 @@ __all__ = [
     "build_guidance",
     "validate_repository",
     "analyze_synchronization",
+    "build_engineering_review",
 ]
