@@ -5,6 +5,9 @@ from atlas.platform.reasoning.models import GuidanceReport
 
 
 FOCUS_DOCUMENT_PATHS = [
+    "docs/architecture/engineering-review.md",
+    "docs/architecture/engineering-intelligence.md",
+    "docs/architecture/mission-advancement.md",
     "docs/architecture/reasoning.md",
     "docs/architecture/atlas.md",
     "docs/architecture/repository.md",
@@ -43,22 +46,25 @@ def build_guidance(catalog: DocumentCatalog, state: EngineeringState) -> Guidanc
             reason="Atlas avoids recommending new work while the repository has uncommitted changes.",
             reasoning_context=reasoning_context(catalog, reasoning_doc),
             relevant_documents=relevant_documents,
-            suggested_commands=["git status", "git diff", "python3 tools/atlas.py state"],
+            suggested_commands=["git status", "git diff", "./atlas review", "./atlas state"],
         )
 
     return GuidanceReport(
         current_phase=state.mission_phase,
         recommended_action=state.next_milestone,
         reason=(
-            "The current mission defines the next milestone, and Atlas can now use "
-            "repository knowledge plus the reasoning layer to guide the next checkpoint."
+            "The current mission defines the next milestone, and Engineering Review "
+            "is the primary checkpoint for composing repository health, synchronization, "
+            "mission state, blockers, and recommended action."
         ),
         reasoning_context=reasoning_context(catalog, reasoning_doc),
         relevant_documents=relevant_documents,
         suggested_commands=[
-            "python3 tools/atlas.py state",
-            "python3 tools/atlas.py validate",
-            "python3 tools/atlas.py impact docs/architecture/reasoning.md",
-            "python3 tools/atlas.py explain docs/architecture/reasoning.md",
+            "./atlas review",
+            "./atlas validate",
+            "./atlas sync",
+            "./atlas state",
+            "./atlas impact docs/architecture/engineering-review.md",
+            "./atlas explain docs/architecture/engineering-review.md",
         ],
     )
