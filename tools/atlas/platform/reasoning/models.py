@@ -93,6 +93,9 @@ class EngineeringReviewReport:
 @dataclass(frozen=True)
 class EngineeringIntelligenceReport:
     validation_status: str
+    milestone_status: str
+    milestone_confidence: str
+    milestone_recommendation: str
     synchronization_status: str
     repository_clean: bool
     current_phase: str
@@ -109,3 +112,12 @@ class EngineeringIntelligenceReport:
         if self.synchronization_status != "Synchronized":
             return "Needs attention"
         return "Ready"
+
+
+@dataclass(frozen=True)
+class MilestoneCompletionReport:
+    status: str
+    confidence: str
+    evidence: list[str] = field(default_factory=list)
+    missing_evidence: list[str] = field(default_factory=list)
+    recommendation: str = "No recommendation."

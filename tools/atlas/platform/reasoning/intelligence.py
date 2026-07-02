@@ -1,6 +1,7 @@
 from atlas.platform.document_catalog import DocumentCatalog
 from atlas.platform.engineering_state import EngineeringState
 from atlas.platform.reasoning.guidance import build_guidance
+from atlas.platform.reasoning.milestone import build_milestone_completion
 from atlas.platform.reasoning.models import EngineeringIntelligenceReport
 from atlas.platform.reasoning.synchronization import analyze_synchronization
 from atlas.platform.reasoning.validation import validate_repository
@@ -13,6 +14,7 @@ def build_engineering_intelligence(
     validation = validate_repository(catalog)
     synchronization = analyze_synchronization(catalog)
     guidance = build_guidance(catalog, state)
+    milestone = build_milestone_completion(catalog, state)
 
     validation_status = "Valid" if validation.valid else "Invalid"
 
@@ -35,6 +37,8 @@ def build_engineering_intelligence(
             f"Working tree clean: {'Yes' if state.repository_clean else 'No'}",
             f"Current phase: {state.mission_phase}",
             f"Next milestone: {state.next_milestone}",
+            f"Milestone completion: {milestone.status} ({milestone.confidence} confidence)",
+            f"Milestone recommendation: {milestone.recommendation}",
         ]
     )
 
@@ -46,6 +50,9 @@ def build_engineering_intelligence(
 
     return EngineeringIntelligenceReport(
         validation_status=validation_status,
+        milestone_status=milestone.status,
+        milestone_confidence=milestone.confidence,
+        milestone_recommendation=milestone.recommendation,
         synchronization_status=synchronization.status,
         repository_clean=state.repository_clean,
         current_phase=state.mission_phase,
