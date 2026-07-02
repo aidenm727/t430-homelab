@@ -109,6 +109,19 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/milestone-completion.md": DocumentDefinition(
+        path="docs/architecture/milestone-completion.md",
+        purpose="Defines milestone completion reasoning for determining whether the active engineering milestone appears complete based on repository evidence.",
+        capability="Engineering",
+        tags=["milestone-completion", "repository-reasoning", "engineering-review"],
+        related=[
+            "docs/architecture/engineering-review.md",
+            "docs/architecture/reasoning.md",
+            "docs/architecture/repository-synchronization.md",
+            "docs/current-mission.md",
+        ],
+    ),
+
     "docs/architecture/capabilities.md": DocumentDefinition(
         path="docs/architecture/capabilities.md",
         purpose="Defines the platform capability map and capability-driven planning model.",
