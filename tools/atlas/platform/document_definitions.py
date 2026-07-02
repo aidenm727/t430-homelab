@@ -148,6 +148,19 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/engineering-lifecycle.md": DocumentDefinition(
+        path="docs/architecture/engineering-lifecycle.md",
+        purpose="Defines the Engineering Lifecycle for deliberate platform evolution from implementation through validation, synchronization, mission advancement, and context regeneration.",
+        capability="Engineering",
+        tags=["engineering-lifecycle", "engineering-process", "atlas"],
+        related=[
+            "docs/architecture/reasoning.md",
+            "docs/architecture/engineering-intelligence.md",
+            "docs/architecture/engineering-review.md",
+            "docs/architecture/mission-advancement.md",
+        ],
+    ),
+
     "docs/architecture/capabilities.md": DocumentDefinition(
         path="docs/architecture/capabilities.md",
         purpose="Defines the platform capability map and capability-driven planning model.",
