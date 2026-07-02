@@ -52,6 +52,7 @@ Current documents:
 
 * `docs/architecture/platform.md`
 * `docs/architecture/engineering.md`
+* `docs/architecture/engineering-capabilities.md`
 * `docs/architecture/capabilities.md`
 * `docs/architecture/compute.md`
 * `docs/architecture/ai.md`

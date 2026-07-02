@@ -36,6 +36,7 @@ Primary documents:
 
 * `docs/architecture/platform.md`
 * `docs/architecture/engineering.md`
+* `docs/architecture/engineering-capabilities.md`
 * `docs/architecture/capabilities.md`
 * `docs/architecture/repository-metadata.md`
 
@@ -111,18 +112,19 @@ A new human or AI reader should read the repository in this order:
 2. `docs/docs-map.md`
 3. `docs/architecture/platform.md`
 4. `docs/architecture/engineering.md`
-5. `docs/architecture/capabilities.md`
-6. `docs/architecture/compute.md`
-7. `docs/architecture/ai.md`
-8. `docs/architecture/repository.md`
-9. `docs/architecture/atlas.md`
-10. `docs/architecture/repository-metadata.md`
-11. `docs/standards/engineering-collaboration.md`
-12. `docs/current-mission.md`
-13. `docs/infrastructure.md`
-14. `docs/infrastructure-gamer-pve.md`
-15. `docs/services.md`
-16. `docs/aiden-context.md`
+5. `docs/architecture/engineering-capabilities.md`
+6. `docs/architecture/capabilities.md`
+7. `docs/architecture/compute.md`
+8. `docs/architecture/ai.md`
+9. `docs/architecture/repository.md`
+10. `docs/architecture/atlas.md`
+11. `docs/architecture/repository-metadata.md`
+12. `docs/standards/engineering-collaboration.md`
+13. `docs/current-mission.md`
+14. `docs/infrastructure.md`
+15. `docs/infrastructure-gamer-pve.md`
+16. `docs/services.md`
+17. `docs/aiden-context.md`
 
 ## Source of Truth Rules
 
