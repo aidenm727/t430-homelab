@@ -65,6 +65,13 @@ def run(args):
     print(review.reason)
     print()
 
+    print("Milestone")
+    print("---------")
+    print(f"Status: {review.milestone_status}")
+    print(f"Confidence: {review.milestone_confidence}")
+    print(f"Recommendation: {review.milestone_recommendation}")
+    print()
+
     print_list("Blockers", review.blockers)
     print()
     print_list("Evidence", review.evidence)

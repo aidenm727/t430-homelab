@@ -46,6 +46,13 @@ def run(args):
     print(f"Current Phase: {report.current_phase}")
     print()
 
+    print("Milestone")
+    print("---------")
+    print(f"Status: {report.milestone_status}")
+    print(f"Confidence: {report.milestone_confidence}")
+    print(f"Recommendation: {report.milestone_recommendation}")
+    print()
+
     print_list("Blockers", report.blockers)
     print()
     print_list("Evidence", report.evidence)

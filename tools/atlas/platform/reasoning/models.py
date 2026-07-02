@@ -86,6 +86,9 @@ class EngineeringReviewReport:
     synchronization_status: str
     repository_clean: bool
     current_phase: str
+    milestone_status: str
+    milestone_confidence: str
+    milestone_recommendation: str
     recommended_action: str
     reason: str
     blockers: list[str] = field(default_factory=list)
