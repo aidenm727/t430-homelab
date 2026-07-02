@@ -2,6 +2,7 @@ from atlas.platform.document_catalog import DocumentCatalog
 from atlas.platform.engineering_state import EngineeringState
 from atlas.platform.reasoning.guidance import build_guidance
 from atlas.platform.reasoning.milestone import build_milestone_completion
+from atlas.platform.reasoning.mission_advancement import build_mission_advancement
 from atlas.platform.reasoning.models import EngineeringIntelligenceReport
 from atlas.platform.reasoning.synchronization import analyze_synchronization
 from atlas.platform.reasoning.validation import validate_repository
@@ -15,6 +16,7 @@ def build_engineering_intelligence(
     synchronization = analyze_synchronization(catalog)
     guidance = build_guidance(catalog, state)
     milestone = build_milestone_completion(catalog, state)
+    mission_advancement = build_mission_advancement(validation, synchronization, milestone, state)
 
     validation_status = "Valid" if validation.valid else "Invalid"
 
@@ -39,6 +41,7 @@ def build_engineering_intelligence(
             f"Next milestone: {state.next_milestone}",
             f"Milestone completion: {milestone.status} ({milestone.confidence} confidence)",
             f"Milestone recommendation: {milestone.recommendation}",
+            f"Mission advancement: {mission_advancement.recommendation} ({mission_advancement.confidence} confidence)",
         ]
     )
 
@@ -53,6 +56,9 @@ def build_engineering_intelligence(
         milestone_status=milestone.status,
         milestone_confidence=milestone.confidence,
         milestone_recommendation=milestone.recommendation,
+        mission_advancement_recommendation=mission_advancement.recommendation,
+        mission_advancement_confidence=mission_advancement.confidence,
+        mission_should_advance=mission_advancement.should_advance,
         synchronization_status=synchronization.status,
         repository_clean=state.repository_clean,
         current_phase=state.mission_phase,

@@ -68,6 +68,18 @@ class SynchronizationReport:
         return "Synchronized"
 
 
+
+@dataclass(frozen=True)
+class MissionAdvancementReport:
+    recommendation: str
+    confidence: str
+    should_advance: bool
+    reason: str
+    suggested_action: str
+    evidence: list[str] = field(default_factory=list)
+    blockers: list[str] = field(default_factory=list)
+
+
 @dataclass(frozen=True)
 class EngineeringReviewReport:
     validation_status: str
@@ -96,6 +108,9 @@ class EngineeringIntelligenceReport:
     milestone_status: str
     milestone_confidence: str
     milestone_recommendation: str
+    mission_advancement_recommendation: str
+    mission_advancement_confidence: str
+    mission_should_advance: bool
     synchronization_status: str
     repository_clean: bool
     current_phase: str

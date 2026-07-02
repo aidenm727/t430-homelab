@@ -15,12 +15,9 @@ def build_engineering_review(
     if intelligence.blockers:
         recommended_action = "Resolve blocking repository issues before starting new engineering work."
         reason = "Engineering Review prioritizes repository health before new implementation."
-    elif (
-        intelligence.milestone_status == "Complete"
-        and intelligence.milestone_confidence == "High"
-    ):
-        recommended_action = intelligence.milestone_recommendation
-        reason = "Milestone Completion Reasoning found high-confidence evidence that the current milestone is complete."
+    elif intelligence.mission_should_advance:
+        recommended_action = "Update docs/current-mission.md to define the next engineering milestone."
+        reason = "Mission Advancement Reasoning found high-confidence evidence that the current mission should advance."
     else:
         recommended_action = guidance.recommended_action
         reason = guidance.reason
