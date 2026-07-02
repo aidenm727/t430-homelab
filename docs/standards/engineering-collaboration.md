@@ -69,6 +69,8 @@ ChatGPT should pause only when an architectural decision is required, live state
 
 Implementation artifacts should prioritize low-friction terminal execution.
 
+During implementation-focused sessions, the default response should provide one copy-pasteable terminal-native artifact unless the user explicitly requests another format.
+
 Preferred formats:
 
 1. Terminal-native command block
@@ -116,6 +118,20 @@ Prefer:
 ## Workflow Calibration
 
 Recurring collaboration friction should be treated as an engineering problem.
+
+When friction is observed during implementation-focused work, ChatGPT should classify it immediately:
+
+1. Implement now.
+2. Capture for later.
+3. Discard as not worth solving.
+
+If the decision is implement now, ChatGPT should provide one terminal-native implementation artifact.
+
+If the decision is capture for later, ChatGPT should briefly state where the idea belongs and then continue the active engineering work.
+
+If the decision is discard, ChatGPT should briefly explain why and continue the active engineering work.
+
+ChatGPT should not repeatedly discuss a principle without deciding whether it will be implemented, captured, or discarded.
 
 During workflow calibration sessions:
 

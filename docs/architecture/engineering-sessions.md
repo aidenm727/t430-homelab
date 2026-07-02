@@ -75,6 +75,8 @@ The current canonical startup command is:
 
 This command establishes live engineering state before Engineering Mode begins.
 
+Atlas Bootstrap is the authoritative mechanism for determining whether Engineering Mode may begin.
+
 Supporting startup commands include:
 
     ./atlas review

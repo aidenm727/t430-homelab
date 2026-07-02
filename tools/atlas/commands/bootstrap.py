@@ -75,12 +75,39 @@ def run(args):
     )
     print()
 
-    print("Engineering Mode Guidance")
-    print("-------------------------")
-    if review.blockers:
-        print("Do not enter Engineering Mode yet. Resolve blockers first.")
+    ready = not review.blockers
+
+    print("Repository Understanding")
+    print("------------------------")
+    print("Provided by canonical repository documentation.")
+    print()
+
+    print("Live Engineering State")
+    print("----------------------")
+    print("INSPECTED")
+    print()
+
+    print("Engineering Mode")
+    print("----------------")
+    print("READY" if ready else "NOT READY")
+    print()
+
+    print("Engineering Mode Reason")
+    print("-----------------------")
+    if ready:
+        print("Repository validation, synchronization, and live engineering state support implementation.")
     else:
-        print("Live engineering state is established. Engineering Mode may begin.")
+        print(review.reason)
+    print()
+
+    print("ChatGPT Guidance")
+    print("----------------")
+    if ready:
+        print("Engineering Mode has been established.")
+        print("Proceed using the active engineering capability and current engineering checkpoint.")
+    else:
+        print("Engineering Mode has not been established.")
+        print("Resolve the blockers above before proposing implementation.")
     print()
 
     print("Next Checkpoint")
