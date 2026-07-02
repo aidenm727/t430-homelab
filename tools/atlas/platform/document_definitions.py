@@ -83,6 +83,19 @@ DOCUMENT_DEFINITIONS = {
         managed_by="tools/generate-context.py",
     ),
 
+    "docs/architecture/engineering-capabilities.md": DocumentDefinition(
+        path="docs/architecture/engineering-capabilities.md",
+        purpose="Defines reusable engineering capabilities as platform abilities exposed through Atlas and future interfaces.",
+        capability="Engineering",
+        tags=["engineering-capabilities", "atlas", "platform-engineering"],
+        related=[
+            "docs/architecture/engineering.md",
+            "docs/architecture/atlas.md",
+            "docs/architecture/reasoning.md",
+            "docs/architecture/repository-metadata.md",
+        ],
+    ),
+
     "docs/architecture/capabilities.md": DocumentDefinition(
         path="docs/architecture/capabilities.md",
         purpose="Defines the platform capability map and capability-driven planning model.",

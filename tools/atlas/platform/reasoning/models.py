@@ -36,3 +36,33 @@ class ValidationReport:
     @property
     def valid(self) -> bool:
         return not self.errors
+
+
+@dataclass(frozen=True)
+class SynchronizationFinding:
+    domain: str
+    severity: str
+    summary: str
+    evidence: str
+    recommended_action: str
+
+
+@dataclass(frozen=True)
+class SynchronizationReport:
+    findings: list[SynchronizationFinding] = field(default_factory=list)
+
+    @property
+    def errors(self) -> list[SynchronizationFinding]:
+        return [finding for finding in self.findings if finding.severity == "Error"]
+
+    @property
+    def warnings(self) -> list[SynchronizationFinding]:
+        return [finding for finding in self.findings if finding.severity == "Warning"]
+
+    @property
+    def status(self) -> str:
+        if self.errors:
+            return "Unsynchronized"
+        if self.warnings:
+            return "Partially synchronized"
+        return "Synchronized"
