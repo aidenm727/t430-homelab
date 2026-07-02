@@ -63,6 +63,7 @@ Current documents:
 * `docs/architecture/repository-metadata.md`
 * `docs/architecture/milestone-completion.md`
 * `docs/architecture/mission-advancement.md`
+* `docs/architecture/engineering-lifecycle.md`
 
 Architecture documents should not become service inventories.
 
