@@ -16,16 +16,15 @@ The repository should make the platform easier to understand, operate, document,
 
 ## Repository Layers
 
-The repository is organized into six major layers:
+The repository is organized into seven major layers:
 
-```text
-Vision
-Architecture
-Infrastructure
-Operations
-Roadmaps
-Engineering Toolkit
-```
+    Vision
+    Architecture
+    Standards
+    Infrastructure
+    Operations
+    Roadmaps
+    Engineering Toolkit
 
 ## 1. Vision
 
@@ -61,7 +60,19 @@ Current documents:
 
 Architecture documents should not become service inventories.
 
-## 3. Infrastructure
+## 3. Standards
+
+Standards define how engineering work should be performed.
+
+Standards documents describe expectations, rules, workflows, and quality bars that should be followed across the platform.
+
+Current documents:
+
+* `docs/standards/engineering-collaboration.md`
+
+Standards should guide repeatable engineering behavior without becoming architecture, infrastructure records, or operational history.
+
+## 4. Infrastructure
 
 Infrastructure explains what currently exists.
 
@@ -76,7 +87,7 @@ Current documents:
 
 Infrastructure records should be updated when the real system changes.
 
-## 4. Operations
+## 5. Operations
 
 Operations explains how the platform is safely changed.
 
@@ -91,7 +102,7 @@ Current documents:
 
 Operations should preserve the history of how the platform evolved.
 
-## 5. Roadmaps
+## 6. Roadmaps
 
 Roadmaps explain what the platform may improve next.
 
@@ -106,7 +117,7 @@ Current documents:
 
 Roadmaps should guide future work while remaining flexible.
 
-## 6. Engineering Toolkit
+## 7. Engineering Toolkit
 
 The engineering toolkit contains software that helps build, understand, document, and operate the platform.
 
@@ -146,24 +157,26 @@ Examples:
 
 Generated files should clearly indicate when they should not be edited directly.
 
-The canonical source should remain the architecture, infrastructure, operations, and roadmap documents.
+The canonical source should remain the architecture, standards, infrastructure, operations, and roadmap documents.
 
 ## Source of Truth Rules
 
 Use this source-of-truth order when reasoning about the repository:
 
 1. Architecture documents define intent.
-2. Infrastructure documents define current implementation.
-3. Operations documents define change history.
-4. Roadmaps define planned improvements.
-5. Generated AI context summarizes the current state.
-6. Git history records the evolution of the project.
+2. Standards documents define expected engineering behavior.
+3. Infrastructure documents define current implementation.
+4. Operations documents define change history.
+5. Roadmaps define planned improvements.
+6. Generated AI context summarizes the current state.
+7. Git history records the evolution of the project.
 
 ## Placement Rules
 
 Use these rules when adding new files:
 
 * Long-term design decisions belong in `docs/architecture/`.
+* Engineering standards belong in `docs/standards/`.
 * Current deployed system records belong in infrastructure documentation.
 * Change history belongs in `docs/changes/` and `docs/changes.log`.
 * Future work belongs in `docs/roadmaps/`.

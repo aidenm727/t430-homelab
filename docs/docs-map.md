@@ -8,14 +8,13 @@ It is the recommended starting point for understanding the repository.
 
 ## Documentation Layers
 
-The documentation is organized into four layers:
+The documentation is organized into five layers:
 
-```text
-Vision
-Architecture
-Infrastructure
-Operations
-```
+    Vision
+    Architecture
+    Standards
+    Infrastructure
+    Operations
 
 ## 1. Vision
 
@@ -43,7 +42,19 @@ These documents should describe principles, relationships, capabilities, and dec
 
 They should not become service inventories.
 
-## 3. Infrastructure
+## 3. Standards
+
+Standards documents explain how engineering work should be performed.
+
+Primary documents:
+
+* `docs/standards/engineering-collaboration.md`
+
+These documents should define repeatable expectations, workflows, formatting rules, and quality bars for building the platform.
+
+They should not replace architecture, infrastructure records, or operational history.
+
+## 4. Infrastructure
 
 Infrastructure documents explain what currently exists.
 
@@ -55,7 +66,7 @@ Primary documents:
 
 These documents should describe hosts, services, networking, storage, access, backups, and operational state.
 
-## 4. Operations
+## 5. Operations
 
 Operations documents explain how changes are made, tracked, and verified.
 
@@ -100,15 +111,16 @@ A new human or AI reader should read the repository in this order:
 3. `docs/architecture/platform.md`
 4. `docs/architecture/engineering.md`
 5. `docs/architecture/capabilities.md`
-6. `docs/architecture/compute.md
-7. `docs/architecture/ai.md
-8. `docs/architecture/repository.md
-9. `docs/architecture/atlas.md
-10. `docs/current-mission.md`
-11. `docs/infrastructure.md`
-12. `docs/infrastructure-gamer-pve.md`
-13. `docs/services.md`
-14. `docs/aiden-context.md`
+6. `docs/architecture/compute.md`
+7. `docs/architecture/ai.md`
+8. `docs/architecture/repository.md`
+9. `docs/architecture/atlas.md`
+10. `docs/standards/engineering-collaboration.md`
+11. `docs/current-mission.md`
+12. `docs/infrastructure.md`
+13. `docs/infrastructure-gamer-pve.md`
+14. `docs/services.md`
+15. `docs/aiden-context.md`
 
 ## Source of Truth Rules
 
@@ -116,9 +128,11 @@ GitHub is the canonical documentation source.
 
 The server-side `~/homelab/docs/changes.log` is the operational history record.
 
-Infrastructure records describe current state.
-
 Architecture records describe intent, design, and decision-making principles.
+
+Standards records describe expected engineering behavior.
+
+Infrastructure records describe current state.
 
 AI context files summarize the current state for assistant workflows.
 
@@ -130,6 +144,13 @@ Update architecture documents when:
 * A new platform capability is defined
 * The long-term direction changes
 * A major decision needs explanation
+
+Update standards documents when:
+
+* A repeatable engineering expectation changes
+* A collaboration or implementation rule changes
+* A recurring source of engineering friction needs a durable workflow fix
+* A quality bar becomes important enough to enforce consistently
 
 Update infrastructure documents when:
 
