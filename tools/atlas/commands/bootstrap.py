@@ -71,6 +71,12 @@ def run(args):
     print(f"Confidence: {review.milestone_confidence}")
     print(f"Recommendation: {review.milestone_recommendation}")
     print()
+    print_list("Satisfied Criteria", review.milestone_satisfied_criteria)
+    print()
+    print_list("Unsatisfied Criteria", review.milestone_unsatisfied_criteria)
+    print()
+    print_list("Next Milestone Actions", review.milestone_next_actions)
+    print()
 
     print_list("Blockers", review.blockers)
     print()

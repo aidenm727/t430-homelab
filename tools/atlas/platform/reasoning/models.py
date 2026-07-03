@@ -89,6 +89,9 @@ class EngineeringReviewReport:
     milestone_status: str
     milestone_confidence: str
     milestone_recommendation: str
+    milestone_satisfied_criteria: list[str]
+    milestone_unsatisfied_criteria: list[str]
+    milestone_next_actions: list[str]
     recommended_action: str
     reason: str
     blockers: list[str] = field(default_factory=list)
@@ -111,6 +114,9 @@ class EngineeringIntelligenceReport:
     milestone_status: str
     milestone_confidence: str
     milestone_recommendation: str
+    milestone_satisfied_criteria: list[str]
+    milestone_unsatisfied_criteria: list[str]
+    milestone_next_actions: list[str]
     mission_advancement_recommendation: str
     mission_advancement_confidence: str
     mission_should_advance: bool
