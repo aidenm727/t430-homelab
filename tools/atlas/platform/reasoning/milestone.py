@@ -45,6 +45,22 @@ def build_milestone_completion(
                 confidence="Medium",
                 evidence=evidence,
                 missing_evidence=missing,
+                satisfied_criteria=[
+                    "Engineering Review architecture exists.",
+                    "Engineering Intelligence architecture exists.",
+                    "Engineering Review reasoning implementation exists.",
+                    "Engineering Intelligence composition exists.",
+                    "Review command exposes Engineering Review.",
+                    "Bootstrap command consumes Engineering Review.",
+                ],
+                unsatisfied_criteria=[
+                    "Milestone reasoning still uses presentation-oriented recommendation text.",
+                    "Engineering Review readiness reporting is not yet fully structured.",
+                ],
+                next_actions=[
+                    "Move milestone reasoning toward structured criteria.",
+                    "Let Engineering Review interpret milestone facts for presentation.",
+                ],
                 recommendation=(
                     "Engineering Review foundation exists. Continue strengthening the review "
                     "checkpoint by improving its milestone evidence, recommendation quality, "
@@ -57,6 +73,11 @@ def build_milestone_completion(
             confidence="Medium",
             evidence=evidence,
             missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Create the missing Engineering Review foundation files.",
+            ],
             recommendation="Continue implementing the Engineering Review foundation before advancing the mission.",
         )
 
@@ -75,6 +96,11 @@ def build_milestone_completion(
                 confidence="High",
                 evidence=evidence,
                 missing_evidence=missing,
+                satisfied_criteria=evidence,
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "Consider advancing docs/current-mission.md.",
+                ],
                 recommendation="Current milestone appears complete. Consider advancing docs/current-mission.md.",
             )
 
@@ -83,6 +109,11 @@ def build_milestone_completion(
             confidence="Medium",
             evidence=evidence,
             missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Continue implementing Repository Synchronization Reasoning before advancing the mission.",
+            ],
             recommendation="Continue implementing Repository Synchronization Reasoning before advancing the mission.",
         )
 
@@ -91,5 +122,12 @@ def build_milestone_completion(
         confidence="Low",
         evidence=[f"Current milestone is not recognized by milestone reasoning: {milestone}"],
         missing_evidence=[],
+        satisfied_criteria=[],
+        unsatisfied_criteria=[
+            "No milestone-specific reasoning rule matched the current mission milestone.",
+        ],
+        next_actions=[
+            "Add a milestone reasoning rule for the current mission milestone.",
+        ],
         recommendation="No milestone completion recommendation available.",
     )

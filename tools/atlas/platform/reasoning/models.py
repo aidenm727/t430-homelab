@@ -138,4 +138,7 @@ class MilestoneCompletionReport:
     confidence: str
     evidence: list[str] = field(default_factory=list)
     missing_evidence: list[str] = field(default_factory=list)
+    satisfied_criteria: list[str] = field(default_factory=list)
+    unsatisfied_criteria: list[str] = field(default_factory=list)
+    next_actions: list[str] = field(default_factory=list)
     recommendation: str = "No recommendation."
