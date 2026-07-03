@@ -32,33 +32,53 @@ Rather than becoming another engineering tool, Atlas is intended to become the p
 
 Atlas is organized as a layered engineering system.
 
-```text
-Engineering Interface
+    Repository
+        ↓
+    Repository Knowledge
+        ↓
+    Repository Reasoning
+        ↓
+    Engineering Intelligence
+        ↓
+    Engineering Interpretation
+        ↓
+    Engineering Interfaces
 
-↓
+Each layer has one responsibility.
 
-Repository Reasoning Layer
+- Repository preserves canonical engineering truth.
+- Repository Knowledge understands what exists.
+- Repository Reasoning evaluates what is true.
+- Engineering Intelligence composes reasoning into a structured engineering picture.
+- Engineering Interpretation turns structured engineering intelligence into deterministic engineering guidance.
+- Engineering Interfaces present that guidance through commands, assistant workflows, local tools, and future platform surfaces.
 
-↓
+Each layer should build on the layer below it without duplicating responsibility.
 
-Repository Knowledge Layer
+---
 
-↓
+# Layer Responsibility Model
 
-Repository
-```
+Each Atlas layer should answer one engineering question and answer it well.
 
-Each layer has a distinct responsibility.
+    Repository Knowledge
+        What exists?
 
-The repository stores engineering knowledge.
+    Repository Reasoning
+        What is true?
 
-The Repository Knowledge Layer understands repository entities.
+    Engineering Intelligence
+        How do those truths relate?
 
-The Repository Reasoning Layer evaluates engineering implications.
+    Engineering Interpretation
+        What should the engineer do next, and why?
 
-The Engineering Interface exposes deterministic capabilities through user-facing commands.
+    Engineering Interfaces
+        How should that guidance be presented?
 
-Each layer builds upon the one below it without duplicating responsibility.
+This principle helps prevent command-specific logic, duplicated reasoning, and unclear ownership.
+
+When a capability starts answering multiple engineering questions, it should usually be split into separate reusable capabilities or moved to the correct layer.
 
 ---
 
@@ -73,6 +93,8 @@ Infrastructure documents describe implementation.
 Operations documents describe engineering workflow.
 
 Roadmaps describe future engineering direction.
+
+Standards describe repeatable engineering behavior.
 
 Generated context summarizes canonical sources but never replaces them.
 
@@ -109,45 +131,149 @@ The Repository Reasoning Layer consumes Repository Knowledge and produces determ
 
 Rather than rediscovering repository state, reasoning evaluates repository knowledge to help engineers understand engineering implications.
 
+Repository Reasoning answers factual engineering questions such as:
+
+- Is the repository metadata valid?
+- Are canonical and generated artifacts synchronized?
+- Which documents are related?
+- What does a change affect?
+- Which milestone criteria are satisfied?
+- Which evidence is missing?
+
 Current reasoning capabilities include:
 
 - Impact analysis
 - Engineering guidance
 - Repository validation
+- Repository synchronization
+- Milestone completion reasoning
+- Mission advancement reasoning
 
 Future reasoning capabilities may include:
 
-- Repository synchronization
 - Documentation consistency analysis
 - Capability-aware planning
 - Repository health assessment
 - Change impact prediction
-- Engineering recommendations
+- Engineering opportunity analysis
+- Repository consolidation analysis
 
-Reasoning should remain deterministic, explainable, and directly traceable to repository knowledge.
+Reasoning should remain deterministic, explainable, structured, and directly traceable to repository knowledge.
+
+Reasoning should produce facts, evidence, criteria, confidence, and constraints.
+
+Reasoning should avoid owning human-facing presentation when possible.
 
 ---
 
-# Engineering Interface
+# Engineering Intelligence Layer
 
-The Engineering Interface exposes repository capabilities through lightweight commands.
+Engineering Intelligence composes reasoning outputs into one structured engineering picture.
 
-Commands should remain presentation layers.
+It correlates validation, synchronization, mission state, milestone state, repository state, and relevant architecture so downstream capabilities can begin from the same understanding.
 
-They should request engineering information from reusable capabilities instead of implementing engineering logic directly.
+Engineering Intelligence answers questions such as:
+
+- Is the engineering environment ready?
+- Are there blockers?
+- What is the active phase?
+- What is the active milestone?
+- What reasoning outputs agree or conflict?
+- What evidence should downstream interpretation consider?
+
+Engineering Intelligence should not become a presentation layer.
+
+It should assemble structured facts, not decide how those facts should be shown in a CLI, chat session, dashboard, or future interface.
+
+---
+
+# Engineering Interpretation Layer
+
+Engineering Interpretation consumes Engineering Intelligence and produces deterministic engineering guidance.
+
+It turns structured engineering facts into actionable guidance while preserving traceability to the underlying evidence.
+
+Engineering Interpretation answers:
+
+    Given the current structured engineering picture,
+    what should the engineer do next, and why?
+
+Engineering Interpretation may produce:
+
+- Recommended action
+- Reason
+- Priority
+- Readiness judgment
+- Next checkpoint
+- Human-readable summary
+- Suggested verification path
+- Confidence and uncertainty explanation
+
+Engineering Interpretation should not duplicate repository reasoning.
+
+It should not inspect repository files directly when that information belongs in Repository Knowledge or Repository Reasoning.
+
+It should not become an interface-specific renderer.
+
+Multiple interfaces should be able to consume the same interpretation output.
+
+---
+
+# Engineering Interfaces
+
+Engineering Interfaces expose Atlas capabilities through user-facing commands, assistant workflows, local tools, and future platform surfaces.
+
+Interfaces should remain thin presentation layers.
+
+They should request structured engineering information from reusable capabilities instead of implementing engineering logic directly.
 
 Examples include:
 
 - atlas bootstrap
+- atlas review
+- atlas next
 - atlas state
 - atlas doctor
 - atlas docs
 - atlas explain
 - atlas impact
 - atlas validate
-- atlas next
+- atlas sync
+- ChatGPT engineering session startup
+- Generated AI context
+- Future dashboards
+- Future VS Code integrations
+- Future Aiden OS engineering workflows
 
-Future commands should begin by identifying the engineering question they answer rather than introducing new command-specific logic.
+Interfaces may format, filter, or display guidance.
+
+They should not own repository reasoning, engineering intelligence, or engineering interpretation.
+
+---
+
+# Capability and Interface Separation
+
+Atlas capabilities should be reusable across interfaces.
+
+A command should begin by identifying the engineering question it answers, then delegate to the appropriate capability layer.
+
+Examples:
+
+    atlas review
+        presents Engineering Interpretation output
+
+    atlas bootstrap
+        presents Engineering Interpretation plus startup readiness
+
+    atlas sync
+        presents Repository Synchronization reasoning
+
+    atlas validate
+        presents Repository Validation reasoning
+
+This separation keeps Atlas from becoming a collection of command-specific scripts.
+
+Atlas should become smarter by improving shared knowledge, reasoning, intelligence, and interpretation capabilities rather than by increasing command complexity.
 
 ---
 
