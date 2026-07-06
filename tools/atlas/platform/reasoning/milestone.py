@@ -61,11 +61,6 @@ def build_milestone_completion(
                     "Move milestone reasoning toward structured criteria.",
                     "Let Engineering Review interpret milestone facts for presentation.",
                 ],
-                recommendation=(
-                    "Engineering Review foundation exists. Continue strengthening the review "
-                    "checkpoint by improving its milestone evidence, recommendation quality, "
-                    "and readiness reporting before advancing the mission."
-                ),
             )
 
         return MilestoneCompletionReport(
@@ -78,7 +73,6 @@ def build_milestone_completion(
             next_actions=[
                 "Create the missing Engineering Review foundation files.",
             ],
-            recommendation="Continue implementing the Engineering Review foundation before advancing the mission.",
         )
 
     if SYNCHRONIZATION_MILESTONE_TEXT in milestone:
@@ -101,7 +95,6 @@ def build_milestone_completion(
                 next_actions=[
                     "Consider advancing docs/current-mission.md.",
                 ],
-                recommendation="Current milestone appears complete. Consider advancing docs/current-mission.md.",
             )
 
         return MilestoneCompletionReport(
@@ -114,7 +107,6 @@ def build_milestone_completion(
             next_actions=[
                 "Continue implementing Repository Synchronization Reasoning before advancing the mission.",
             ],
-            recommendation="Continue implementing Repository Synchronization Reasoning before advancing the mission.",
         )
 
     return MilestoneCompletionReport(
@@ -129,5 +121,4 @@ def build_milestone_completion(
         next_actions=[
             "Add a milestone reasoning rule for the current mission milestone.",
         ],
-        recommendation="No milestone completion recommendation available.",
     )

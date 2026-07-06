@@ -113,7 +113,6 @@ class EngineeringIntelligenceReport:
     validation_status: str
     milestone_status: str
     milestone_confidence: str
-    milestone_recommendation: str
     milestone_satisfied_criteria: list[str]
     milestone_unsatisfied_criteria: list[str]
     milestone_next_actions: list[str]
@@ -147,4 +146,3 @@ class MilestoneCompletionReport:
     satisfied_criteria: list[str] = field(default_factory=list)
     unsatisfied_criteria: list[str] = field(default_factory=list)
     next_actions: list[str] = field(default_factory=list)
-    recommendation: str = "No recommendation."

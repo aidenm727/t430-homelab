@@ -53,7 +53,6 @@ def build_engineering_intelligence(
         validation_status=validation_status,
         milestone_status=milestone.status,
         milestone_confidence=milestone.confidence,
-        milestone_recommendation=milestone.recommendation,
         milestone_satisfied_criteria=milestone.satisfied_criteria,
         milestone_unsatisfied_criteria=milestone.unsatisfied_criteria,
         milestone_next_actions=milestone.next_actions,
