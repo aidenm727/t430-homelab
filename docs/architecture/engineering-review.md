@@ -153,6 +153,23 @@ Engineering Review must:
 - Preserve human architectural judgment
 - Remain deterministic where practical
 
+## Completion Criteria
+
+The Engineering Review capability is considered complete when:
+
+- Repository Knowledge owns repository facts.
+- Repository Reasoning owns engineering evaluation.
+- Engineering Intelligence composes reasoning outputs into a structured engineering picture.
+- Engineering Interpretation produces engineering recommendations from structured intelligence.
+- Engineering Review remains a thin presentation interface.
+- Atlas commands consume Engineering Review rather than duplicating engineering logic.
+- AI-assisted engineering sessions naturally begin from Engineering Review.
+- Engineering recommendations are evidence-backed, deterministic, and traceable to canonical repository knowledge.
+
+Completion of this capability does not imply Engineering Review is feature-complete.
+
+Future improvements should extend Repository Knowledge, Repository Reasoning, Engineering Intelligence, and Engineering Interpretation rather than increasing interface complexity.
+
 ## Non-Responsibilities
 
 Engineering Review should not:
