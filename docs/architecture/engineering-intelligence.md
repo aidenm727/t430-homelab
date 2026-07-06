@@ -14,7 +14,7 @@ Atlas CLI, ChatGPT, local AI, VS Code, and future Aiden OS workflows should cons
 
 ## Architectural Position
 
-Engineering Intelligence sits above individual reasoning capabilities and below engineering interfaces.
+Engineering Intelligence sits above Repository Reasoning and below Engineering Interpretation.
 
     Repository
         ↓
@@ -22,11 +22,15 @@ Engineering Intelligence sits above individual reasoning capabilities and below 
         ↓
     Repository Reasoning
         ↓
-    Engineering Capabilities
-        ↓
     Engineering Intelligence
         ↓
-    Interfaces
+    Engineering Interpretation
+        ↓
+    Engineering Interfaces
+
+Engineering Intelligence is not an interface.
+
+It is the structured engineering picture produced after repository reasoning has been composed.
 
 ## Inputs
 
@@ -37,6 +41,7 @@ Engineering Intelligence may consume:
 - Engineering State
 - Engineering Guidance
 - Milestone Completion Reasoning
+- Mission Advancement Reasoning
 - Capability Maturity
 - Repository Metadata
 - Current Mission
@@ -52,23 +57,34 @@ Engineering Intelligence should assemble a structured picture of:
 - Working tree readiness
 - Current mission
 - Current milestone
+- Milestone criteria
 - Capability maturity
 - Completed or stale milestones
 - Relevant architecture
-- Recommended next engineering investment
-- Evidence supporting recommendations
+- Evidence for downstream interpretation
+- Blockers or conflicts across reasoning outputs
 
-## Relationship to Engineering Review
+Engineering Intelligence should correlate reasoning outputs.
 
-Engineering Review should consume Engineering Intelligence.
+It should not decide how those facts should be presented to a human.
 
-Engineering Review should not become the place where all engineering reasoning is manually glued together.
+## Relationship to Engineering Interpretation
 
-Instead:
+Engineering Interpretation consumes Engineering Intelligence.
 
-    Engineering Intelligence produces the structured picture.
-    Engineering Review renders and interprets that picture.
-    Interfaces display it for humans or AI systems.
+Engineering Intelligence answers:
+
+    How do the available engineering facts relate?
+
+Engineering Interpretation answers:
+
+    What should the engineer do next, and why?
+
+This separation keeps structured reasoning distinct from human-facing guidance.
+
+Engineering Intelligence should produce facts, criteria, confidence, evidence, and blockers.
+
+Engineering Interpretation should produce recommended actions, reasons, priorities, next checkpoints, and human-readable summaries.
 
 ## Interface Consumers
 
