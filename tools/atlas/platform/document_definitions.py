@@ -122,6 +122,20 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/engineering-opportunity.md": DocumentDefinition(
+        path="docs/architecture/engineering-opportunity.md",
+        purpose="Defines Engineering Opportunity as the capability for preserving, evaluating, and prioritizing potential future engineering work.",
+        capability="Engineering",
+        tags=["engineering-opportunity", "engineering-intelligence", "atlas"],
+        related=[
+            "docs/architecture/engineering-intelligence.md",
+            "docs/architecture/engineering-review.md",
+            "docs/architecture/engineering-capabilities.md",
+            "docs/architecture/atlas.md",
+            "docs/current-mission.md",
+        ],
+    ),
+
     "docs/architecture/milestone-completion.md": DocumentDefinition(
         path="docs/architecture/milestone-completion.md",
         purpose="Defines milestone completion reasoning for determining whether the active engineering milestone appears complete based on repository evidence.",

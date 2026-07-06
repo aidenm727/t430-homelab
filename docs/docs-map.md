@@ -39,6 +39,7 @@ Primary documents:
 * `docs/architecture/engineering-capabilities.md`
 * `docs/architecture/engineering-review.md`
 * `docs/architecture/engineering-intelligence.md`
+* `docs/architecture/engineering-opportunity.md`
 * `docs/architecture/milestone-completion.md`
 * `docs/architecture/mission-advancement.md`
 * `docs/architecture/engineering-lifecycle.md`
@@ -121,22 +122,23 @@ A new human or AI reader should read the repository in this order:
 5. `docs/architecture/engineering-capabilities.md`
 6. `docs/architecture/engineering-review.md`
 7. `docs/architecture/engineering-intelligence.md`
-8. `docs/architecture/milestone-completion.md`
-9. `docs/architecture/mission-advancement.md`
-10. `docs/architecture/engineering-lifecycle.md`
-11. `docs/architecture/architecture-registration.md`
-12. `docs/architecture/capabilities.md`
-13. `docs/architecture/compute.md`
-14. `docs/architecture/ai.md`
-15. `docs/architecture/repository.md`
-16. `docs/architecture/atlas.md`
-17. `docs/architecture/repository-metadata.md`
-18. `docs/standards/engineering-collaboration.md`
-19. `docs/current-mission.md`
-20. `docs/infrastructure.md`
-21. `docs/infrastructure-gamer-pve.md`
-22. `docs/services.md`
-23. `docs/aiden-context.md`
+8. `docs/architecture/engineering-opportunity.md`
+9. `docs/architecture/milestone-completion.md`
+10. `docs/architecture/mission-advancement.md`
+11. `docs/architecture/engineering-lifecycle.md`
+12. `docs/architecture/architecture-registration.md`
+13. `docs/architecture/capabilities.md`
+14. `docs/architecture/compute.md`
+15. `docs/architecture/ai.md`
+16. `docs/architecture/repository.md`
+17. `docs/architecture/atlas.md`
+18. `docs/architecture/repository-metadata.md`
+19. `docs/standards/engineering-collaboration.md`
+20. `docs/current-mission.md`
+21. `docs/infrastructure.md`
+22. `docs/infrastructure-gamer-pve.md`
+23. `docs/services.md`
+24. `docs/aiden-context.md`
 
 ## Source of Truth Rules
 
