@@ -48,18 +48,19 @@ def build_milestone_completion(
                 satisfied_criteria=[
                     "Engineering Review architecture exists.",
                     "Engineering Intelligence architecture exists.",
+                    "Engineering Interpretation architecture exists.",
                     "Engineering Review reasoning implementation exists.",
                     "Engineering Intelligence composition exists.",
+                    "Engineering Interpretation implementation exists.",
+                    "Milestone reasoning produces structured criteria instead of recommendation text.",
                     "Review command exposes Engineering Review.",
                     "Bootstrap command consumes Engineering Review.",
                 ],
                 unsatisfied_criteria=[
-                    "Milestone reasoning still uses presentation-oriented recommendation text.",
-                    "Engineering Review readiness reporting is not yet fully structured.",
+                    "Engineering Interpretation is not yet decomposed into smaller interpretation capabilities.",
                 ],
                 next_actions=[
-                    "Move milestone reasoning toward structured criteria.",
-                    "Let Engineering Review interpret milestone facts for presentation.",
+                    "Decompose Engineering Interpretation into focused readiness, milestone, and mission interpretation helpers.",
                 ],
             )
 
