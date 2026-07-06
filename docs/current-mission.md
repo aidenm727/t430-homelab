@@ -2,7 +2,7 @@
 
 ## Phase
 
-Platform Engineering Intelligence
+Engineering Opportunity Intelligence
 
 ---
 
@@ -10,30 +10,32 @@ Platform Engineering Intelligence
 
 Continue evolving Atlas into the primary deterministic engineering interface for the Aiden Platform.
 
-The immediate objective is to strengthen Atlas from a set of useful commands into a reusable engineering intelligence system that can inspect repository state, reason about engineering readiness, recommend responsible next actions, and keep AI-assisted engineering aligned with canonical documentation.
+The immediate objective is to extend Atlas beyond understanding the current engineering state into understanding future engineering opportunities.
 
-The platform architecture is established enough to guide implementation. The current focus is now improving the engineering engine that helps the platform evolve deliberately.
+Atlas should become capable of discovering, capturing, evaluating, preserving, prioritizing, and eventually scheduling engineering opportunities from repository knowledge, engineering reasoning, engineering sessions, architectural analysis, and future capability reasoning.
+
+This phase establishes Engineering Opportunity Intelligence as the next reusable platform capability that expands Atlas from understanding engineering reality into understanding engineering possibility.
 
 ---
 
 ## Current Focus
 
-- Strengthen Atlas Engineering Intelligence.
-- Keep commands thin and reasoning capabilities reusable.
-- Improve mission-aware engineering workflows.
+- Design Engineering Opportunity Intelligence.
+- Continue strengthening reusable platform capabilities over command-specific logic.
+- Preserve engineering opportunities as canonical repository knowledge rather than conversational memory.
 - Continue reducing drift between architecture, implementation, documentation, generated context, and AI-assisted engineering.
-- Make every engineering checkpoint easier to verify, document, synchronize, commit, and push.
+- Improve Atlas's ability to deliberately guide its own long-term evolution.
 
 ---
 
 ## Current Priorities
 
-1. Strengthen Engineering Review as the primary Atlas checkpoint.
-2. Improve Mission Advancement Reasoning.
-3. Improve milestone-aware engineering recommendations.
-4. Improve generated AI context so it reflects current engineering intelligence.
-5. Continue separating repository knowledge, reasoning, and interface layers.
-6. Maintain documentation as the canonical engineering source of truth.
+1. Design Engineering Opportunity Intelligence.
+2. Design the Engineering Opportunity lifecycle.
+3. Design canonical repository storage for engineering opportunities.
+4. Design Engineering Opportunity Review.
+5. Capture engineering opportunities discovered during engineering sessions.
+6. Continue strengthening shared reasoning and interpretation capabilities.
 
 ---
 
@@ -42,11 +44,15 @@ The platform architecture is established enough to guide implementation. The cur
 - Repository Synchronization Reasoning
 - Mission Advancement Reasoning
 - Milestone Completion Reasoning
-- Engineering Review integration
-- Engineering Intelligence composition
+- Engineering Intelligence
+- Engineering Interpretation
+- Engineering Review
+- Structured milestone criteria
 - Repository validation
+- Repository synchronization
 - Repository impact analysis
 - Engineering-state awareness
+- Deterministic engineering startup
 - Context generation workflows
 
 ---
@@ -64,33 +70,52 @@ The platform architecture is established enough to guide implementation. The cur
 
 ## Current Status
 
-The platform has established:
+The platform now contains:
 
-- A Personal Engineering Philosophy
-- A platform-first architecture
-- AI as a first-class capability
-- Atlas as the deterministic engineering interface
-- Repository Knowledge Layer
-- Repository Reasoning Layer
-- Repository validation
-- Repository synchronization reasoning
-- Milestone completion reasoning
-- Mission advancement reasoning
-- Engineering Review
+- Repository Knowledge
+- Repository Reasoning
 - Engineering Intelligence
-- Context generation workflows
+- Engineering Interpretation
+- Engineering Review
+- Mission Advancement Reasoning
+- Milestone Completion Reasoning
+- Repository Validation
+- Repository Synchronization Reasoning
+- Deterministic engineering startup
+- Canonical engineering architecture
 
-The current engineering objective is to make Atlas increasingly capable of guiding responsible engineering work without turning commands into isolated logic.
+Engineering Review is now the canonical engineering checkpoint for beginning implementation work.
+
+The next architectural objective is enabling Atlas to understand not only the current engineering state, but also future engineering opportunities.
 
 ---
 
 ## Next Milestone
 
-Strengthen Engineering Review as the primary Atlas engineering checkpoint.
+Design Engineering Opportunity Intelligence.
 
-Engineering Review should become the normal entry point for starting engineering work. It should compose repository validation, synchronization, engineering state, milestone completion, mission advancement, and guidance into one evidence-backed recommendation.
+Engineering opportunities should become first-class engineering objects that can be:
 
-This capability should make it easier for both humans and AI assistants to begin from the same engineering reality.
+- Captured
+- Reviewed
+- Accepted
+- Architected
+- Scheduled
+- Implemented
+- Completed
+
+Engineering opportunities should eventually originate from multiple capability producers, including:
+
+- Engineering sessions
+- Repository inspection
+- Architecture analysis
+- Documentation analysis
+- Repository consolidation analysis
+- Capability maturity analysis
+- Future reasoning capabilities
+- Human engineering ideas
+
+Engineering Opportunity Intelligence should evaluate, organize, prioritize, and preserve these opportunities as reusable repository knowledge.
 
 ---
 
@@ -98,9 +123,10 @@ This capability should make it easier for both humans and AI assistants to begin
 
 The current phase is successful when:
 
-- Engineering Review is the default checkpoint before new implementation work.
-- Engineering Review clearly explains repository health, synchronization, mission state, blockers, and recommended action.
-- Mission Advancement Reasoning remains separate from Engineering Review presentation.
-- Atlas commands continue to expose reusable reasoning rather than duplicating engineering logic.
-- Generated AI context reflects the active engineering mission.
-- New engineering work naturally follows the platform architecture rather than redefining it.
+- Engineering opportunities become a first-class platform capability.
+- Engineering opportunities are preserved as canonical repository knowledge.
+- Atlas can surface engineering opportunities without relying on conversational memory.
+- Engineering opportunities have a deterministic lifecycle.
+- Future engineering sessions naturally build upon previously captured opportunities.
+- Engineering Opportunity Intelligence integrates cleanly with Repository Knowledge, Repository Reasoning, Engineering Intelligence, Engineering Interpretation, and Engineering Review.
+- Atlas becomes increasingly capable of identifying high-leverage engineering investments before implementation begins.
