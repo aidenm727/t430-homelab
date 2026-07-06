@@ -56,11 +56,9 @@ def build_milestone_completion(
                     "Review command exposes Engineering Review.",
                     "Bootstrap command consumes Engineering Review.",
                 ],
-                unsatisfied_criteria=[
-                    "Engineering Interpretation is not yet decomposed into smaller interpretation capabilities.",
-                ],
+                unsatisfied_criteria=[],
                 next_actions=[
-                    "Decompose Engineering Interpretation into focused readiness, milestone, and mission interpretation helpers.",
+                    "Current milestone criteria are satisfied. Consider advancing docs/current-mission.md.",
                 ],
             )
 
