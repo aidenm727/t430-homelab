@@ -2,6 +2,7 @@ from atlas.platform.document_catalog import DocumentCatalog
 from atlas.platform.engineering_state import EngineeringState
 from atlas.platform.reasoning.guidance import build_guidance
 from atlas.platform.reasoning.intelligence import build_engineering_intelligence
+from atlas.platform.interpretation import build_engineering_interpretation
 from atlas.platform.reasoning.models import EngineeringReviewReport
 
 
@@ -12,15 +13,7 @@ def build_engineering_review(
     intelligence = build_engineering_intelligence(catalog, state)
     guidance = build_guidance(catalog, state)
 
-    if intelligence.blockers:
-        recommended_action = "Resolve blocking repository issues before starting new engineering work."
-        reason = "Engineering Review prioritizes repository health before new implementation."
-    elif intelligence.mission_should_advance:
-        recommended_action = "Update docs/current-mission.md to define the next engineering milestone."
-        reason = "Mission Advancement Reasoning found high-confidence evidence that the current mission should advance."
-    else:
-        recommended_action = guidance.recommended_action
-        reason = guidance.reason
+    interpretation = build_engineering_interpretation(intelligence, guidance)
 
     return EngineeringReviewReport(
         validation_status=intelligence.validation_status,
@@ -33,8 +26,8 @@ def build_engineering_review(
         milestone_satisfied_criteria=intelligence.milestone_satisfied_criteria,
         milestone_unsatisfied_criteria=intelligence.milestone_unsatisfied_criteria,
         milestone_next_actions=intelligence.milestone_next_actions,
-        recommended_action=recommended_action,
-        reason=reason,
+        recommended_action=interpretation.recommended_action,
+        reason=interpretation.reason,
         blockers=intelligence.blockers,
         evidence=intelligence.evidence,
         relevant_documents=intelligence.relevant_documents,
