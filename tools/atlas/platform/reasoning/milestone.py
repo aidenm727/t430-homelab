@@ -41,8 +41,8 @@ def build_milestone_completion(
 
         if not missing:
             return MilestoneCompletionReport(
-                status="In Progress",
-                confidence="Medium",
+                status="Complete",
+                confidence="High",
                 evidence=evidence,
                 missing_evidence=missing,
                 satisfied_criteria=[
