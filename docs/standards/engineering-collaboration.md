@@ -85,13 +85,32 @@ ChatGPT should choose the safest transport format for the artifact size and comp
 Default transport guidance:
 
 1. Use shell commands for simple changes.
-2. Use heredoc file replacement for straightforward documents.
-3. Use Python writers for large, brittle, or escaping-sensitive documents.
-4. Use future Atlas apply-style artifacts when structured repository artifact application exists.
+2. Use heredoc file replacement only for simple text files.
+3. Use Python writers for large, brittle, Markdown-heavy, or escaping-sensitive documents.
+4. Use patch files for precise diffs when full replacement is unnecessary.
+5. Use future Atlas apply-style artifacts when structured repository artifact application exists.
 
-Terminal-native artifacts should avoid nested Markdown fences.
+Implementation artifact generation, transport, validation, and delivery are defined architecturally by:
 
-When generating Markdown files through shell heredocs, prefer indented code blocks inside the document instead of triple-backtick fences.
+    docs/architecture/implementation-artifacts.md
+    docs/architecture/artifact-transport.md
+
+Terminal-native artifacts must avoid nested Markdown fences.
+
+When generating Markdown files through shell heredocs, do not use fenced code blocks inside the generated Markdown.
+
+Use four-space indented code blocks instead.
+
+Before sending an implementation artifact, ChatGPT must perform artifact preflight:
+
+1. Identify the transport mechanism.
+2. Determine whether the artifact writes Markdown.
+3. Check whether nested fenced code blocks would be created.
+4. Escalate to a Python writer when Markdown formatting risk exists.
+5. Default to Python writers for architecture documents unless the document is very small and formatting-safe.
+6. Include exact verification commands.
+
+Transport correctness takes priority over artifact brevity.
 
 ## Formatting Standard
 

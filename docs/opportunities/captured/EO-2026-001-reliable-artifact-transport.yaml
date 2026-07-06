@@ -1,0 +1,26 @@
+id: EO-2026-001
+
+title: Reliable implementation artifact transport
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-06
+
+source: engineering-session
+
+summary: >
+  Large implementation artifacts occasionally become corrupted during
+  ChatGPT response rendering, breaking copy-paste engineering workflows.
+
+rationale: >
+  Repeated engineering sessions have exposed transport reliability issues
+  with large Markdown artifacts. The long-term solution should improve
+  implementation transport while preserving the repository-first workflow.
+
+notes: >
+  Candidate future improvements include:
+    - Transport selection based on artifact size.
+    - Atlas-managed artifact application.
+    - Improved implementation artifact standards.

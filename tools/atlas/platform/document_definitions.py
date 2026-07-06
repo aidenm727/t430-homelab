@@ -92,7 +92,7 @@ DOCUMENT_DEFINITIONS = {
             "docs/architecture/engineering.md",
             "docs/architecture/atlas.md",
             "docs/architecture/reasoning.md",
-            "docs/architecture/repository-metadata.md",
+            "docs/architecture/repository-object.md",
         ],
     ),
 
@@ -184,7 +184,7 @@ DOCUMENT_DEFINITIONS = {
             "docs/architecture/repository.md",
             "docs/architecture/engineering-lifecycle.md",
             "docs/architecture/engineering-intelligence.md",
-            "docs/architecture/repository-metadata.md",
+            "docs/architecture/repository-object.md",
         ],
     ),
 
@@ -379,7 +379,7 @@ DOCUMENT_DEFINITIONS = {
         related=[
             "docs/architecture/engineering.md",
             "docs/architecture/repository.md",
-            "docs/architecture/repository-metadata.md",
+            "docs/architecture/repository-object.md",
         ],
     ),
 
@@ -396,6 +396,97 @@ DOCUMENT_DEFINITIONS = {
             "docs/current-mission.md",
         ],
     ),
+
+    "docs/architecture/engineering-opportunity-object.md": DocumentDefinition(
+        path="docs/architecture/engineering-opportunity-object.md",
+        purpose="Defines the Engineering Opportunity Object as the repository-native representation of a potential engineering improvement throughout its lifecycle.",
+        capability="Engineering",
+        tags=[
+            "engineering-opportunity-object",
+            "repository-object",
+            "engineering-opportunity",
+        ],
+        related=[
+            "docs/architecture/engineering-opportunity.md",
+            "docs/architecture/engineering-opportunity-intelligence.md",
+            "docs/architecture/engineering-intelligence.md",
+            "docs/architecture/repository-object.md",
+        ],
+    ),
+
+    "docs/architecture/engineering-opportunity-intelligence.md": DocumentDefinition(
+        path="docs/architecture/engineering-opportunity-intelligence.md",
+        purpose="Defines Engineering Opportunity Intelligence as the capability for discovering, evaluating, organizing, and recommending Engineering Opportunity Objects using deterministic repository reasoning.",
+        capability="Engineering",
+        tags=[
+            "engineering-opportunity-intelligence",
+            "engineering-intelligence",
+            "repository-reasoning",
+        ],
+        related=[
+            "docs/architecture/engineering-opportunity.md",
+            "docs/architecture/engineering-opportunity-object.md",
+            "docs/architecture/engineering-intelligence.md",
+            "docs/architecture/reasoning.md",
+            "docs/architecture/atlas.md",
+        ],
+    ),
+
+    "docs/architecture/artifact-transport.md": DocumentDefinition(
+        path="docs/architecture/artifact-transport.md",
+        purpose="Defines how implementation artifacts are safely transported from AI-assisted engineering into terminal and repository workflows.",
+        capability="Engineering",
+        tags=[
+            "artifact-transport",
+            "engineering-collaboration",
+            "implementation-artifacts",
+        ],
+        related=[
+            "docs/standards/engineering-collaboration.md",
+            "docs/architecture/engineering-sessions.md",
+            "docs/architecture/atlas.md",
+            "docs/architecture/engineering-opportunity-object.md",
+        ],
+    ),
+
+
+    "docs/architecture/implementation-artifacts.md": DocumentDefinition(
+        path="docs/architecture/implementation-artifacts.md",
+        purpose="Defines the lifecycle for generating, transporting, validating, and delivering implementation artifacts during engineering work.",
+        capability="Engineering",
+        tags=[
+            "implementation-artifacts",
+            "artifact-generation",
+            "artifact-validation",
+            "engineering-collaboration",
+        ],
+        related=[
+            "docs/architecture/artifact-transport.md",
+            "docs/standards/engineering-collaboration.md",
+            "docs/architecture/engineering-sessions.md",
+            "docs/architecture/atlas.md",
+        ],
+    ),
+
+
+    "docs/architecture/repository-object.md": DocumentDefinition(
+        path="docs/architecture/repository-object.md",
+        purpose="Defines Repository Objects as structured repository-native engineering entities that Atlas can discover, validate, summarize, and reason about.",
+        capability="Engineering",
+        tags=[
+            "repository-object",
+            "repository-knowledge",
+            "atlas",
+            "structured-objects",
+        ],
+        related=[
+            "docs/architecture/repository.md",
+            "docs/architecture/atlas.md",
+            "docs/architecture/reasoning.md",
+            "docs/architecture/engineering-opportunity-object.md",
+        ],
+    ),
+
 }
 
 
