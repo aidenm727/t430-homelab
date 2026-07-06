@@ -22,7 +22,7 @@ def build_engineering_review(
         current_phase=intelligence.current_phase,
         milestone_status=intelligence.milestone_status,
         milestone_confidence=intelligence.milestone_confidence,
-        milestone_recommendation=intelligence.milestone_recommendation,
+        milestone_recommendation=interpretation.milestone_recommendation,
         milestone_satisfied_criteria=intelligence.milestone_satisfied_criteria,
         milestone_unsatisfied_criteria=intelligence.milestone_unsatisfied_criteria,
         milestone_next_actions=intelligence.milestone_next_actions,
