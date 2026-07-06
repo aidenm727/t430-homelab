@@ -2,23 +2,27 @@
 
 ## Purpose
 
-Engineering Review is the capability that helps determine the next highest-leverage engineering investment for the Aiden Platform.
+Engineering Review is the engineering review interface for the Aiden Platform.
+
+It presents Engineering Interpretation output so a human engineer, AI assistant, or future interface can understand the current engineering state and next responsible checkpoint.
 
 It exists to answer:
 
-    Given the current repository state, synchronization state, validation state, architecture, and capability maturity, what should engineering focus on next?
+    What does Atlas recommend now, why does it recommend it, and what evidence supports that guidance?
 
-Engineering Review should turn existing repository knowledge and reasoning outputs into an evidence-backed engineering recommendation.
+Engineering Review should make engineering guidance understandable, traceable, and actionable.
+
+It should not generate guidance independently of Engineering Interpretation.
 
 ## Core Principle
 
-Engineering Review composes existing capabilities.
+Engineering Review presents interpreted engineering guidance.
 
-It should not duplicate repository validation, synchronization, state inspection, impact analysis, or guidance logic.
+It should not duplicate Repository Knowledge, Repository Reasoning, Engineering Intelligence, or Engineering Interpretation.
 
 ## Architectural Position
 
-Engineering Review sits above individual engineering capabilities and below engineering interfaces.
+Engineering Review sits in the Engineering Interfaces layer.
 
     Repository
         ↓
@@ -26,73 +30,85 @@ Engineering Review sits above individual engineering capabilities and below engi
         ↓
     Repository Reasoning
         ↓
-    Engineering Capabilities
+    Engineering Intelligence
+        ↓
+    Engineering Interpretation
         ↓
     Engineering Review
-        ↓
-    Interfaces
 
-Interfaces may include:
+Engineering Review is one interface over shared Atlas capabilities.
 
-- Atlas CLI
+Other interfaces may include:
+
+- atlas bootstrap
+- atlas next
 - ChatGPT project workflows
 - Local AI assistants
 - VS Code integrations
+- Future dashboards
 - Future Aiden OS engineering workflows
 
 ## Inputs
 
-Engineering Review should consume evidence from existing capabilities.
+Engineering Review should consume Engineering Interpretation output.
 
-Initial inputs include:
+Engineering Interpretation should already contain:
 
-- Repository Validation
-- Repository Synchronization
-- Engineering State Inspection
-- Impact Analysis
-- Engineering Guidance
-- Engineering Capability Architecture
-- Current Mission
-- Git working state
+- Repository health
+- Synchronization status
+- Working tree readiness
+- Current mission
+- Current milestone
+- Milestone criteria
+- Blockers
+- Recommended action
+- Reason
+- Next checkpoint
+- Relevant evidence
+- Suggested verification path
+
+Engineering Review may also display selected Engineering Intelligence fields when they help explain the recommendation.
 
 ## Review Questions
 
-Engineering Review should answer:
+Engineering Review should help the engineer answer:
 
-- Is the repository structurally valid?
-- Is the repository synchronized?
-- Is the working tree clean?
-- What is the active mission?
-- What is the current next milestone?
-- Which capabilities are mature, growing, early, planned, or architectural?
-- Which capability improvement would unlock the most future engineering leverage?
-- Which architecture documents are most relevant to the next investment?
-- What should be done next, and why?
+- Is the repository ready for engineering work?
+- Are there blockers?
+- What is the current mission?
+- What is the current milestone?
+- What criteria are satisfied or unsatisfied?
+- What is the recommended next checkpoint?
+- Why is that recommendation being made?
+- What evidence supports it?
+- What should be verified afterward?
 
 ## Review Process
 
-Engineering Review should evaluate engineering state in this order:
+Engineering Review should present engineering state in this order:
 
-1. Validate repository consistency.
-2. Check synchronization state.
-3. Inspect current engineering state.
-4. Identify active mission and milestone.
-5. Review capability maturity.
-6. Identify blockers or drift.
-7. Recommend the highest-leverage next engineering investment.
+1. Show overall health and readiness.
+2. Show blockers before new work.
+3. Show current mission and milestone.
+4. Show satisfied and unsatisfied criteria.
+5. Show interpreted recommendation.
+6. Show supporting evidence.
+7. Show suggested commands or verification steps.
 
-If validation or synchronization reports errors, Engineering Review should prioritize resolving those before recommending new work.
+If validation, synchronization, or working tree blockers exist, Engineering Review should make those blockers visible before presenting new engineering work.
 
 ## Outputs
 
 An Engineering Review report should include:
 
 - Overall engineering health
+- Readiness state
 - Blocking issues
-- Synchronization status
 - Current mission
-- Capability maturity summary
-- Highest-leverage recommendation
+- Current milestone
+- Milestone criteria
+- Interpreted recommendation
+- Reason for recommendation
 - Supporting evidence
 - Suggested next commands
 - Relevant documents
