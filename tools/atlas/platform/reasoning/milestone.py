@@ -32,6 +32,9 @@ OPPORTUNITY_SCOPE_CLASSIFICATION_DESIGN_MILESTONE_TEXT = (
 OPPORTUNITY_SCOPE_CLASSIFICATION_MILESTONE_TEXT = (
     "Build Engineering Opportunity Scope Classification Foundation"
 )
+OPPORTUNITY_DISTINCTNESS_ANALYSIS_DESIGN_MILESTONE_TEXT = (
+    "Design Engineering Opportunity Distinctness Analysis"
+)
 
 
 def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -125,6 +128,131 @@ def build_milestone_completion(
     state: EngineeringState,
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
+
+    if OPPORTUNITY_DISTINCTNESS_ANALYSIS_DESIGN_MILESTONE_TEXT in milestone:
+        design_requirements = {
+            "docs/architecture/engineering-opportunity-distinctness-analysis.md": {
+                "## Comparison Identity":
+                    "defines stable unordered pair identity",
+                "## Pairwise Analysis Model":
+                    "defines reusable pairwise comparison",
+                "## Portfolio Composition":
+                    "defines deterministic portfolio comparison",
+                "## Distinctness Outcomes":
+                    "defines duplicate, overlap, component, umbrella, distinct, and insufficient outcomes",
+                "## Directionality and Inverse Semantics":
+                    "defines symmetric and directional relationships",
+                "## Duplicate and Overlap Boundaries":
+                    "separates redundancy from independent value",
+                "## Component and Umbrella Boundaries":
+                    "defines decomposition relationships",
+                "## Explicit Relationship and Reference Evidence":
+                    "defines existing relationship evidence roles",
+                "## Capability-Aware Comparison":
+                    "defines capability comparison boundaries",
+                "## Scope-Aware Comparison":
+                    "defines scope comparison boundaries",
+                "## Text Normalization and Heuristic Boundaries":
+                    "defines transparent semantic comparison limits",
+                "## Evidence, Counterevidence, and Provenance":
+                    "requires source-backed comparison evidence",
+                "## Negative and Boundary Evidence":
+                    "defines positive evidence for distinctness",
+                "## Analysis States and Confidence":
+                    "defines resolved, candidate, ambiguous, insufficient, and conflicting states",
+                "## Canonical Target Candidates":
+                    "defines non-mutating canonical target proposals",
+                "## Structured Assessment Contracts":
+                    "defines pairwise and portfolio outputs",
+                "## Engineering Opportunity Assessment Integration":
+                    "defines assessment composition",
+                "## Recommendation Effects":
+                    "keeps recommendations separate from mutation",
+                "## Human Authority and Historical Traceability":
+                    "preserves human merge authority and stable identity",
+                "## Initial Implementation Boundary":
+                    "defines bounded safe implementation",
+                "## Verification Cases":
+                    "defines focused implementation tests",
+                "Keyword, token, embedding, or title similarity alone is never sufficient":
+                    "rejects lexical similarity as duplication proof",
+            },
+            "docs/architecture/engineering-opportunity-assessment.md": {
+                "docs/architecture/engineering-opportunity-distinctness-analysis.md":
+                    "references the canonical Distinctness Analysis contract",
+            },
+        }
+        registration_requirements = {
+            "docs/architecture/repository.md": {
+                "docs/architecture/engineering-opportunity-distinctness-analysis.md":
+                    "lists the architecture in repository ownership",
+            },
+            "docs/docs-map.md": {
+                "docs/architecture/engineering-opportunity-distinctness-analysis.md":
+                    "lists the architecture in the documentation map",
+            },
+            "tools/atlas/platform/document_definitions.py": {
+                '"docs/architecture/engineering-opportunity-distinctness-analysis.md"':
+                    "registers architecture metadata",
+            },
+        }
+
+        design_evidence, design_missing = _document_design_evidence(
+            catalog,
+            design_requirements,
+        )
+        registration_evidence, registration_missing = _implementation_evidence(
+            registration_requirements,
+        )
+        evidence = design_evidence + registration_evidence
+        missing = design_missing + registration_missing
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=[],
+                satisfied_criteria=[
+                    "Stable unordered pair identity is defined.",
+                    "Reusable pairwise and portfolio comparison models are defined.",
+                    "Duplicate, overlap, component, umbrella, distinct, and insufficient-evidence outcomes are explicit.",
+                    "Symmetric, directional, and inverse relationship semantics are defined.",
+                    "Duplicate and overlap boundaries preserve independent value.",
+                    "Component and umbrella boundaries preserve decomposition.",
+                    "Explicit relationships and references have bounded evidence roles.",
+                    "Capability Alignment supports comparison without proving duplication.",
+                    "Scope Classification constrains comparison without proving duplication.",
+                    "Text normalization remains transparent and lexical similarity alone is insufficient.",
+                    "Supporting evidence, counterevidence, boundary evidence, and provenance are required.",
+                    "Positive boundary evidence is required for distinctness.",
+                    "Resolved, candidate, ambiguous, insufficient-evidence, and conflicting states are defined.",
+                    "Canonical-target candidates remain non-mutating recommendations.",
+                    "Reusable pairwise and portfolio assessment contracts are defined.",
+                    "Engineering Opportunity Assessment integration avoids duplicated comparison logic.",
+                    "Recommendations remain separate from lifecycle and repository mutation.",
+                    "Human merge authority and stable historical traceability are preserved.",
+                    "The initial implementation boundary avoids false semantic certainty.",
+                    "Focused verification cases are explicit.",
+                    "The architecture is registered in Repository Knowledge.",
+                ],
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "Distinctness Analysis architecture is designed. Verify, document, commit, and consider advancing to the bounded implementation milestone.",
+                ],
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Complete the missing Engineering Opportunity Distinctness Analysis design evidence.",
+            ],
+        )
 
     if OPPORTUNITY_SCOPE_CLASSIFICATION_MILESTONE_TEXT in milestone:
         requirements = {

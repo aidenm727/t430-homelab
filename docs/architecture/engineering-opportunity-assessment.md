@@ -270,6 +270,10 @@ Relationship findings should include:
 
 Keyword similarity alone should never establish duplication.
 
+The detailed canonical Distinctness Analysis contract is defined in:
+
+    docs/architecture/engineering-opportunity-distinctness-analysis.md
+
 ---
 
 ## Evaluation Dimensions
