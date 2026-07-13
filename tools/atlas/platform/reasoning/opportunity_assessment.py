@@ -12,6 +12,9 @@ from atlas.platform.reasoning.opportunity_capability_alignment import (
 from atlas.platform.reasoning.opportunity_relationships import (
     build_opportunity_relationships,
 )
+from atlas.platform.reasoning.opportunity_scope_classification import (
+    classify_opportunity_scope,
+)
 from atlas.platform.reasoning.models import (
     EngineeringOpportunityAssessment,
     OpportunityAssessmentFact,
@@ -517,6 +520,81 @@ def assess_engineering_opportunity(
         capability_alignment.unresolved_questions
     )
 
+    scope_classification = classify_opportunity_scope(
+        entity,
+        capability_alignment=capability_alignment,
+        root=root or repo_root(),
+    )
+    facts.append(
+        OpportunityAssessmentFact(
+            name="scope-classification-state",
+            value=scope_classification.classification_state,
+            source=entity.path,
+        )
+    )
+
+    if scope_classification.primary_scope_id is not None:
+        facts.append(
+            OpportunityAssessmentFact(
+                name="primary-scope-id",
+                value=scope_classification.primary_scope_id,
+                source=(
+                    "docs/architecture/"
+                    "engineering-opportunity-scope-classification.md"
+                ),
+            )
+        )
+
+    if scope_classification.leading_candidate_scope_id is not None:
+        facts.append(
+            OpportunityAssessmentFact(
+                name="leading-scope-candidate-id",
+                value=scope_classification.leading_candidate_scope_id,
+                source=(
+                    "docs/architecture/"
+                    "engineering-opportunity-scope-classification.md"
+                ),
+            )
+        )
+
+    facts.extend(
+        OpportunityAssessmentFact(
+            name="candidate-scope-id",
+            value=scope_id,
+            source=(
+                "docs/architecture/"
+                "engineering-opportunity-scope-classification.md"
+            ),
+        )
+        for scope_id in scope_classification.candidate_scope_ids
+    )
+
+    scope_severity = (
+        "Info"
+        if scope_classification.classification_state
+        in {"resolved", "candidate"}
+        else "Warning"
+    )
+    findings.append(
+        OpportunityAssessmentFinding(
+            code=(
+                "scope-classification-"
+                f"{scope_classification.classification_state}"
+            ),
+            severity=scope_severity,
+            statement=scope_classification.explanation,
+            evidence=tuple(
+                item.statement
+                for item in scope_classification.evidence
+            ),
+            confidence=scope_classification.confidence,
+        )
+    )
+    blockers.extend(scope_classification.blockers)
+    unresolved_questions.extend(
+        scope_classification.unresolved_questions
+    )
+
     has_explicit_references = bool(
         entity.dependencies
         or entity.related_opportunities
@@ -557,8 +635,8 @@ def assess_engineering_opportunity(
             action="enrich",
             reason=(
                 "Resolve deterministic object-quality, reference, relationship, "
-                "and capability-alignment findings before considering "
-                "lifecycle progression."
+                "capability-alignment, and scope-classification findings "
+                "before considering lifecycle progression."
             ),
             confidence="High",
         )
@@ -606,6 +684,7 @@ def assess_engineering_opportunity(
         facts=tuple(facts),
         findings=tuple(findings),
         capability_alignment=capability_alignment,
+        scope_classification=scope_classification,
         recommendation=recommendation,
         blockers=tuple(blockers),
         unresolved_questions=tuple(unresolved_questions),

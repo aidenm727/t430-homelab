@@ -15,6 +15,11 @@ from atlas.platform.reasoning.opportunity_assessment import (
 from atlas.platform.reasoning.opportunity_relationships import (
     build_opportunity_relationships,
 )
+from atlas.platform.reasoning.opportunity_scope_classification import (
+    ScopeDefinition,
+    build_scope_catalog,
+    classify_opportunity_scope,
+)
 from atlas.platform.reasoning.synchronization import analyze_synchronization
 from atlas.platform.reasoning.models import (
     GuidanceReport,
@@ -25,6 +30,8 @@ from atlas.platform.reasoning.models import (
     OpportunityAssessmentRecommendation,
     OpportunityCapabilityAlignment,
     OpportunityRelationshipFinding,
+    OpportunityScopeClassification,
+    OpportunityScopeEvidence,
     ValidationFinding,
     ValidationReport,
     SynchronizationFinding,
@@ -37,6 +44,7 @@ from atlas.platform.reasoning.validation import validate_repository
 
 __all__ = [
     "CapabilityDefinition",
+    "ScopeDefinition",
     "GuidanceReport",
     "ImpactReport",
     "EngineeringOpportunityAssessment",
@@ -45,13 +53,17 @@ __all__ = [
     "OpportunityAssessmentRecommendation",
     "OpportunityCapabilityAlignment",
     "OpportunityRelationshipFinding",
+    "OpportunityScopeClassification",
+    "OpportunityScopeEvidence",
     "ValidationFinding",
     "ValidationReport",
     "align_opportunity_capability",
     "analyze_impact",
     "assess_engineering_opportunities",
     "assess_engineering_opportunity",
+    "classify_opportunity_scope",
     "build_capability_catalog",
+    "build_scope_catalog",
     "build_opportunity_relationships",
     "build_guidance",
     "validate_repository",

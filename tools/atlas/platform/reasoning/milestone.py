@@ -29,6 +29,9 @@ OPPORTUNITY_CAPABILITY_ALIGNMENT_MILESTONE_TEXT = (
 OPPORTUNITY_SCOPE_CLASSIFICATION_DESIGN_MILESTONE_TEXT = (
     "Design Engineering Opportunity Scope Classification"
 )
+OPPORTUNITY_SCOPE_CLASSIFICATION_MILESTONE_TEXT = (
+    "Build Engineering Opportunity Scope Classification Foundation"
+)
 
 
 def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -122,6 +125,122 @@ def build_milestone_completion(
     state: EngineeringState,
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
+
+    if OPPORTUNITY_SCOPE_CLASSIFICATION_MILESTONE_TEXT in milestone:
+        requirements = {
+            "tools/atlas/platform/reasoning/models.py": {
+                "class OpportunityScopeEvidence":
+                    "defines structured scope evidence",
+                "class OpportunityScopeClassification":
+                    "defines the structured classification result",
+                "scope_classification: OpportunityScopeClassification | None":
+                    "attaches classification to opportunity assessments",
+            },
+            "tools/atlas/platform/reasoning/opportunity_scope_classification.py": {
+                "class ScopeDefinition":
+                    "defines stable scope identity",
+                "def build_scope_catalog":
+                    "builds the six-scope taxonomy catalog",
+                "def classify_opportunity_scope":
+                    "implements bounded scope reasoning",
+                "SCOPE_SIGNAL_PHRASES":
+                    "defines transparent heuristic signals",
+                'classification_state="candidate"':
+                    "produces bounded candidates",
+                'classification_state="ambiguous"':
+                    "reports competing candidates",
+                'classification_state="mixed"':
+                    "reports bundled central outcomes",
+                'classification_state="insufficient-evidence"':
+                    "reports sparse evidence",
+                'classification_state="conflicting"':
+                    "reports conflicting explicit evidence",
+                'classification_state="resolved"':
+                    "supports human-reviewed resolution",
+            },
+            "tools/atlas/platform/reasoning/opportunity_assessment.py": {
+                "scope_classification = classify_opportunity_scope(":
+                    "consumes reusable Scope Classification",
+                '"scope-classification-state"':
+                    "exposes classification state as an assessment fact",
+                "scope_classification=scope_classification":
+                    "attaches the structured result to the assessment",
+            },
+            "tests/test_opportunity_scope_classification.py": {
+                "test_catalog_contains_six_architecture_owned_scopes":
+                    "tests the canonical taxonomy",
+                "test_several_transparent_signals_produce_candidate":
+                    "tests bounded heuristic candidates",
+                "test_one_keyword_cannot_resolve_scope":
+                    "tests the single-keyword boundary",
+                "test_competing_signals_produce_ambiguous_result":
+                    "tests ambiguity",
+                "test_bundled_outcomes_produce_mixed_result":
+                    "tests mixed scope",
+                "test_sparse_evidence_produces_insufficient_result":
+                    "tests insufficient evidence",
+                "test_conflicting_human_reviewed_scopes_are_exposed":
+                    "tests explicit conflict handling",
+                "test_human_reviewed_scope_resolves_with_high_confidence":
+                    "tests high-confidence human resolution",
+                "test_capability_identity_alone_does_not_resolve_scope":
+                    "tests capability and scope separation",
+                "test_related_architecture_is_structural_not_resolution":
+                    "tests architecture-reference boundaries",
+                "test_raw_opportunity_object_is_not_mutated":
+                    "tests object non-mutation",
+                "test_assessment_consumes_scope_classification":
+                    "tests assessment integration",
+            },
+        }
+
+        evidence, missing = _implementation_evidence(requirements)
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=[],
+                satisfied_criteria=[
+                    "A reusable six-scope taxonomy catalog exists.",
+                    "The catalog contains all architecture-owned identifiers and labels.",
+                    "Structured OpportunityScopeEvidence and OpportunityScopeClassification models exist.",
+                    "At most one resolved primary scope is represented.",
+                    "Secondary implications remain separate from primary scope.",
+                    "Deterministic repository facts, structural evidence, and provenance are collected.",
+                    "Transparent bounded heuristic rules produce candidates without claiming resolution.",
+                    "One keyword cannot produce a resolved classification.",
+                    "Competing candidates produce an ambiguous result.",
+                    "Bundled central outcomes can produce a mixed result.",
+                    "Sparse evidence produces an insufficient-evidence result.",
+                    "Conflicting explicit evidence produces a conflicting result.",
+                    "Human-reviewed evidence can resolve a high-confidence primary scope.",
+                    "Capability identity alone does not determine scope.",
+                    "Architecture references support evidence without automatically resolving scope.",
+                    "Classification results expose evidence, counterevidence, confidence, blockers, unresolved questions, and recommendations.",
+                    "Engineering Opportunity Assessments consume reusable Scope Classification.",
+                    "Canonical objects and lifecycle state are not mutated.",
+                    "Focused tests verify taxonomy, uncertainty states, integration, and non-mutation.",
+                    "Reasoning remains independent of Atlas command rendering and language models.",
+                ],
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "The Engineering Opportunity Scope Classification foundation is implemented. Verify, document, commit, and consider advancing the mission.",
+                ],
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Complete the missing Engineering Opportunity Scope Classification foundation evidence.",
+            ],
+        )
 
     if OPPORTUNITY_SCOPE_CLASSIFICATION_DESIGN_MILESTONE_TEXT in milestone:
         design_requirements = {
