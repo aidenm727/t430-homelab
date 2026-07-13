@@ -154,6 +154,17 @@ class OpportunityAssessmentFinding:
 
 
 @dataclass(frozen=True)
+class OpportunityRelationshipFinding:
+    relationship_type: str
+    source_opportunity_id: str
+    target_opportunity_id: str
+    directionality: str
+    evidence: tuple[str, ...]
+    explanation: str
+    confidence: str = "High"
+
+
+@dataclass(frozen=True)
 class OpportunityAssessmentRecommendation:
     action: str
     reason: str
@@ -167,6 +178,7 @@ class EngineeringOpportunityAssessment:
     repository_path: str
     facts: tuple[OpportunityAssessmentFact, ...] = ()
     findings: tuple[OpportunityAssessmentFinding, ...] = ()
+    relationships: tuple[OpportunityRelationshipFinding, ...] = ()
     recommendation: OpportunityAssessmentRecommendation | None = None
     blockers: tuple[str, ...] = ()
     unresolved_questions: tuple[str, ...] = ()

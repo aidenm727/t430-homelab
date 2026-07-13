@@ -7,6 +7,9 @@ from atlas.platform.reasoning.opportunity_assessment import (
     assess_engineering_opportunities,
     assess_engineering_opportunity,
 )
+from atlas.platform.reasoning.opportunity_relationships import (
+    build_opportunity_relationships,
+)
 from atlas.platform.reasoning.synchronization import analyze_synchronization
 from atlas.platform.reasoning.models import (
     GuidanceReport,
@@ -15,6 +18,7 @@ from atlas.platform.reasoning.models import (
     OpportunityAssessmentFact,
     OpportunityAssessmentFinding,
     OpportunityAssessmentRecommendation,
+    OpportunityRelationshipFinding,
     ValidationFinding,
     ValidationReport,
     SynchronizationFinding,
@@ -32,11 +36,13 @@ __all__ = [
     "OpportunityAssessmentFact",
     "OpportunityAssessmentFinding",
     "OpportunityAssessmentRecommendation",
+    "OpportunityRelationshipFinding",
     "ValidationFinding",
     "ValidationReport",
     "analyze_impact",
     "assess_engineering_opportunities",
     "assess_engineering_opportunity",
+    "build_opportunity_relationships",
     "build_guidance",
     "validate_repository",
     "analyze_synchronization",

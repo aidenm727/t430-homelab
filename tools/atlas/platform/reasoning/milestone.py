@@ -17,6 +17,9 @@ OPPORTUNITY_ASSESSMENT_MILESTONE_TEXT = (
 OPPORTUNITY_EVIDENCE_MILESTONE_TEXT = (
     "Build Engineering Opportunity Evidence Foundation"
 )
+OPPORTUNITY_RELATIONSHIP_MILESTONE_TEXT = (
+    "Build Engineering Opportunity Relationship Foundation"
+)
 
 
 def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -110,6 +113,90 @@ def build_milestone_completion(
     state: EngineeringState,
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
+
+    if OPPORTUNITY_RELATIONSHIP_MILESTONE_TEXT in milestone:
+        requirements = {
+            "tools/atlas/platform/reasoning/models.py": {
+                "class OpportunityRelationshipFinding":
+                    "defines typed opportunity relationship findings",
+                "relationships: tuple[OpportunityRelationshipFinding, ...]":
+                    "attaches relationship findings to reusable assessments",
+            },
+            "tools/atlas/platform/reasoning/opportunity_relationships.py": {
+                "def build_opportunity_relationships":
+                    "builds a deterministic portfolio relationship view",
+                'relationship_type="depends_on"':
+                    "represents explicit dependencies directionally",
+                'relationship_type="enables"':
+                    "represents deterministic inverse enablement",
+                'relationship_type="related_to"':
+                    "represents generic explicit relationships",
+            },
+            "tools/atlas/platform/reasoning/opportunity_assessment.py": {
+                "self-opportunity-relationship":
+                    "reports explicit self references",
+                "duplicate-relationship-declaration":
+                    "reports duplicate declarations",
+                "conflicting-relationship-declaration":
+                    "reports conflicting explicit inputs",
+                "relationships_by_source":
+                    "attaches portfolio relationships to assessments",
+            },
+            "tests/test_opportunity_relationships.py": {
+                "test_dependency_builds_directional_and_inverse_relationships":
+                    "tests dependency and inverse enablement findings",
+                "test_related_opportunity_builds_declared_relationship":
+                    "tests generic explicit relationships",
+                "test_self_reference_produces_finding":
+                    "tests self-reference diagnostics",
+                "test_duplicate_declaration_produces_finding":
+                    "tests duplicate declaration diagnostics",
+                "test_conflicting_declarations_produce_finding":
+                    "tests conflicting relationship diagnostics",
+                "test_absent_relationships_remain_valid":
+                    "tests opportunities without relationships",
+            },
+        }
+
+        evidence, missing = _implementation_evidence(requirements)
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=[],
+                satisfied_criteria=[
+                    "A reusable typed opportunity-relationship model exists.",
+                    "Relationship findings preserve source, target, type, directionality, evidence, explanation, and confidence.",
+                    "Explicit dependencies produce directional depends_on findings.",
+                    "Dependency targets expose deterministic inverse enables findings.",
+                    "Explicit related opportunities produce related_to findings without semantic inference.",
+                    "A deterministic portfolio relationship view is reusable by assessments.",
+                    "Self-references produce explicit findings and blockers.",
+                    "Duplicate declarations produce explicit findings and blockers.",
+                    "Conflicting explicit inputs produce explicit findings and blockers.",
+                    "Objects without explicit relationships remain valid and assessable.",
+                    "Relationship reasoning remains independent of command rendering.",
+                    "Canonical objects and lifecycle state are not mutated.",
+                ],
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "The Engineering Opportunity Relationship foundation is implemented. Verify, document, commit, and consider advancing the mission.",
+                ],
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Complete the missing Engineering Opportunity Relationship foundation evidence.",
+            ],
+        )
 
     if OPPORTUNITY_EVIDENCE_MILESTONE_TEXT in milestone:
         requirements = {

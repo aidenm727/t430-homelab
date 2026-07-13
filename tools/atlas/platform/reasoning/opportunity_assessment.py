@@ -1,9 +1,14 @@
 import re
+from collections import Counter
 from collections.abc import Collection, Iterable
+from dataclasses import replace
 from pathlib import Path
 
 from atlas.platform.repository import repo_root
 from atlas.platform.repository_objects.models import RepositoryEntity
+from atlas.platform.reasoning.opportunity_relationships import (
+    build_opportunity_relationships,
+)
 from atlas.platform.reasoning.models import (
     EngineeringOpportunityAssessment,
     OpportunityAssessmentFact,
@@ -157,6 +162,81 @@ def _validate_document_references(
         blockers.append(statement)
 
     return valid
+
+
+def _validate_explicit_relationship_declarations(
+    entity: RepositoryEntity,
+    findings: list[OpportunityAssessmentFinding],
+    blockers: list[str],
+) -> None:
+    declarations = (
+        ("dependency", entity.dependencies),
+        ("related-opportunity", entity.related_opportunities),
+    )
+
+    for relationship, targets in declarations:
+        counts = Counter(targets)
+
+        for target, count in sorted(counts.items()):
+            if target == entity.id:
+                statement = (
+                    f"Opportunity '{entity.id}' declares a {relationship} "
+                    "relationship to itself."
+                )
+                findings.append(
+                    OpportunityAssessmentFinding(
+                        code="self-opportunity-relationship",
+                        severity="Error",
+                        statement=statement,
+                        evidence=(
+                            f"Source object: {entity.path}",
+                            f"Relationship field: {relationship}",
+                            f"Relationship target: {target}",
+                        ),
+                    )
+                )
+                blockers.append(statement)
+
+            if count > 1:
+                statement = (
+                    f"Opportunity '{entity.id}' declares the {relationship} "
+                    f"relationship to '{target}' {count} times."
+                )
+                findings.append(
+                    OpportunityAssessmentFinding(
+                        code="duplicate-relationship-declaration",
+                        severity="Error",
+                        statement=statement,
+                        evidence=(
+                            f"Source object: {entity.path}",
+                            f"Relationship field: {relationship}",
+                            f"Relationship target: {target}",
+                            f"Declaration count: {count}",
+                        ),
+                    )
+                )
+                blockers.append(statement)
+
+    for target in sorted(
+        set(entity.dependencies) & set(entity.related_opportunities)
+    ):
+        statement = (
+            f"Opportunity '{entity.id}' declares '{target}' as both a "
+            "dependency and a generic related opportunity."
+        )
+        findings.append(
+            OpportunityAssessmentFinding(
+                code="conflicting-relationship-declaration",
+                severity="Error",
+                statement=statement,
+                evidence=(
+                    f"Source object: {entity.path}",
+                    f"Conflicting target: {target}",
+                    "Fields: dependencies, related_opportunities",
+                ),
+            )
+        )
+        blockers.append(statement)
 
 
 def assess_engineering_opportunity(
@@ -367,6 +447,11 @@ def assess_engineering_opportunity(
         findings,
         blockers,
     )
+    _validate_explicit_relationship_declarations(
+        entity,
+        findings,
+        blockers,
+    )
 
     has_explicit_references = bool(
         entity.dependencies
@@ -469,12 +554,32 @@ def assess_engineering_opportunities(
     known_opportunity_ids = frozenset(
         entity.id for entity in opportunity_entities
     )
-
-    return tuple(
+    assessments = tuple(
         assess_engineering_opportunity(
             entity,
             known_opportunity_ids=known_opportunity_ids,
             root=root,
         )
         for entity in opportunity_entities
+    )
+    relationships = build_opportunity_relationships(opportunity_entities)
+    relationships_by_source: dict[str, list] = {}
+
+    for relationship in relationships:
+        relationships_by_source.setdefault(
+            relationship.source_opportunity_id,
+            [],
+        ).append(relationship)
+
+    return tuple(
+        replace(
+            assessment,
+            relationships=tuple(
+                relationships_by_source.get(
+                    assessment.opportunity_id,
+                    (),
+                )
+            ),
+        )
+        for assessment in assessments
     )
