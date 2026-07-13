@@ -23,6 +23,9 @@ OPPORTUNITY_RELATIONSHIP_MILESTONE_TEXT = (
 OPPORTUNITY_CAPABILITY_ALIGNMENT_DESIGN_MILESTONE_TEXT = (
     "Design Engineering Opportunity Capability Alignment"
 )
+OPPORTUNITY_CAPABILITY_ALIGNMENT_MILESTONE_TEXT = (
+    "Build Engineering Opportunity Capability Alignment Foundation"
+)
 
 
 def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -116,6 +119,104 @@ def build_milestone_completion(
     state: EngineeringState,
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
+
+    if OPPORTUNITY_CAPABILITY_ALIGNMENT_MILESTONE_TEXT in milestone:
+        requirements = {
+            "tools/atlas/platform/reasoning/models.py": {
+                "class OpportunityCapabilityAlignment":
+                    "defines the structured capability-alignment result",
+                "capability_alignment: OpportunityCapabilityAlignment | None":
+                    "attaches capability alignment to opportunity assessments",
+            },
+            "tools/atlas/platform/reasoning/opportunity_capability_alignment.py": {
+                "class CapabilityDefinition":
+                    "defines canonical capability identity",
+                "def build_capability_catalog":
+                    "builds the bounded repository-owned capability catalog",
+                "def align_opportunity_capability":
+                    "implements deterministic capability alignment",
+                '"AI": "ai-aiden-os"':
+                    "defines the curated AI alias",
+                '"Documentation": "knowledge-documentation"':
+                    "defines the curated Documentation alias",
+                '"Infrastructure": (':
+                    "defines ambiguous Infrastructure candidates",
+                'alignment_state="unknown"':
+                    "reports unsupported capability values",
+            },
+            "tools/atlas/platform/reasoning/opportunity_assessment.py": {
+                "capability_alignment = align_opportunity_capability(entity)":
+                    "consumes reusable capability alignment",
+                '"capability-alignment-state"':
+                    "exposes alignment state as an assessment fact",
+                "capability_alignment=capability_alignment":
+                    "attaches the structured result to the assessment",
+            },
+            "tests/test_opportunity_capability_alignment.py": {
+                "test_catalog_contains_architecture_owned_capabilities":
+                    "tests the nine canonical capabilities",
+                "test_exact_canonical_identifier_resolves":
+                    "tests canonical identifier resolution",
+                "test_exact_canonical_label_resolves":
+                    "tests canonical label resolution",
+                "test_ai_alias_resolves":
+                    "tests the AI alias",
+                "test_documentation_alias_resolves":
+                    "tests the Documentation alias",
+                "test_infrastructure_is_ambiguous":
+                    "tests ambiguous Infrastructure handling",
+                "test_learning_is_unknown":
+                    "tests unknown Learning handling",
+                "test_raw_declared_value_is_preserved_without_mutation":
+                    "tests raw-value preservation and non-mutation",
+                "test_assessment_consumes_resolved_alignment":
+                    "tests reusable assessment integration",
+                "test_alignment_does_not_infer_from_prose":
+                    "tests the semantic-inference boundary",
+            },
+        }
+
+        evidence, missing = _implementation_evidence(requirements)
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=[],
+                satisfied_criteria=[
+                    "A reusable canonical capability catalog exists.",
+                    "The catalog contains the nine architecture-owned identifiers and labels.",
+                    "A reusable structured OpportunityCapabilityAlignment result exists.",
+                    "Raw declared capability values are preserved.",
+                    "Canonical identifiers and labels resolve deterministically.",
+                    "AI and Documentation aliases resolve deterministically.",
+                    "Infrastructure produces an ambiguous result with explicit candidates.",
+                    "Learning and unsupported values produce unknown results.",
+                    "Alignment results expose evidence, provenance, explanation, confidence, blockers, unresolved questions, and recommendations.",
+                    "Engineering Opportunity Assessments consume reusable alignment results.",
+                    "Unresolved alignment recommends enrichment without object mutation.",
+                    "Capability is not inferred from opportunity prose.",
+                    "Focused tests cover deterministic resolution and non-mutation.",
+                    "Reasoning remains independent of Atlas command rendering and language models.",
+                ],
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "The Engineering Opportunity Capability Alignment foundation is implemented. Verify, document, commit, and consider advancing the mission.",
+                ],
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Complete the missing Engineering Opportunity Capability Alignment foundation evidence.",
+            ],
+        )
 
     if OPPORTUNITY_CAPABILITY_ALIGNMENT_DESIGN_MILESTONE_TEXT in milestone:
         design_requirements = {

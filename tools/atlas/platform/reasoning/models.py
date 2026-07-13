@@ -172,6 +172,25 @@ class OpportunityAssessmentRecommendation:
 
 
 @dataclass(frozen=True)
+class OpportunityCapabilityAlignment:
+    opportunity_id: str
+    repository_path: str
+    declared_value: str
+    alignment_state: str
+    primary_capability_id: str | None
+    primary_capability_label: str | None
+    candidate_capability_ids: tuple[str, ...]
+    secondary_capability_ids: tuple[str, ...]
+    evidence: tuple[str, ...]
+    provenance: tuple[str, ...]
+    explanation: str
+    confidence: str
+    blockers: tuple[str, ...]
+    unresolved_questions: tuple[str, ...]
+    recommendation: OpportunityAssessmentRecommendation | None = None
+
+
+@dataclass(frozen=True)
 class EngineeringOpportunityAssessment:
     opportunity_id: str
     lifecycle_state: str
@@ -179,6 +198,7 @@ class EngineeringOpportunityAssessment:
     facts: tuple[OpportunityAssessmentFact, ...] = ()
     findings: tuple[OpportunityAssessmentFinding, ...] = ()
     relationships: tuple[OpportunityRelationshipFinding, ...] = ()
+    capability_alignment: OpportunityCapabilityAlignment | None = None
     recommendation: OpportunityAssessmentRecommendation | None = None
     blockers: tuple[str, ...] = ()
     unresolved_questions: tuple[str, ...] = ()

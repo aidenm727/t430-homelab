@@ -6,6 +6,9 @@ from pathlib import Path
 
 from atlas.platform.repository import repo_root
 from atlas.platform.repository_objects.models import RepositoryEntity
+from atlas.platform.reasoning.opportunity_capability_alignment import (
+    align_opportunity_capability,
+)
 from atlas.platform.reasoning.opportunity_relationships import (
     build_opportunity_relationships,
 )
@@ -453,6 +456,67 @@ def assess_engineering_opportunity(
         blockers,
     )
 
+    capability_alignment = align_opportunity_capability(entity)
+    facts.append(
+        OpportunityAssessmentFact(
+            name="capability-alignment-state",
+            value=capability_alignment.alignment_state,
+            source=entity.path,
+        )
+    )
+
+    if capability_alignment.primary_capability_id is not None:
+        facts.append(
+            OpportunityAssessmentFact(
+                name="primary-capability-id",
+                value=capability_alignment.primary_capability_id,
+                source="docs/architecture/capabilities.md",
+            )
+        )
+
+    if capability_alignment.primary_capability_label is not None:
+        facts.append(
+            OpportunityAssessmentFact(
+                name="primary-capability-label",
+                value=capability_alignment.primary_capability_label,
+                source="docs/architecture/capabilities.md",
+            )
+        )
+
+    facts.extend(
+        OpportunityAssessmentFact(
+            name="candidate-capability-id",
+            value=candidate,
+            source=(
+                "docs/architecture/"
+                "engineering-opportunity-capability-alignment.md"
+            ),
+        )
+        for candidate in capability_alignment.candidate_capability_ids
+    )
+
+    capability_severity = (
+        "Info"
+        if capability_alignment.primary_capability_id is not None
+        else "Warning"
+    )
+    findings.append(
+        OpportunityAssessmentFinding(
+            code=(
+                "capability-alignment-"
+                f"{capability_alignment.alignment_state}"
+            ),
+            severity=capability_severity,
+            statement=capability_alignment.explanation,
+            evidence=capability_alignment.evidence,
+            confidence=capability_alignment.confidence,
+        )
+    )
+    blockers.extend(capability_alignment.blockers)
+    unresolved_questions.extend(
+        capability_alignment.unresolved_questions
+    )
+
     has_explicit_references = bool(
         entity.dependencies
         or entity.related_opportunities
@@ -492,8 +556,9 @@ def assess_engineering_opportunity(
         recommendation = OpportunityAssessmentRecommendation(
             action="enrich",
             reason=(
-                "Resolve deterministic object-quality and explicit-reference "
-                "findings before considering lifecycle progression."
+                "Resolve deterministic object-quality, reference, relationship, "
+                "and capability-alignment findings before considering "
+                "lifecycle progression."
             ),
             confidence="High",
         )
@@ -540,6 +605,7 @@ def assess_engineering_opportunity(
         repository_path=entity.path,
         facts=tuple(facts),
         findings=tuple(findings),
+        capability_alignment=capability_alignment,
         recommendation=recommendation,
         blockers=tuple(blockers),
         unresolved_questions=tuple(unresolved_questions),
