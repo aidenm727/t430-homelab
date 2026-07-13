@@ -40,6 +40,10 @@ Primary documents:
 * `docs/architecture/engineering-review.md`
 * `docs/architecture/engineering-intelligence.md`
 * `docs/architecture/engineering-opportunity.md`
+* `docs/architecture/engineering-opportunity-object.md`
+* `docs/architecture/engineering-opportunity-intelligence.md`
+* `docs/architecture/engineering-opportunity-assessment.md`
+* `docs/architecture/engineering-opportunity-capability-alignment.md`
 * `docs/architecture/milestone-completion.md`
 * `docs/architecture/mission-advancement.md`
 * `docs/architecture/engineering-lifecycle.md`
@@ -123,22 +127,26 @@ A new human or AI reader should read the repository in this order:
 6. `docs/architecture/engineering-review.md`
 7. `docs/architecture/engineering-intelligence.md`
 8. `docs/architecture/engineering-opportunity.md`
-9. `docs/architecture/milestone-completion.md`
-10. `docs/architecture/mission-advancement.md`
-11. `docs/architecture/engineering-lifecycle.md`
-12. `docs/architecture/architecture-registration.md`
-13. `docs/architecture/capabilities.md`
-14. `docs/architecture/compute.md`
-15. `docs/architecture/ai.md`
-16. `docs/architecture/repository.md`
-17. `docs/architecture/atlas.md`
-18. `docs/architecture/repository-metadata.md`
-19. `docs/standards/engineering-collaboration.md`
-20. `docs/current-mission.md`
-21. `docs/infrastructure.md`
-22. `docs/infrastructure-gamer-pve.md`
-23. `docs/services.md`
-24. `docs/aiden-context.md`
+9. `docs/architecture/engineering-opportunity-object.md`
+10. `docs/architecture/engineering-opportunity-intelligence.md`
+11. `docs/architecture/engineering-opportunity-assessment.md`
+12. `docs/architecture/engineering-opportunity-capability-alignment.md`
+13. `docs/architecture/milestone-completion.md`
+14. `docs/architecture/mission-advancement.md`
+15. `docs/architecture/engineering-lifecycle.md`
+16. `docs/architecture/architecture-registration.md`
+17. `docs/architecture/capabilities.md`
+18. `docs/architecture/compute.md`
+19. `docs/architecture/ai.md`
+20. `docs/architecture/repository.md`
+21. `docs/architecture/atlas.md`
+22. `docs/architecture/repository-metadata.md`
+23. `docs/standards/engineering-collaboration.md`
+24. `docs/current-mission.md`
+25. `docs/infrastructure.md`
+26. `docs/infrastructure-gamer-pve.md`
+27. `docs/services.md`
+28. `docs/aiden-context.md`
 
 ## Source of Truth Rules
 

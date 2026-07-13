@@ -196,6 +196,7 @@ DOCUMENT_DEFINITIONS = {
             "docs/architecture/platform.md",
             "docs/architecture/engineering.md",
             "docs/roadmaps/engineering-toolkit.md",
+            "docs/architecture/engineering-opportunity-capability-alignment.md",
         ],
     ),
     "docs/architecture/repository.md": DocumentDefinition(
@@ -450,6 +451,25 @@ DOCUMENT_DEFINITIONS = {
             "docs/architecture/engineering-opportunity-intelligence.md",
             "docs/architecture/engineering-intelligence.md",
             "docs/architecture/engineering-review.md",
+            "docs/architecture/reasoning.md",
+        ],
+    ),
+
+    "docs/architecture/engineering-opportunity-capability-alignment.md": DocumentDefinition(
+        path="docs/architecture/engineering-opportunity-capability-alignment.md",
+        purpose="Defines how Engineering Opportunity Intelligence resolves declared opportunity capability values against stable Platform Capability identities.",
+        capability="Engineering",
+        tags=[
+            "engineering-opportunity-capability-alignment",
+            "engineering-opportunity-intelligence",
+            "platform-capabilities",
+            "repository-reasoning",
+        ],
+        related=[
+            "docs/architecture/capabilities.md",
+            "docs/architecture/engineering-opportunity-object.md",
+            "docs/architecture/engineering-opportunity-intelligence.md",
+            "docs/architecture/engineering-opportunity-assessment.md",
             "docs/architecture/reasoning.md",
         ],
     ),

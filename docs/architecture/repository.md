@@ -55,6 +55,11 @@ Current documents:
 * `docs/architecture/engineering-capabilities.md`
 * `docs/architecture/engineering-review.md`
 * `docs/architecture/engineering-intelligence.md`
+* `docs/architecture/engineering-opportunity.md`
+* `docs/architecture/engineering-opportunity-object.md`
+* `docs/architecture/engineering-opportunity-intelligence.md`
+* `docs/architecture/engineering-opportunity-assessment.md`
+* `docs/architecture/engineering-opportunity-capability-alignment.md`
 * `docs/architecture/capabilities.md`
 * `docs/architecture/compute.md`
 * `docs/architecture/ai.md`

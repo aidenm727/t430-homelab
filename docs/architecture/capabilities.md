@@ -22,6 +22,28 @@ Services, servers, containers, VMs, scripts, and AI tools are implementation det
 
 Capabilities are the long-term structure.
 
+## Capability Identity
+
+Each major Platform Capability has a stable machine-readable identifier and a human-readable label.
+
+| Capability ID | Display Label |
+| --- | --- |
+| `compute` | Compute |
+| `storage` | Storage |
+| `networking-access` | Networking and Access |
+| `observability` | Observability |
+| `automation` | Automation |
+| `knowledge-documentation` | Knowledge and Documentation |
+| `engineering` | Engineering |
+| `personal-services` | Personal Services |
+| `ai-aiden-os` | AI and Aiden OS |
+
+Capability identifiers are durable architecture identities.
+
+Display labels may evolve without changing identity.
+
+Aliases and compatibility mappings belong to the architecture of the consuming capability and do not create new Platform Capabilities.
+
 ## Capability Areas
 
 ## 1. Compute

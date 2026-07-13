@@ -20,6 +20,9 @@ OPPORTUNITY_EVIDENCE_MILESTONE_TEXT = (
 OPPORTUNITY_RELATIONSHIP_MILESTONE_TEXT = (
     "Build Engineering Opportunity Relationship Foundation"
 )
+OPPORTUNITY_CAPABILITY_ALIGNMENT_DESIGN_MILESTONE_TEXT = (
+    "Design Engineering Opportunity Capability Alignment"
+)
 
 
 def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -113,6 +116,108 @@ def build_milestone_completion(
     state: EngineeringState,
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
+
+    if OPPORTUNITY_CAPABILITY_ALIGNMENT_DESIGN_MILESTONE_TEXT in milestone:
+        design_requirements = {
+            "docs/architecture/engineering-opportunity-capability-alignment.md": {
+                "## Canonical Capability Source":
+                    "defines canonical capability ownership",
+                "## Capability Identity Model":
+                    "defines stable identifiers and display labels",
+                "## Opportunity Capability Semantics":
+                    "defines declared, primary, and secondary capability meaning",
+                "## Compatibility and Migration":
+                    "defines existing-value compatibility and migration",
+                "## Alignment States":
+                    "defines canonical, alias, ambiguous, unknown, deprecated, and conflicting states",
+                "## Evidence and Provenance":
+                    "defines source-backed alignment evidence",
+                "## Structured Assessment Contract":
+                    "defines reusable capability-alignment output",
+                "## Deterministic and Judgment Boundaries":
+                    "separates deterministic validation from semantic judgment",
+                "## Human Authority and Lifecycle Mutation":
+                    "preserves human mutation authority",
+                "## Initial Implementation Boundary":
+                    "defines bounded implementation scope",
+                "## Verification Cases":
+                    "defines focused implementation verification",
+                "| `Infrastructure` |":
+                    "addresses the ambiguous legacy infrastructure value",
+                "| `Learning` |":
+                    "addresses the unknown legacy learning value",
+            },
+            "docs/architecture/capabilities.md": {
+                "## Capability Identity":
+                    "defines stable capability identity",
+                "| `engineering` | Engineering |":
+                    "defines the Engineering capability identifier",
+                "| `ai-aiden-os` | AI and Aiden OS |":
+                    "defines the AI and Aiden OS capability identifier",
+            },
+        }
+        registration_requirements = {
+            "docs/architecture/repository.md": {
+                "docs/architecture/engineering-opportunity-capability-alignment.md":
+                    "lists the architecture in repository ownership",
+            },
+            "docs/docs-map.md": {
+                "docs/architecture/engineering-opportunity-capability-alignment.md":
+                    "lists the architecture in the documentation map",
+            },
+            "tools/atlas/platform/document_definitions.py": {
+                '"docs/architecture/engineering-opportunity-capability-alignment.md"':
+                    "registers architecture metadata",
+            },
+        }
+
+        design_evidence, design_missing = _document_design_evidence(
+            catalog,
+            design_requirements,
+        )
+        registration_evidence, registration_missing = _implementation_evidence(
+            registration_requirements,
+        )
+        evidence = design_evidence + registration_evidence
+        missing = design_missing + registration_missing
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=[],
+                satisfied_criteria=[
+                    "The Platform Capability Map owns canonical capability identity.",
+                    "Stable capability identifiers are separated from display labels.",
+                    "Primary capability semantics are defined.",
+                    "Secondary and cross-capability alignment boundaries are defined.",
+                    "Existing opportunity capability values have explicit compatibility handling.",
+                    "Unknown, ambiguous, deprecated, and conflicting states are defined.",
+                    "Capability-alignment evidence, provenance, confidence, blockers, and unresolved questions are defined.",
+                    "Deterministic validation is separated from semantic engineering judgment.",
+                    "Canonical object mutation and lifecycle progression remain human-authorized.",
+                    "A reusable structured assessment contract is defined.",
+                    "The initial implementation boundary and verification cases are explicit.",
+                    "The architecture is registered in Repository Knowledge.",
+                ],
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "Capability Alignment architecture is designed. Verify, document, commit, and consider advancing to the bounded implementation milestone.",
+                ],
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Complete the missing Engineering Opportunity Capability Alignment design evidence.",
+            ],
+        )
 
     if OPPORTUNITY_RELATIONSHIP_MILESTONE_TEXT in milestone:
         requirements = {
