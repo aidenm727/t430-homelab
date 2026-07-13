@@ -10,37 +10,45 @@ Engineering Opportunity Intelligence
 
 Continue evolving Atlas into the primary deterministic engineering interface for the Aiden Platform.
 
-The immediate objective is to extend Atlas beyond understanding the current engineering state into understanding future engineering opportunities.
+The immediate objective is to establish the first operational foundation of Engineering Opportunity Intelligence by building reusable Engineering Opportunity Assessment structures and deterministic reasoning over canonical Engineering Opportunity Objects.
 
-Atlas should become capable of discovering, capturing, evaluating, preserving, prioritizing, and eventually scheduling engineering opportunities from repository knowledge, engineering reasoning, engineering sessions, architectural analysis, and future capability reasoning.
-
-This phase establishes Engineering Opportunity Intelligence as the next reusable platform capability that expands Atlas from understanding engineering reality into understanding engineering possibility.
+This milestone translates the completed architecture into a narrow, testable Repository Reasoning capability. It should establish the assessment foundation without prematurely implementing autonomous opportunity discovery, semantic portfolio prioritization, lifecycle mutation, or command-specific evaluation logic.
 
 ---
 
 ## Current Focus
 
-- Design Engineering Opportunity Intelligence.
-- Continue strengthening reusable platform capabilities over command-specific logic.
-- Preserve engineering opportunities as canonical repository knowledge rather than conversational memory.
-- Continue reducing drift between architecture, implementation, documentation, generated context, and AI-assisted engineering.
-- Improve Atlas's ability to deliberately guide its own long-term evolution.
+- Build the Engineering Opportunity Assessment foundation.
+- Define a reusable structured assessment data model.
+- Implement initial deterministic object-quality reasoning for existing Engineering Opportunity Objects.
+- Preserve the separation between repository facts, derived findings, and engineering recommendations.
+- Keep assessments rebuildable from canonical repository evidence.
+- Preserve human authority over opportunity lifecycle changes.
+- Continue keeping Atlas commands thin and reasoning capabilities reusable.
 
 ---
 
 ## Current Priorities
 
-1. Design Engineering Opportunity Intelligence.
-2. Design the Engineering Opportunity lifecycle.
-3. Design canonical repository storage for engineering opportunities.
-4. Design Engineering Opportunity Review.
-5. Capture engineering opportunities discovered during engineering sessions.
-6. Continue strengthening shared reasoning and interpretation capabilities.
+1. Define reusable assessment types for facts, findings, recommendations, evidence, confidence, blockers, and unresolved questions.
+2. Consume the existing normalized Engineering Opportunity Object representation rather than introducing a second object model.
+3. Implement deterministic object-quality reasoning for required fields, stable identity, lifecycle consistency, repository placement, and basic evidence presence.
+4. Produce evidence-backed findings and bounded recommendations such as retain captured or enrich.
+5. Add focused tests for valid, incomplete, and inconsistent opportunity objects.
+6. Keep assessment construction independent of command rendering and lifecycle mutation.
+7. Establish deterministic milestone-completion evidence for the assessment foundation.
 
 ---
 
 ## Recently Completed
 
+- Design Engineering Opportunity Intelligence
+- Engineering Opportunity Assessment architecture
+- Engineering Opportunity Object architecture and lifecycle
+- Engineering Opportunity repository ownership
+- Initial Engineering Opportunity Object inventory
+- Atlas opportunities interface
+- Engineering Opportunity design milestone recognition
 - Repository Synchronization Reasoning
 - Mission Advancement Reasoning
 - Milestone Completion Reasoning
@@ -59,74 +67,75 @@ This phase establishes Engineering Opportunity Intelligence as the next reusable
 
 ## Current Non-Priorities
 
+- Broad autonomous candidate-opportunity discovery
+- Semantic duplicate and overlap determination
+- Opportunity relationship graph reasoning
+- Portfolio-wide prioritization
+- Strategic-value scoring
+- Automatic lifecycle mutation
+- Automatic mission or roadmap creation
+- Permanent assessment artifact storage
+- Moving assessment logic into Atlas commands
+- Dependence on a specific AI model or provider
 - Large infrastructure expansion
 - New self-hosted services
 - Major hardware changes
-- Premature local AI deployment
 - Building large end-user applications
-- Feature development without architectural justification
 
 ---
 
 ## Current Status
 
-The platform now contains:
+The Engineering Opportunity Intelligence architecture is complete and recognized by Atlas with high confidence.
 
-- Repository Knowledge
-- Repository Reasoning
-- Engineering Intelligence
-- Engineering Interpretation
-- Engineering Review
-- Mission Advancement Reasoning
-- Milestone Completion Reasoning
-- Repository Validation
-- Repository Synchronization Reasoning
-- Deterministic engineering startup
-- Canonical engineering architecture
+The repository now contains:
 
-Engineering Review is now the canonical engineering checkpoint for beginning implementation work.
+- Canonical Engineering Opportunity architecture
+- Canonical Engineering Opportunity Object architecture
+- Canonical Engineering Opportunity Assessment architecture
+- Preserved Engineering Opportunity Objects
+- Deterministic opportunity inventory and lifecycle grouping
+- Defined assessment layers, scope classes, relationships, evaluation dimensions, confidence, recommendations, and human decision boundaries
+- A documented initial implementation boundary
 
-The next architectural objective is enabling Atlas to understand not only the current engineering state, but also future engineering opportunities.
+Atlas can currently discover and present existing opportunity objects, but it does not yet produce reusable structured assessments or deterministic object-quality findings.
+
+The next responsible step is therefore to establish the assessment data model and the first bounded reasoning capability before expanding into relationship analysis, duplicate detection, prioritization, or downstream Engineering Intelligence integration.
 
 ---
 
 ## Next Milestone
 
-Design Engineering Opportunity Intelligence.
+Build Engineering Opportunity Assessment Foundation.
 
-Engineering opportunities should become first-class engineering objects that can be:
+Create a reusable structured assessment data model and initial deterministic object-quality reasoning for existing Engineering Opportunity Objects.
 
-- Captured
-- Reviewed
-- Accepted
-- Architected
-- Scheduled
-- Implemented
-- Completed
+The first evaluator should operate on one existing opportunity at a time and produce:
 
-Engineering opportunities should eventually originate from multiple capability producers, including:
+- Source-backed repository facts
+- Deterministic object-quality findings
+- Supporting evidence
+- Explainable confidence
+- Blockers and unresolved questions
+- A bounded recommendation
 
-- Engineering sessions
-- Repository inspection
-- Architecture analysis
-- Documentation analysis
-- Repository consolidation analysis
-- Capability maturity analysis
-- Future reasoning capabilities
-- Human engineering ideas
-
-Engineering Opportunity Intelligence should evaluate, organize, prioritize, and preserve these opportunities as reusable repository knowledge.
+This milestone should not attempt to determine strategic value, infer semantic relationships, rank the opportunity portfolio, discover new opportunities autonomously, or modify lifecycle state.
 
 ---
 
 ## Success Criteria
 
-The current phase is successful when:
+The milestone is complete when:
 
-- Engineering opportunities become a first-class platform capability.
-- Engineering opportunities are preserved as canonical repository knowledge.
-- Atlas can surface engineering opportunities without relying on conversational memory.
-- Engineering opportunities have a deterministic lifecycle.
-- Future engineering sessions naturally build upon previously captured opportunities.
-- Engineering Opportunity Intelligence integrates cleanly with Repository Knowledge, Repository Reasoning, Engineering Intelligence, Engineering Interpretation, and Engineering Review.
-- Atlas becomes increasingly capable of identifying high-leverage engineering investments before implementation begins.
+- A reusable Engineering Opportunity Assessment data model exists in the Repository Reasoning layer.
+- The model clearly separates repository facts, derived findings, and engineering recommendations.
+- Facts and findings can reference their supporting repository evidence.
+- Confidence and unresolved uncertainty are represented explicitly.
+- Existing Engineering Opportunity Objects can be evaluated without modifying their canonical representation.
+- Deterministic reasoning checks stable identity, required fields, lifecycle consistency, repository placement, and basic evidence presence.
+- Incomplete or inconsistent objects produce explicit findings rather than opaque failures.
+- Valid objects can receive a bounded retain or review-oriented assessment without automatic lifecycle progression.
+- Assessment reasoning is reusable independently of Atlas command rendering.
+- Tests cover valid, incomplete, and inconsistent object-quality cases.
+- No assessment path automatically creates, moves, merges, accepts, rejects, schedules, or closes an opportunity.
+- Atlas can recognize completion of the assessment foundation from concrete implementation and test evidence.
