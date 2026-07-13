@@ -1,0 +1,46 @@
+id: EO-2026-003
+
+title: Evaluate engineering bootstrap quality
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-06
+
+source: engineering-session
+
+summary: >
+  Introduce deterministic evaluation of whether a newly bootstrapped
+  AI-assisted engineering session correctly understands repository
+  state, current mission, relevant architecture, and Engineering Mode
+  readiness before implementation begins.
+
+rationale: >
+  Atlas can expose live engineering state, but correct command output
+  does not guarantee that the AI collaborator interpreted it properly.
+  A structured evaluation capability would help determine whether a
+  session has established enough shared understanding to work
+  deliberately rather than relying on subjective confidence or
+  conversational claims of readiness.
+
+notes: |
+  Candidate evaluation criteria include:
+
+  - Correct identification of the current mission and milestone.
+  - Correct interpretation of validation and synchronization status.
+  - Recognition of working-tree blockers and incomplete prior work.
+  - Use of the canonical repository source-of-truth order.
+  - Identification of relevant architecture and capability ownership.
+  - Correct distinction between discussion, capture, architecture, and
+    implementation work.
+  - Correct determination of whether Engineering Mode may begin.
+  - A recommendation that matches Atlas evidence rather than assumed
+    conversational intent.
+
+  Future evaluation could produce an evidence-backed bootstrap-quality
+  assessment, identify missing understanding, and recommend the exact
+  context needed before implementation.
+
+  This is a startup-focused component of AI Collaboration
+  Intelligence, captured as EO-2026-007.

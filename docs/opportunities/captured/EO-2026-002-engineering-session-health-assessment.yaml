@@ -1,0 +1,46 @@
+id: EO-2026-002
+
+title: Engineering session health assessment
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-06
+
+source: engineering-session
+
+summary: >
+  Develop a capability for assessing whether an active AI-assisted
+  engineering session remains healthy enough to support reliable,
+  efficient, and understandable engineering work.
+
+rationale: >
+  Repository readiness does not guarantee session readiness. Multiple
+  engineering sessions have degraded through slower interaction,
+  repeated corrections, formatting failures, lost context,
+  implementation retries, and increasing conversational friction.
+  Session health should become an explicit engineering concern so work
+  can be recalibrated, transferred, or restarted before unreliable
+  collaboration produces repository mistakes.
+
+notes: |
+  Candidate health signals may include:
+
+  - Repeated user corrections or restatement of established rules.
+  - Formatting and implementation-artifact failures.
+  - Contradictory recommendations within the same session.
+  - Loss of current mission, architecture, or live-state context.
+  - Repeated implementation retries without meaningful progress.
+  - Increasing conversational friction or ambiguity.
+  - Failure to recognize accepted decisions and advance correctly.
+  - Response degradation reported by the engineer.
+  - Excessive dependence on conversational history instead of the
+    repository and Atlas.
+
+  Possible outcomes may include continuing normally, recalibrating the
+  session, refreshing deterministic context, reducing scope, creating
+  a handoff, or beginning a fresh session.
+
+  This is a component opportunity within AI Collaboration
+  Intelligence, captured as EO-2026-007.

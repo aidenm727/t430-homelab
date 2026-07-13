@@ -1,0 +1,56 @@
+id: EO-2026-012
+
+title: Personal Infrastructure Sovereignty
+
+status: captured
+
+capability: Infrastructure
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Intentionally increase ownership, privacy, resilience, control, and
+  long-term understanding of the digital systems that support everyday
+  life by developing personally controlled or self-hosted capabilities
+  where the engineering tradeoff is worthwhile.
+
+rationale: >
+  Important personal data and services are often concentrated in
+  external platforms whose incentives, pricing, availability,
+  interfaces, privacy practices, and product direction may change.
+  The Aiden Platform has an opportunity to reduce unnecessary
+  dependence by progressively owning selected capabilities and data.
+  This should be done selectively rather than ideologically, because
+  self-hosting also introduces security, maintenance, reliability,
+  cost, backup, and operational responsibilities.
+
+notes: |
+  The objective is not to self-host everything or reject useful
+  external providers. It is to develop the judgment and infrastructure
+  needed to decide what is valuable to own.
+
+  Supporting examples and future directions include:
+
+  - Vaultwarden for personally controlled credential management.
+  - Immich for personally controlled photo storage and organization.
+  - Local and off-site backups with verified recovery paths.
+  - Internal DNS, secure remote access, reverse proxying, trusted
+    service access, and platform observability.
+  - Future document management, personal cloud storage, home
+    automation, media, knowledge, and productivity capabilities.
+  - Local or privately controlled AI, retrieval, memory, and
+    automation where privacy or ownership provides meaningful value.
+  - Future NAS and durable personal storage architecture.
+  - Exportability, interoperability, open formats, and avoidance of
+    unnecessary data lock-in.
+  - Clear assessment of security, maintenance burden, service
+    reliability, energy use, cost, and recovery requirements.
+  - Hybrid designs that use hosted services when they provide the
+    better engineering tradeoff while preserving important data and
+    operational independence where practical.
+
+  Personal infrastructure sovereignty is a direction toward an
+  increasingly self-hosted lifestyle within reason, not a requirement
+  that every digital capability be operated locally.

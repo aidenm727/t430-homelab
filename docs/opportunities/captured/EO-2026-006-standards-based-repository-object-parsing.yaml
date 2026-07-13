@@ -1,0 +1,44 @@
+id: EO-2026-006
+
+title: Standards-based repository object parsing
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-06
+
+source: engineering-session
+
+summary: >
+  Replace the intentionally minimal bootstrap Repository Object parser
+  with standards-based YAML parsing and structured diagnostics once
+  repository object requirements are sufficiently understood.
+
+rationale: >
+  The bootstrap parser successfully established the initial Repository
+  Object capability, but a custom minimal parser will become fragile as
+  objects gain multiline content, lists, relationships, optional
+  metadata, schema evolution, and additional object types. Mature YAML
+  parsing should improve correctness, maintainability, compatibility,
+  and failure reporting without weakening repository readability.
+
+notes: |
+  Future work should consider:
+
+  - Selection of a maintained YAML implementation.
+  - Safe loading that does not execute arbitrary content.
+  - Preservation of useful line and field diagnostics.
+  - Compatibility with existing Engineering Opportunity Objects.
+  - Support for lists, mappings, multiline values, dates, and optional
+    fields.
+  - Clear separation between parsing and object-schema validation.
+  - Regression tests using valid and malformed repository objects.
+  - Behavior for unknown fields and future schema versions.
+  - Migration without changing stable opportunity identifiers or
+    lifecycle state.
+
+  Replacement should occur deliberately after the object architecture
+  and expected schema behavior are clear. The bootstrap parser should
+  not become permanent infrastructure merely because it currently
+  works.

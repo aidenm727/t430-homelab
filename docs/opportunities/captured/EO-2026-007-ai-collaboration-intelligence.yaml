@@ -1,0 +1,60 @@
+id: EO-2026-007
+
+title: AI collaboration intelligence
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-06
+
+source: engineering-session
+
+summary: >
+  Develop an evidence-backed capability for evaluating whether
+  AI-assisted engineering collaboration is following repository
+  architecture, deterministic startup practices, workflow rules,
+  artifact standards, session-health expectations, and responsible
+  engineering checkpoints.
+
+rationale: >
+  Atlas and the repository increasingly provide deterministic
+  engineering knowledge, but collaboration quality still depends on
+  how an AI assistant interprets evidence, follows accepted decisions,
+  produces implementation artifacts, handles context, and responds to
+  degradation. The platform should eventually reason about the quality
+  of the collaboration itself so unreliable conversational behavior
+  does not undermine otherwise sound repository architecture.
+
+notes: |
+  AI Collaboration Intelligence is an umbrella opportunity that may
+  compose several narrower capabilities, including:
+
+  - EO-2026-002: Engineering session health assessment.
+  - EO-2026-003: Evaluate engineering bootstrap quality.
+  - EO-2026-004: Validate implementation artifacts before delivery.
+  - EO-2026-001: Reliable implementation artifact transport.
+
+  Candidate evidence may include:
+
+  - Correct interpretation of Atlas bootstrap and review output.
+  - Adherence to Engineering Mode entry requirements.
+  - Repository-first reasoning and architecture awareness.
+  - Recognition of accepted decisions and responsible advancement.
+  - Session-health and context-degradation indicators.
+  - Frequency and type of user corrections.
+  - Artifact completeness, validation, and transport reliability.
+  - Verification and documentation coverage.
+  - Correct checkpoint and handoff recommendations.
+  - Repeated collaboration failures that should become repository
+    knowledge or workflow improvements.
+
+  The capability should remain explainable and evidence-backed. It
+  should not attempt to measure AI quality through an opaque score
+  disconnected from observable engineering behavior.
+
+  This opportunity is narrower than EO-2026-008, AI Engineering
+  Excellence. EO-2026-007 concerns the reliability of AI collaboration
+  inside Aiden Platform engineering sessions. EO-2026-008 concerns the
+  broader strategic capability to understand, evaluate, and benefit
+  from artificial intelligence over time.

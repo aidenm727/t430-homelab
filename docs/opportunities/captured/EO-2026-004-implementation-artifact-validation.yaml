@@ -1,0 +1,47 @@
+id: EO-2026-004
+
+title: Validate implementation artifacts before delivery
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-06
+
+source: engineering-session
+
+summary: >
+  Develop deterministic checks for generated implementation artifacts
+  before they are presented to the engineer, reducing incomplete,
+  malformed, unsafe, or non-executable engineering changes.
+
+rationale: >
+  Reliable transport alone does not guarantee a reliable artifact.
+  An artifact can copy successfully while still containing truncated
+  content, invalid syntax, incorrect paths, fragile escaping,
+  unsupported commands, missing verification, or behavior that does
+  not match the accepted design. Artifact content should therefore be
+  validated independently from the mechanism used to deliver it.
+
+notes: |
+  Candidate validation dimensions include:
+
+  - Completeness of generated files and command sequences.
+  - Syntax and parseability where deterministic checks are available.
+  - Correct repository paths, identifiers, and referenced commands.
+  - Safe quoting, escaping, indentation, and rendering behavior.
+  - Absence of nested formatting likely to corrupt copy-paste.
+  - Consistency with the accepted architectural decision.
+  - Inclusion of appropriate verification commands.
+  - Avoidance of executable references to capabilities that do not yet
+    exist.
+  - Detection of accidental secrets, placeholders, or destructive
+    behavior.
+  - Confirmation that multi-file artifacts form one coherent change.
+
+  EO-2026-001 focuses on selecting reliable transport. This opportunity
+  focuses on validating the engineering content transported through
+  that mechanism.
+
+  This is an artifact-focused component of AI Collaboration
+  Intelligence, captured as EO-2026-007.

@@ -1,0 +1,54 @@
+id: EO-2026-010
+
+title: Engineering Capability Expansion
+
+status: captured
+
+capability: Learning
+
+created: 2026-07-06
+
+source: brainstorming-session
+
+summary: >
+  Expand the platform's engineering capability beyond software by
+  intentionally developing complementary knowledge across embedded,
+  electrical, mechanical, fabrication, control, and other engineering
+  disciplines that can be integrated into useful systems.
+
+rationale: >
+  Many meaningful real-world systems cannot be created through
+  software and infrastructure knowledge alone. Intelligent devices,
+  robotics, sensing, automation, local AI appliances, and custom
+  physical systems require integration across several engineering
+  disciplines. The opportunity is not to collect unrelated technical
+  hobbies or attempt mastery of every field, but to develop enough
+  multidisciplinary understanding to design, prototype, evaluate, and
+  integrate increasingly capable systems.
+
+notes: |
+  Candidate learning and experimentation areas include:
+
+  - Electrical fundamentals, circuits, power, components, measurement,
+    and safe prototyping.
+  - Microcontrollers and embedded systems using platforms such as
+    Arduino and ESP32.
+  - Embedded programming, C or C++, device communication, timing,
+    interrupts, and hardware interfaces.
+  - Sensors, actuators, motors, PWM control, encoder feedback, and
+    closed-loop behavior.
+  - Mechanical concepts including torque, gearing, material choice,
+    motion, tolerances, mounting, and structural design.
+  - Computer-aided design, parametric modeling, Fusion 360 or similar
+    tools, and design-for-manufacture thinking.
+  - FDM printing, custom enclosures, fixtures, mechanisms, replacement
+    parts, and iterative physical prototypes.
+  - Robotics, environmental sensing, home automation hardware,
+    intelligent appliances, and human-computer interaction.
+  - Integration of physical systems with APIs, networks, Python,
+    automation, AI workflows, observability, and platform services.
+
+  Learning should be driven by useful projects and platform
+  capabilities rather than novelty alone. Software and systems
+  engineering should remain a strength while the platform becomes
+  increasingly capable of bridging digital and physical systems.

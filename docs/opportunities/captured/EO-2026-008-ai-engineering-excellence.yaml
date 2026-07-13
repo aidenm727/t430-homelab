@@ -1,0 +1,58 @@
+id: EO-2026-008
+
+title: AI Engineering Excellence
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-06
+
+source: brainstorming-session
+
+summary: >
+  Develop a durable platform capability for AI engineering excellence
+  that continuously improves both the engineer's effectiveness and the
+  platform's ability to understand, evaluate, integrate, and benefit
+  from advances in artificial intelligence.
+
+rationale: >
+  Artificial intelligence is advancing rapidly across models,
+  engineering workflows, research, interfaces, and supporting
+  technologies. Ad hoc adoption driven by rankings, social media, or
+  individual product releases would create distraction and unstable
+  engineering practices. The Aiden Platform should instead cultivate
+  repeatable ways to learn, experiment, compare tools, challenge
+  assumptions, refine human-AI collaboration, and adopt meaningful
+  advances without becoming dependent on hype or any single provider.
+
+notes: |
+  This opportunity includes the long-term development of:
+
+  - Deliberate evaluation of models, coding agents, application
+    builders, research tools, and automation platforms.
+  - Better understanding of when ChatGPT, Claude, Gemini, Codex,
+    Claude Code, NotebookLM, local models, or future systems provide
+    meaningful advantages.
+  - Critique and anti-yes-man workflows that challenge assumptions,
+    expose weak reasoning, and support serious engineering judgment.
+  - Context engineering practices including context files, project
+    instructions, plans, reusable skills, subagents, connectors, MCP,
+    retrieval, and structured session startup.
+  - Awareness of context drift, long-session degradation, token
+    constraints, repeated prompting, and other AI collaboration
+    failure modes.
+  - AI-assisted software engineering, debugging, research,
+    documentation, tool use, agentic pipelines, and automation.
+  - Local AI experimentation and informed evaluation of private,
+    hosted, and hybrid inference.
+  - Structured learning of foundational and advanced AI concepts,
+    including model behavior, training dynamics, interpretability,
+    alignment, evaluation, and agent behavior.
+  - Ongoing awareness of changes in AI capabilities and discourse
+    without treating every new release as an adoption mandate.
+  - Career, entrepreneurial, and creative leverage produced by
+    increasingly capable AI engineering practices.
+
+  Product names and current workflows are evidence of the
+  opportunity, not permanent architectural commitments.

@@ -1,0 +1,47 @@
+id: EO-2026-005
+
+title: Repository object registration framework
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-06
+
+source: engineering-session
+
+summary: >
+  Generalize Repository Object discovery so future object types can
+  declare their identity, storage, lifecycle, schema, and reasoning
+  relationships without requiring repeated command-specific discovery
+  changes.
+
+rationale: >
+  The initial Repository Object capability intentionally recognizes
+  Engineering Opportunity Objects through specialized implementation.
+  As additional repository-native objects emerge, manually extending
+  discovery and parsing logic for every type would create duplication
+  and weaken the Repository Knowledge Layer. A registration framework
+  could provide deterministic extensibility while keeping object
+  knowledge centralized and commands thin.
+
+notes: |
+  Candidate responsibilities include:
+
+  - Declaring repository object types and stable identifiers.
+  - Defining canonical locations and lifecycle directories.
+  - Associating object types with schemas and validation behavior.
+  - Registering loaders, discovery rules, and relationship metadata.
+  - Exposing object knowledge to reusable Atlas capabilities.
+  - Supporting future objects without hardcoding each one throughout
+    the command and reasoning layers.
+  - Preserving human-readable repository-native definitions.
+  - Producing useful diagnostics for unknown or invalid objects.
+
+  Candidate approaches include a repository object registry,
+  declarative object definitions, or registration through reusable
+  Repository Knowledge capabilities.
+
+  Generalization should occur only after additional object types reveal
+  real shared requirements. The framework should not be abstracted
+  prematurely from Engineering Opportunity Objects alone.

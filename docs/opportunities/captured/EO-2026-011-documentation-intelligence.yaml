@@ -1,0 +1,59 @@
+id: EO-2026-011
+
+title: Documentation Intelligence
+
+status: captured
+
+capability: Documentation
+
+created: 2026-07-06
+
+source: brainstorming-session
+
+summary: >
+  Transform documentation from a passive engineering artifact into an
+  active platform capability that assists understanding, capture,
+  validation, synchronization, knowledge preservation, and
+  AI-assisted engineering.
+
+rationale: >
+  The original homelab documentation effort exposed a broader need:
+  the platform must remain understandable as physical infrastructure,
+  services, workflows, architecture, and AI-assisted engineering all
+  evolve. Manual documentation alone creates friction and drift, but
+  fully generated documentation would weaken ownership and judgment.
+  The platform should develop documentation intelligence that makes
+  accurate knowledge easier to preserve while keeping canonical
+  repository records authoritative.
+
+notes: |
+  This opportunity should remain connected to the original practical
+  objective of making it easier to deploy, operate, and document real
+  platform capabilities and self-hosted services.
+
+  It includes possible improvements such as:
+
+  - Smoother capture of infrastructure and service changes.
+  - Better documentation of hosts, networks, storage, backups,
+    workloads, physical devices, and operational procedures.
+  - Identification of which canonical documents are affected by an
+    engineering change.
+  - Detection of missing, stale, inconsistent, duplicated, or
+    conflicting documentation.
+  - Clear ownership relationships between canonical documents,
+    generated context, repository objects, implementation, and
+    operational records.
+  - AI-readable context generation that summarizes canonical sources
+    without replacing them.
+  - Repository knowledge and reasoning that help Atlas understand what
+    exists, what changed, and what still needs documentation.
+  - Engineering-session startup that does not depend on conversational
+    memory.
+  - Recommendations and assisted drafting that reduce documentation
+    friction while preserving human review.
+  - Documentation workflows that help the platform return from deep
+    engineering-layer work to deploying and operating useful
+    capabilities.
+
+  Documentation Intelligence should support engineering progress, not
+  become an abstract end in itself.

@@ -1,0 +1,58 @@
+id: EO-2026-009
+
+title: Personal AI Platform
+
+status: captured
+
+capability: AI
+
+created: 2026-07-06
+
+source: brainstorming-session
+
+summary: >
+  Develop an integrated personal AI platform that increases agency
+  across engineering and everyday life through shared knowledge,
+  reusable capabilities, personal context, learning systems,
+  assistance, and intentional automation.
+
+rationale: >
+  Personal AI capabilities are currently fragmented across separate
+  chat systems, note applications, research tools, health workflows,
+  productivity systems, and automation services. Building each as an
+  isolated project would duplicate context and prevent capabilities
+  from compounding. The Aiden Platform should gradually establish a
+  coherent personal AI foundation that can support many domains while
+  preserving human judgment, privacy, ownership, and understanding.
+
+notes: |
+  This opportunity includes possible future capabilities such as:
+
+  - A personal knowledge system or second brain with durable,
+    searchable, and AI-readable knowledge.
+  - Obsidian or other note-system integration without making any
+    particular application the permanent architecture.
+  - Retrieval over personal notes, documents, repository knowledge,
+    research, and life records.
+  - NotebookLM-style study, synthesis, tutoring, and source-grounded
+    learning workflows.
+  - Long-term context and memory that distinguish canonical
+    knowledge, temporary conversation, observations, and completed
+    actions.
+  - Daily briefings, research assistance, planning, reminders, and
+    decision support.
+  - Nutrition, grocery, meal-planning, workout, sleep, recovery, and
+    other health-oriented capabilities.
+  - Financial organization, career planning, brand development,
+    business experimentation, and personal project support.
+  - Integration with calendar, email, tasks, documents, services,
+    infrastructure, and future physical devices where appropriate.
+  - Private, local, hosted, and hybrid AI components selected
+    according to capability, cost, privacy, and operational tradeoffs.
+  - Shared context and reusable capabilities across personal AI
+    experiences instead of disconnected assistants.
+
+  The objective is not an autonomous Jarvis that replaces judgment.
+  The objective is a transparent and understandable capability layer
+  that helps the owner think, learn, organize, build, and act with
+  greater agency.
