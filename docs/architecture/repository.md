@@ -60,6 +60,7 @@ Current documents:
 * `docs/architecture/engineering-opportunity-intelligence.md`
 * `docs/architecture/engineering-opportunity-assessment.md`
 * `docs/architecture/engineering-opportunity-capability-alignment.md`
+* `docs/architecture/engineering-opportunity-scope-classification.md`
 * `docs/architecture/capabilities.md`
 * `docs/architecture/compute.md`
 * `docs/architecture/ai.md`

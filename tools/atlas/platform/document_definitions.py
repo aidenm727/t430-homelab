@@ -449,6 +449,7 @@ DOCUMENT_DEFINITIONS = {
             "docs/architecture/engineering-opportunity.md",
             "docs/architecture/engineering-opportunity-object.md",
             "docs/architecture/engineering-opportunity-intelligence.md",
+            "docs/architecture/engineering-opportunity-scope-classification.md",
             "docs/architecture/engineering-intelligence.md",
             "docs/architecture/engineering-review.md",
             "docs/architecture/reasoning.md",
@@ -470,6 +471,25 @@ DOCUMENT_DEFINITIONS = {
             "docs/architecture/engineering-opportunity-object.md",
             "docs/architecture/engineering-opportunity-intelligence.md",
             "docs/architecture/engineering-opportunity-assessment.md",
+            "docs/architecture/reasoning.md",
+        ],
+    ),
+
+    "docs/architecture/engineering-opportunity-scope-classification.md": DocumentDefinition(
+        path="docs/architecture/engineering-opportunity-scope-classification.md",
+        purpose="Defines how Engineering Opportunity Intelligence classifies primary scope and secondary implications while preserving evidence, uncertainty, and human judgment.",
+        capability="Engineering",
+        tags=[
+            "engineering-opportunity-scope-classification",
+            "engineering-opportunity-intelligence",
+            "structured-assessment",
+            "repository-reasoning",
+        ],
+        related=[
+            "docs/architecture/engineering-opportunity-object.md",
+            "docs/architecture/engineering-opportunity-intelligence.md",
+            "docs/architecture/engineering-opportunity-assessment.md",
+            "docs/architecture/engineering-opportunity-capability-alignment.md",
             "docs/architecture/reasoning.md",
         ],
     ),

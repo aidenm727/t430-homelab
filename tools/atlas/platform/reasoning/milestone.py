@@ -26,6 +26,9 @@ OPPORTUNITY_CAPABILITY_ALIGNMENT_DESIGN_MILESTONE_TEXT = (
 OPPORTUNITY_CAPABILITY_ALIGNMENT_MILESTONE_TEXT = (
     "Build Engineering Opportunity Capability Alignment Foundation"
 )
+OPPORTUNITY_SCOPE_CLASSIFICATION_DESIGN_MILESTONE_TEXT = (
+    "Design Engineering Opportunity Scope Classification"
+)
 
 
 def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -119,6 +122,110 @@ def build_milestone_completion(
     state: EngineeringState,
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
+
+    if OPPORTUNITY_SCOPE_CLASSIFICATION_DESIGN_MILESTONE_TEXT in milestone:
+        design_requirements = {
+            "docs/architecture/engineering-opportunity-scope-classification.md": {
+                "## Canonical Scope Taxonomy":
+                    "defines the six-class scope taxonomy",
+                "| `strategic-direction` | Strategic Direction |":
+                    "defines stable scope identifiers and labels",
+                "## Primary Scope":
+                    "defines exactly-one-primary-scope semantics",
+                "## Secondary Implications":
+                    "defines secondary scope implications",
+                "## Classification States":
+                    "defines resolved, candidate, ambiguous, mixed, insufficient, and conflicting states",
+                "## Evidence Model":
+                    "defines repository, structural, heuristic, and human-reviewed evidence",
+                "## Provenance":
+                    "defines source attribution requirements",
+                "## Deterministic, Heuristic, and Judgment Boundaries":
+                    "separates deterministic evidence from semantic judgment",
+                "## Confidence Model":
+                    "defines explainable classification confidence",
+                "## Structured Assessment Contract":
+                    "defines reusable scope-classification output",
+                "## Recommendation Effects":
+                    "keeps recommendations separate from mutation",
+                "## Human Authority and Canonical Mutation":
+                    "preserves human repository authority",
+                "## Initial Implementation Boundary":
+                    "defines a bounded safe implementation",
+                "## Verification Cases":
+                    "defines focused implementation tests",
+            },
+            "docs/architecture/engineering-opportunity-assessment.md": {
+                "docs/architecture/engineering-opportunity-scope-classification.md":
+                    "references the canonical Scope Classification contract",
+            },
+        }
+        registration_requirements = {
+            "docs/architecture/repository.md": {
+                "docs/architecture/engineering-opportunity-scope-classification.md":
+                    "lists the architecture in repository ownership",
+            },
+            "docs/docs-map.md": {
+                "docs/architecture/engineering-opportunity-scope-classification.md":
+                    "lists the architecture in the documentation map",
+            },
+            "tools/atlas/platform/document_definitions.py": {
+                '"docs/architecture/engineering-opportunity-scope-classification.md"':
+                    "registers architecture metadata",
+            },
+        }
+
+        design_evidence, design_missing = _document_design_evidence(
+            catalog,
+            design_requirements,
+        )
+        registration_evidence, registration_missing = _implementation_evidence(
+            registration_requirements,
+        )
+        evidence = design_evidence + registration_evidence
+        missing = design_missing + registration_missing
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=[],
+                satisfied_criteria=[
+                    "The six-class scope taxonomy is canonical and explicit.",
+                    "Stable scope identifiers are separated from display labels.",
+                    "Exactly-one-primary-scope semantics are defined.",
+                    "Secondary scope implications are defined separately.",
+                    "Resolved, candidate, ambiguous, mixed, insufficient-evidence, and conflicting states are defined.",
+                    "Repository facts, structural evidence, heuristics, and human-reviewed evidence are distinguished.",
+                    "Classification provenance and counterevidence are required.",
+                    "Deterministic reasoning is separated from heuristic and semantic judgment.",
+                    "Explainable confidence behavior is defined.",
+                    "A reusable structured Scope Classification result is defined.",
+                    "Recommendations remain separate from lifecycle and repository mutation.",
+                    "Human authority over canonical objects and taxonomy changes is preserved.",
+                    "The initial implementation boundary avoids false semantic precision.",
+                    "Focused verification cases are explicit.",
+                    "The architecture is integrated with Engineering Opportunity Assessment.",
+                    "The architecture is registered in Repository Knowledge.",
+                ],
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "Scope Classification architecture is designed. Verify, document, commit, and consider advancing to the bounded implementation milestone.",
+                ],
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Complete the missing Engineering Opportunity Scope Classification design evidence.",
+            ],
+        )
 
     if OPPORTUNITY_CAPABILITY_ALIGNMENT_MILESTONE_TEXT in milestone:
         requirements = {

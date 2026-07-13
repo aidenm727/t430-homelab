@@ -196,6 +196,10 @@ networking, services, or operating procedures.
 
 Scope is normally a derived finding rather than a required object field.
 
+The detailed canonical Scope Classification contract is defined in:
+
+    docs/architecture/engineering-opportunity-scope-classification.md
+
 ---
 
 ## Relationship Model

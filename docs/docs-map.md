@@ -44,6 +44,7 @@ Primary documents:
 * `docs/architecture/engineering-opportunity-intelligence.md`
 * `docs/architecture/engineering-opportunity-assessment.md`
 * `docs/architecture/engineering-opportunity-capability-alignment.md`
+* `docs/architecture/engineering-opportunity-scope-classification.md`
 * `docs/architecture/milestone-completion.md`
 * `docs/architecture/mission-advancement.md`
 * `docs/architecture/engineering-lifecycle.md`
@@ -131,22 +132,23 @@ A new human or AI reader should read the repository in this order:
 10. `docs/architecture/engineering-opportunity-intelligence.md`
 11. `docs/architecture/engineering-opportunity-assessment.md`
 12. `docs/architecture/engineering-opportunity-capability-alignment.md`
-13. `docs/architecture/milestone-completion.md`
-14. `docs/architecture/mission-advancement.md`
-15. `docs/architecture/engineering-lifecycle.md`
-16. `docs/architecture/architecture-registration.md`
-17. `docs/architecture/capabilities.md`
-18. `docs/architecture/compute.md`
-19. `docs/architecture/ai.md`
-20. `docs/architecture/repository.md`
-21. `docs/architecture/atlas.md`
-22. `docs/architecture/repository-metadata.md`
-23. `docs/standards/engineering-collaboration.md`
-24. `docs/current-mission.md`
-25. `docs/infrastructure.md`
-26. `docs/infrastructure-gamer-pve.md`
-27. `docs/services.md`
-28. `docs/aiden-context.md`
+13. `docs/architecture/engineering-opportunity-scope-classification.md`
+14. `docs/architecture/milestone-completion.md`
+15. `docs/architecture/mission-advancement.md`
+16. `docs/architecture/engineering-lifecycle.md`
+17. `docs/architecture/architecture-registration.md`
+18. `docs/architecture/capabilities.md`
+19. `docs/architecture/compute.md`
+20. `docs/architecture/ai.md`
+21. `docs/architecture/repository.md`
+22. `docs/architecture/atlas.md`
+23. `docs/architecture/repository-metadata.md`
+24. `docs/standards/engineering-collaboration.md`
+25. `docs/current-mission.md`
+26. `docs/infrastructure.md`
+27. `docs/infrastructure-gamer-pve.md`
+28. `docs/services.md`
+29. `docs/aiden-context.md`
 
 ## Source of Truth Rules
 
