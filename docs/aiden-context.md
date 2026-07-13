@@ -20,40 +20,53 @@ Engineering Opportunity Intelligence
 
 Continue evolving Atlas into the primary deterministic engineering interface for the Aiden Platform.
 
-The immediate objective is to extend the completed Engineering Opportunity Evidence foundation with reusable, typed relationship reasoning over explicit Engineering Opportunity references.
+The immediate objective is to design how Engineering Opportunity Intelligence should interpret, validate, and explain an opportunity's relationship to the canonical Platform Capability Map.
 
-This milestone should establish deterministic relationship structure without inferring semantic duplication, extracting relationships from prose, ranking opportunities, mutating lifecycle state, or moving reasoning into Atlas command presentation.
+This milestone should resolve the capability-identity and alignment contract before implementing capability reasoning. It must distinguish explicit repository facts from derived alignment findings and must not silently reinterpret or rewrite canonical opportunity objects.
 
 ---
 
 ### Current Focus
 
-- Build the Engineering Opportunity Relationship foundation.
-- Convert explicit dependencies and related opportunities into typed relationship findings.
-- Preserve relationship source, target, directionality, supporting evidence, explanation, and confidence.
-- Build a reusable portfolio relationship view over existing opportunity assessments.
-- Detect invalid self-references and duplicate relationship declarations.
-- Keep explicit repository relationships separate from future semantic inference.
-- Preserve human authority over opportunity lifecycle changes.
+- Design Engineering Opportunity Capability Alignment.
+- Define the canonical source of capability identity.
+- Clarify whether opportunity capability values are identifiers, labels, aliases, or provisional classifications.
+- Define primary capability and secondary capability alignment.
+- Define how existing opportunity capability values map to the canonical Platform Capability Map.
+- Define evidence, confidence, ambiguity, and conflict handling.
+- Preserve human authority over object changes and lifecycle progression.
+- Establish a bounded implementation contract for later deterministic reasoning.
 
 ---
 
 ### Current Priorities
 
-1. Define a reusable relationship-finding model aligned with the Engineering Opportunity Assessment architecture.
-2. Represent explicit dependencies as directional `depends_on` relationships.
-3. Represent the deterministic inverse of a dependency as an `enables` relationship where appropriate.
-4. Represent generic explicit related-opportunity references as `related_to` relationships without assigning stronger semantic meaning.
-5. Preserve source opportunity, target opportunity, directionality, supporting evidence, explanation, and confidence.
-6. Build a reusable portfolio relationship index from discovered opportunity assessments.
-7. Detect and explain self-references, duplicate declarations, and conflicting explicit relationship inputs.
-8. Add focused tests for directional dependencies, inverse enablement, generic related relationships, self-reference, duplicate declarations, and objects without relationships.
-9. Establish deterministic milestone-completion evidence for the relationship foundation.
+1. Define the relationship between Engineering Opportunity Objects and `docs/architecture/capabilities.md`.
+2. Define stable capability identifiers separately from human-readable labels where appropriate.
+3. Determine whether every opportunity must have exactly one primary capability.
+4. Define how secondary or cross-capability alignment should be represented in derived assessments.
+5. Define alias and compatibility rules for existing values such as Engineering, AI, Documentation, Infrastructure, and Learning.
+6. Define how Atlas reports unknown, deprecated, ambiguous, or conflicting capability values.
+7. Define the evidence and provenance required for a capability-alignment finding.
+8. Separate deterministic validation from human or AI-assisted semantic judgment.
+9. Define migration rules that preserve canonical object history and avoid silent mutation.
+10. Define the structured capability-alignment output consumed by Engineering Opportunity Assessments.
+11. Define the initial implementation boundary and focused test cases.
+12. Establish deterministic milestone-completion evidence for the design.
 
 ---
 
 ### Recently Completed
 
+- Engineering Opportunity Relationship foundation
+- Typed `depends_on`, `enables`, and `related_to` relationship findings
+- Deterministic portfolio relationship view
+- Relationship source, target, directionality, evidence, explanation, and confidence
+- Explicit self-reference detection
+- Duplicate relationship declaration detection
+- Conflicting explicit relationship detection
+- Relationship-foundation tests
+- Relationship-foundation milestone recognition
 - Engineering Opportunity Evidence foundation
 - Structured dependencies, related opportunities, related documents, and evidence
 - Bounded top-level YAML sequence parsing
@@ -92,18 +105,20 @@ This milestone should establish deterministic relationship structure without inf
 
 ### Current Non-Priorities
 
+- Implementing capability-alignment reasoning before the contract is designed
+- Automatically rewriting existing opportunity capability values
+- Treating display labels as stable identifiers without an explicit decision
+- Inferring capability solely from title, summary, rationale, evidence, or keyword similarity
 - Semantic duplicate and overlap determination
-- Relationship inference from summaries, rationale, evidence, or notes
-- Automatic component or umbrella classification
 - Scope classification
-- Capability-alignment evaluation
+- Automatic component or umbrella classification
 - Architectural-significance evaluation
 - Portfolio-wide prioritization
 - Strategic-value scoring
 - Broad autonomous candidate-opportunity discovery
 - Engineering Intelligence integration
 - Engineering Review presentation of opportunity recommendations
-- New Atlas relationship commands
+- New Atlas capability commands
 - Automatic lifecycle mutation
 - Automatic mission or roadmap creation
 - Permanent assessment artifact storage
@@ -118,44 +133,52 @@ This milestone should establish deterministic relationship structure without inf
 
 ### Current Status
 
-The Engineering Opportunity Evidence foundation is implemented and recognized by Atlas with high confidence.
+The Engineering Opportunity Relationship foundation is implemented and recognized by Atlas with high confidence.
 
 The repository now supports:
 
-- Structured dependencies, related opportunities, related documents, and evidence
-- Bounded loading of top-level YAML sequences and evidence items
-- Source-backed assessment facts for explicit references
-- Validation of opportunity identifiers against the discovered opportunity inventory
-- Validation of related document paths against repository reality
-- Deterministic findings and blockers for unresolved references
-- Valid assessment of objects without optional references
-- Focused evidence-foundation tests
-- Deterministic milestone-completion reasoning
+- Structured opportunity evidence and explicit references
+- Deterministic validation of opportunity and document references
+- Typed explicit opportunity relationships
+- Directional dependency and inverse enablement views
+- Generic explicit related-opportunity findings
+- Portfolio relationship composition
+- Relationship declaration diagnostics
+- Reusable relationship findings attached to opportunity assessments
+- Focused relationship tests
+- Deterministic relationship milestone-completion reasoning
 
-Atlas can now establish that explicit references exist and resolve, but it does not yet represent those references as typed relationship findings or compose a reusable relationship view across the opportunity portfolio.
+Engineering Opportunity Objects require a `capability` field, and the repository has a canonical Platform Capability Map. However, the current architecture does not yet define whether opportunity capability values must exactly match canonical capability names, may use aliases, may represent broader domains, or may require primary and secondary capability alignment.
 
-The next responsible step is therefore to establish deterministic relationship reasoning over explicit repository data before attempting semantic comparison, duplicate detection, scope classification, prioritization, or downstream Engineering Intelligence composition.
+The existing opportunity inventory already contains values that do not map one-to-one to the current capability labels. Implementing validation without resolving that contract would create false precision and could encourage unsafe automatic rewrites.
+
+The next responsible step is therefore to design capability alignment before implementing it.
 
 ---
 
 ### Next Milestone
 
-Build Engineering Opportunity Relationship Foundation.
+Design Engineering Opportunity Capability Alignment.
 
-Extend Engineering Opportunity Assessment so explicit opportunity references produce reusable typed relationship findings and a deterministic portfolio relationship view.
+Create the architecture contract that defines how Engineering Opportunity Intelligence relates opportunity objects to the canonical Platform Capability Map.
 
-The first relationship evaluator should support:
+The design should define:
 
-- `depends_on` for explicit dependencies
-- `enables` as the deterministic inverse view of an explicit dependency
-- `related_to` for generic explicit related-opportunity references
-- Source and target opportunity identifiers
-- Directionality
-- Supporting repository evidence
-- Explainable confidence
-- Findings for self-references, duplicate declarations, and conflicting explicit inputs
+- Canonical capability identity and source of truth
+- Stable identifiers and human-readable labels
+- Primary capability semantics
+- Secondary and cross-capability alignment
+- Existing-value aliases and compatibility behavior
+- Unknown, deprecated, ambiguous, and conflicting values
+- Evidence and provenance
+- Deterministic validation boundaries
+- Human or AI-assisted judgment boundaries
+- Structured assessment output
+- Migration and lifecycle authority
+- Initial implementation scope
+- Focused verification cases
 
-This milestone should not infer duplication, overlap, component, umbrella, supersession, or conflict relationships from natural language. It should not rank opportunities, mutate lifecycle state, add a command-specific relationship implementation, or advance any captured opportunity.
+This milestone should not implement capability scoring, automatically rewrite opportunity objects, infer capability from prose, rank the portfolio, or add command-specific evaluation logic.
 
 ---
 
@@ -163,20 +186,21 @@ This milestone should not infer duplication, overlap, component, umbrella, super
 
 The milestone is complete when:
 
-- A reusable typed opportunity-relationship model exists in the Repository Reasoning layer.
-- Relationship findings preserve source, target, type, directionality, supporting evidence, explanation, and confidence.
-- Explicit dependencies produce directional `depends_on` findings.
-- Dependency targets can expose deterministic inverse `enables` findings in a portfolio relationship view.
-- Explicit related-opportunity references produce `related_to` findings without stronger semantic inference.
-- Relationship reasoning operates over discovered opportunity objects and reusable assessments rather than Atlas command rendering.
-- Self-references produce explicit deterministic findings.
-- Duplicate relationship declarations produce explicit deterministic findings.
-- Conflicting explicit relationship inputs are reported rather than silently normalized.
-- Objects without explicit opportunity relationships remain valid and assessable.
-- No relationship is inferred solely from keyword similarity or prose.
-- No relationship reasoning path automatically edits, moves, merges, accepts, rejects, schedules, or closes an opportunity.
-- Tests cover dependencies, inverse enablement, related relationships, self-reference, duplicate declarations, conflicting inputs, and absent relationships.
-- Atlas can recognize completion of the relationship foundation from concrete implementation and test evidence.
+- A canonical Engineering Opportunity Capability Alignment architecture document exists.
+- The design identifies `docs/architecture/capabilities.md` as the capability source of truth or explicitly revises that ownership.
+- Stable capability identity is distinguished from mutable display wording.
+- Primary capability semantics are defined.
+- Secondary and cross-capability alignment are defined.
+- Existing opportunity capability values are inventoried and addressed by explicit compatibility or migration rules.
+- Unknown, deprecated, ambiguous, and conflicting capability values have defined behavior.
+- Capability-alignment facts, findings, evidence, provenance, confidence, and unresolved questions are defined.
+- Deterministic validation is separated from semantic engineering judgment.
+- Canonical object mutation remains human-authorized.
+- The structured output contract is reusable by Engineering Opportunity Assessment and downstream reasoning.
+- The initial implementation boundary and non-goals are explicit.
+- Focused implementation test cases are identified.
+- Required architecture metadata is registered in Repository Knowledge.
+- Atlas can recognize completion of the capability-alignment design from concrete document evidence.
 
 ## Infrastructure Snapshot
 
