@@ -13,6 +13,7 @@ REQUIRED_FIELDS = (
     "created",
     "source",
     "summary",
+    "rationale",
 )
 
 
@@ -36,7 +37,7 @@ def parse_simple_yaml(path: Path) -> dict[str, str]:
         key = key.strip()
         raw_value = raw_value.strip()
 
-        if raw_value == ">":
+        if raw_value in {">", "|"}:
             block: list[str] = []
             index += 1
 
@@ -48,7 +49,8 @@ def parse_simple_yaml(path: Path) -> dict[str, str]:
                     block.append(block_line.strip())
                 index += 1
 
-            values[key] = " ".join(block).strip()
+            separator = " " if raw_value == ">" else "\n"
+            values[key] = separator.join(block).strip()
             continue
 
         values[key] = raw_value.strip().strip('"').strip("'")
@@ -84,6 +86,9 @@ def load_repository_objects(object_type: str | None = None) -> tuple[list[Reposi
                 created=values.get("created", "Unknown"),
                 source=values.get("source", "Unknown"),
                 summary=values.get("summary", ""),
+                rationale=values.get("rationale", ""),
+                evidence=values.get("evidence", ""),
+                notes=values.get("notes", ""),
                 missing_fields=missing,
             )
         )

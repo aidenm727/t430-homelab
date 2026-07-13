@@ -138,6 +138,41 @@ class EngineeringIntelligenceReport:
 
 
 @dataclass(frozen=True)
+class OpportunityAssessmentFact:
+    name: str
+    value: str
+    source: str
+
+
+@dataclass(frozen=True)
+class OpportunityAssessmentFinding:
+    code: str
+    severity: str
+    statement: str
+    evidence: tuple[str, ...] = ()
+    confidence: str = "High"
+
+
+@dataclass(frozen=True)
+class OpportunityAssessmentRecommendation:
+    action: str
+    reason: str
+    confidence: str
+
+
+@dataclass(frozen=True)
+class EngineeringOpportunityAssessment:
+    opportunity_id: str
+    lifecycle_state: str
+    repository_path: str
+    facts: tuple[OpportunityAssessmentFact, ...] = ()
+    findings: tuple[OpportunityAssessmentFinding, ...] = ()
+    recommendation: OpportunityAssessmentRecommendation | None = None
+    blockers: tuple[str, ...] = ()
+    unresolved_questions: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
 class MilestoneCompletionReport:
     status: str
     confidence: str

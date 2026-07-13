@@ -13,6 +13,9 @@ class RepositoryEntity:
     created: str
     source: str
     summary: str
+    rationale: str
+    evidence: str
+    notes: str
     missing_fields: tuple[str, ...]
 
 

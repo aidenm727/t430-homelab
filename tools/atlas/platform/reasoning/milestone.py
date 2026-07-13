@@ -11,6 +11,9 @@ ENGINEERING_REVIEW_MILESTONE_TEXT = (
 OPPORTUNITY_INTELLIGENCE_MILESTONE_TEXT = (
     "Design Engineering Opportunity Intelligence"
 )
+OPPORTUNITY_ASSESSMENT_MILESTONE_TEXT = (
+    "Build Engineering Opportunity Assessment Foundation"
+)
 
 
 def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -22,6 +25,34 @@ def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
             evidence.append(f"{path} exists.")
         else:
             missing.append(f"{path} is missing.")
+
+    return evidence, missing
+
+
+def _implementation_evidence(
+    requirements: dict[str, dict[str, str]],
+) -> tuple[list[str], list[str]]:
+    evidence: list[str] = []
+    missing: list[str] = []
+
+    for path, required_markers in requirements.items():
+        full_path = repo_root() / path
+
+        if not full_path.exists():
+            missing.append(f"{path} is missing.")
+            continue
+
+        evidence.append(f"{path} exists.")
+        content = full_path.read_text(encoding="utf-8")
+
+        for marker, description in required_markers.items():
+            if marker in content:
+                evidence.append(f"{path}: {description}.")
+            else:
+                missing.append(
+                    f"{path} is missing implementation evidence: "
+                    f"{description}."
+                )
 
     return evidence, missing
 
@@ -76,6 +107,84 @@ def build_milestone_completion(
     state: EngineeringState,
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
+
+    if OPPORTUNITY_ASSESSMENT_MILESTONE_TEXT in milestone:
+        requirements = {
+            "tools/atlas/platform/reasoning/models.py": {
+                "class OpportunityAssessmentFact":
+                    "defines source-backed assessment facts",
+                "class OpportunityAssessmentFinding":
+                    "defines confidence-aware findings",
+                "class OpportunityAssessmentRecommendation":
+                    "defines bounded recommendations",
+                "class EngineeringOpportunityAssessment":
+                    "defines the reusable assessment output",
+            },
+            "tools/atlas/platform/reasoning/opportunity_assessment.py": {
+                "def assess_engineering_opportunity":
+                    "implements reusable single-object assessment",
+                "missing-required-fields":
+                    "checks required object fields",
+                "invalid-identifier":
+                    "checks stable identifier format",
+                "lifecycle-path-mismatch":
+                    "checks lifecycle and repository placement",
+                "retain-captured":
+                    "preserves lifecycle authority",
+            },
+            "tools/atlas/platform/repository_objects/loader.py": {
+                '"rationale",':
+                    "loads rationale as a required canonical field",
+                'raw_value in {">", "|"}':
+                    "supports folded and literal YAML blocks",
+            },
+            "tests/test_opportunity_assessment.py": {
+                "test_valid_captured_object":
+                    "tests valid object assessment",
+                "test_incomplete_object":
+                    "tests missing required fields",
+                "test_inconsistent_object":
+                    "tests identifier and lifecycle inconsistency",
+            },
+        }
+
+        evidence, missing = _implementation_evidence(requirements)
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=[],
+                satisfied_criteria=[
+                    "A reusable Engineering Opportunity Assessment data model exists.",
+                    "Facts, findings, and recommendations are separated.",
+                    "Assessment evidence and confidence are explicit.",
+                    "Existing repository objects are assessed without mutation.",
+                    "Required fields and rationale are evaluated deterministically.",
+                    "Stable identifiers are evaluated deterministically.",
+                    "Lifecycle state and repository placement are evaluated deterministically.",
+                    "Valid, incomplete, and inconsistent object cases are tested.",
+                    "Assessment reasoning remains independent of command rendering.",
+                    "Human lifecycle authority is preserved.",
+                ],
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "The Engineering Opportunity Assessment foundation is implemented. Verify, document, commit, and consider advancing the mission.",
+                ],
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Complete the missing Engineering Opportunity Assessment foundation evidence.",
+            ],
+        )
 
     if OPPORTUNITY_INTELLIGENCE_MILESTONE_TEXT in milestone:
         requirements = {
