@@ -20,65 +20,65 @@ Engineering Opportunity Intelligence
 
 Continue evolving Atlas into the primary deterministic engineering interface for the Aiden Platform.
 
-The immediate objective is to implement the bounded Engineering Opportunity Capability Alignment foundation defined by canonical architecture.
+The immediate objective is to design Engineering Opportunity Scope Classification as the next reusable reasoning layer in Engineering Opportunity Intelligence.
 
-This milestone should create a reusable capability catalog and structured alignment result that preserve raw opportunity values, resolve deterministic identifiers, labels, and aliases, expose ambiguity and unknown values, and remain separate from semantic inference, lifecycle mutation, portfolio ranking, and Atlas command presentation.
+This milestone should define how Atlas distinguishes strategic direction, capability, architecture, engineering-system, implementation, and operational or infrastructure opportunities while preserving evidence, uncertainty, and human judgment.
+
+The design must not pretend that semantic scope is fully deterministic.
 
 ---
 
 ### Current Focus
 
-- Build the Engineering Opportunity Capability Alignment foundation.
-- Implement a bounded canonical capability catalog owned by repository architecture.
-- Preserve raw declared opportunity capability values.
-- Resolve canonical identifiers, canonical labels, and curated aliases deterministically.
-- Report ambiguous and unknown values with evidence, blockers, and unresolved questions.
-- Attach capability-alignment results to reusable Engineering Opportunity Assessments.
-- Preserve human authority over migration and lifecycle progression.
-- Add focused deterministic tests and milestone-completion evidence.
+- Design Engineering Opportunity Scope Classification.
+- Define the purpose and ownership of scope classification.
+- Clarify primary scope and secondary implications.
+- Define evidence, provenance, confidence, ambiguity, and unresolved-question handling.
+- Separate deterministic repository evidence from heuristic or human-assisted classification.
+- Define how scope classification integrates with Engineering Opportunity Assessment.
+- Preserve canonical opportunity objects and lifecycle authority.
+- Establish a bounded implementation contract and focused verification cases.
 
 ---
 
 ### Current Priorities
 
-1. Define a reusable canonical capability catalog containing the nine stable capability identifiers and display labels.
-2. Preserve the raw declared `capability` value as repository evidence.
-3. Match exact canonical capability identifiers.
-4. Match exact canonical display labels.
-5. Apply curated one-to-one aliases for `AI` and `Documentation`.
-6. Report `Infrastructure` as ambiguous with explicit candidate capability identifiers.
-7. Report `Learning` and arbitrary unsupported values as unknown.
-8. Define a reusable `OpportunityCapabilityAlignment` result with state, primary identity, candidates, evidence, provenance, explanation, confidence, blockers, unresolved questions, and recommendation.
-9. Attach capability alignment to reusable Engineering Opportunity Assessments without moving logic into Atlas commands.
-10. Ensure unresolved capability alignment produces bounded recommendations without rewriting canonical opportunity objects.
-11. Add focused tests for identifiers, labels, aliases, ambiguity, unknown values, raw-value preservation, assessment integration, and non-mutation.
-12. Establish deterministic milestone-completion evidence for the implementation.
+1. Confirm the canonical scope taxonomy and whether the six existing scope classes are sufficient.
+2. Define stable machine-readable scope identifiers separately from display labels.
+3. Define exactly one primary scope and zero or more secondary implications.
+4. Define what repository evidence may support each scope class.
+5. Define how explicit architecture references, capability alignment, relationships, and object fields contribute to scope reasoning.
+6. Define how title, summary, rationale, evidence, and notes may support heuristic classification without becoming deterministic truth.
+7. Define ambiguous, mixed, insufficient-evidence, and conflicting scope results.
+8. Define confidence and provenance requirements for every classification.
+9. Define when human or bounded AI-assisted review is required.
+10. Define the reusable structured scope-classification result consumed by Engineering Opportunity Assessment.
+11. Define how unresolved classification affects recommendations without mutating lifecycle state.
+12. Define the initial implementation boundary and focused test cases.
+13. Register the architecture in Repository Knowledge.
+14. Establish deterministic milestone-completion evidence for the design.
 
 ---
 
 ### Recently Completed
 
+- Engineering Opportunity Capability Alignment foundation
+- Repository-backed catalog of nine canonical Platform Capabilities
+- Structured `OpportunityCapabilityAlignment` result
+- Exact capability identifier and label resolution
+- Curated `AI` and `Documentation` aliases
+- Ambiguous `Infrastructure` handling
+- Unknown `Learning` and unsupported-value handling
+- Capability evidence, provenance, confidence, blockers, unresolved questions, and recommendations
+- Engineering Opportunity Assessment capability-alignment integration
+- Capability-alignment tests and milestone recognition
 - Engineering Opportunity Capability Alignment architecture
-- Stable canonical capability identifiers
-- Primary capability semantics
-- Secondary and cross-capability boundaries
-- Compatibility and migration rules
-- Existing capability-value inventory and handling
-- Alignment states for canonical IDs, labels, aliases, ambiguity, unknown, deprecated, and conflicting values
-- Capability-alignment evidence and provenance contract
-- Deterministic and judgment boundaries
-- Human-authorized migration and lifecycle rules
-- Capability-alignment structured assessment contract
-- Initial implementation boundary and verification cases
-- Capability-alignment architecture registration
-- Capability-alignment design milestone recognition
+- Stable canonical capability identifiers and migration boundaries
 - Engineering Opportunity Relationship foundation
-- Typed `depends_on`, `enables`, and `related_to` relationship findings
+- Typed `depends_on`, `enables`, and `related_to` findings
 - Deterministic portfolio relationship view
-- Relationship declaration diagnostics
-- Relationship-foundation tests
 - Engineering Opportunity Evidence foundation
-- Structured dependencies, related opportunities, related documents, and evidence
+- Structured references and evidence
 - Deterministic opportunity and document reference validation
 - Engineering Opportunity Assessment foundation
 - Reusable assessment data model
@@ -99,23 +99,22 @@ This milestone should create a reusable capability catalog and structured alignm
 
 ### Current Non-Priorities
 
-- Inferring capability from title, summary, rationale, evidence, notes, or keyword similarity
-- Determining secondary capability alignment
-- Automatically rewriting existing opportunity capability values
-- Automatically migrating labels or aliases to canonical identifiers
-- Selecting a primary capability for ambiguous `Infrastructure` opportunities
-- Adding `Learning` or any other new canonical capability without architecture review
-- Unifying document metadata capability vocabularies with Engineering Opportunity capability identity
+- Implementing scope classification before the contract is designed
+- Treating keyword matches as authoritative scope classification
+- Forcing every opportunity into a high-confidence scope
+- Automatically rewriting opportunity objects with derived scope
+- Adding scope as a required canonical object field
 - Semantic duplicate and overlap determination
-- Scope classification
 - Automatic component or umbrella classification
-- Architectural-significance evaluation
+- Architectural-significance evaluation beyond what is required to define scope boundaries
 - Portfolio-wide prioritization
 - Strategic-value scoring
+- Effort estimation
+- Mission relevance scoring
 - Broad autonomous candidate-opportunity discovery
 - Engineering Intelligence integration
-- Engineering Review presentation of capability recommendations
-- New Atlas capability commands
+- Engineering Review presentation of opportunity recommendations
+- New Atlas scope commands
 - Automatic lifecycle mutation
 - Automatic mission or roadmap creation
 - Permanent assessment artifact storage
@@ -130,52 +129,73 @@ This milestone should create a reusable capability catalog and structured alignm
 
 ### Current Status
 
-The Engineering Opportunity Capability Alignment architecture is designed, registered, and recognized by Atlas with high confidence.
+The repository now has deterministic foundations for:
 
-The repository now defines:
+- Opportunity object quality
+- Structured evidence and references
+- Explicit typed relationships
+- Canonical Platform Capability identity
+- Capability alignment
+- Reusable Engineering Opportunity Assessments
+- Milestone-completion reasoning
 
-- `docs/architecture/capabilities.md` as the canonical Platform Capability source
-- Nine stable capability identifiers separated from display labels
-- Declared and primary capability semantics
-- Secondary and cross-capability boundaries
-- Compatibility handling for existing opportunity values
-- Deterministic alignment states
-- Evidence and provenance requirements
-- A structured capability-alignment result contract
-- Deterministic and semantic judgment boundaries
-- Human-authorized migration and lifecycle authority
-- A bounded initial implementation scope
-- Focused verification cases
+The Engineering Opportunity Assessment architecture already identifies six scope classes:
 
-The current reasoning implementation still exposes only the raw opportunity capability fact. It does not yet resolve that value against the canonical capability catalog, represent alignment state, expose candidate capabilities, or attach a capability-alignment result to Engineering Opportunity Assessments.
+- Strategic Direction
+- Capability Opportunity
+- Architecture Opportunity
+- Engineering System Opportunity
+- Implementation Opportunity
+- Operational or Infrastructure Opportunity
 
-The next responsible step is therefore to implement the bounded deterministic foundation exactly within the architecture contract.
+It also states that an opportunity may have one primary scope and several secondary implications, and that scope is normally a derived finding rather than a required object field.
+
+However, the repository does not yet define:
+
+- Stable scope identifiers
+- Evidence rules for each class
+- Primary versus secondary classification behavior
+- Mixed or ambiguous classifications
+- Confidence and provenance requirements
+- Deterministic versus heuristic boundaries
+- Human or AI-assisted review boundaries
+- Structured assessment output
+- Migration and lifecycle authority
+- A bounded implementation contract
+
+Implementing classification before resolving those questions would create false precision and could disguise semantic judgment as repository truth.
+
+The next responsible step is therefore to design Scope Classification before implementing it.
 
 ---
 
 ### Next Milestone
 
-Build Engineering Opportunity Capability Alignment Foundation.
+Design Engineering Opportunity Scope Classification.
 
-Implement the reusable catalog, alignment evaluator, structured result, assessment integration, tests, and milestone recognition required to resolve declared opportunity capability values against canonical Platform Capability identity.
+Create the architecture contract that defines how Engineering Opportunity Intelligence classifies the primary scope and secondary implications of an Engineering Opportunity Object.
 
-The first implementation should support:
+The design should define:
 
-- Exact canonical identifier resolution
-- Exact canonical label resolution
-- Curated aliases for `AI` and `Documentation`
-- Ambiguous handling for `Infrastructure`
-- Unknown handling for `Learning` and arbitrary unsupported values
-- Raw declared-value preservation
-- Primary capability identity when deterministically resolved
-- Candidate capability identifiers for ambiguous values
+- Scope-classification purpose and ownership
+- Canonical scope taxonomy
+- Stable identifiers and display labels
+- Primary scope semantics
+- Secondary implication semantics
 - Evidence and provenance
-- Explanation and confidence
-- Blockers and unresolved questions
-- Bounded recommendations
-- Integration with reusable Engineering Opportunity Assessments
+- Deterministic, heuristic, and judgment boundaries
+- Ambiguous, mixed, insufficient-evidence, and conflicting states
+- Confidence and unresolved questions
+- Human and bounded AI-assisted review
+- Structured assessment output
+- Recommendation effects
+- Canonical object and lifecycle authority
+- Initial implementation scope
+- Focused verification cases
+- Repository Knowledge registration
+- Milestone-completion evidence
 
-This milestone should not infer capability from natural language, determine secondary alignment, rewrite opportunity objects, add capabilities, rank opportunities, perform duplicate detection, move reasoning into Atlas commands, or depend on a language model.
+This milestone should not implement semantic classification, rewrite opportunity objects, rank opportunities, determine duplicates, mutate lifecycle state, add command-specific reasoning, or depend on a language model.
 
 ---
 
@@ -183,23 +203,23 @@ This milestone should not infer capability from natural language, determine seco
 
 The milestone is complete when:
 
-- A reusable canonical capability catalog exists in the Repository Reasoning layer.
-- The catalog contains the nine architecture-owned stable capability identifiers and labels.
-- A reusable structured `OpportunityCapabilityAlignment` result exists.
-- Raw declared opportunity capability values are preserved.
-- Exact canonical identifiers resolve with high confidence.
-- Exact canonical labels resolve with high confidence.
-- `AI` resolves through a curated alias to `ai-aiden-os`.
-- `Documentation` resolves through a curated alias to `knowledge-documentation`.
-- `Infrastructure` produces an ambiguous result with explicit candidate capabilities and no automatic primary selection.
-- `Learning` and arbitrary unsupported values produce unknown results.
-- Alignment results include evidence, provenance, explanation, confidence, blockers, unresolved questions, and bounded recommendations.
-- Engineering Opportunity Assessments consume the reusable alignment result without duplicating evaluator logic.
-- Unresolved alignment can recommend enrichment while preserving canonical object and lifecycle authority.
-- No evaluator infers capability from opportunity prose.
-- No evaluator edits, migrates, moves, accepts, rejects, schedules, or closes an opportunity.
-- Tests cover canonical IDs, labels, aliases, ambiguity, unknown values, raw-value preservation, assessment integration, and non-mutation.
-- Atlas can recognize completion of the Capability Alignment foundation from concrete implementation and test evidence.
+- A canonical Engineering Opportunity Scope Classification architecture document exists.
+- The design confirms or deliberately revises the six-class scope taxonomy.
+- Stable scope identifiers are distinguished from display labels.
+- Exactly-one-primary-scope semantics are defined.
+- Secondary implication semantics are defined.
+- Evidence and provenance requirements are defined for each scope class.
+- Deterministic repository evidence is separated from heuristic and semantic judgment.
+- Ambiguous, mixed, insufficient-evidence, and conflicting classifications have defined behavior.
+- Confidence, blockers, and unresolved questions are defined.
+- Human and bounded AI-assisted review boundaries are explicit.
+- A reusable structured scope-classification result is defined.
+- Recommendation effects remain separate from lifecycle mutation.
+- Canonical opportunity objects remain human-owned and are not silently rewritten.
+- The initial implementation boundary and non-goals are explicit.
+- Focused implementation test cases are identified.
+- Required architecture metadata is registered in Repository Knowledge.
+- Atlas can recognize completion of the Scope Classification design from concrete document evidence.
 
 ## Infrastructure Snapshot
 
