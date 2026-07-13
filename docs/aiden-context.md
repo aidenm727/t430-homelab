@@ -20,40 +20,48 @@ Engineering Opportunity Intelligence
 
 Continue evolving Atlas into the primary deterministic engineering interface for the Aiden Platform.
 
-The immediate objective is to extend the completed Engineering Opportunity Assessment foundation with structured repository evidence and explicit relationship inputs.
+The immediate objective is to extend the completed Engineering Opportunity Evidence foundation with reusable, typed relationship reasoning over explicit Engineering Opportunity references.
 
-This milestone should strengthen Repository Knowledge and Repository Reasoning without introducing semantic comparison, opaque scoring, automatic lifecycle mutation, permanent assessment storage, or command-specific evaluation logic.
+This milestone should establish deterministic relationship structure without inferring semantic duplication, extracting relationships from prose, ranking opportunities, mutating lifecycle state, or moving reasoning into Atlas command presentation.
 
 ---
 
 ### Current Focus
 
-- Build the Engineering Opportunity Evidence foundation.
-- Preserve explicit dependencies, related opportunities, related documents, and evidence in the normalized repository-object representation.
-- Make those inputs available to reusable Engineering Opportunity Assessment reasoning.
-- Validate explicit references deterministically.
-- Produce source-backed findings for unresolved opportunity and document references.
-- Keep canonical objects separate from rebuildable assessment outputs.
+- Build the Engineering Opportunity Relationship foundation.
+- Convert explicit dependencies and related opportunities into typed relationship findings.
+- Preserve relationship source, target, directionality, supporting evidence, explanation, and confidence.
+- Build a reusable portfolio relationship view over existing opportunity assessments.
+- Detect invalid self-references and duplicate relationship declarations.
+- Keep explicit repository relationships separate from future semantic inference.
 - Preserve human authority over opportunity lifecycle changes.
 
 ---
 
 ### Current Priorities
 
-1. Extend the normalized Engineering Opportunity Object representation with structured dependencies, related opportunities, related documents, and evidence.
-2. Support the bounded YAML structures required by canonical opportunity objects without introducing a general-purpose configuration framework.
-3. Preserve explicit evidence and relationship inputs during repository-object loading.
-4. Add reusable assessment facts for explicit dependencies, related opportunities, related documents, and evidence.
-5. Validate referenced Engineering Opportunity identifiers against the discovered opportunity inventory.
-6. Validate referenced repository documents against canonical repository paths.
-7. Produce deterministic findings, blockers, and unresolved questions for missing or inconsistent explicit references.
-8. Add focused tests for valid references, missing opportunity targets, missing document targets, and objects without optional references.
-9. Establish deterministic milestone-completion evidence for the evidence foundation.
+1. Define a reusable relationship-finding model aligned with the Engineering Opportunity Assessment architecture.
+2. Represent explicit dependencies as directional `depends_on` relationships.
+3. Represent the deterministic inverse of a dependency as an `enables` relationship where appropriate.
+4. Represent generic explicit related-opportunity references as `related_to` relationships without assigning stronger semantic meaning.
+5. Preserve source opportunity, target opportunity, directionality, supporting evidence, explanation, and confidence.
+6. Build a reusable portfolio relationship index from discovered opportunity assessments.
+7. Detect and explain self-references, duplicate declarations, and conflicting explicit relationship inputs.
+8. Add focused tests for directional dependencies, inverse enablement, generic related relationships, self-reference, duplicate declarations, and objects without relationships.
+9. Establish deterministic milestone-completion evidence for the relationship foundation.
 
 ---
 
 ### Recently Completed
 
+- Engineering Opportunity Evidence foundation
+- Structured dependencies, related opportunities, related documents, and evidence
+- Bounded top-level YAML sequence parsing
+- Deterministic opportunity-reference validation
+- Deterministic repository-document reference validation
+- Source-backed explicit-reference and evidence facts
+- Evidence-foundation tests
+- Evidence-foundation milestone recognition
 - Engineering Opportunity Assessment foundation
 - Reusable Engineering Opportunity Assessment data model
 - Deterministic Engineering Opportunity object-quality reasoning
@@ -85,16 +93,22 @@ This milestone should strengthen Repository Knowledge and Repository Reasoning w
 ### Current Non-Priorities
 
 - Semantic duplicate and overlap determination
-- Inferred opportunity relationships
+- Relationship inference from summaries, rationale, evidence, or notes
+- Automatic component or umbrella classification
 - Scope classification
+- Capability-alignment evaluation
+- Architectural-significance evaluation
 - Portfolio-wide prioritization
 - Strategic-value scoring
 - Broad autonomous candidate-opportunity discovery
+- Engineering Intelligence integration
+- Engineering Review presentation of opportunity recommendations
+- New Atlas relationship commands
 - Automatic lifecycle mutation
 - Automatic mission or roadmap creation
 - Permanent assessment artifact storage
-- Moving assessment logic into Atlas commands
 - Dependence on a specific AI model or provider
+- Agentic Engineering Foundation implementation
 - Large infrastructure expansion
 - New self-hosted services
 - Major hardware changes
@@ -104,41 +118,44 @@ This milestone should strengthen Repository Knowledge and Repository Reasoning w
 
 ### Current Status
 
-The Engineering Opportunity Assessment foundation is implemented and recognized by Atlas with high confidence.
+The Engineering Opportunity Evidence foundation is implemented and recognized by Atlas with high confidence.
 
-The repository now contains:
+The repository now supports:
 
-- A reusable structured assessment data model
-- Explicit separation between repository facts, derived findings, and recommendations
-- Deterministic identity, required-field, lifecycle, placement, and basic evidence-presence checks
-- Evidence-backed findings with confidence, blockers, and unresolved questions
-- Bounded recommendations that preserve human lifecycle authority
-- Focused assessment tests
+- Structured dependencies, related opportunities, related documents, and evidence
+- Bounded loading of top-level YAML sequences and evidence items
+- Source-backed assessment facts for explicit references
+- Validation of opportunity identifiers against the discovered opportunity inventory
+- Validation of related document paths against repository reality
+- Deterministic findings and blockers for unresolved references
+- Valid assessment of objects without optional references
+- Focused evidence-foundation tests
 - Deterministic milestone-completion reasoning
 
-The current repository-object loader still preserves only a limited subset of canonical Engineering Opportunity Object fields. Explicit dependencies, related opportunities, related documents, and structured evidence are not yet available as reusable reasoning inputs.
+Atlas can now establish that explicit references exist and resolve, but it does not yet represent those references as typed relationship findings or compose a reusable relationship view across the opportunity portfolio.
 
-The next responsible step is therefore to establish structured evidence and explicit-reference support before implementing scope classification, relationship inference, duplicate detection, prioritization, or downstream Engineering Intelligence composition.
+The next responsible step is therefore to establish deterministic relationship reasoning over explicit repository data before attempting semantic comparison, duplicate detection, scope classification, prioritization, or downstream Engineering Intelligence composition.
 
 ---
 
 ### Next Milestone
 
-Build Engineering Opportunity Evidence Foundation.
+Build Engineering Opportunity Relationship Foundation.
 
-Extend the repository-object and assessment layers so existing Engineering Opportunity Objects can expose and validate explicit dependencies, related opportunities, related documents, and evidence.
+Extend Engineering Opportunity Assessment so explicit opportunity references produce reusable typed relationship findings and a deterministic portfolio relationship view.
 
-The first evidence evaluator should produce:
+The first relationship evaluator should support:
 
-- Source-backed facts for explicit evidence and references
-- Deterministic validation of referenced opportunity identifiers
-- Deterministic validation of referenced repository document paths
-- Findings for missing or inconsistent explicit references
+- `depends_on` for explicit dependencies
+- `enables` as the deterministic inverse view of an explicit dependency
+- `related_to` for generic explicit related-opportunity references
+- Source and target opportunity identifiers
+- Directionality
+- Supporting repository evidence
 - Explainable confidence
-- Blockers and unresolved questions
-- A bounded recommendation that does not mutate lifecycle state
+- Findings for self-references, duplicate declarations, and conflicting explicit inputs
 
-This milestone should not infer semantic relationships, identify duplicates from language similarity, classify strategic value, rank the opportunity portfolio, discover new opportunities autonomously, or modify canonical opportunity objects.
+This milestone should not infer duplication, overlap, component, umbrella, supersession, or conflict relationships from natural language. It should not rank opportunities, mutate lifecycle state, add a command-specific relationship implementation, or advance any captured opportunity.
 
 ---
 
@@ -146,19 +163,20 @@ This milestone should not infer semantic relationships, identify duplicates from
 
 The milestone is complete when:
 
-- The normalized Engineering Opportunity Object representation includes structured dependencies, related opportunities, related documents, and evidence.
-- Repository-object loading preserves the bounded YAML structures used by those fields.
-- Existing opportunity objects remain human-readable and canonical.
-- Engineering Opportunity Assessments can expose explicit evidence and references as source-backed facts.
-- Referenced Engineering Opportunity identifiers are validated against discovered repository objects.
-- Referenced repository document paths are validated against repository reality.
-- Missing opportunity or document targets produce explicit deterministic findings rather than loader failures or silent omission.
-- Objects without optional evidence or references remain valid and assessable.
-- Findings include supporting evidence and explainable confidence.
-- Assessment reasoning remains independent of Atlas command rendering.
-- No assessment path automatically creates, edits, moves, merges, accepts, rejects, schedules, or closes an opportunity.
-- Tests cover valid references, missing opportunity targets, missing document targets, and absent optional references.
-- Atlas can recognize completion of the evidence foundation from concrete implementation and test evidence.
+- A reusable typed opportunity-relationship model exists in the Repository Reasoning layer.
+- Relationship findings preserve source, target, type, directionality, supporting evidence, explanation, and confidence.
+- Explicit dependencies produce directional `depends_on` findings.
+- Dependency targets can expose deterministic inverse `enables` findings in a portfolio relationship view.
+- Explicit related-opportunity references produce `related_to` findings without stronger semantic inference.
+- Relationship reasoning operates over discovered opportunity objects and reusable assessments rather than Atlas command rendering.
+- Self-references produce explicit deterministic findings.
+- Duplicate relationship declarations produce explicit deterministic findings.
+- Conflicting explicit relationship inputs are reported rather than silently normalized.
+- Objects without explicit opportunity relationships remain valid and assessable.
+- No relationship is inferred solely from keyword similarity or prose.
+- No relationship reasoning path automatically edits, moves, merges, accepts, rejects, schedules, or closes an opportunity.
+- Tests cover dependencies, inverse enablement, related relationships, self-reference, duplicate declarations, conflicting inputs, and absent relationships.
+- Atlas can recognize completion of the relationship foundation from concrete implementation and test evidence.
 
 ## Infrastructure Snapshot
 
