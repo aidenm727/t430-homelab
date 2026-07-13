@@ -1,0 +1,70 @@
+id: EO-2026-019
+
+title: Instruction and context effectiveness evaluation
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Develop evidence-backed evaluation of whether task context,
+  instructions, task contracts, and reusable engineering skills improve
+  outcomes, preserve scope, reduce repair, and provide the information
+  actually needed for reliable engineering work.
+
+rationale: >
+  Versioned instructions and deterministic context are only valuable if
+  they reliably improve engineering behavior. The platform should be
+  able to identify missing or irrelevant context, ambiguous rules,
+  repeated human corrections, unnecessary repair loops, and skills that
+  fail to produce expected artifacts without collapsing these signals
+  into an opaque quality score.
+
+related_opportunities:
+  - EO-2026-003
+  - EO-2026-007
+  - EO-2026-008
+  - EO-2026-013
+  - EO-2026-014
+  - EO-2026-018
+
+related_documents:
+  - docs/architecture/engineering-opportunity-assessment.md
+  - docs/architecture/engineering-review.md
+  - docs/standards/engineering-collaboration.md
+
+evidence: |
+  - EO-2026-003 already identifies bootstrap understanding as an
+    evaluation concern.
+  - EO-2026-007 defines evidence-backed AI Collaboration Intelligence.
+  - Recent engineering sessions have exposed missing context, formatting
+    failures, repeated corrections, scope ambiguity, and repair loops.
+
+notes: |
+  This opportunity is a bounded component of EO-2026-007 and extends,
+  rather than duplicates, EO-2026-003.
+
+  EO-2026-003 focuses on whether session bootstrap produced correct
+  initial understanding. This opportunity evaluates context packages,
+  instructions, task contracts, and skills across complete runs and
+  repeated uses.
+
+  Evaluation questions may include:
+
+  - Was the correct context selected?
+  - Was irrelevant context excluded?
+  - Did execution remain within scope?
+  - Were expected artifacts produced?
+  - Did deterministic validation pass?
+  - How many repairs were required?
+  - Where did human correction become necessary?
+  - Which instructions were ambiguous?
+  - Which sources were unnecessary or missing?
+  - Did a skill produce consistent results?
+
+  Findings should remain evidence-backed and confidence-aware rather
+  than becoming a permanent model ranking or unexplainable score.

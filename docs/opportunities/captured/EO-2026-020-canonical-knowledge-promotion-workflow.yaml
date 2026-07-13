@@ -1,0 +1,71 @@
+id: EO-2026-020
+
+title: Canonical knowledge promotion workflow
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Define a controlled workflow through which temporary agent findings,
+  generated context, run observations, and candidate knowledge may be
+  reviewed and deliberately promoted into authoritative repository
+  knowledge.
+
+rationale: >
+  Future AI systems will discover useful information, but allowing their
+  outputs to become canonical automatically would blur evidence,
+  interpretation, and human decision. A promotion workflow should
+  preserve provenance, require review, identify the correct canonical
+  owner, and make acceptance or rejection explicit while keeping
+  generated and execution artifacts reproducible but non-authoritative.
+
+related_opportunities:
+  - EO-2026-005
+  - EO-2026-007
+  - EO-2026-009
+  - EO-2026-013
+  - EO-2026-016
+
+related_documents:
+  - docs/architecture/repository.md
+  - docs/architecture/repository-object.md
+  - docs/architecture/engineering-opportunity-object.md
+  - docs/architecture/repository-synchronization.md
+
+evidence: |
+  - Repository architecture already establishes GitHub and canonical
+    documentation as the source of truth.
+  - Generated context is derived and rebuildable rather than canonical.
+  - Agent execution records and candidate findings require a path to
+    review without silently acquiring authority.
+
+notes: |
+  The platform should distinguish:
+
+  - Canonical knowledge: reviewed architecture, standards, missions,
+    decisions, and durable repository objects.
+  - Generated context: temporary reproducible packages derived from
+    canonical knowledge.
+  - Execution records: evidence of what an agent attempted, observed,
+    changed, and validated.
+  - Candidate knowledge: proposed findings that require review and
+    promotion before becoming canonical.
+
+  A future promotion workflow may validate provenance, identify the
+  owning document or object, present a proposed repository change,
+  require human approval, record the decision, and preserve rejected
+  candidates when historically useful.
+
+  This opportunity is narrower than EO-2026-009, Personal AI Platform.
+  It defines repository authority for engineering knowledge rather than
+  a general personal memory or retrieval system.
+
+  No current canonical object by the exact title "Engineering capture
+  pipeline" exists in the repository. If such a capability is later
+  captured, this opportunity should own review and authority promotion,
+  while the capture pipeline should own intake and preservation.

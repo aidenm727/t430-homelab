@@ -1,0 +1,84 @@
+id: EO-2026-021
+
+title: Human-AI engineering collaboration loop
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Formalize the standard human-AI engineering loop as a composable Atlas
+  workflow that moves from repository bootstrap and task definition
+  through bounded execution, deterministic validation, evidence,
+  review, synchronization, and human-authorized completion.
+
+rationale: >
+  The platform already follows many of these steps manually, but the
+  complete collaboration loop is distributed across architecture,
+  standards, Atlas commands, and conversational practice. Making the
+  loop explicit would clarify responsibility, compose future context,
+  contract, autonomy, skill, execution-record, and evaluation
+  capabilities, and support partial autonomy without prematurely
+  constructing a swarm of independent agents.
+
+related_opportunities:
+  - EO-2026-003
+  - EO-2026-007
+  - EO-2026-013
+  - EO-2026-014
+  - EO-2026-015
+  - EO-2026-016
+  - EO-2026-017
+  - EO-2026-018
+  - EO-2026-019
+  - EO-2026-020
+
+related_documents:
+  - docs/architecture/atlas.md
+  - docs/architecture/engineering-review.md
+  - docs/architecture/engineering-sessions.md
+  - docs/architecture/mission-advancement.md
+  - docs/standards/engineering-collaboration.md
+
+evidence: |
+  - The current workflow already performs deterministic bootstrap,
+    readiness inspection, bounded implementation, validation,
+    documentation, synchronization, commit, and push.
+  - Existing opportunities separately identify session health,
+    bootstrap quality, artifact validation, and collaboration
+    intelligence.
+  - Future partial autonomy requires one explicit orchestration model
+    that preserves human approval and repository authority.
+
+notes: |
+  A candidate loop is:
+
+  - Bootstrap.
+  - Verify repository readiness.
+  - Compile task context.
+  - Establish a task contract.
+  - Generate a plan.
+  - Request approval where required.
+  - Execute bounded changes.
+  - Run deterministic validation.
+  - Repair within defined limits.
+  - Produce evidence.
+  - Complete human review.
+  - Synchronize repository state.
+  - Commit and push only when separately authorized.
+
+  This opportunity is an operational component of EO-2026-007, AI
+  Collaboration Intelligence. It does not replace that umbrella
+  evaluation capability and should not become an ambiguous mega-command.
+
+  A future phase may be named Agentic Engineering Foundation. A safe
+  first milestone for that phase may be Design Task-Scoped Agent Context
+  Compilation. Neither the phase nor milestone should interrupt the
+  current Engineering Opportunity Evidence Foundation mission.
+
+  The goal is a reliable human-AI control loop with bounded partial
+  autonomy, not immediate autonomous multi-agent orchestration.

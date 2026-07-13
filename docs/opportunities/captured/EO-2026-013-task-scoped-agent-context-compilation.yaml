@@ -1,0 +1,79 @@
+id: EO-2026-013
+
+title: Task-scoped agent context compilation
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Develop a deterministic capability that compiles a reproducible,
+  task-specific context package for a bounded engineering mission or
+  task without making the AI model responsible for selecting its own
+  authoritative context.
+
+rationale: >
+  Atlas currently exposes repository state and generated platform
+  context, but future AI-assisted engineering will require narrower
+  packages that explain exactly what a task needs, why each source was
+  selected, how fresh it is, what remains unknown, and which constraints
+  govern execution. Repository-owned context compilation would keep the
+  model replaceable and reduce context drift, irrelevant retrieval, and
+  quiet expansion beyond the accepted engineering boundary.
+
+related_opportunities:
+  - EO-2026-003
+  - EO-2026-007
+  - EO-2026-008
+
+related_documents:
+  - docs/architecture/atlas.md
+  - docs/architecture/repository.md
+  - docs/architecture/reasoning.md
+  - docs/standards/engineering-collaboration.md
+
+evidence: |
+  - Existing Atlas bootstrap and generated context establish a
+    deterministic foundation but are not yet compiled for one task.
+  - AI-assisted sessions have repeatedly depended on selecting the
+    correct mission, architecture, repository state, and constraints.
+  - Ideas were refined after reviewing Andrej Karpathy's talks
+    "Software Is Changing (Again)" and "Skill Issue."
+
+notes: |
+  This opportunity is narrower than EO-2026-008, AI Engineering
+  Excellence, and is a component of EO-2026-007, AI Collaboration
+  Intelligence.
+
+  It does not duplicate EO-2026-003. EO-2026-003 evaluates whether a
+  bootstrapped session understood the engineering state. This
+  opportunity compiles the task-specific context that a session or
+  future agent should receive before that understanding is evaluated.
+
+  A context package may eventually include:
+
+  - Task goal, scope, non-goals, and completion criteria.
+  - Current mission and repository readiness.
+  - Selected authoritative documents and source-selection reasons.
+  - Provenance, freshness, conflicts, and unknowns.
+  - Architecture and collaboration constraints.
+  - Available tools, writable paths, permissions, and approval points.
+  - Required validation, expected outputs, and autonomy level.
+  - Context-budget behavior and omitted-source explanations.
+
+  Safe initial boundaries should define the package schema,
+  deterministic source-selection rules, provenance and freshness,
+  conflict detection, size behavior, and one example package without
+  embeddings, a vector database, model-based retrieval, LLM invocation,
+  or autonomous execution.
+
+  Possible future interfaces include:
+
+  - ./atlas context build --mission current
+  - ./atlas context explain
+  - ./atlas context validate
+  - ./atlas context show --format yaml

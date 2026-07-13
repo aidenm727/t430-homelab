@@ -1,0 +1,68 @@
+id: EO-2026-017
+
+title: Agent-ready repository interfaces
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Improve Atlas commands and repository interfaces so humans and AI
+  systems can consume stable schemas, meaningful exit codes, explicit
+  errors, dry runs, permissions, provenance, and machine-readable
+  engineering state without scraping decorative terminal output.
+
+rationale: >
+  Atlas is becoming the deterministic engineering interface, but future
+  agents should not infer repository health or mission state from
+  presentation-oriented text. Stable and versioned interfaces would
+  reduce brittle integrations, make tool behavior testable, preserve
+  human-readable defaults, and keep the replaceable model outside the
+  control-plane contract.
+
+related_opportunities:
+  - EO-2026-005
+  - EO-2026-007
+  - EO-2026-008
+  - EO-2026-014
+  - EO-2026-015
+
+related_documents:
+  - docs/architecture/atlas.md
+  - docs/architecture/repository.md
+  - docs/architecture/reasoning.md
+
+evidence: |
+  - Current Atlas commands provide strong human-readable output but do
+    not yet define a general machine-readable interface contract.
+  - Reliable task contracts and execution policies require tools with
+    explicit capabilities, failures, and permission requirements.
+  - Repository reasoning already produces structured internal reports
+    that could support future stable external schemas.
+
+notes: |
+  Important properties may include:
+
+  - Human-readable default output.
+  - Stable JSON or YAML output.
+  - Versioned schemas.
+  - Meaningful exit codes and explicit error categories.
+  - Dry-run support.
+  - Idempotent operations where practical.
+  - Discoverable command capabilities.
+  - Clear permission requirements.
+  - Machine-readable repository health.
+  - Provenance for generated conclusions.
+  - Narrow commands rather than ambiguous mega-commands.
+
+  This opportunity does not replace EO-2026-005, Repository Object
+  Registration Framework. EO-2026-005 concerns extensible repository
+  object knowledge; this opportunity concerns stable interfaces through
+  which humans and agents consume and invoke Atlas capabilities.
+
+  No current canonical opportunity specifically owns machine-readable
+  Atlas command contracts.

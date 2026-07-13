@@ -1,0 +1,62 @@
+id: EO-2026-016
+
+title: Agent execution records and evidence bundles
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Define a durable, reviewable record for AI-assisted engineering runs
+  that preserves task identity, context provenance, actions, changes,
+  validation, repair attempts, approvals, uncertainty, disposition, and
+  recovery evidence.
+
+rationale: >
+  Bounded execution cannot be trusted solely from final output or chat
+  history. Engineering accountability requires evidence of what context
+  was used, what commands ran, what changed, which validations passed,
+  where repairs occurred, and which decisions were approved. A durable
+  execution record would support reproducibility, debugging, review,
+  rollback, and future evaluation without treating the agent's account
+  as canonical repository truth.
+
+related_opportunities:
+  - EO-2026-001
+  - EO-2026-004
+  - EO-2026-007
+  - EO-2026-014
+  - EO-2026-015
+
+related_documents:
+  - docs/architecture/implementation-artifacts.md
+  - docs/architecture/artifact-transport.md
+  - docs/standards/engineering-collaboration.md
+
+evidence: |
+  - Current engineering sessions preserve commits and terminal output
+    but do not define one structured run-level evidence contract.
+  - Artifact transport and validation opportunities address delivered
+    changes, not the complete history and authority of an execution run.
+  - Bounded repair loops require inspectable attempt and failure records.
+
+notes: |
+  A run record may eventually include:
+
+  - Task, mission, context-package, and contract identity.
+  - Context source manifest and provenance.
+  - Model, configuration, tools, and permission level.
+  - Commands executed and files changed.
+  - Validation results and repair attempts.
+  - Assumptions, uncertainty, and unresolved conflicts.
+  - Approval and escalation events.
+  - Final disposition and handoff evidence.
+  - Recovery or rollback information.
+
+  Execution records are evidence of an attempted run. They should not
+  automatically become architecture, mission state, decisions, or other
+  canonical repository truth.

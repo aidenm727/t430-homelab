@@ -1,0 +1,71 @@
+id: EO-2026-018
+
+title: Reusable versioned engineering skills
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Define repository-owned, versioned, testable, and model-independent
+  procedural skills for recurring Atlas engineering workflows rather
+  than hiding durable procedures inside one large prompt or one AI
+  provider's configuration.
+
+rationale: >
+  The platform already repeats workflows such as mission advancement,
+  architecture creation, opportunity capture, validation, review
+  response, and synchronized checkpoint preparation. Encoding these as
+  explicit skills would reduce prompting variance, make procedures
+  inspectable and evaluable, and allow multiple humans, models, and
+  interfaces to reuse the same engineering contract.
+
+related_opportunities:
+  - EO-2026-007
+  - EO-2026-008
+  - EO-2026-014
+  - EO-2026-017
+
+related_documents:
+  - docs/architecture/atlas.md
+  - docs/standards/engineering-collaboration.md
+  - docs/roadmaps/engineering-toolkit.md
+
+evidence: |
+  - Existing collaboration standards already define reusable workflow
+    expectations but are not executable or individually versioned skills.
+  - Repeated engineering procedures currently depend on conversational
+    interpretation and manually reconstructed command sequences.
+  - AI Engineering Excellence explicitly includes reusable skills and
+    context-engineering practices.
+
+notes: |
+  A skill should eventually define:
+
+  - Purpose and applicability conditions.
+  - Required inputs and authoritative sources.
+  - Procedure and allowed tools.
+  - Expected outputs and validation.
+  - Failure and stop conditions.
+  - Escalation rules.
+  - Version and compatibility information.
+
+  Candidate skills include:
+
+  - Advance an engineering milestone.
+  - Create an architecture document.
+  - Add an Atlas command.
+  - Capture an Engineering Opportunity.
+  - Validate generated context.
+  - Investigate repository inconsistency.
+  - Address review feedback.
+  - Prepare a synchronized checkpoint.
+  - Perform a laptop engineering review.
+
+  A reusable skill is distinct from EO-2026-014. A skill defines a
+  repeatable procedure; a task contract binds one execution to a goal,
+  authority boundary, acceptance criteria, and approval policy.

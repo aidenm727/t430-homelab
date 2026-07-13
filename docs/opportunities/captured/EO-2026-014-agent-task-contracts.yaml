@@ -1,0 +1,66 @@
+id: EO-2026-014
+
+title: Agent task contracts and scope boundaries
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Define a reusable structured contract for bounded AI-assisted
+  engineering tasks so goals, authority, writable scope, validation,
+  stop conditions, approval points, and handoff requirements are
+  explicit before execution begins.
+
+rationale: >
+  Natural-language requests can quietly expand during implementation,
+  especially when an AI system interprets missing details, repairs
+  failures, or discovers adjacent work. A repository-aware task contract
+  would make the accepted boundary inspectable and enforceable while
+  preserving human control over high-impact decisions and preventing a
+  capable model from treating ambiguity as permission.
+
+related_opportunities:
+  - EO-2026-007
+  - EO-2026-008
+  - EO-2026-013
+
+related_documents:
+  - docs/architecture/engineering-review.md
+  - docs/architecture/mission-advancement.md
+  - docs/standards/engineering-collaboration.md
+
+evidence: |
+  - Existing missions define platform direction but do not yet define
+    the complete authority boundary of one AI-assisted task.
+  - Repeated engineering sessions have required explicit non-goals,
+    approval checkpoints, validation, and stop conditions.
+  - The proposed control-plane direction requires task boundaries to be
+    owned outside the model.
+
+notes: |
+  This opportunity is distinct from EO-2026-013. A context package
+  supplies relevant knowledge; a task contract defines what the
+  executor is authorized and required to do with that knowledge.
+
+  A contract may eventually define:
+
+  - Goal and related mission.
+  - Allowed scope and explicit non-goals.
+  - Authoritative inputs.
+  - Writable files and paths.
+  - Allowed tools and commands.
+  - Acceptance criteria and validation requirements.
+  - Autonomy level and approval points.
+  - Maximum repair attempts.
+  - Stop and escalation conditions.
+  - Required handoff evidence.
+
+  The contract should remain model-independent, reviewable, and
+  reusable by Atlas interfaces, human engineers, and future execution
+  environments. It should not itself authorize production changes,
+  credential access, mission changes, destructive operations, or pushes.

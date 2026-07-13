@@ -1,0 +1,63 @@
+id: EO-2026-015
+
+title: Engineering autonomy policy and approval levels
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-13
+
+source: brainstorming-session
+
+summary: >
+  Define an Atlas-owned autonomy and approval policy that distinguishes
+  consultation, proposal, bounded local execution, limited repair loops,
+  and delegated isolated execution instead of treating engineering work
+  as simply manual or autonomous.
+
+rationale: >
+  Reliable agentic engineering requires graduated authority rather than
+  unrestricted tool access or an all-or-nothing autonomy switch. Atlas
+  should make the allowed level explicit, keep high-impact actions
+  separately gated, and ensure that the AI model cannot silently expand
+  its own permissions when implementation becomes difficult.
+
+related_opportunities:
+  - EO-2026-007
+  - EO-2026-008
+  - EO-2026-014
+
+related_documents:
+  - docs/architecture/atlas.md
+  - docs/architecture/engineering-review.md
+  - docs/standards/engineering-collaboration.md
+
+evidence: |
+  - Current engineering workflows already separate analysis,
+    implementation readiness, human execution, verification, commit,
+    and push.
+  - Future bounded execution needs explicit permission semantics that
+    are stable across models and interfaces.
+  - High-impact actions require controls independent of general task
+    autonomy.
+
+notes: |
+  A possible initial autonomy ladder is:
+
+  - Level 0 - Consult: analyze and recommend without changing state.
+  - Level 1 - Propose: produce a plan, patch, or artifact for approval.
+  - Level 2 - Execute locally: make bounded reversible working-tree
+    changes and run validation.
+  - Level 3 - Bounded repair loop: implement, validate, inspect failure,
+    and attempt a limited number of repairs.
+  - Level 4 - Delegated execution: complete a well-understood workflow
+    in an isolated environment and prepare a reviewable result.
+
+  High-impact actions should remain independently controlled at every
+  level, including destructive operations, production changes,
+  credential access, pushing changes, modifying missions, changing
+  architecture, and broadening writable scope.
+
+  This is a policy opportunity, not a request to enable autonomous
+  agents immediately.
