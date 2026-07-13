@@ -409,6 +409,7 @@ DOCUMENT_DEFINITIONS = {
         related=[
             "docs/architecture/engineering-opportunity.md",
             "docs/architecture/engineering-opportunity-intelligence.md",
+            "docs/architecture/engineering-opportunity-assessment.md",
             "docs/architecture/engineering-intelligence.md",
             "docs/architecture/repository-object.md",
         ],
@@ -416,7 +417,7 @@ DOCUMENT_DEFINITIONS = {
 
     "docs/architecture/engineering-opportunity-intelligence.md": DocumentDefinition(
         path="docs/architecture/engineering-opportunity-intelligence.md",
-        purpose="Defines Engineering Opportunity Intelligence as the capability for discovering, evaluating, organizing, and recommending Engineering Opportunity Objects using deterministic repository reasoning.",
+        purpose="Defines Engineering Opportunity Intelligence as the Repository Reasoning capability that evaluates Engineering Opportunity Objects and produces structured future engineering direction.",
         capability="Engineering",
         tags=[
             "engineering-opportunity-intelligence",
@@ -426,9 +427,30 @@ DOCUMENT_DEFINITIONS = {
         related=[
             "docs/architecture/engineering-opportunity.md",
             "docs/architecture/engineering-opportunity-object.md",
+            "docs/architecture/engineering-opportunity-assessment.md",
             "docs/architecture/engineering-intelligence.md",
             "docs/architecture/reasoning.md",
             "docs/architecture/atlas.md",
+        ],
+    ),
+
+    "docs/architecture/engineering-opportunity-assessment.md": DocumentDefinition(
+        path="docs/architecture/engineering-opportunity-assessment.md",
+        purpose="Defines the structured assessment contract used by Engineering Opportunity Intelligence to classify, relate, evaluate, prioritize, and recommend next actions for Engineering Opportunity Objects.",
+        capability="Engineering",
+        tags=[
+            "engineering-opportunity-assessment",
+            "engineering-opportunity-intelligence",
+            "repository-reasoning",
+            "structured-assessment",
+        ],
+        related=[
+            "docs/architecture/engineering-opportunity.md",
+            "docs/architecture/engineering-opportunity-object.md",
+            "docs/architecture/engineering-opportunity-intelligence.md",
+            "docs/architecture/engineering-intelligence.md",
+            "docs/architecture/engineering-review.md",
+            "docs/architecture/reasoning.md",
         ],
     ),
 
