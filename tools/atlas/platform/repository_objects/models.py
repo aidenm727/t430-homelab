@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -14,9 +13,12 @@ class RepositoryEntity:
     source: str
     summary: str
     rationale: str
-    evidence: str
-    notes: str
-    missing_fields: tuple[str, ...]
+    evidence: tuple[str, ...] = ()
+    notes: str = ""
+    dependencies: tuple[str, ...] = ()
+    related_opportunities: tuple[str, ...] = ()
+    related_documents: tuple[str, ...] = ()
+    missing_fields: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)

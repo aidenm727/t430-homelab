@@ -1,6 +1,8 @@
 import re
+from collections.abc import Collection, Iterable
 from pathlib import Path
 
+from atlas.platform.repository import repo_root
 from atlas.platform.repository_objects.models import RepositoryEntity
 from atlas.platform.reasoning.models import (
     EngineeringOpportunityAssessment,
@@ -25,8 +27,142 @@ LIFECYCLE_STATES = (
 IDENTIFIER_PATTERN = re.compile(r"^EO-\d{4}-\d{3}$")
 
 
+def _add_sequence_facts(
+    facts: list[OpportunityAssessmentFact],
+    entity: RepositoryEntity,
+    name: str,
+    values: tuple[str, ...],
+) -> None:
+    facts.append(
+        OpportunityAssessmentFact(
+            name=f"{name}-count",
+            value=str(len(values)),
+            source=entity.path,
+        )
+    )
+
+    facts.extend(
+        OpportunityAssessmentFact(
+            name=name,
+            value=value,
+            source=f"{entity.path}#{name}",
+        )
+        for value in values
+    )
+
+
+def _validate_opportunity_references(
+    entity: RepositoryEntity,
+    known_opportunity_ids: Collection[str] | None,
+    findings: list[OpportunityAssessmentFinding],
+    blockers: list[str],
+    unresolved_questions: list[str],
+) -> bool:
+    references = (
+        tuple(("dependency", value) for value in entity.dependencies)
+        + tuple(
+            ("related-opportunity", value)
+            for value in entity.related_opportunities
+        )
+    )
+
+    if not references:
+        return True
+
+    if known_opportunity_ids is None:
+        unresolved_questions.append(
+            "Explicit opportunity references have not been validated "
+            "against a discovered opportunity inventory."
+        )
+        return False
+
+    valid = True
+
+    for relationship, target in references:
+        if target in known_opportunity_ids:
+            continue
+
+        valid = False
+        statement = (
+            f"Explicit {relationship} reference '{target}' does not "
+            "resolve to a discovered Engineering Opportunity Object."
+        )
+        findings.append(
+            OpportunityAssessmentFinding(
+                code="missing-opportunity-reference",
+                severity="Error",
+                statement=statement,
+                evidence=(
+                    f"Source object: {entity.path}",
+                    f"Relationship: {relationship}",
+                    f"Referenced opportunity: {target}",
+                ),
+            )
+        )
+        blockers.append(statement)
+
+    return valid
+
+
+def _validate_document_references(
+    entity: RepositoryEntity,
+    root: Path,
+    findings: list[OpportunityAssessmentFinding],
+    blockers: list[str],
+) -> bool:
+    valid = True
+
+    for reference in entity.related_documents:
+        reference_path = Path(reference)
+
+        if reference_path.is_absolute() or ".." in reference_path.parts:
+            valid = False
+            statement = (
+                f"Related document reference '{reference}' is not a safe "
+                "repository-relative path."
+            )
+            findings.append(
+                OpportunityAssessmentFinding(
+                    code="invalid-document-reference",
+                    severity="Error",
+                    statement=statement,
+                    evidence=(
+                        f"Source object: {entity.path}",
+                        f"Referenced document: {reference}",
+                    ),
+                )
+            )
+            blockers.append(statement)
+            continue
+
+        if (root / reference_path).is_file():
+            continue
+
+        valid = False
+        statement = (
+            f"Related document reference '{reference}' does not resolve "
+            "to an existing repository file."
+        )
+        findings.append(
+            OpportunityAssessmentFinding(
+                code="missing-document-reference",
+                severity="Error",
+                statement=statement,
+                evidence=(
+                    f"Source object: {entity.path}",
+                    f"Referenced document: {reference}",
+                ),
+            )
+        )
+        blockers.append(statement)
+
+    return valid
+
+
 def assess_engineering_opportunity(
     entity: RepositoryEntity,
+    known_opportunity_ids: Collection[str] | None = None,
+    root: Path | None = None,
 ) -> EngineeringOpportunityAssessment:
     facts: list[OpportunityAssessmentFact] = []
     findings: list[OpportunityAssessmentFinding] = []
@@ -73,8 +209,33 @@ def assess_engineering_opportunity(
         ]
     )
 
+    _add_sequence_facts(
+        facts,
+        entity,
+        "dependency",
+        entity.dependencies,
+    )
+    _add_sequence_facts(
+        facts,
+        entity,
+        "related-opportunity",
+        entity.related_opportunities,
+    )
+    _add_sequence_facts(
+        facts,
+        entity,
+        "related-document",
+        entity.related_documents,
+    )
+    _add_sequence_facts(
+        facts,
+        entity,
+        "evidence-item",
+        entity.evidence,
+    )
+
     supplemental_evidence_present = bool(
-        entity.evidence.strip() or entity.notes.strip()
+        entity.evidence or entity.notes.strip()
     )
 
     facts.append(
@@ -193,6 +354,49 @@ def assess_engineering_opportunity(
             )
             blockers.append(statement)
 
+    opportunity_references_valid = _validate_opportunity_references(
+        entity,
+        known_opportunity_ids,
+        findings,
+        blockers,
+        unresolved_questions,
+    )
+    document_references_valid = _validate_document_references(
+        entity,
+        root or repo_root(),
+        findings,
+        blockers,
+    )
+
+    has_explicit_references = bool(
+        entity.dependencies
+        or entity.related_opportunities
+        or entity.related_documents
+    )
+
+    if (
+        has_explicit_references
+        and opportunity_references_valid
+        and document_references_valid
+    ):
+        findings.append(
+            OpportunityAssessmentFinding(
+                code="explicit-references-valid",
+                severity="Info",
+                statement=(
+                    "Explicit opportunity and document references resolve "
+                    "against current repository evidence."
+                ),
+                evidence=(
+                    f"Dependencies checked: {len(entity.dependencies)}",
+                    "Related opportunities checked: "
+                    f"{len(entity.related_opportunities)}",
+                    "Related documents checked: "
+                    f"{len(entity.related_documents)}",
+                ),
+            )
+        )
+
     if not supplemental_evidence_present:
         unresolved_questions.append(
             "Whether additional supporting evidence should be recorded "
@@ -203,8 +407,8 @@ def assess_engineering_opportunity(
         recommendation = OpportunityAssessmentRecommendation(
             action="enrich",
             reason=(
-                "Resolve deterministic object-quality findings before "
-                "considering lifecycle progression."
+                "Resolve deterministic object-quality and explicit-reference "
+                "findings before considering lifecycle progression."
             ),
             confidence="High",
         )
@@ -254,4 +458,23 @@ def assess_engineering_opportunity(
         recommendation=recommendation,
         blockers=tuple(blockers),
         unresolved_questions=tuple(unresolved_questions),
+    )
+
+
+def assess_engineering_opportunities(
+    entities: Iterable[RepositoryEntity],
+    root: Path | None = None,
+) -> tuple[EngineeringOpportunityAssessment, ...]:
+    opportunity_entities = tuple(entities)
+    known_opportunity_ids = frozenset(
+        entity.id for entity in opportunity_entities
+    )
+
+    return tuple(
+        assess_engineering_opportunity(
+            entity,
+            known_opportunity_ids=known_opportunity_ids,
+            root=root,
+        )
+        for entity in opportunity_entities
     )

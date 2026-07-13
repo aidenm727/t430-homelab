@@ -4,6 +4,7 @@ from atlas.platform.reasoning.milestone import build_milestone_completion
 from atlas.platform.reasoning.intelligence import build_engineering_intelligence
 from atlas.platform.reasoning.review import build_engineering_review
 from atlas.platform.reasoning.opportunity_assessment import (
+    assess_engineering_opportunities,
     assess_engineering_opportunity,
 )
 from atlas.platform.reasoning.synchronization import analyze_synchronization
@@ -34,6 +35,7 @@ __all__ = [
     "ValidationFinding",
     "ValidationReport",
     "analyze_impact",
+    "assess_engineering_opportunities",
     "assess_engineering_opportunity",
     "build_guidance",
     "validate_repository",

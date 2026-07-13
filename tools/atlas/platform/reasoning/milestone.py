@@ -14,6 +14,9 @@ OPPORTUNITY_INTELLIGENCE_MILESTONE_TEXT = (
 OPPORTUNITY_ASSESSMENT_MILESTONE_TEXT = (
     "Build Engineering Opportunity Assessment Foundation"
 )
+OPPORTUNITY_EVIDENCE_MILESTONE_TEXT = (
+    "Build Engineering Opportunity Evidence Foundation"
+)
 
 
 def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -107,6 +110,96 @@ def build_milestone_completion(
     state: EngineeringState,
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
+
+    if OPPORTUNITY_EVIDENCE_MILESTONE_TEXT in milestone:
+        requirements = {
+            "tools/atlas/platform/repository_objects/models.py": {
+                "dependencies: tuple[str, ...]":
+                    "preserves explicit dependency references",
+                "related_opportunities: tuple[str, ...]":
+                    "preserves explicit opportunity relationships",
+                "related_documents: tuple[str, ...]":
+                    "preserves related repository documents",
+                "evidence: tuple[str, ...]":
+                    "preserves structured evidence items",
+            },
+            "tools/atlas/platform/repository_objects/loader.py": {
+                "def load_repository_object":
+                    "builds one normalized repository object",
+                "def _sequence_value":
+                    "normalizes bounded YAML sequences and evidence",
+                "dependencies=_sequence_value":
+                    "loads dependency references",
+                "related_opportunities=_sequence_value":
+                    "loads related opportunity references",
+                "related_documents=_sequence_value":
+                    "loads related document references",
+                "evidence=_sequence_value":
+                    "loads structured evidence",
+            },
+            "tools/atlas/platform/reasoning/opportunity_assessment.py": {
+                "def assess_engineering_opportunities":
+                    "assesses objects against a discovered inventory",
+                "missing-opportunity-reference":
+                    "reports unresolved opportunity references",
+                "missing-document-reference":
+                    "reports unresolved document references",
+                "explicit-references-valid":
+                    "reports successful explicit-reference validation",
+                '"evidence-item"':
+                    "exposes structured evidence as source-backed facts",
+            },
+            "tests/test_opportunity_assessment.py": {
+                "test_loader_preserves_bounded_sequences_and_evidence":
+                    "tests structured object loading",
+                "test_valid_explicit_references":
+                    "tests valid opportunity and document references",
+                "test_missing_opportunity_target":
+                    "tests unresolved opportunity references",
+                "test_missing_document_target":
+                    "tests unresolved document references",
+                "test_absent_optional_references_remain_valid":
+                    "tests objects without optional references",
+            },
+        }
+
+        evidence, missing = _implementation_evidence(requirements)
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=[],
+                satisfied_criteria=[
+                    "Opportunity objects preserve structured dependencies, relationships, documents, and evidence.",
+                    "The bounded YAML loader preserves top-level sequences and evidence items.",
+                    "Assessments expose explicit references and evidence as source-backed facts.",
+                    "Opportunity references are validated against discovered repository objects.",
+                    "Document references are validated against repository files.",
+                    "Missing references produce deterministic findings and blockers.",
+                    "Objects without optional references remain valid and assessable.",
+                    "Focused tests cover valid and missing reference cases.",
+                    "Assessment reasoning remains independent of command rendering.",
+                    "Canonical objects and lifecycle state are not mutated.",
+                ],
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "The Engineering Opportunity Evidence foundation is implemented. Verify, document, commit, and consider advancing the mission.",
+                ],
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Complete the missing Engineering Opportunity Evidence foundation evidence.",
+            ],
+        )
 
     if OPPORTUNITY_ASSESSMENT_MILESTONE_TEXT in milestone:
         requirements = {
