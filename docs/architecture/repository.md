@@ -2,230 +2,217 @@
 
 ## Purpose
 
-This document defines how the Aiden Platform repository is organized and why.
+The repository is the canonical engineering knowledge record for the Aiden Platform.
 
-The repository is not just a place to store files. It is the canonical engineering record for the platform.
-
-It contains the platform's architecture, infrastructure records, operational history, roadmaps, generated AI context, and engineering tools.
-
-## Core Principle
+It preserves vision, architecture, standards, infrastructure, operations, roadmaps, Repository Objects, generated context, and engineering tools.
 
 Every file and directory should have one clear responsibility.
 
-The repository should make the platform easier to understand, operate, document, and evolve.
+---
 
 ## Repository Layers
 
-The repository is organized into seven major layers:
-
-    Vision
-    Architecture
-    Standards
-    Infrastructure
-    Operations
-    Roadmaps
-    Engineering Toolkit
-
-## 1. Vision
-
-Vision explains why the platform exists and where it is going.
-
-Vision-level material should describe long-term intent, not implementation details.
-
-Current documents:
-
-* `docs/architecture/platform.md`
-
-Future documents may include:
-
-* `docs/vision.md`
-
-## 2. Architecture
-
-Architecture explains how the platform should be designed.
-
-Architecture documents describe principles, relationships, responsibilities, and decision-making rules.
-
-They should change deliberately and less frequently than infrastructure records.
-
-Current documents:
-
-* `docs/architecture/platform.md`
-* `docs/architecture/engineering.md`
-* `docs/architecture/engineering-capabilities.md`
-* `docs/architecture/engineering-review.md`
-* `docs/architecture/engineering-intelligence.md`
-* `docs/architecture/engineering-opportunity.md`
-* `docs/architecture/engineering-opportunity-object.md`
-* `docs/architecture/engineering-opportunity-intelligence.md`
-* `docs/architecture/engineering-opportunity-assessment.md`
-* `docs/architecture/engineering-opportunity-capability-alignment.md`
-* `docs/architecture/engineering-opportunity-scope-classification.md`
-* `docs/architecture/engineering-opportunity-distinctness-analysis.md`
-* `docs/architecture/capabilities.md`
-* `docs/architecture/compute.md`
-* `docs/architecture/ai.md`
-* `docs/architecture/repository.md`
-* `docs/architecture/atlas.md`
-* `docs/architecture/repository-metadata.md`
-* `docs/architecture/milestone-completion.md`
-* `docs/architecture/mission-advancement.md`
-* `docs/architecture/engineering-lifecycle.md`
-* `docs/architecture/architecture-registration.md`
-
-Architecture documents should not become service inventories.
-
-## 3. Standards
-
-Standards define how engineering work should be performed.
-
-Standards documents describe expectations, rules, workflows, and quality bars that should be followed across the platform.
-
-Current documents:
-
-* `docs/standards/engineering-collaboration.md`
-
-Standards should guide repeatable engineering behavior without becoming architecture, infrastructure records, or operational history.
-
-## 4. Infrastructure
-
-Infrastructure explains what currently exists.
-
-Infrastructure documents describe hosts, services, networking, access, storage, backups, monitoring, and deployed workloads.
-
-Current documents:
-
-* `docs/infrastructure.md`
-* `docs/infrastructure-gamer-pve.md`
-* `docs/services.md`
-* `docs/infrastructure-snapshot.md`
-
-Infrastructure records should be updated when the real system changes.
-
-## 5. Operations
-
-Operations explains how the platform is safely changed.
-
-Operational records capture change history, current work sessions, schemas, and procedures.
-
-Current documents:
-
-* `docs/change-session.md`
-* `docs/change-schema.md`
-* `docs/changes.log`
-* `docs/changes/*.yml`
-
-Operations should preserve the history of how the platform evolved.
-
-## 6. Roadmaps
-
-Roadmaps explain what the platform may improve next.
-
-Roadmaps are expected to change more frequently than architecture documents.
-
-They should capture planned or possible work without pretending that all ideas are final architecture.
-
-Current documents:
-
-* `docs/roadmaps/ai-engineering.md`
-* `docs/roadmaps/engineering-toolkit.md`
-
-Roadmaps should guide future work while remaining flexible.
-
-## 7. Engineering Toolkit
-
-The engineering toolkit contains software that helps build, understand, document, and operate the platform.
-
-Current tools:
-
-* `tools/generate-context.py`
-* `tools/homelab-change.py`
-* `tools/aiden-context-loader.py`
-
-The toolkit should reduce engineering friction.
-
-It should expose platform concepts rather than forcing the owner to remember individual file paths.
-
-Future toolkit direction may include a unified `aiden` CLI.
-
-Possible future commands:
-
 ```text
-atlas status
-atlas context
-atlas change
-atlas docs
-atlas roadmap
-atlas doctor
+Vision
+Architecture
+Standards
+Infrastructure
+Operations
+Roadmaps
+Engineering Toolkit
 ```
 
-## Generated Content
+### Vision
 
-Some files are generated or partially generated artifacts.
+Explains why the platform exists and where it is going.
+
+Canonical owner:
+
+- `docs/vision.md`
+
+### Architecture
+
+Explains how the platform should be designed.
+
+Primary owners:
+
+- `docs/architecture/platform.md`
+- `docs/architecture/capabilities.md`
+- `docs/architecture/ai.md`
+- `docs/architecture/repository.md`
+- `docs/architecture/atlas.md`
+
+Specialized architecture covers engineering, reasoning, Repository Objects, opportunities, infrastructure capabilities, artifacts, collaboration, and future systems.
+
+### Standards
+
+Define repeatable expectations and quality bars.
+
+Current owner:
+
+- `docs/standards/engineering-collaboration.md`
+
+### Infrastructure
+
+Describes current deployed state.
+
+- `docs/infrastructure.md`
+- `docs/infrastructure-gamer-pve.md`
+- `docs/services.md`
+- `docs/infrastructure-snapshot.md` as a generated summary
+
+### Operations
+
+Preserve active workflow and history.
+
+- `docs/change-session.md`
+- `docs/change-schema.md`
+- `docs/changes.log`
+- `docs/changes/*.yml`
+
+### Roadmaps
+
+Describe likely future direction and sequencing.
+
+- `docs/roadmaps/platform-strategy.md`
+- `docs/roadmaps/ai-engineering.md`
+- `docs/roadmaps/engineering-toolkit.md`
+
+### Engineering Toolkit
+
+Contains Atlas and supporting tools.
+
+The primary interface is:
+
+```text
+./atlas <command>
+```
+
+Tools expose platform concepts and should not become hidden owners of repository facts.
+
+---
+
+## Repository Objects
+
+Repository Objects are structured repository-native entities with identity and lifecycle.
+
+Current examples include Engineering Opportunity Objects under `docs/opportunities/`.
+
+Objects preserve structured candidates.
+
+They are not automatically architecture, current mission, or committed work.
+
+---
+
+## Generated Content
 
 Generated files summarize canonical records but do not replace them.
 
 Examples:
 
-* `docs/aiden-context.md`
-* `docs/infrastructure-snapshot.md`
+- `docs/aiden-context.md`
+- `docs/infrastructure-snapshot.md`
 
-Generated files should clearly indicate when they should not be edited directly.
+Generated artifacts must declare their sources, managing tool, and generated status.
 
-The canonical source should remain the architecture, standards, infrastructure, operations, and roadmap documents.
+---
 
-## Source of Truth Rules
+## Source of Truth Hierarchy
 
-Use this source-of-truth order when reasoning about the repository:
+GitHub is the canonical documentation source.
 
-1. Architecture documents define intent.
-2. Standards documents define expected engineering behavior.
-3. Infrastructure documents define current implementation.
-4. Operations documents define change history.
-5. Roadmaps define planned improvements.
-6. Generated AI context summarizes the current state.
-7. Git history records the evolution of the project.
+The repository is the canonical source of truth for Aiden Platform engineering knowledge.
+
+Architecture documents define intent.
+
+The hierarchy is:
+
+1. Vision defines purpose and durable direction.
+2. Architecture records describe intent and structural design.
+3. Standards records describe expected engineering behavior.
+4. Current Mission defines active engineering work.
+5. Infrastructure records describe current implementation and state.
+6. Operations records describe change evidence and history.
+7. Roadmaps describe likely future direction and sequencing.
+8. Repository Objects preserve structured candidates and lifecycle state.
+9. Generated context summarizes canonical documentation and never replaces it.
+10. Git history records repository evolution.
+11. Live verification resolves current operational reality.
+
+Conversation context may explain intent but does not replace canonical repository knowledge.
+
+---
+
+## Canonical Ownership Rules
+
+- Purpose and long-term direction belong in `docs/vision.md`.
+- Platform structure belongs in `docs/architecture/platform.md`.
+- Capability taxonomy belongs in `docs/architecture/capabilities.md`.
+- AI and Personal AI architecture belong in `docs/architecture/ai.md`.
+- Strategic sequencing belongs in `docs/roadmaps/platform-strategy.md`.
+- Active work belongs in `docs/current-mission.md`.
+- Current deployment belongs in infrastructure records.
+- Repeatable behavior belongs in standards.
+- Change evidence belongs in operations.
+- Candidate work belongs in roadmaps or Repository Objects.
+- Generated summaries remain derived.
+
+Reference the canonical owner instead of duplicating full content.
+
+---
+
+## Document Registration
+
+New canonical documents should be integrated through:
+
+1. Creation.
+2. Repository Architecture registration.
+3. Documentation Map registration.
+4. Atlas document definition or repository metadata.
+5. Validation.
+6. Repository Synchronization Reasoning.
+7. Engineering Review.
+8. Commit and push.
+
+Human judgment decides whether a document should exist.
+
+---
 
 ## Placement Rules
 
-Use these rules when adding new files:
+- Durable purpose belongs in Vision.
+- Durable design belongs in Architecture.
+- Repeatable expectations belong in Standards.
+- Current implementation belongs in Infrastructure.
+- Change evidence belongs in Operations.
+- Future sequencing belongs in Roadmaps.
+- Structured lifecycle entities belong in registered Repository Object locations.
+- Helper software belongs in `tools/`.
+- Rebuildable summaries belong in generated files.
 
-* Long-term design decisions belong in `docs/architecture/`.
-* Engineering standards belong in `docs/standards/`.
-* Current deployed system records belong in infrastructure documentation.
-* Change history belongs in `docs/changes/` and `docs/changes.log`.
-* Future work belongs in `docs/roadmaps/`.
-* Engineering helper software belongs in `tools/`.
-* Generated context belongs in clearly marked generated files.
+Identify canonical responsibility before creating another overlapping document.
 
-When unsure, prefer creating a small focused document rather than expanding an unrelated one.
+---
 
-## Future Direction
-
-The repository should evolve toward becoming the engineering operating system for the Aiden Platform.
-
-Future improvements may include:
-
-* A unified engineering CLI
-* Better generated AI context
-* Documentation consistency checks
-* Roadmap-aware planning
-* Engineering state summaries
-* AI-assisted documentation review
-* Search and retrieval across architecture, changes, and infrastructure
-
-The long-term goal is for the repository to preserve understanding as the platform grows.
-
-## Repository Design Standard
+## Repository Health Standard
 
 A healthy repository should make it easy to answer:
 
-* Why does the platform exist?
-* How is it designed?
-* What currently exists?
-* What changed recently?
-* What is being worked on now?
-* What should happen next?
-* Which tools support the engineering workflow?
+- Why does the platform exist?
+- How is it structured?
+- Which capabilities does it develop?
+- What remains human-owned?
+- What currently exists?
+- What changed?
+- What is active now?
+- What may happen next?
+- Which evidence supports the conclusion?
+- Which tool or workflow owns the next action?
 
-The repository should reduce confusion, prevent duplicated work, and help both humans and AI assistants start from an accurate understanding of the platform.
+---
+
+## Future Direction
+
+The repository should evolve as the engineering knowledge system for the Aiden Platform through repository-owned metadata, search, impact analysis, reliable artifacts, bounded task context, versioned skills, human-reviewed knowledge promotion, and clearer roadmap relationships.
+
+It should become more capable without becoming the platform's primary outcome.

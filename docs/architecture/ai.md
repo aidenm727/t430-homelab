@@ -1,285 +1,236 @@
-# AI Architecture
+# Artificial Intelligence Architecture
 
 ## Purpose
 
-Artificial Intelligence is a first-class capability of the Aiden Platform.
+Artificial Intelligence is a first-class, cross-cutting foundation of the Aiden Platform.
 
-Its purpose is to increase the owner's agency by improving learning, engineering, knowledge management, planning, automation, creativity, and decision support.
+Its purpose is to increase the owner's agency by improving reasoning, learning, engineering, research, knowledge use, planning, creation, and bounded automation.
 
-AI is not treated as a single application, subscription, model, or provider.
+AI is not a single application, subscription, model, or provider.
 
-Instead, the platform is designed around AI capabilities that can evolve independently of the underlying technologies that implement them.
+The architecture should allow providers to change without surrendering platform knowledge, identity, or authority.
 
 The objective is not to automate life.
 
-The objective is to continuously increase the owner's ability to understand, learn, build, create, and make well-informed decisions while preserving human judgment and ownership.
+---
+
+## Architectural Position
+
+Artificial Intelligence supports other foundations and Human Agency Domains but does not own them.
+
+- AI assists Learning and Research but does not own learning goals.
+- AI assists Health and Wellbeing but does not make medical decisions.
+- AI assists Economic Agency but does not own career, business, or financial commitments.
+- AI assists Engineering and Evolution but does not own architecture or high-impact changes.
+- AI may power AidenOS experiences but is not synonymous with AidenOS.
 
 ---
 
-# AI Philosophy
+## Principles
 
-The Aiden Platform is guided by several principles when integrating artificial intelligence.
+- AI should improve capability rather than replace responsibility.
+- Capabilities remain stable while models and providers change.
+- Important outputs should expose sources, assumptions, uncertainty, and validation where practical.
+- Providers should be replaceable without losing canonical knowledge.
+- Recommendations, prepared changes, and executed actions remain distinguishable.
+- Complexity should be proportionate to proven value.
 
-## Increase Agency
-
-AI should increase capability rather than replace responsibility.
-
-The platform should help the owner think better—not think less.
-
-AI should reduce friction while preserving:
-
-- curiosity
-- creativity
-- understanding
-- ownership
-- judgment
-- exploration
+The owner remains responsible for long-term direction, architecture, security-sensitive changes, important validation, personal data boundaries, automation authority, and consequential life decisions.
 
 ---
 
-## Capability Before Models
+## Personal AI
 
-The platform depends on AI capabilities rather than individual AI providers.
+Personal AI is the cross-cutting intelligence subsystem of the Aiden Platform.
 
-Models will improve.
+It composes:
 
-Providers will change.
+- Artificial Intelligence.
+- Knowledge and Context.
+- Automation and Integration.
+- Security, Privacy, and Resilience.
+- Interaction and Experience.
+- Relevant Human Agency Domains.
 
-Capabilities should remain stable.
+It may provide research, synthesis, personal context, knowledge retrieval, tutoring, planning, engineering support, creative assistance, briefings, domain decision support, and bounded actions.
 
-The architecture should allow models to evolve without requiring fundamental platform redesign.
+Personal AI is not one assistant persona.
 
----
-
-## Human-Centered Engineering
-
-The owner remains responsible for:
-
-- architectural decisions
-- security-sensitive changes
-- validating important outputs
-- determining long-term direction
-- deciding when automation is appropriate
-
-AI should explain, suggest, summarize, teach, critique, and assist.
-
-It should not silently replace meaningful engineering decisions.
+It is a shared capability layer that may be exposed through multiple interfaces.
 
 ---
 
-# AI Capability Architecture
+## AI Capability Areas
 
-The platform develops AI capabilities across multiple domains.
+### Engineering Intelligence
 
-## Engineering Intelligence
+Supports architecture, planning, implementation, debugging, documentation, repository reasoning, review, and controlled agentic workflows.
 
-AI should improve engineering by helping with:
+Atlas remains the deterministic engineering control plane.
 
-- architecture
-- design review
-- implementation planning
-- repository reasoning
-- documentation
-- troubleshooting
-- synchronization
-- impact analysis
-- engineering guidance
+### Knowledge Intelligence
 
-Atlas serves as the deterministic engineering interface built upon these capabilities.
+Supports search, retrieval, synthesis, context generation, source comparison, memory augmentation, and knowledge promotion.
 
----
+Generated context never becomes canonical automatically.
 
-## Knowledge Intelligence
+### Learning and Research Intelligence
 
-AI should improve understanding of both the platform and personal knowledge.
+Supports explanations, curricula, project-based learning, interview preparation, concept reinforcement, source discovery, evaluation, synthesis, and uncertainty tracking.
 
-Capabilities include:
+### Personal Decision Support
 
-- repository understanding
-- document relationships
-- search
-- context management
-- summarization
-- knowledge retrieval
-- memory augmentation
-- future RAG capabilities
+Supports health, finance, career, business, travel, planning, and other domains while preserving human commitments and judgment.
+
+### Automation Intelligence
+
+Supports preparation, orchestration, classification, reporting, and bounded execution with visible permission and evidence.
+
+### Creative Intelligence
+
+Supports ideation, critique, editing, experimentation, and production while preserving taste, authorship, and voice.
 
 ---
 
-## Learning Intelligence
+## Data Sensitivity
 
-AI should become an adaptive tutor.
+### Public
 
-Capabilities include:
+Information intentionally public or already broadly available.
 
-- structured learning
-- personalized explanations
-- quizzes
-- project-based learning
-- interview preparation
-- curriculum generation
-- concept reinforcement
+May generally be used with approved hosted services.
 
-Learning should remain an active process.
+### Ordinary Personal
 
-AI accelerates learning rather than replacing it.
+Low-risk personal context whose disclosure would be inconvenient but not severely harmful.
 
----
+Use should remain purposeful and provider-aware.
 
-## Personal Capability Systems
+### Sensitive
 
-AI should eventually support broader personal systems including:
+Private communications, detailed location, educational records, unpublished work, personal finances, health, or similar information.
 
-- health
-- nutrition
-- fitness
-- finance
-- business
-- planning
-- creativity
-- research
-- travel
-- productivity
-- personal knowledge
+Use requires deliberate provider and retention review.
 
-These systems should improve decision quality rather than automate life.
+Local or minimized processing may be preferred.
+
+### Highly Restricted
+
+Passwords, API keys, private keys, tokens, recovery codes, highly sensitive identity data, or information that could directly compromise systems or safety.
+
+Highly Restricted information must not be sent to general hosted AI systems or committed to the repository.
 
 ---
 
-## Automation Intelligence
+## Deployment Strategy
 
-AI should reduce repetitive engineering and operational work.
+### Hosted AI
 
-Examples include:
+Provides frontier reasoning, research, multimodal understanding, writing, coding, and rapid access to new capabilities.
 
-- documentation generation
-- context generation
-- engineering summaries
-- operational reporting
-- workflow orchestration
-- future engineering agents
+Tradeoffs include external dependency, cost, privacy, retention, and changing provider policy.
 
-Automation should remain transparent and reviewable.
+### Local AI
 
----
+May provide privacy, control, offline operation, experimentation, and deep integration.
 
-# AI Deployment Strategy
+Tradeoffs include hardware cost, operational complexity, energy, maintenance, and potentially lower capability.
 
-The Aiden Platform intentionally supports multiple forms of AI deployment.
+Local AI should be adopted because it improves a real capability.
 
-## Cloud AI
-
-Cloud models provide frontier reasoning, research, writing, coding assistance, and large-context understanding.
-
-Advantages include:
-
-- state-of-the-art reasoning
-- large context windows
-- minimal maintenance
-- rapid access to new capabilities
-
-Tradeoffs include:
-
-- subscription costs
-- external dependency
-- privacy considerations
-
----
-
-## Local AI
-
-Local models provide privacy, integration, experimentation, and platform control.
-
-Advantages include:
-
-- data ownership
-- local execution
-- offline operation
-- custom integration
-- self-hosting flexibility
-
-Tradeoffs include:
-
-- hardware requirements
-- operational complexity
-- model maintenance
-- potentially lower capability than frontier cloud models
-
----
-
-## Hybrid AI
+### Hybrid AI
 
 The long-term architecture is hybrid.
 
-The platform should intelligently route work to the most appropriate capability rather than favoring a particular provider.
+Assignment should consider capability, sensitivity, cost, latency, reliability, context size, tool access, operational burden, and local-control requirements.
 
-Examples include:
-
-- cloud reasoning
-- local automation
-- specialized coding agents
-- research systems
-- future orchestration layers
-
-The platform should optimize for capability—not vendor.
+Hybrid does not require automatic routing initially.
 
 ---
 
-# Model Evaluation
+## Provider and Model Evaluation
 
-New AI technologies should be evaluated deliberately.
+Evaluate a model or tool against a defined task:
 
-Questions include:
+- Which capability improves?
+- What is the result quality?
+- What evidence supports that judgment?
+- How reliable is tool use?
+- Does it preserve scope?
+- What context and data does it receive?
+- What are retention and privacy terms?
+- What is the cost and burden?
+- Is a current capability already sufficient?
+- Can the workflow move to another provider?
 
-- Which platform capability improves?
-- Does this increase agency?
-- Does it reduce meaningful engineering friction?
-- Does it improve learning?
-- Does it improve long-term leverage?
-- Can existing tools already satisfy this need?
-- Is this experimental or production-ready?
-
-The platform should adopt technologies because they create lasting value, not because they are popular.
-
----
-
-# Context Architecture
-
-AI systems should understand the platform through layered context.
-
-1. Personal Engineering Philosophy
-2. Platform Architecture
-3. Architecture Documents
-4. Current Mission
-5. Repository Knowledge
-6. Generated Context
-7. Infrastructure Documentation
-8. Live System Verification
-
-Generated context summarizes canonical knowledge.
-
-It never replaces it.
+Product rankings are evidence, not architecture.
 
 ---
 
-# Long-Term Direction
+## Context and Knowledge Authority
 
-The long-term objective is to build an AI ecosystem that continuously improves the owner's ability to engineer, learn, create, and operate increasingly capable systems.
+AI context should distinguish:
 
-Over time this ecosystem may include:
+- Canonical knowledge.
+- Generated context.
+- Personal context.
+- Temporary conversation.
+- Execution records.
+- Candidate findings.
+- Completed actions.
+- Unknown or conflicting information.
 
-- engineering agents
-- adaptive tutors
-- personal assistants
-- local AI infrastructure
-- knowledge systems
-- business systems
-- health systems
-- research assistants
-- future orchestration capabilities
+Canonical knowledge is reviewed and owned by its designated source.
+
+Generated context is derived and rebuildable.
+
+Candidate findings require review before promotion.
+
+Conversation memory is useful but not automatically authoritative.
+
+---
+
+## Recommendation and Action Boundaries
+
+AI behavior should be distinguishable as:
+
+1. Explain.
+2. Recommend.
+3. Prepare.
+4. Execute bounded reversible work.
+5. Request approval.
+6. Perform a separately authorized high-impact action.
+
+High-impact actions remain independently gated, including architecture changes, mission changes, production changes, destructive operations, credential access, financial commitments, external communications, publishing, repository pushes, and writable-scope expansion.
+
+---
+
+## Relationship to Atlas and AidenOS
+
+Atlas owns deterministic engineering state and contracts.
+
+AI systems consume Atlas evidence rather than redefining repository state through conversational confidence.
+
+AidenOS is the Interaction and Experience environment.
+
+Personal AI may be a major part of AidenOS, but AidenOS should also expose deterministic tools, knowledge, services, and workflows that do not depend on AI.
+
+AI and AidenOS therefore remain separate capability identities.
+
+---
+
+## Evaluation
+
+AI workflows should be evaluated through correctness, usefulness, source quality, scope preservation, human correction, repair attempts, time saved, learning retained, decisions improved, authority compliance, and portability.
+
+Evaluation should remain explainable rather than becoming one opaque universal score.
+
+---
+
+## Initial Direction
+
+Near-term work should prioritize AI operating rules, data classification, provider evaluation, Personal AI boundaries, knowledge ownership, career and research intelligence, and manual proof of useful workflows.
+
+Later work may include local AI experiments, task-scoped context, task contracts, autonomy policy, versioned skills, execution evidence, bounded repair loops, and AidenOS experiences.
 
 The platform should become progressively more capable without becoming progressively more dependent.
-
-AI should always remain a source of leverage.
-
-Never a replacement for human agency.

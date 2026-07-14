@@ -19,30 +19,80 @@ CAPABILITY_TABLE_ROW = re.compile(
 
 EXPECTED_CAPABILITY_IDS = frozenset(
     {
-        "compute",
-        "storage",
-        "networking-access",
-        "observability",
-        "automation",
-        "knowledge-documentation",
-        "engineering",
-        "personal-services",
-        "ai-aiden-os",
+        "platform-governance",
+        "engineering-evolution",
+        "knowledge-context",
+        "artificial-intelligence",
+        "automation-integration",
+        "infrastructure-operations",
+        "security-privacy-resilience",
+        "interaction-experience",
+        "learning-research",
+        "health-wellbeing",
+        "economic-agency",
+        "personal-operations",
+        "creativity-expression",
     }
 )
 
 CAPABILITY_ALIASES = {
-    "AI": "ai-aiden-os",
-    "Documentation": "knowledge-documentation",
+    "AI": "artificial-intelligence",
+    "Documentation": "knowledge-context",
+    "Learning": "learning-research",
+    "Infrastructure": "infrastructure-operations",
+    "Engineering": "engineering-evolution",
+    "Compute": "infrastructure-operations",
+    "Storage": "infrastructure-operations",
+    "Observability": "infrastructure-operations",
+    "Automation": "automation-integration",
+}
+
+DEPRECATED_CAPABILITY_IDS = {
+    "compute": "infrastructure-operations",
+    "storage": "infrastructure-operations",
+    "observability": "infrastructure-operations",
+    "automation": "automation-integration",
+    "engineering": "engineering-evolution",
 }
 
 AMBIGUOUS_CAPABILITY_VALUES = {
-    "Infrastructure": (
-        "compute",
-        "storage",
-        "networking-access",
-        "observability",
-        "automation",
+    "networking-access": (
+        "infrastructure-operations",
+        "security-privacy-resilience",
+    ),
+    "Networking and Access": (
+        "infrastructure-operations",
+        "security-privacy-resilience",
+    ),
+    "knowledge-documentation": (
+        "knowledge-context",
+        "engineering-evolution",
+    ),
+    "Knowledge and Documentation": (
+        "knowledge-context",
+        "engineering-evolution",
+    ),
+    "personal-services": (
+        "personal-operations",
+        "learning-research",
+        "health-wellbeing",
+        "economic-agency",
+        "creativity-expression",
+    ),
+    "Personal Services": (
+        "personal-operations",
+        "learning-research",
+        "health-wellbeing",
+        "economic-agency",
+        "creativity-expression",
+    ),
+    "ai-aiden-os": (
+        "artificial-intelligence",
+        "interaction-experience",
+    ),
+    "AI and Aiden OS": (
+        "artificial-intelligence",
+        "interaction-experience",
     ),
 }
 
@@ -85,7 +135,8 @@ def build_capability_catalog(
         unexpected = sorted(set(observed_ids) - EXPECTED_CAPABILITY_IDS)
         raise ValueError(
             "The canonical capability catalog does not match the "
-            f"architecture contract. Missing={missing}; unexpected={unexpected}."
+            f"architecture contract. Missing={missing}; "
+            f"unexpected={unexpected}."
         )
 
     return definitions
@@ -126,6 +177,58 @@ def _resolved_alignment(
         blockers=(),
         unresolved_questions=(),
         recommendation=recommendation,
+    )
+
+
+def _ambiguous_alignment(
+    entity: RepositoryEntity,
+    candidates: tuple[str, ...],
+    rule: str,
+) -> OpportunityCapabilityAlignment:
+    blocker = (
+        f"Declared capability '{entity.capability}' does not identify one "
+        "primary canonical capability."
+    )
+    return OpportunityCapabilityAlignment(
+        opportunity_id=entity.id,
+        repository_path=entity.path,
+        declared_value=entity.capability,
+        alignment_state="ambiguous",
+        primary_capability_id=None,
+        primary_capability_label=None,
+        candidate_capability_ids=candidates,
+        secondary_capability_ids=(),
+        evidence=(
+            f"Source object: {entity.path}",
+            f"Declared capability: {entity.capability}",
+            f"Canonical capability source: {CAPABILITY_SOURCE_PATH}",
+            f"Compatibility rule: {rule}",
+            "Candidate capabilities: " + ", ".join(candidates),
+        ),
+        provenance=(
+            entity.path,
+            CAPABILITY_SOURCE_PATH,
+            "atlas.platform.reasoning.opportunity_capability_alignment",
+        ),
+        explanation=(
+            f"Declared capability '{entity.capability}' spans multiple "
+            "canonical capabilities and cannot be reduced deterministically "
+            "to one primary capability."
+        ),
+        confidence="High",
+        blockers=(blocker,),
+        unresolved_questions=(
+            "Which canonical capability should be selected as the "
+            f"primary capability for {entity.id}?",
+        ),
+        recommendation=OpportunityAssessmentRecommendation(
+            action="resolve-capability",
+            reason=(
+                "Select one primary canonical capability through human "
+                "review before lifecycle progression."
+            ),
+            confidence="High",
+        ),
     )
 
 
@@ -189,64 +292,49 @@ def align_opportunity_capability(
             recommendation=OpportunityAssessmentRecommendation(
                 action="review-capability-migration",
                 reason=(
-                    "The curated alias resolves deterministically. Migration "
-                    "to the stable identifier remains human-authorized."
+                    "The curated alias resolves deterministically. "
+                    "Migration to the stable identifier remains "
+                    "human-authorized."
+                ),
+                confidence="High",
+            ),
+        )
+
+    if declared_value in DEPRECATED_CAPABILITY_IDS:
+        definition = by_identifier[
+            DEPRECATED_CAPABILITY_IDS[declared_value]
+        ]
+        return _resolved_alignment(
+            entity,
+            definition,
+            alignment_state="deprecated",
+            rule=(
+                f"the explicit deprecated-identifier replacement "
+                f"'{declared_value}' -> '{definition.identifier}'"
+            ),
+            recommendation=OpportunityAssessmentRecommendation(
+                action="review-capability-migration",
+                reason=(
+                    "The legacy identifier has an explicit canonical "
+                    "replacement. Updating the opportunity object remains "
+                    "a separate human-authorized repository change."
                 ),
                 confidence="High",
             ),
         )
 
     if declared_value in AMBIGUOUS_CAPABILITY_VALUES:
-        candidates = AMBIGUOUS_CAPABILITY_VALUES[declared_value]
-        blocker = (
-            f"Declared capability '{declared_value}' does not identify one "
-            "primary canonical capability."
-        )
-        return OpportunityCapabilityAlignment(
-            opportunity_id=entity.id,
-            repository_path=entity.path,
-            declared_value=declared_value,
-            alignment_state="ambiguous",
-            primary_capability_id=None,
-            primary_capability_label=None,
-            candidate_capability_ids=candidates,
-            secondary_capability_ids=(),
-            evidence=(
-                f"Source object: {entity.path}",
-                f"Declared capability: {declared_value}",
-                f"Canonical capability source: {CAPABILITY_SOURCE_PATH}",
-                "Compatibility rule: broad legacy Infrastructure domain",
-                "Candidate capabilities: " + ", ".join(candidates),
-            ),
-            provenance=(
-                entity.path,
-                CAPABILITY_SOURCE_PATH,
-                "atlas.platform.reasoning.opportunity_capability_alignment",
-            ),
-            explanation=(
-                f"Declared capability '{declared_value}' spans multiple "
-                "canonical capabilities and cannot be reduced "
-                "deterministically to one primary capability."
-            ),
-            confidence="High",
-            blockers=(blocker,),
-            unresolved_questions=(
-                "Which canonical capability should be selected as the "
-                f"primary capability for {entity.id}?",
-            ),
-            recommendation=OpportunityAssessmentRecommendation(
-                action="resolve-capability",
-                reason=(
-                    "Select one primary canonical capability through human "
-                    "review before lifecycle progression."
-                ),
-                confidence="High",
-            ),
+        return _ambiguous_alignment(
+            entity,
+            AMBIGUOUS_CAPABILITY_VALUES[declared_value],
+            "an explicit legacy value spanning multiple canonical "
+            "capabilities",
         )
 
     blocker = (
         f"Declared capability '{declared_value}' does not resolve to a "
-        "canonical capability identifier, label, or curated alias."
+        "canonical capability identifier, label, curated alias, deprecated "
+        "identifier, or recognized ambiguous compatibility value."
     )
     return OpportunityCapabilityAlignment(
         opportunity_id=entity.id,
@@ -261,8 +349,8 @@ def align_opportunity_capability(
             f"Source object: {entity.path}",
             f"Declared capability: {declared_value}",
             f"Canonical capability source: {CAPABILITY_SOURCE_PATH}",
-            "Alignment rule: no canonical identifier, label, alias, or "
-            "recognized broad compatibility value matched",
+            "Alignment rule: no canonical identifier, label, alias, "
+            "deprecated identifier, or ambiguous compatibility value matched",
         ),
         provenance=(
             entity.path,
@@ -271,13 +359,13 @@ def align_opportunity_capability(
         ),
         explanation=(
             f"Declared capability '{declared_value}' is unknown to the "
-            "current canonical Platform Capability Map."
+            "current canonical Platform Capability Architecture."
         ),
         confidence="High",
         blockers=(blocker,),
         unresolved_questions=(
             "Should the opportunity be reclassified to an existing "
-            "capability, or should the Platform Capability Map evolve?",
+            "capability, or should the capability architecture evolve?",
         ),
         recommendation=OpportunityAssessmentRecommendation(
             action="review-capability",

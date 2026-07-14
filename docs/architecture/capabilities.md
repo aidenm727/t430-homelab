@@ -1,290 +1,244 @@
-# Platform Capability Map
+# Platform Capability Architecture
 
 ## Purpose
 
-This document defines the major capabilities of the Aiden Platform.
+This document defines the durable capability taxonomy of the Aiden Platform.
 
-A capability is something the platform should be able to do, independent of the specific service, tool, or hardware used to implement it.
+A capability is something the platform should be able to do independently of the specific tool, service, provider, model, or hardware used to implement it.
 
-The goal is to plan the platform by asking:
+The model has two layers:
 
-> What capability are we improving?
+1. Platform Foundations provide reusable abilities.
+2. Human Agency Domains describe where those abilities create meaningful value.
 
-Rather than:
+---
 
-> What service should we install next?
-
-## Core Principle
-
-The Aiden Platform evolves by strengthening capabilities over time.
-
-Services, servers, containers, VMs, scripts, and AI tools are implementation details.
-
-Capabilities are the long-term structure.
-
-## Capability Identity
-
-Each major Platform Capability has a stable machine-readable identifier and a human-readable label.
+## Platform Foundation Identities
 
 | Capability ID | Display Label |
 | --- | --- |
-| `compute` | Compute |
-| `storage` | Storage |
-| `networking-access` | Networking and Access |
-| `observability` | Observability |
-| `automation` | Automation |
-| `knowledge-documentation` | Knowledge and Documentation |
-| `engineering` | Engineering |
-| `personal-services` | Personal Services |
-| `ai-aiden-os` | AI and Aiden OS |
+| `platform-governance` | Platform Direction and Governance |
+| `engineering-evolution` | Engineering and Evolution |
+| `knowledge-context` | Knowledge and Context |
+| `artificial-intelligence` | Artificial Intelligence |
+| `automation-integration` | Automation and Integration |
+| `infrastructure-operations` | Infrastructure and Operations |
+| `security-privacy-resilience` | Security, Privacy, and Resilience |
+| `interaction-experience` | Interaction and Experience |
 
-Capability identifiers are durable architecture identities.
+### `platform-governance`
 
-Display labels may evolve without changing identity.
+Owns vision, principles, capability architecture, strategic priorities, authority boundaries, governance, and recalibration.
 
-Aliases and compatibility mappings belong to the architecture of the consuming capability and do not create new Platform Capabilities.
+### `engineering-evolution`
 
-## Capability Areas
+Owns repeatable platform design, implementation, verification, documentation, synchronization, review, missions, Atlas, and Engineering Opportunities.
 
-## 1. Compute
+### `knowledge-context`
 
-The platform should provide reliable places to run workloads.
+Owns documentation, personal knowledge, provenance, research sources, retrieval, context generation, memory boundaries, and knowledge promotion.
 
-Includes:
+### `artificial-intelligence`
 
-* Docker workloads
-* LXC containers
-* Virtual machines
-* GPU workloads
-* Experimental compute environments
+Owns model evaluation, hosted and local AI, Personal AI, context use, bounded agents, evidence, and provider portability.
 
-Current implementations:
+### `automation-integration`
 
-* t430-beast
-* gamer-pve
-* Docker Compose
-* Proxmox
+Owns APIs, connectors, orchestration, notifications, synchronization, scheduled work, and approval-aware automation.
 
-## 2. Storage
+### `infrastructure-operations`
 
-The platform should safely store, organize, protect, and retrieve data.
+Owns compute, storage, networking, observability, backups, workstations, cloud resources, virtualization, services, recovery, and operations.
 
-Includes:
+### `security-privacy-resilience`
 
-* Service data
-* Backups
-* Photos
-* Documents
-* Archives
-* Media
-* Future NAS storage
+Owns identity, access, secrets, privacy, data classification, encryption, incident response, provider risk, recovery, portability, and safe automation.
 
-Current implementations:
+### `interaction-experience`
 
-* t430-beast local SSD
-* gamer-pve SSD storage
-* Restic backups
-* Backblaze B2 off-site backup
-* Preservation archive
+Owns AidenOS, dashboards, conversations, search, briefings, notifications, mobile and desktop surfaces, and review interfaces.
 
-## 3. Networking and Access
+---
 
-The platform should provide secure, reliable access to services.
+## Human Agency Domain Identities
 
-Includes:
+| Capability ID | Display Label |
+| --- | --- |
+| `learning-research` | Learning and Research |
+| `health-wellbeing` | Health and Wellbeing |
+| `economic-agency` | Economic Agency |
+| `personal-operations` | Personal Operations |
+| `creativity-expression` | Creativity and Expression |
 
-* Internal DNS
-* Reverse proxy routing
-* HTTPS
-* VPN access
-* Access control
+### `learning-research`
 
-Current implementations:
+Improves understanding, skill development, research, source evaluation, curricula, and awareness.
 
-* Pi-hole
-* Traefik
-* Tailscale
-* Internal PKI
-* home.lab DNS
+### `health-wellbeing`
 
-## 4. Observability
+Improves health organization, nutrition, fitness, recovery, sleep, and evidence-informed support.
 
-The platform should make health, performance, logs, and failures visible.
+### `economic-agency`
 
-Includes:
+Improves career capability, professional leverage, personal finance, business experimentation, and economic independence.
 
-* Metrics
-* Logs
-* Dashboards
-* Uptime monitoring
-* Alerts
-* Health checks
+Subdomains:
 
-Current implementations:
+- Career and Professional Development.
+- Personal Finance.
+- Business and Entrepreneurship.
 
-* Grafana
-* Prometheus
-* Loki
-* Alloy
-* Uptime Kuma
-* Discord alerts
+### `personal-operations`
 
-## 5. Automation
+Improves scheduling, communication, travel, household workflows, documents, routines, and personal services.
 
-The platform should reduce manual work and make operations repeatable.
+### `creativity-expression`
 
-Includes:
+Improves creative practice, experimentation, publishing, music, writing, visual work, media, software creation, and personal voice.
 
-* Configuration management
-* Health-check playbooks
-* Backup automation
-* Context generation
-* Future deployment automation
+---
 
-Current implementations:
+## Capability Relationships
 
-* Ansible
-* systemd timers
-* generate-context.py
-* homelab-change.py
+Platform Foundations support all Human Agency Domains.
 
-## 6. Knowledge and Documentation
+A workflow may have one primary capability and several secondary implications.
 
-The platform should explain itself to both humans and AI assistants.
+A nutrition workflow may use:
 
-Includes:
+- `knowledge-context`
+- `artificial-intelligence`
+- `automation-integration`
+- `security-privacy-resilience`
+- `interaction-experience`
+- `health-wellbeing`
+- `personal-operations`
 
-* Infrastructure records
-* Architecture documents
-* Change logs
-* Generated AI context
-* Future searchable knowledge base
+A career intelligence workflow may use:
 
-Current implementations:
+- `learning-research`
+- `economic-agency`
+- `knowledge-context`
+- `artificial-intelligence`
+- `automation-integration`
 
-* docs/infrastructure.md
-* docs/infrastructure-gamer-pve.md
-* docs/services.md
-* docs/architecture/platform.md
-* docs/architecture/engineering.md
-* docs/aiden-context.md
-* docs/current-mission.md
-* docs/infrastructure-snapshot.md
-* docs/changes.log
+---
 
-## 7. Engineering
+## Systems and Implementations
 
-The platform should provide repeatable ways to design, inspect, validate, document, and evolve itself.
+| Concept | Architectural Position |
+| --- | --- |
+| Aiden Platform | Entire capability ecosystem |
+| Atlas | Engineering and Evolution system |
+| GitHub repository | Canonical engineering knowledge implementation |
+| Personal AI | Cross-cutting AI system |
+| AidenOS | Interaction and Experience system |
+| Homelab | Infrastructure implementation |
+| Laptop and WSL | Engineering and infrastructure implementation |
+| Immich and Vaultwarden | Services supporting human domains |
+| ChatGPT Project | Hosted AI and context interface |
+| Local model runtime | AI and infrastructure implementation |
 
-Includes:
+---
 
-* Engineering state inspection
-* Change workflow support
-* Repository validation
-* Documentation validation
-* Architecture awareness
-* AI context preparation
-* Future unified engineering CLI
+## Legacy Capability Compatibility
 
-Current implementations:
+The previous map defined nine flat identities.
 
-* Atlas
-* generate-context.py
-* homelab-change.py
-* aiden-context-loader.py
-* Structured change workflow
+Those identifiers may still appear in Engineering Opportunity Objects, tests, Atlas reasoning, infrastructure records, and documentation.
 
-## 8. Personal Services
+They remain recognized temporarily as compatibility identifiers but are no longer canonical top-level capabilities.
 
-The platform should provide useful personal digital services.
+| Legacy ID | Canonical Destination | Compatibility Meaning |
+| --- | --- | --- |
+| `compute` | `infrastructure-operations` | Compute specialization |
+| `storage` | `infrastructure-operations` | Storage specialization |
+| `networking-access` | `infrastructure-operations` and `security-privacy-resilience` | Network operation and access-control implications |
+| `observability` | `infrastructure-operations` | Operational visibility specialization |
+| `automation` | `automation-integration` | Direct alias during migration |
+| `knowledge-documentation` | `knowledge-context` and `engineering-evolution` | Knowledge ownership with engineering-documentation implications |
+| `engineering` | `engineering-evolution` | Direct alias during migration |
+| `personal-services` | Domain-specific classification | Services are implementations rather than one capability |
+| `ai-aiden-os` | `artificial-intelligence` and `interaction-experience` | Former combined identity split into two foundations |
 
-Includes:
+Compatibility rules:
 
-* Password management
-* Photo management
-* Document management
-* Media access
-* Dashboards
-* Future personal cloud services
+- Existing object identifiers and lifecycle state must not change automatically.
+- Atlas may resolve legacy values through explicit mappings.
+- A legacy value may resolve to one capability, multiple implications, or an ambiguity requiring review.
+- New architecture and new objects should use canonical identifiers.
+- Compatibility support must remain visible and testable.
+- Removal requires reviewed migration evidence.
+- Capability migration is not opportunity duplication or lifecycle mutation.
 
-Current implementations:
-
-* Vaultwarden
-* Homepage
-* Immich
-
-## 9. AI and Aiden OS
-
-The platform should eventually support AI-native workflows.
-
-Includes:
-
-* Local AI models
-* AI-assisted documentation
-* Personal tutors
-* Daily briefings
-* Search and retrieval
-* Memory/context systems
-* Future Aiden OS components
-
-Current implementations:
-
-* ChatGPT Project workflow
-* AI-readable context files
-* Context generation scripts
-* Architecture-first planning
+---
 
 ## Capability Maturity
 
-Each capability can exist at different levels of maturity.
+Capability maturity evaluates durable ability, not the existence of a related service.
 
-### Level 0 — Not Started
+### Level 0 — Not Established
 
-The capability is only an idea.
+Recognized but without a usable workflow or architecture.
 
 ### Level 1 — Experimental
 
-The capability is being explored, tested, or prototyped.
+Explored through manual workflows, prototypes, or early architecture.
 
 ### Level 2 — Operational
 
-The capability works and is useful, but may not be fully automated, monitored, or documented.
+Provides repeatable value through an understandable workflow.
 
-### Level 3 — Production
+### Level 3 — Reliable
 
-The capability is reliable, documented, monitored, backed up where appropriate, and integrated into normal operations.
+Documented, verified, recoverable, secure where applicable, and part of normal operation.
 
 ### Level 4 — Platform Native
 
-The capability is deeply integrated into the platform and improves other capabilities.
+Deeply integrated, reusable across systems, and improves other capabilities.
 
-## Current Capability Assessment
+---
 
-| Capability                  | Current Maturity | Notes                                                                       |
-| --------------------------- | ---------------: | --------------------------------------------------------------------------- |
-| Compute                     |          Level 2 | Docker and Proxmox are operational, but VM workflow is still maturing.      |
-| Storage                     |          Level 2 | Backups are strong, but long-term NAS/storage architecture is not complete. |
-| Networking and Access       |          Level 3 | DNS, HTTPS, Tailscale, and reverse proxy are established.                   |
-| Observability               |          Level 3 | Metrics, logs, alerts, and health checks exist for core services.           |
-| Automation                  |          Level 2 | Ansible and scripts exist, but deployment automation is still early.        |
-| Knowledge and Documentation |          Level 3 | Documentation system is becoming a core platform strength.                  |
-| Engineering                 |          Level 1 | Atlas architecture has been defined; initial toolkit implementation is beginning. |
-| Personal Services           |          Level 2 | Several useful services exist, but the service layer is still growing.      |
-| AI and Aiden OS             |          Level 1 | Strong concept and workflow foundation, but local implementation is early.  |
+## Initial Strategic Assessment
 
+| Capability | Initial Maturity | Basis |
+| --- | ---: | --- |
+| Platform Direction and Governance | Level 1 | Vision and governance are becoming canonical. |
+| Engineering and Evolution | Level 2 | Atlas and repository workflows are operational; consolidation remains. |
+| Knowledge and Context | Level 2 | Engineering knowledge is strong; broader personal knowledge is early. |
+| Artificial Intelligence | Level 1 | Hosted workflows are useful; operating rules and Personal AI remain early. |
+| Automation and Integration | Level 2 | Infrastructure and context automation exist; cross-domain integration is limited. |
+| Infrastructure and Operations | Level 2 | Core environments operate; storage and recovery continue to mature. |
+| Security, Privacy, and Resilience | Level 2 | Strong practices exist; explicit platform-wide governance is incomplete. |
+| Interaction and Experience | Level 0 | AidenOS is conceptual rather than operational. |
+| Learning and Research | Level 1 | Assisted learning exists; durable workflows are not integrated. |
+| Health and Wellbeing | Level 1 | Repeated assisted workflows exist; no platform capability is established. |
+| Economic Agency | Level 1 | Career and finance planning occur; no integrated system exists. |
+| Personal Operations | Level 1 | Useful services and workflows exist but remain fragmented. |
+| Creativity and Expression | Level 1 | Creative practices exist; platform support remains informal. |
+
+---
 
 ## Planning Rule
 
-Future work should be selected by identifying the weakest or highest-value capability, then choosing an implementation that improves it.
+Future work should:
+
+1. Identify the human outcome or platform responsibility.
+2. Identify the primary canonical capability.
+3. Identify secondary implications.
+4. Determine whether an existing system already provides the capability.
+5. Design architecture before introducing a major system.
+6. Select an implementation only after the need is clear.
+7. Define evidence that the capability improved.
 
 A service should not be added only because it is interesting.
 
-A service should be added because it improves a defined platform capability.
+---
 
-## Next Capability Priorities
+## Canonical Relationships
 
-1. Engineering toolkit / Atlas
-2. Storage architecture
-3. Compute architecture
-4. AI/context architecture
-5. Proxmox VM workflow
+- `docs/vision.md` defines why these capabilities matter.
+- `docs/architecture/platform.md` defines their structural relationship.
+- `docs/architecture/ai.md` defines Artificial Intelligence and Personal AI.
+- `docs/roadmaps/platform-strategy.md` defines sequencing.
+- Engineering Opportunity Capability Alignment should consume this taxonomy through explicit compatibility rules.

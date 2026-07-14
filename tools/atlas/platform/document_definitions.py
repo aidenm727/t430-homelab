@@ -16,13 +16,30 @@ class DocumentDefinition:
 
 
 DOCUMENT_DEFINITIONS = {
+    "docs/vision.md": DocumentDefinition(
+        path="docs/vision.md",
+        purpose="Defines why the Aiden Platform exists, its North Star, principles, human authority, non-goals, and long-term direction.",
+        capability="Platform Direction and Governance",
+        tags=["vision", "platform-governance", "human-agency"],
+        related=[
+            "docs/architecture/platform.md",
+            "docs/architecture/capabilities.md",
+            "docs/roadmaps/platform-strategy.md",
+            "docs/current-mission.md",
+        ],
+    ),
     "docs/architecture/platform.md": DocumentDefinition(
         path="docs/architecture/platform.md",
-        purpose="Defines the long-term Aiden Platform architecture and vision.",
-        capability="Platform",
+        purpose="Defines the structural architecture of the Aiden Platform, including Platform Foundations, Human Agency Domains, and major system boundaries.",
+        capability="Platform Direction and Governance",
+        tags=["platform-architecture", "capability-architecture", "human-agency"],
         related=[
+            "docs/vision.md",
             "docs/architecture/capabilities.md",
+            "docs/architecture/ai.md",
             "docs/architecture/repository.md",
+            "docs/architecture/atlas.md",
+            "docs/roadmaps/platform-strategy.md",
         ],
     ),
     "docs/architecture/atlas.md": DocumentDefinition(
@@ -37,11 +54,16 @@ DOCUMENT_DEFINITIONS = {
     ),
     "docs/current-mission.md": DocumentDefinition(
         path="docs/current-mission.md",
-        purpose="Defines the current engineering phase, focus, priorities, and next milestone.",
-        capability="Engineering",
+        purpose="Defines the current engineering phase, bounded scope, priorities, non-priorities, success criteria, and next milestone.",
+        capability="Engineering and Evolution",
+        tags=["current-mission", "engineering-state", "active-work"],
         related=[
+            "docs/vision.md",
+            "docs/architecture/platform.md",
+            "docs/roadmaps/platform-strategy.md",
             "docs/aiden-context.md",
             "docs/architecture/atlas.md",
+            "docs/architecture/repository-synchronization.md",
         ],
     ),
     "docs/aiden-context.md": DocumentDefinition(
@@ -190,22 +212,29 @@ DOCUMENT_DEFINITIONS = {
 
     "docs/architecture/capabilities.md": DocumentDefinition(
         path="docs/architecture/capabilities.md",
-        purpose="Defines the platform capability map and capability-driven planning model.",
-        capability="Platform",
+        purpose="Defines the layered Platform Foundation and Human Agency Domain taxonomy, stable identities, maturity model, and legacy compatibility strategy.",
+        capability="Platform Direction and Governance",
+        tags=["platform-capabilities", "capability-taxonomy", "capability-maturity"],
         related=[
+            "docs/vision.md",
             "docs/architecture/platform.md",
+            "docs/architecture/ai.md",
             "docs/architecture/engineering.md",
-            "docs/roadmaps/engineering-toolkit.md",
+            "docs/roadmaps/platform-strategy.md",
             "docs/architecture/engineering-opportunity-capability-alignment.md",
         ],
     ),
     "docs/architecture/repository.md": DocumentDefinition(
         path="docs/architecture/repository.md",
-        purpose="Defines how the repository is organized and how repository layers should evolve.",
-        capability="Engineering",
+        purpose="Defines repository layers, canonical ownership, source-of-truth order, placement rules, registration, and repository health.",
+        capability="Engineering and Evolution",
+        tags=["repository-architecture", "canonical-ownership", "source-of-truth"],
         related=[
+            "docs/vision.md",
+            "docs/architecture/platform.md",
             "docs/architecture/atlas.md",
             "docs/docs-map.md",
+            "docs/roadmaps/platform-strategy.md",
             "docs/roadmaps/engineering-toolkit.md",
         ],
     ),
@@ -241,11 +270,15 @@ DOCUMENT_DEFINITIONS = {
     ),
     "docs/architecture/ai.md": DocumentDefinition(
         path="docs/architecture/ai.md",
-        purpose="Defines the AI architecture and long-term direction for intelligence capabilities across the platform.",
+        purpose="Defines Artificial Intelligence and Personal AI architecture, data sensitivity, provider strategy, context authority, action boundaries, and evaluation.",
         capability="Artificial Intelligence",
+        tags=["artificial-intelligence", "personal-ai", "ai-governance"],
         related=[
+            "docs/vision.md",
             "docs/architecture/platform.md",
+            "docs/architecture/capabilities.md",
             "docs/architecture/atlas.md",
+            "docs/roadmaps/platform-strategy.md",
             "docs/roadmaps/ai-engineering.md",
         ],
     ),
@@ -312,6 +345,19 @@ DOCUMENT_DEFINITIONS = {
             "docs/change-session.md",
             "docs/change-schema.md",
             "docs/changes",
+        ],
+    ),
+    "docs/roadmaps/platform-strategy.md": DocumentDefinition(
+        path="docs/roadmaps/platform-strategy.md",
+        purpose="Defines dated one-, three-, and five-year outcomes, six initiatives, dependencies, sequencing, evidence, and deliberate deferrals.",
+        capability="Platform Direction and Governance",
+        tags=["roadmap", "platform-strategy", "strategic-initiatives"],
+        related=[
+            "docs/vision.md",
+            "docs/architecture/platform.md",
+            "docs/architecture/capabilities.md",
+            "docs/architecture/ai.md",
+            "docs/current-mission.md",
         ],
     ),
     "docs/roadmaps/ai-engineering.md": DocumentDefinition(

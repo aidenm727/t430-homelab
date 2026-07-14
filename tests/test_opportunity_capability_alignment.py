@@ -45,25 +45,34 @@ class EngineeringOpportunityCapabilityAlignmentTests(unittest.TestCase):
             {definition.identifier for definition in catalog},
             EXPECTED_CAPABILITY_IDS,
         )
-        self.assertEqual(len(catalog), 9)
+        self.assertEqual(len(catalog), 13)
 
     def test_exact_canonical_identifier_resolves(self) -> None:
         alignment = align_opportunity_capability(
-            build_entity("engineering")
+            build_entity("engineering-evolution")
         )
 
         self.assertEqual(alignment.alignment_state, "canonical-id")
-        self.assertEqual(alignment.primary_capability_id, "engineering")
-        self.assertEqual(alignment.primary_capability_label, "Engineering")
+        self.assertEqual(
+            alignment.primary_capability_id,
+            "engineering-evolution",
+        )
+        self.assertEqual(
+            alignment.primary_capability_label,
+            "Engineering and Evolution",
+        )
         self.assertEqual(alignment.blockers, ())
 
     def test_exact_canonical_label_resolves(self) -> None:
         alignment = align_opportunity_capability(
-            build_entity("Engineering")
+            build_entity("Engineering and Evolution")
         )
 
         self.assertEqual(alignment.alignment_state, "canonical-label")
-        self.assertEqual(alignment.primary_capability_id, "engineering")
+        self.assertEqual(
+            alignment.primary_capability_id,
+            "engineering-evolution",
+        )
         self.assertEqual(
             alignment.recommendation.action,
             "review-capability-migration",
@@ -73,7 +82,10 @@ class EngineeringOpportunityCapabilityAlignmentTests(unittest.TestCase):
         alignment = align_opportunity_capability(build_entity("AI"))
 
         self.assertEqual(alignment.alignment_state, "alias")
-        self.assertEqual(alignment.primary_capability_id, "ai-aiden-os")
+        self.assertEqual(
+            alignment.primary_capability_id,
+            "artificial-intelligence",
+        )
         self.assertIn("curated alias", alignment.explanation)
 
     def test_documentation_alias_resolves(self) -> None:
@@ -84,12 +96,48 @@ class EngineeringOpportunityCapabilityAlignmentTests(unittest.TestCase):
         self.assertEqual(alignment.alignment_state, "alias")
         self.assertEqual(
             alignment.primary_capability_id,
-            "knowledge-documentation",
+            "knowledge-context",
         )
 
-    def test_infrastructure_is_ambiguous(self) -> None:
+    def test_learning_alias_resolves(self) -> None:
+        alignment = align_opportunity_capability(build_entity("Learning"))
+
+        self.assertEqual(alignment.alignment_state, "alias")
+        self.assertEqual(
+            alignment.primary_capability_id,
+            "learning-research",
+        )
+
+    def test_infrastructure_alias_resolves(self) -> None:
         alignment = align_opportunity_capability(
             build_entity("Infrastructure")
+        )
+
+        self.assertEqual(alignment.alignment_state, "alias")
+        self.assertEqual(
+            alignment.primary_capability_id,
+            "infrastructure-operations",
+        )
+        self.assertEqual(alignment.blockers, ())
+
+    def test_deprecated_legacy_identifier_resolves(self) -> None:
+        alignment = align_opportunity_capability(
+            build_entity("engineering")
+        )
+
+        self.assertEqual(alignment.alignment_state, "deprecated")
+        self.assertEqual(
+            alignment.primary_capability_id,
+            "engineering-evolution",
+        )
+        self.assertEqual(
+            alignment.recommendation.action,
+            "review-capability-migration",
+        )
+
+    def test_combined_ai_aiden_os_identity_is_ambiguous(self) -> None:
+        alignment = align_opportunity_capability(
+            build_entity("ai-aiden-os")
         )
 
         self.assertEqual(alignment.alignment_state, "ambiguous")
@@ -97,27 +145,12 @@ class EngineeringOpportunityCapabilityAlignmentTests(unittest.TestCase):
         self.assertEqual(
             alignment.candidate_capability_ids,
             (
-                "compute",
-                "storage",
-                "networking-access",
-                "observability",
-                "automation",
+                "artificial-intelligence",
+                "interaction-experience",
             ),
         )
         self.assertTrue(alignment.blockers)
         self.assertTrue(alignment.unresolved_questions)
-
-    def test_learning_is_unknown(self) -> None:
-        alignment = align_opportunity_capability(
-            build_entity("Learning")
-        )
-
-        self.assertEqual(alignment.alignment_state, "unknown")
-        self.assertIsNone(alignment.primary_capability_id)
-        self.assertEqual(
-            alignment.recommendation.action,
-            "review-capability",
-        )
 
     def test_arbitrary_unsupported_value_is_unknown(self) -> None:
         alignment = align_opportunity_capability(
@@ -148,25 +181,27 @@ class EngineeringOpportunityCapabilityAlignmentTests(unittest.TestCase):
         self.assertIsNotNone(assessment.capability_alignment)
         self.assertEqual(
             assessment.capability_alignment.alignment_state,
-            "canonical-label",
+            "alias",
         )
         self.assertEqual(assessment.blockers, ())
         self.assertIn(
-            ("capability-alignment-state", "canonical-label"),
+            ("capability-alignment-state", "alias"),
             {(fact.name, fact.value) for fact in assessment.facts},
         )
 
     def test_unresolved_alignment_recommends_enrichment(self) -> None:
         assessment = assess_engineering_opportunity(
-            build_entity("Infrastructure")
+            build_entity("AI and Aiden OS")
         )
         codes = {finding.code for finding in assessment.findings}
 
         self.assertEqual(assessment.recommendation.action, "enrich")
         self.assertIn("capability-alignment-ambiguous", codes)
         self.assertTrue(
-            any("primary canonical capability" in blocker
-                for blocker in assessment.blockers)
+            any(
+                "primary canonical capability" in blocker
+                for blocker in assessment.blockers
+            )
         )
 
     def test_alignment_does_not_infer_from_prose(self) -> None:

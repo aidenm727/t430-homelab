@@ -2,184 +2,252 @@
 
 ## Purpose
 
-The Aiden Platform is a long-term personal capability platform.
+This document defines the structural architecture of the Aiden Platform.
 
-Its purpose is to increase the owner's ability to understand, learn, build, create, organize, automate, and improve every meaningful area of life through thoughtfully engineered systems.
+The platform is an ecosystem of shared foundations and human agency domains.
 
-The platform is not a single application, server, or AI system.
+Shared foundations provide reusable abilities.
 
-It is an evolving ecosystem of capabilities that work together to increase human agency while preserving curiosity, understanding, and personal ownership.
+Human agency domains apply those abilities to meaningful areas of life.
 
-Technology is the leverage.
-
-Engineering is the process.
-
-Agency is the outcome.
+The platform's purpose and durable principles are defined in `docs/vision.md`.
 
 ---
 
-# Vision
+## Architectural Model
 
-The Aiden Platform exists to bridge physical life and digital life through systems that are:
+```text
+Aiden Platform
+|
+|-- Platform Foundations
+|   |-- Platform Direction and Governance
+|   |-- Engineering and Evolution
+|   |-- Knowledge and Context
+|   |-- Artificial Intelligence
+|   |-- Automation and Integration
+|   |-- Infrastructure and Operations
+|   |-- Security, Privacy, and Resilience
+|   `-- Interaction and Experience
+|
+`-- Human Agency Domains
+    |-- Learning and Research
+    |-- Health and Wellbeing
+    |-- Economic Agency
+    |-- Personal Operations
+    `-- Creativity and Expression
+```
 
-- personal
-- private
-- understandable
-- extensible
-- reliable
-- enjoyable to use
-
-The platform should continuously evolve alongside its owner, becoming more capable as new knowledge, technologies, and engineering practices emerge.
-
-Rather than collecting software, the platform intentionally develops capabilities that compound over time.
-
----
-
-# Platform Philosophy
-
-The platform is guided by several fundamental beliefs.
-
-## Increase Agency
-
-Every meaningful addition to the platform should increase the owner's capability rather than replace their judgment.
-
-Technology should amplify human ability—not encourage dependence.
-
-## Capability First
-
-The platform grows by developing capabilities rather than accumulating services or tools.
-
-Individual technologies are implementation details.
-
-Capabilities are long-term investments.
-
-## Architecture Before Implementation
-
-Architecture should guide implementation whenever practical.
-
-Intentional design creates systems that are easier to understand, maintain, extend, and teach.
-
-## Continuous Improvement
-
-The platform should improve itself over time.
-
-Documentation, automation, engineering workflows, AI capabilities, and infrastructure should continuously reduce friction while increasing understanding.
-
-## Ownership
-
-Personal knowledge, data, workflows, and infrastructure should remain under the owner's control whenever practical.
-
-The platform should reduce unnecessary dependence on external providers without rejecting them when they provide meaningful value.
+The model is layered rather than flat because infrastructure, engineering, AI, interfaces, services, and life domains have different responsibilities.
 
 ---
 
-# Platform Capability Model
+## Platform Foundations
 
-The Aiden Platform develops capabilities across multiple domains.
+### Platform Direction and Governance
 
-Current and future capability areas include:
+Keeps the platform intentional, coherent, human-owned, and aligned with long-term goals.
 
-- Engineering
-- Artificial Intelligence
-- Knowledge Management
-- Documentation
-- Learning
-- Automation
-- Infrastructure
-- Compute
-- Storage
-- Networking
-- Security
-- Personal Services
-- Health
-- Finance
-- Business
-- Creativity
-- Research
+Responsibilities include vision, principles, capability architecture, strategic priorities, authority boundaries, technology adoption criteria, AI governance, and periodic recalibration.
 
-Each capability should exist because it meaningfully improves the platform rather than because a particular technology is interesting.
+### Engineering and Evolution
 
----
+Provides the ability to design, implement, verify, document, synchronize, and improve the platform deliberately.
 
-# Artificial Intelligence
+Responsibilities include architecture, Atlas, repository reasoning, current missions, Engineering Opportunities, validation, review, engineering environment management, and controlled agentic engineering.
 
-Artificial intelligence is treated as a first-class platform capability.
+Engineering is the evolution engine of the platform, not its primary human outcome.
 
-AI exists to improve learning, engineering, documentation, automation, planning, and personal workflows.
+### Knowledge and Context
 
-The platform should remain understandable without AI while becoming significantly more capable with it.
+Preserves, organizes, retrieves, explains, and applies meaningful knowledge.
 
-The platform depends on AI capabilities rather than any individual model or provider.
+Responsibilities include canonical platform knowledge, personal knowledge, documentation, research provenance, search, retrieval, context generation, memory boundaries, decision records, and knowledge promotion.
 
----
+Storage preserves bytes.
 
-# Infrastructure
+Knowledge and Context makes information understandable and usable.
 
-Infrastructure exists to support platform capabilities.
+### Artificial Intelligence
 
-Servers, virtual machines, containers, networking, storage, and cloud services are implementation details that enable higher-level capabilities.
+Uses AI deliberately to improve reasoning, learning, engineering, creation, planning, research, and decision support.
 
-Infrastructure should remain:
+Responsibilities include model evaluation, hosted and local AI, provider portability, Personal AI, context use, bounded agents, evidence, human approval boundaries, and sensitive-data handling.
 
-- understandable
-- recoverable
-- secure
-- documented
-- intentionally designed
+AI is cross-cutting.
 
-Infrastructure serves the platform.
+It may strengthen every other capability, but it does not own the human domains it supports.
 
-It is not the platform itself.
+### Automation and Integration
 
----
+Connects systems and makes repeatable workflows reliable.
 
-# Engineering
+Responsibilities include APIs, connectors, scheduled and event-driven workflows, data movement, notifications, synchronization, approval points, and transparent execution records.
 
-Engineering is the mechanism through which the platform evolves.
+Automation should remove friction without removing awareness or control.
 
-Engineering work follows a deliberate lifecycle:
+### Infrastructure and Operations
 
-1. Understand
-2. Design
-3. Implement
-4. Verify
-5. Document
-6. Synchronize
-7. Improve
+Provides reliable execution environments and operates them responsibly.
 
-The repository is the canonical engineering record.
+Responsibilities include compute, storage, networking, access, observability, backups, recovery, workstations, development environments, servers, virtualization, cloud resources, local AI compute, and service operations.
 
-Architecture guides implementation.
+The homelab is one infrastructure environment.
 
-Atlas provides deterministic engineering assistance.
+Infrastructure supports the platform; it is not the platform itself.
 
-Automation reduces friction.
+### Security, Privacy, and Resilience
 
-Documentation preserves understanding.
+Protects the owner, the platform, its data, and continued operation.
+
+Responsibilities include identity, access, secrets, data classification, privacy, encryption, device and service security, backups, incident response, provider risk, safe automation, portability, and continuity.
+
+### Interaction and Experience
+
+Exposes platform capabilities through understandable and useful human interfaces.
+
+Responsibilities include web, desktop, mobile, conversation, voice where useful, dashboards, search, notifications, briefings, engineering interfaces, accessibility, review, and approval surfaces.
+
+AidenOS belongs within this foundation.
 
 ---
 
-# Long-Term Direction
+## Human Agency Domains
 
-The long-term objective is to build a platform that continuously increases capability across every meaningful area of life.
+### Learning and Research
 
-Future systems may include:
+Improves understanding, skill development, source evaluation, research, project-based learning, industry intelligence, and awareness without information overload.
 
-- personal AI assistants
-- engineering agents
-- educational systems
-- health systems
-- knowledge systems
-- business systems
-- robotics
-- local AI infrastructure
-- self-hosted services
-- future Aiden OS experiences
+### Health and Wellbeing
 
-These are not independent goals.
+Improves health-related organization, nutrition, fitness, recovery, sleep, records, and evidence-informed decision support while preserving appropriate professional and human judgment.
 
-They are expressions of the same underlying philosophy.
+### Economic Agency
 
-The platform should become progressively more capable without becoming unnecessarily more complex.
+Improves valuable skills, income, professional leverage, personal finance, business experimentation, and economic independence.
 
-Every improvement should make future improvements easier.
+Subdomains:
+
+- Career and Professional Development.
+- Personal Finance.
+- Business and Entrepreneurship.
+
+### Personal Operations
+
+Improves everyday scheduling, communication, travel, household workflows, documents, purchases, routines, maintenance, personal services, and planning.
+
+### Creativity and Expression
+
+Improves creative practice, experimentation, publishing, music, writing, visual work, media, software creation, and personal voice.
+
+---
+
+## Major Platform Systems
+
+### Repository
+
+The GitHub repository is the canonical engineering knowledge record.
+
+It owns architecture, standards, missions, roadmaps, infrastructure records, operations, Repository Objects, and engineering tools.
+
+### Atlas
+
+Atlas is the deterministic engineering control plane.
+
+Atlas helps humans and AI systems understand repository state, apply engineering contracts, verify changes, and evolve the platform deliberately.
+
+Atlas is not the general personal assistant.
+
+### Personal AI
+
+Personal AI is the cross-cutting intelligence subsystem built from Artificial Intelligence, Knowledge and Context, Automation and Integration, Security, and Interaction capabilities.
+
+It may support engineering and everyday life through shared knowledge, context, reasoning, learning, planning, and bounded action.
+
+Personal AI is not one model and is not synonymous with AidenOS.
+
+### AidenOS
+
+AidenOS is the evolving interaction and experience environment through which the owner accesses, coordinates, and understands platform capabilities.
+
+It may include dashboards, conversations, search, briefings, notifications, engineering interfaces, and domain workflows.
+
+AidenOS is not the entire Aiden Platform.
+
+### Infrastructure Environments
+
+Infrastructure environments include the homelab, workstation, WSL environment, cloud services, networking, storage, and future devices.
+
+They provide execution and operations but do not determine platform identity.
+
+---
+
+## Capability and Implementation Boundaries
+
+A capability is something the platform should be able to do.
+
+A system composes capabilities into a coherent responsibility.
+
+A service provides a deployed function.
+
+A tool supports a workflow or implementation.
+
+Examples:
+
+- Artificial Intelligence is a capability.
+- Personal AI is a system.
+- A hosted model endpoint is a service.
+- A model-specific client is a tool.
+
+- Engineering and Evolution is a capability.
+- Atlas is a system.
+- GitHub is a hosted service used by the repository workflow.
+- `./atlas validate` is an interface.
+
+---
+
+## Cross-Cutting Rules
+
+- High-impact decisions remain human-owned.
+- Human domains reuse shared foundations instead of creating isolated stacks.
+- Capabilities should survive provider and model changes.
+- Canonical knowledge, generated context, execution records, and candidate findings remain distinguishable.
+- Automation and agents require visible scope, permissions, evidence, and approval.
+- Manual workflows may precede automation.
+- Architecture and important actions remain inspectable.
+- Complexity is justified only when it creates durable leverage.
+
+---
+
+## Evolution Model
+
+```text
+Vision
+  -> Capability Architecture
+  -> System Architecture
+  -> Roadmap or Opportunity
+  -> Current Mission
+  -> Implementation
+  -> Verification
+  -> Documentation
+  -> Synchronization
+  -> Review
+```
+
+Engineering Opportunities preserve possibilities.
+
+Roadmaps organize direction.
+
+Current Mission owns active work.
+
+Architecture owns durable design.
+
+---
+
+## Canonical Relationships
+
+- `docs/vision.md` explains why the platform exists.
+- `docs/architecture/capabilities.md` defines stable capability identities.
+- `docs/architecture/ai.md` defines Artificial Intelligence and Personal AI.
+- `docs/architecture/repository.md` defines repository authority.
+- `docs/architecture/atlas.md` defines the engineering control plane.
+- `docs/roadmaps/platform-strategy.md` defines dated sequencing.
