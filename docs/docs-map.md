@@ -43,6 +43,11 @@ Repository Objects and engineering tools support these layers.
 - `docs/architecture/repository.md`
 - `docs/architecture/atlas.md`
 
+## AI and Knowledge Architecture
+
+- `docs/architecture/ai-operating-model.md`
+- `docs/architecture/knowledge-authority.md`
+
 ## Engineering Architecture
 
 - `docs/architecture/engineering.md`
@@ -133,6 +138,17 @@ Repository Objects and engineering tools support these layers.
 5. `docs/architecture/capabilities.md`
 6. `docs/architecture/ai.md`
 7. `docs/roadmaps/platform-strategy.md`
+8. `docs/current-mission.md`
+
+### AI and Knowledge Work
+
+1. `docs/vision.md`
+2. `docs/architecture/platform.md`
+3. `docs/architecture/capabilities.md`
+4. `docs/architecture/ai.md`
+5. `docs/architecture/ai-operating-model.md`
+6. `docs/architecture/knowledge-authority.md`
+7. `docs/architecture/repository.md`
 8. `docs/current-mission.md`
 
 ### Engineering Session

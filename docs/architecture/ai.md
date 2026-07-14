@@ -39,6 +39,19 @@ The owner remains responsible for long-term direction, architecture, security-se
 
 ---
 
+## Operational Architecture
+
+This document owns durable Artificial Intelligence and Personal AI architecture.
+
+Recurring operational decisions are owned by specialized architecture:
+
+- `docs/architecture/ai-operating-model.md` defines task-based provider, model, deployment, evidence, and fallback decisions.
+- `docs/architecture/knowledge-authority.md` defines authority classes, provenance, canonical ownership, and knowledge promotion.
+
+The specialized documents apply this architecture without redefining its principles or system boundaries.
+
+---
+
 ## Personal AI
 
 Personal AI is the cross-cutting intelligence subsystem of the Aiden Platform.
@@ -165,6 +178,8 @@ Evaluate a model or tool against a defined task:
 
 Product rankings are evidence, not architecture.
 
+The operational selection contract is defined in `docs/architecture/ai-operating-model.md`.
+
 ---
 
 ## Context and Knowledge Authority
@@ -187,6 +202,8 @@ Generated context is derived and rebuildable.
 Candidate findings require review before promotion.
 
 Conversation memory is useful but not automatically authoritative.
+
+Detailed authority classes and the Canonical Knowledge Promotion Workflow are defined in `docs/architecture/knowledge-authority.md`.
 
 ---
 

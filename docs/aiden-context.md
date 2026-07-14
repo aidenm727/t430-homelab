@@ -74,6 +74,9 @@ This phase should create the foundation that Personal AI, AI-assisted engineerin
 - Confirmed repository validation is Valid.
 - Confirmed repository synchronization is Synchronized.
 - Preserved `wip/distinctness-foundation-calibration` at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
+- Established `docs/architecture/ai-operating-model.md` as the canonical operational decision contract for task-based AI use.
+- Established `docs/architecture/knowledge-authority.md` as the canonical authority, provenance, conflict, and promotion architecture.
+- Integrated and registered both specialized architecture documents without changing Engineering Opportunity lifecycle state.
 
 ---
 
@@ -109,7 +112,7 @@ The repository now defines the principles of provider independence, data sensiti
 
 The accepted portfolio identifies EO-2026-020, Canonical Knowledge Promotion Workflow, as a high-leverage near-term foundation and recommends establishing the AI Operating Model and Knowledge Authority Foundation before deeper agentic engineering.
 
-The next responsible step is documentation-first architecture that makes AI and knowledge decisions explicit, reusable, inspectable, and provider-independent.
+The AI Operating Model and Knowledge Authority architecture are now established, registered, and integrated with the parent AI and repository architecture. The milestone is ready for final verification and mission advancement; Personal AI, automatic routing, and agentic execution remain deferred.
 
 ---
 

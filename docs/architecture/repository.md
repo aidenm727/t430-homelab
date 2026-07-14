@@ -39,6 +39,8 @@ Primary owners:
 - `docs/architecture/platform.md`
 - `docs/architecture/capabilities.md`
 - `docs/architecture/ai.md`
+- `docs/architecture/ai-operating-model.md`
+- `docs/architecture/knowledge-authority.md`
 - `docs/architecture/repository.md`
 - `docs/architecture/atlas.md`
 
@@ -149,6 +151,8 @@ Conversation context may explain intent but does not replace canonical repositor
 - Platform structure belongs in `docs/architecture/platform.md`.
 - Capability taxonomy belongs in `docs/architecture/capabilities.md`.
 - AI and Personal AI architecture belong in `docs/architecture/ai.md`.
+- Recurring model, provider, deployment, and AI-use decisions belong in `docs/architecture/ai-operating-model.md`.
+- Knowledge authority, provenance, and promotion belong in `docs/architecture/knowledge-authority.md`.
 - Strategic sequencing belongs in `docs/roadmaps/platform-strategy.md`.
 - Active work belongs in `docs/current-mission.md`.
 - Current deployment belongs in infrastructure records.
