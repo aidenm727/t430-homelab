@@ -487,6 +487,25 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/ai-workflow-evaluation-cycle-2026-07.md": DocumentDefinition(
+        path="docs/reviews/ai-workflow-evaluation-cycle-2026-07.md",
+        purpose="Records the active manual AI workflow evaluation cycle, including configuration checks, firsthand task evidence, validation, friction, challenger comparisons, and operating decisions.",
+        capability="Artificial Intelligence",
+        tags=[
+            "artificial-intelligence",
+            "workflow-evaluation",
+            "firsthand-evidence",
+            "provider-comparison",
+            "human-reviewed",
+        ],
+        related=[
+            "docs/architecture/ai-operating-model.md",
+            "docs/architecture/knowledge-authority.md",
+            "docs/reviews/ai-operating-baseline-2026-07-14.md",
+            "docs/current-mission.md",
+        ],
+    ),
+
     "docs/reviews/ai-operating-baseline-2026-07-14.md": DocumentDefinition(
         path="docs/reviews/ai-operating-baseline-2026-07-14.md",
         purpose="Records the dated current AI access inventory, task profiles, provisional operating decisions, privacy boundaries, challenger policy, evaluation method, and reassessment triggers.",
