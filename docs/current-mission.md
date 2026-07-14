@@ -2,113 +2,112 @@
 
 ## Phase
 
-Platform Strategic Recalibration
+AI Operating Model and Knowledge Authority Foundation
 
 ---
 
 ## Mission
 
-Recalibrate the existing Engineering Opportunity portfolio against the canonical Aiden Platform Vision, layered capability architecture, AI architecture, and strategic roadmap.
+Establish the operating rules and knowledge-authority architecture required for deliberate, provider-independent, privacy-aware, and human-controlled use of artificial intelligence across the Aiden Platform.
 
-The immediate objective is to turn the current set of Engineering Opportunity Objects into a coherent, human-reviewed portfolio of potential platform work without losing original declarations, evidence, provenance, lifecycle state, or historical context.
+The immediate objective is to translate the canonical Artificial Intelligence Architecture into practical repository-owned decision rules for model and provider selection, data sensitivity, hosted, local, and hybrid use, context authority, evidence, and knowledge promotion.
 
-This milestone should clarify which opportunities remain distinct, which overlap, which are components of broader initiatives, which are obsolete or superseded, and which should guide the next engineering phase.
+This phase should create the foundation that Personal AI, AI-assisted engineering, research workflows, and future bounded agents can safely reuse without allowing generated outputs or temporary context to acquire authority automatically.
 
 ---
 
 ## Current Focus
 
-- Inventory the complete current Engineering Opportunity portfolio.
-- Review each opportunity against the thirteen canonical Platform Foundation and Human Agency Domain capabilities.
-- Preserve raw declared capability values while determining human-reviewed canonical alignment.
-- Identify important secondary capability implications without collapsing them into the primary capability.
-- Review explicit and inferred relationships among opportunities.
-- Distinguish duplicate, overlapping, component, umbrella, complementary, superseded, and genuinely distinct opportunities.
-- Evaluate whether each opportunity still aligns with the canonical Vision and Platform Strategy.
-- Reassess the preserved Distinctness Analysis implementation against the new capability architecture.
-- Produce a coherent portfolio interpretation before selecting or implementing the next capability.
-- Use Repository Synchronization Reasoning, validation, Engineering Review, documentation, commit, and push to verify the completed portfolio checkpoint.
+- Audit existing AI, repository, knowledge, context, and governance architecture for ownership and overlap.
+- Define the canonical AI Operating Model and its relationship to `docs/architecture/ai.md`.
+- Define task-based model and provider evaluation criteria without creating permanent product rankings.
+- Define how data sensitivity constrains hosted, local, and hybrid AI use.
+- Define how canonical knowledge, generated context, temporary conversation, execution evidence, and candidate findings differ.
+- Design the Canonical Knowledge Promotion Workflow represented by EO-2026-020.
+- Define provenance, ownership, review, acceptance, rejection, and traceability requirements for knowledge promotion.
+- Clarify how Personal AI may consume knowledge without silently creating canonical truth.
+- Preserve human authority over consequential decisions, data boundaries, architecture, external actions, and automation.
+- Use Repository Synchronization Reasoning, validation, Engineering Review, documentation, commit, and push to verify the completed architecture checkpoint.
 
 ---
 
 ## Current Priorities
 
-1. Establish the authoritative inventory of existing Engineering Opportunity Objects.
-2. Review the declared capability, scope, evidence, rationale, and relationships of each opportunity.
-3. Determine a human-reviewed primary canonical capability where evidence is sufficient.
-4. Record important secondary capability implications separately from primary identity.
-5. Identify obsolete assumptions introduced by the former flat capability model.
-6. Identify likely duplicate, overlap, component, umbrella, and distinct relationships.
-7. Determine whether repository schema or assessment architecture must change before portfolio decisions can be recorded safely.
-8. Preserve lifecycle state unless a separate human-authorized decision explicitly changes it.
-9. Evaluate the Distinctness calibration branch against the recalibrated architecture rather than merging it automatically.
-10. Produce a prioritized portfolio interpretation and recommend the next bounded platform milestone.
+1. Establish current repository ownership for AI operating rules and knowledge authority.
+2. Determine whether the AI Operating Model should extend `docs/architecture/ai.md` or become a separately registered architecture document.
+3. Define a model and provider selection framework based on task capability, evidence, sensitivity, cost, latency, reliability, portability, and operational burden.
+4. Define hosted, local, and hybrid assignment rules without implementing automatic routing.
+5. Define context and knowledge classes with explicit authority boundaries.
+6. Design the Canonical Knowledge Promotion Workflow with provenance, owning source, review, decision, and historical traceability.
+7. Define how candidate findings become proposed repository changes rather than automatic truth.
+8. Define how Personal AI and future agents consume these contracts.
+9. Relate the architecture explicitly to EO-2026-008, EO-2026-009, EO-2026-011, EO-2026-013, and EO-2026-020.
+10. Register, validate, synchronize, document, commit, and push the completed foundation.
 
 ---
 
 ## Recently Completed
 
-- Established `docs/vision.md` as the canonical owner of platform purpose, principles, human authority, non-goals, and long-term direction.
-- Established a layered Platform Architecture separating Platform Foundations from Human Agency Domains.
-- Established thirteen canonical capability identities.
-- Defined compatibility handling for the former nine flat capability identities.
+- Established the canonical Aiden Platform Vision and North Star of Human Agency.
+- Established the layered Platform Foundation and Human Agency Domain architecture.
+- Established thirteen canonical capability identities and legacy compatibility rules.
 - Clarified the boundaries among Atlas, the repository, Personal AI, AidenOS, infrastructure, services, and tools.
-- Recalibrated Artificial Intelligence Architecture around Personal AI, provider independence, data sensitivity, provenance, and human authority.
+- Recalibrated Artificial Intelligence Architecture around provider independence, data sensitivity, provenance, and human authority.
 - Created the dated Aiden Platform Strategy roadmap.
-- Updated Repository Architecture and the Documentation Map.
-- Registered the new canonical documents with Atlas.
-- Updated Engineering Opportunity Capability Alignment for the new capability architecture.
+- Completed and accepted the human-reviewed classification of all 21 Engineering Opportunity Objects.
+- Recorded the canonical Engineering Opportunity portfolio review.
+- Confirmed that no current opportunity pair justifies a duplicate finding.
+- Recorded the decision to retain and recalibrate, rather than merge, the preserved Distinctness implementation.
+- Transitioned all 21 Engineering Opportunity Objects from `captured` to `reviewed`.
+- Preserved all original opportunity declarations, evidence, relationships, notes, and stable identifiers.
 - Confirmed 43 passing tests on `main`.
 - Confirmed repository validation is Valid.
 - Confirmed repository synchronization is Synchronized.
-- Preserved the Distinctness Analysis implementation on `wip/distinctness-foundation-calibration`.
-- Confirmed the preserved branch remains at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
-- Completed and accepted the human-reviewed classification of all 21 Engineering Opportunity Objects.
-- Recorded the decision to retain and recalibrate, rather than merge, the preserved Distinctness implementation.
-- Transitioned all 21 Engineering Opportunity Objects from `captured` to `reviewed` after human acceptance, preserving their original declarations, evidence, and stable identifiers.
+- Preserved `wip/distinctness-foundation-calibration` at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
 
 ---
 
 ## Current Non-Priorities
 
-- Implementing a new end-user platform capability
-- Resuming Distinctness Analysis implementation before portfolio review
-- Merging the Distinctness Analysis calibration branch
-- Automatically rewriting Engineering Opportunity capability values
-- Automatically changing Engineering Opportunity lifecycle states
-- Treating shared capability identity as evidence of duplication
-- Expanding Atlas reasoning without a demonstrated portfolio need
-- Building Personal AI
-- Building AidenOS interfaces
+- Implementing Personal AI
+- Building an AidenOS interface
+- Implementing autonomous or multi-agent engineering
+- Resuming or merging the Distinctness implementation
+- Building automatic model routing
+- Creating a permanent model leaderboard
+- Purchasing or expanding local AI hardware
+- Deploying a local model runtime
+- Building embeddings, vector databases, or broad retrieval infrastructure
+- Ingesting whole-life personal data
+- Automatically promoting AI findings into canonical knowledge
+- Implementing task-scoped agent context compilation
+- Implementing agent task contracts or autonomy levels
 - Building nutrition or personal intelligence briefing applications
 - Deploying new self-hosted services
-- Purchasing or expanding local AI hardware
 - Broad infrastructure changes
-- Reorganizing the entire repository
-- Implementing autonomous or multi-agent engineering
-- Creating a universal opaque opportunity score
+- Expanding Atlas reasoning solely to produce a green milestone status
 
 ---
 
 ## Current Status
 
-The live `main` branch is clean, valid, synchronized, and contains the canonical Platform Vision, layered capability architecture, AI architecture, Platform Strategy roadmap, and updated capability compatibility reasoning.
+The live `main` branch is clean, valid, synchronized, and contains the canonical Platform Vision, layered capability architecture, Artificial Intelligence Architecture, Platform Strategy, and accepted Engineering Opportunity portfolio review.
 
-The Engineering Opportunity portfolio was captured before the strategic recalibration and therefore contains declarations, labels, assumptions, and relationships that may no longer align cleanly with the canonical platform model.
+All 21 Engineering Opportunity Objects are in `reviewed` lifecycle state.
 
-The portfolio must now be reviewed as repository knowledge rather than treated as a ready-made implementation queue.
+The repository now defines the principles of provider independence, data sensitivity, human authority, context provenance, hosted and local tradeoffs, and Personal AI boundaries, but it does not yet provide a sufficiently operational decision contract for recurring AI use.
 
-The preserved Distinctness Analysis branch remains useful evidence, but it was designed against the previous capability architecture and must not be merged without recalibration.
+The accepted portfolio identifies EO-2026-020, Canonical Knowledge Promotion Workflow, as a high-leverage near-term foundation and recommends establishing the AI Operating Model and Knowledge Authority Foundation before deeper agentic engineering.
 
-The human-reviewed portfolio assessment is accepted and preserved as canonical evidence, and all 21 Engineering Opportunity Objects now have `reviewed` lifecycle state. The portfolio recalibration milestone is ready for final verification and mission advancement.
+The next responsible step is documentation-first architecture that makes AI and knowledge decisions explicit, reusable, inspectable, and provider-independent.
 
 ---
 
 ## Next Milestone
 
-Recalibrate the Engineering Opportunity Portfolio.
+Establish the AI Operating Model and Knowledge Authority Foundation.
 
-Review the complete current portfolio against canonical platform architecture, preserve original repository facts, establish human-reviewed capability and relationship interpretations, and determine the highest-leverage next engineering direction.
+Design and integrate the canonical operating rules for model and provider selection, data-sensitive deployment choice, context authority, evidence, and deliberate promotion of candidate knowledge into canonical repository sources.
 
 ---
 
@@ -116,24 +115,26 @@ Review the complete current portfolio against canonical platform architecture, p
 
 The milestone is complete when:
 
-- The complete Engineering Opportunity inventory has been verified.
-- Every existing opportunity has been reviewed against the canonical Platform Vision and Platform Strategy.
-- Every opportunity has a reviewed primary capability interpretation or an explicit unresolved-capability finding.
-- Important secondary capability implications remain separate from primary identity.
-- Raw declared capability values and original evidence remain preserved.
-- No lifecycle state changes occur implicitly.
-- Legacy capability assumptions are identified and handled through explicit compatibility or reviewed migration.
-- Duplicate, overlap, component, umbrella, complementary, superseded, and distinct relationships are assessed where evidence supports them.
-- Shared capability identity alone is not treated as duplicate evidence.
-- The portfolio distinguishes platform foundations, human agency domains, systems, services, tools, and implementation ideas.
-- Any required schema or assessment changes are designed before object mutation.
-- The preserved Distinctness Analysis implementation is reviewed against the canonical capability model.
-- A decision is recorded to retain, recalibrate, replace, or defer the preserved implementation.
-- A coherent portfolio summary identifies the strongest opportunities, major dependency groups, and likely next platform milestone.
-- Opportunity changes, if any, remain bounded, reviewable, and historically traceable.
+- Canonical ownership for the AI Operating Model is explicit.
+- The relationship between the AI Operating Model and Artificial Intelligence Architecture is clear.
+- Model and provider selection is task-based and evidence-backed rather than product-ranking driven.
+- Evaluation criteria include capability, result quality, reliability, tool use, context, sensitivity, privacy, retention, cost, latency, portability, and operational burden.
+- Hosted, local, and hybrid AI assignment rules are documented.
+- Automatic model routing remains deferred.
+- Public, ordinary personal, sensitive, and highly restricted data handling rules are operationally clear.
+- Canonical knowledge, generated context, temporary conversation, execution records, candidate findings, decisions, and completed actions remain distinguishable.
+- The Canonical Knowledge Promotion Workflow defines provenance, proposed ownership, review, acceptance, rejection, and historical traceability.
+- AI-generated findings cannot become canonical automatically.
+- Generated context remains derived and rebuildable.
+- Personal AI consumption boundaries are defined without implementing Personal AI.
+- Human authority remains explicit for consequential decisions, data boundaries, architecture, external actions, and automation.
+- EO-2026-020 is connected to the resulting architecture without silently changing lifecycle state.
+- Related opportunities and strategic initiatives are referenced accurately.
+- New canonical documents, if created, are registered in repository metadata and navigation.
+- Generated context reflects the active phase and milestone.
 - All tests pass.
 - Repository validation reports Valid.
 - Repository synchronization reports Synchronized.
 - Engineering Review reports no blocking repository inconsistency after commit.
 - The final working tree is clean.
-- The Distinctness Analysis calibration branch remains unchanged unless a separately authorized decision is made.
+- The Distinctness calibration branch remains unchanged.
