@@ -220,6 +220,60 @@ class OpportunityScopeClassification:
 
 
 @dataclass(frozen=True)
+class OpportunityDistinctnessEvidence:
+    evidence_type: str
+    source: str
+    statement: str
+    field_name: str | None = None
+    relationship_type: str | None = None
+
+
+@dataclass(frozen=True)
+class OpportunityDistinctnessSkippedPair:
+    pair_key: str
+    left_opportunity_id: str
+    right_opportunity_id: str
+    reason: str
+
+
+@dataclass(frozen=True)
+class OpportunityDistinctnessComparison:
+    pair_key: str
+    left_opportunity_id: str
+    left_repository_path: str
+    right_opportunity_id: str
+    right_repository_path: str
+    analysis_state: str
+    relationship_type: str | None
+    inverse_relationship_type: str | None
+    source_opportunity_id: str | None
+    target_opportunity_id: str | None
+    canonical_target_candidate_id: str | None
+    alternative_relationship_types: tuple[str, ...]
+    facts: tuple[OpportunityDistinctnessEvidence, ...]
+    supporting_evidence: tuple[OpportunityDistinctnessEvidence, ...]
+    counterevidence: tuple[OpportunityDistinctnessEvidence, ...]
+    boundary_evidence: tuple[OpportunityDistinctnessEvidence, ...]
+    provenance: tuple[str, ...]
+    explanation: str
+    confidence: str
+    blockers: tuple[str, ...]
+    unresolved_questions: tuple[str, ...]
+    recommendation: OpportunityAssessmentRecommendation | None = None
+
+
+@dataclass(frozen=True)
+class OpportunityDistinctnessPortfolio:
+    opportunity_ids: tuple[str, ...]
+    comparison_count: int
+    skipped_pair_count: int
+    comparisons: tuple[OpportunityDistinctnessComparison, ...]
+    skipped_pairs: tuple[OpportunityDistinctnessSkippedPair, ...]
+    findings_by_opportunity: tuple[tuple[str, tuple[str, ...]], ...]
+    provenance: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class EngineeringOpportunityAssessment:
     opportunity_id: str
     lifecycle_state: str
@@ -229,6 +283,7 @@ class EngineeringOpportunityAssessment:
     relationships: tuple[OpportunityRelationshipFinding, ...] = ()
     capability_alignment: OpportunityCapabilityAlignment | None = None
     scope_classification: OpportunityScopeClassification | None = None
+    distinctness_comparisons: tuple[OpportunityDistinctnessComparison, ...] = ()
     recommendation: OpportunityAssessmentRecommendation | None = None
     blockers: tuple[str, ...] = ()
     unresolved_questions: tuple[str, ...] = ()

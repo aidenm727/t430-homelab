@@ -15,6 +15,11 @@ from atlas.platform.reasoning.opportunity_assessment import (
 from atlas.platform.reasoning.opportunity_relationships import (
     build_opportunity_relationships,
 )
+from atlas.platform.reasoning.opportunity_distinctness import (
+    build_opportunity_distinctness_portfolio,
+    build_opportunity_pair_key,
+    compare_opportunity_distinctness,
+)
 from atlas.platform.reasoning.opportunity_scope_classification import (
     ScopeDefinition,
     build_scope_catalog,
@@ -29,6 +34,10 @@ from atlas.platform.reasoning.models import (
     OpportunityAssessmentFinding,
     OpportunityAssessmentRecommendation,
     OpportunityCapabilityAlignment,
+    OpportunityDistinctnessComparison,
+    OpportunityDistinctnessEvidence,
+    OpportunityDistinctnessPortfolio,
+    OpportunityDistinctnessSkippedPair,
     OpportunityRelationshipFinding,
     OpportunityScopeClassification,
     OpportunityScopeEvidence,
@@ -52,6 +61,10 @@ __all__ = [
     "OpportunityAssessmentFinding",
     "OpportunityAssessmentRecommendation",
     "OpportunityCapabilityAlignment",
+    "OpportunityDistinctnessComparison",
+    "OpportunityDistinctnessEvidence",
+    "OpportunityDistinctnessPortfolio",
+    "OpportunityDistinctnessSkippedPair",
     "OpportunityRelationshipFinding",
     "OpportunityScopeClassification",
     "OpportunityScopeEvidence",
@@ -62,7 +75,10 @@ __all__ = [
     "assess_engineering_opportunities",
     "assess_engineering_opportunity",
     "classify_opportunity_scope",
+    "compare_opportunity_distinctness",
     "build_capability_catalog",
+    "build_opportunity_distinctness_portfolio",
+    "build_opportunity_pair_key",
     "build_scope_catalog",
     "build_opportunity_relationships",
     "build_guidance",

@@ -12,6 +12,9 @@ from atlas.platform.reasoning.opportunity_capability_alignment import (
 from atlas.platform.reasoning.opportunity_relationships import (
     build_opportunity_relationships,
 )
+from atlas.platform.reasoning.opportunity_distinctness import (
+    build_opportunity_distinctness_portfolio,
+)
 from atlas.platform.reasoning.opportunity_scope_classification import (
     classify_opportunity_scope,
 )
@@ -716,11 +719,46 @@ def assess_engineering_opportunities(
             [],
         ).append(relationship)
 
+    capability_alignments = {
+        assessment.opportunity_id: assessment.capability_alignment
+        for assessment in assessments
+        if assessment.capability_alignment is not None
+    }
+    scope_classifications = {
+        assessment.opportunity_id: assessment.scope_classification
+        for assessment in assessments
+        if assessment.scope_classification is not None
+    }
+    distinctness_portfolio = build_opportunity_distinctness_portfolio(
+        opportunity_entities,
+        capability_alignments=capability_alignments,
+        scope_classifications=scope_classifications,
+        relationships=relationships,
+    )
+    distinctness_by_opportunity: dict[str, list] = {
+        entity.id: []
+        for entity in opportunity_entities
+    }
+
+    for comparison in distinctness_portfolio.comparisons:
+        distinctness_by_opportunity[
+            comparison.left_opportunity_id
+        ].append(comparison)
+        distinctness_by_opportunity[
+            comparison.right_opportunity_id
+        ].append(comparison)
+
     return tuple(
         replace(
             assessment,
             relationships=tuple(
                 relationships_by_source.get(
+                    assessment.opportunity_id,
+                    (),
+                )
+            ),
+            distinctness_comparisons=tuple(
+                distinctness_by_opportunity.get(
                     assessment.opportunity_id,
                     (),
                 )

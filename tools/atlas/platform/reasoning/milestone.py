@@ -35,6 +35,9 @@ OPPORTUNITY_SCOPE_CLASSIFICATION_MILESTONE_TEXT = (
 OPPORTUNITY_DISTINCTNESS_ANALYSIS_DESIGN_MILESTONE_TEXT = (
     "Design Engineering Opportunity Distinctness Analysis"
 )
+OPPORTUNITY_DISTINCTNESS_ANALYSIS_MILESTONE_TEXT = (
+    "Build Engineering Opportunity Distinctness Analysis Foundation"
+)
 
 
 def _path_evidence(required_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -128,6 +131,149 @@ def build_milestone_completion(
     state: EngineeringState,
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
+
+    if OPPORTUNITY_DISTINCTNESS_ANALYSIS_MILESTONE_TEXT in milestone:
+        requirements = {
+            "tools/atlas/platform/reasoning/models.py": {
+                "class OpportunityDistinctnessEvidence":
+                    "defines structured comparison evidence",
+                "class OpportunityDistinctnessComparison":
+                    "defines pairwise comparison results",
+                "class OpportunityDistinctnessPortfolio":
+                    "defines portfolio comparison results",
+                "distinctness_comparisons: tuple[OpportunityDistinctnessComparison, ...]":
+                    "attaches portfolio findings to opportunity assessments",
+            },
+            "tools/atlas/platform/reasoning/opportunity_distinctness.py": {
+                "def build_opportunity_pair_key":
+                    "implements stable unordered pair identity",
+                "cannot compare an opportunity with itself":
+                    "rejects self-comparison",
+                "def compare_opportunity_distinctness":
+                    "implements reusable pairwise comparison",
+                "def build_opportunity_distinctness_portfolio":
+                    "implements deterministic portfolio composition",
+                "TEXT_NORMALIZATION_POLICY_VERSION":
+                    "defines transparent text-normalization policy",
+                'analysis_state="candidate"':
+                    "produces bounded relationship candidates",
+                'analysis_state="ambiguous"':
+                    "reports competing interpretations",
+                'analysis_state="insufficient-evidence"':
+                    "reports sparse comparison evidence",
+                'analysis_state="conflicting"':
+                    "reports conflicting human-reviewed evidence",
+                'analysis_state="resolved"':
+                    "supports human-reviewed resolution",
+                'inverse_relationship_type = "umbrella_for"':
+                    "defines component and umbrella inverse semantics",
+                "boundary_evidence=boundary":
+                    "preserves positive boundary evidence",
+                "canonical_target_candidate_id":
+                    "supports explained non-mutating target candidates",
+            },
+            "tools/atlas/platform/reasoning/opportunity_assessment.py": {
+                "distinctness_portfolio = build_opportunity_distinctness_portfolio(":
+                    "composes portfolio comparison once",
+                "distinctness_comparisons=tuple(":
+                    "distributes reusable findings to assessments",
+            },
+            "tests/test_opportunity_distinctness.py": {
+                "test_pair_key_is_stable_and_order_independent":
+                    "tests canonical pair identity",
+                "test_self_comparison_is_rejected":
+                    "tests self-comparison rejection",
+                "test_portfolio_emits_each_unordered_pair_once":
+                    "tests portfolio uniqueness",
+                "test_duplicate_candidate_remains_pair_symmetric":
+                    "tests duplicate pair symmetry",
+                "test_overlap_is_symmetric_and_does_not_merge":
+                    "tests overlap boundaries",
+                "test_component_and_umbrella_are_directional_inverses":
+                    "tests component and umbrella directionality",
+                "test_same_capability_alone_cannot_establish_duplication":
+                    "tests capability boundaries",
+                "test_same_scope_alone_cannot_establish_duplication":
+                    "tests scope boundaries",
+                "test_related_to_triggers_comparison_not_stronger_relationship":
+                    "tests explicit relationship boundaries",
+                "test_dependency_provides_positive_boundary_evidence":
+                    "tests dependency boundary evidence",
+                "test_shared_architecture_document_does_not_establish_duplication":
+                    "tests shared-document boundaries",
+                "test_one_matching_keyword_produces_insufficient_evidence":
+                    "tests single-keyword safety",
+                "test_multi_field_similarity_produces_bounded_candidate":
+                    "tests transparent heuristic candidates",
+                "test_duplicate_overlap_uncertainty_is_ambiguous":
+                    "tests ambiguity",
+                "test_human_review_can_resolve_duplicate_with_high_confidence":
+                    "tests human-reviewed resolution",
+                "test_conflicting_human_review_is_exposed":
+                    "tests explicit conflict handling",
+                "test_canonical_target_may_remain_unset":
+                    "tests target uncertainty",
+                "test_raw_objects_and_lifecycle_state_are_not_mutated":
+                    "tests object and lifecycle non-mutation",
+                "test_assessments_consume_one_portfolio_comparison":
+                    "tests assessment integration",
+            },
+        }
+
+        evidence, missing = _implementation_evidence(requirements)
+
+        if not missing:
+            return MilestoneCompletionReport(
+                status="Complete",
+                confidence="High",
+                evidence=evidence,
+                missing_evidence=[],
+                satisfied_criteria=[
+                    "Reusable distinctness evidence, pairwise comparison, skipped-pair, and portfolio models exist.",
+                    "Pair keys are stable and order-independent.",
+                    "Self-comparison is rejected.",
+                    "Portfolio composition emits each unordered pair at most once.",
+                    "Pairwise results preserve both stable identifiers and repository paths.",
+                    "Object, relationship, capability, scope, document, evidence, lifecycle, and path facts are collected.",
+                    "Text normalization is transparent and preserves field provenance.",
+                    "Supporting evidence, counterevidence, and boundary evidence remain separate.",
+                    "One keyword cannot produce a relationship candidate.",
+                    "Transparent multi-field evidence produces bounded candidates.",
+                    "Duplicate similarity remains pair-symmetric.",
+                    "Overlap remains symmetric and does not authorize merge.",
+                    "Component and umbrella findings are directional inverses.",
+                    "Capability identity alone does not establish duplication.",
+                    "Scope identity alone does not establish duplication.",
+                    "Explicit related_to evidence does not establish a stronger relationship.",
+                    "Explicit dependency produces positive boundary evidence.",
+                    "Shared architecture documents do not establish duplication.",
+                    "Competing interpretations produce ambiguous results.",
+                    "Sparse evidence produces insufficient-evidence results.",
+                    "Human-reviewed evidence can resolve a duplicate with High confidence.",
+                    "Conflicting human-reviewed evidence produces a conflicting result.",
+                    "Canonical-target candidates remain explained recommendations and may remain unset.",
+                    "Portfolio findings are composed once and distributed to Engineering Opportunity Assessments.",
+                    "Canonical objects, lifecycle states, references, and identifiers are not mutated.",
+                    "Focused tests verify pair identity, evidence boundaries, uncertainty, directionality, integration, and non-mutation.",
+                    "Reasoning remains independent of Atlas command rendering and language models.",
+                ],
+                unsatisfied_criteria=[],
+                next_actions=[
+                    "The Engineering Opportunity Distinctness Analysis foundation is implemented. Verify, document, commit, and consider advancing the mission.",
+                ],
+            )
+
+        return MilestoneCompletionReport(
+            status="In Progress",
+            confidence="Medium",
+            evidence=evidence,
+            missing_evidence=missing,
+            satisfied_criteria=evidence,
+            unsatisfied_criteria=missing,
+            next_actions=[
+                "Complete the missing Engineering Opportunity Distinctness Analysis foundation evidence.",
+            ],
+        )
 
     if OPPORTUNITY_DISTINCTNESS_ANALYSIS_DESIGN_MILESTONE_TEXT in milestone:
         design_requirements = {
