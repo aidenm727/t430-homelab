@@ -278,18 +278,93 @@ Required evidence:
 
 ## Evaluation 4 — Difficult AI or Computer-Science Learning
 
-**Status:** Pending.
+**Status:** Complete.
 
-Use a concept the owner genuinely wants to understand.
+### Task
 
-Required evidence:
+Build a practical mental model of modern AI systems sufficient to make better operating decisions for the Aiden Platform.
 
-- Initial understanding.
-- Explanation method.
-- Practice or transfer task.
-- Independent explanation or recall.
-- Remaining misconceptions.
-- Whether the mode improved durable understanding.
+### Date
+
+July 14, 2026.
+
+### Provider and Application
+
+ChatGPT Plus in the Aiden Platform Project.
+
+### Visible Model and Mode
+
+GPT-5.6 Sol with High reasoning, based on the owner's visible model picker and reported working configuration.
+
+### Initial Understanding
+
+The owner had strong practical experience using ChatGPT High but limited firsthand experience with Codex, Work, Claude, API routers, or other AI execution environments.
+
+Initial tool choices therefore defaulted to the proven ChatGPT Project workflow rather than evidence from alternatives.
+
+### Concepts Evaluated
+
+- Model versus application.
+- Reasoning mode versus model identity.
+- Project workspace versus the wider Aiden Platform.
+- Model parameters, context, and application memory.
+- Training versus inference.
+- Language model versus agentic system.
+- Chat, Work, Codex, Atlas, and GitHub responsibilities.
+- Task evidence versus product branding.
+
+### Explanation and Transfer
+
+The owner correctly explained that:
+
+- GPT-5.6 is a model.
+- ChatGPT is an application surrounding models with context and tools.
+- High increases reasoning effort during inference.
+- Project memory is selectively supplied context and cannot replace deterministic repository state.
+- An agent adds a goal, iterative planning, actions or tools, observation, retry, and a completion condition.
+- Training changes the model; inference uses the trained model.
+
+The owner also recognized that unfamiliarity, not evidence of inferiority, caused uncertainty about Codex and Work.
+
+### Corrections and Remaining Misconceptions
+
+Corrections clarified that:
+
+- The Aiden Platform Project is one current ChatGPT workspace, not the full Aiden Platform.
+- Delegating a task alone does not create an agent; tools, state, permissions, observation, stop conditions, and validation matter.
+- Codex is a candidate for already-approved repository implementation.
+- Work or extended research is a candidate for substantial researched deliverables.
+- These candidates remain hypotheses until tested through real tasks.
+
+### Durable Learning
+
+The owner can now distinguish:
+
+- Model.
+- Application.
+- Inference mode.
+- Workspace.
+- Context.
+- Memory.
+- Tool.
+- Agent.
+- Canonical authority.
+
+The owner also adopted the operating principle that AI arrangements should be selected through real task evidence rather than presumed intelligence or familiarity alone.
+
+### Would Use Again
+
+Yes.
+
+ChatGPT High was effective for the explanation and transfer exercise.
+
+### Operating Decision
+
+The learning objective is complete.
+
+Do not continue expanding theory for its own sake.
+
+Use the mental model to guide bounded Codex, Work, Claude, multi-model, API, and local-AI evaluations only when they serve real platform work.
 
 ---
 
@@ -316,7 +391,9 @@ No paid challenger subscription is authorized by opening this evaluation.
 - No evidence currently justifies another paid subscription, API spending, or local AI.
 - Account training is verified Off; Project memory is verified Default with Library access enabled.
 - Keep the current Project unless repeated context leakage or a bounded project-only pilot demonstrates a real advantage.
-- Cross-model evidence remains incomplete.
+- The AI and computer-science learning evaluation is complete and demonstrated practical transfer.
+- The owner's willingness to pay is evidence-based rather than cost-avoidant: additional subscriptions are acceptable when durable value is demonstrated.
+- Cross-model, coding-agent, extended-research, and multi-model access evidence remains incomplete.
 
 ---
 
@@ -324,6 +401,8 @@ No paid challenger subscription is authorized by opening this evaluation.
 
 The cycle remains open.
 
-Configuration verification is complete. Completion still requires the debugging task, research task, learning task, and at least one practical free-challenger comparison.
+Configuration verification and the learning evaluation are complete.
+
+Completion still requires the debugging task, current research task, and at least one practical challenger or alternative-interface comparison.
 
 Do not automate evaluation capture until repeated manual use reveals stable structure and value.

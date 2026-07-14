@@ -32,7 +32,8 @@ This phase should produce operating evidence rather than rankings, subscriptions
 - Verify the account-level training control and current Project memory mode.
 - Run one bounded code-debugging evaluation.
 - Run one current-information research evaluation.
-- Run one difficult AI or computer-science learning evaluation.
+- Preserve the completed AI and computer-science learning evaluation.
+- Map the current cloud-AI access landscape by capability category.
 - Use ChatGPT High as the baseline arrangement.
 - Use Claude Free or another free challenger on comparable work where practical.
 - Record validation, corrections, friction, scope preservation, and learning retained.
@@ -64,12 +65,13 @@ The remaining tasks should be real useful work, not artificial benchmark prompts
 2. Verify `Improve the model for everyone` and Project memory configuration manually.
 3. Select a real debugging task with a reproducible failure and deterministic validation.
 4. Select a real research task with current primary sources and a decision it supports.
-5. Select a real learning task that requires explanation, transfer, and independent recall.
-6. Compare a free challenger on at least one high-value task when the inputs can be made reasonably comparable.
-7. Record narrative evidence without creating an opaque universal score.
-8. Identify repeated failure before proposing a new durable capability.
-9. Avoid purchasing or implementing a solution before a gap is demonstrated.
-10. Register, validate, synchronize, document, commit, and push the completed evaluation cycle.
+5. Map direct subscriptions, native execution environments, multi-model consumer applications, API routers, cloud model platforms, and local AI by the capabilities they provide.
+6. Inventory unused capabilities already included in ChatGPT Plus before declaring a gap.
+7. Compare a challenger or alternative interface on at least one high-value task when the inputs can be made reasonably comparable.
+8. Treat willingness to pay as evidence-based rather than cost-avoidant.
+9. Record narrative evidence without creating an opaque universal score.
+10. Identify repeated or material value before adopting another durable capability.
+11. Register, validate, synchronize, document, commit, and push the completed evaluation cycle.
 
 ---
 
@@ -89,6 +91,8 @@ The remaining tasks should be real useful work, not artificial benchmark prompts
 - Verified `Improve the model for everyone` is Off.
 - Verified the existing Aiden Platform Project uses Default memory with Library access enabled.
 - Retained the current Project and deferred project-only migration until a bounded pilot or repeated context leakage demonstrates value.
+- Completed the AI and computer-science learning evaluation with demonstrated transfer.
+- Recalibrated AI spending from subscription avoidance to evidence-based willingness to pay.
 - Confirmed 43 passing tests on `main`.
 - Confirmed repository validation is Valid.
 - Confirmed repository synchronization is Synchronized.
@@ -123,7 +127,11 @@ The baseline defines the current operating decisions but identifies missing firs
 
 The completed AI Operating Model and Knowledge Authority architecture work provides the first real evaluation case. ChatGPT High, the Aiden Platform Project, repository context, downloadable implementation runners, Git, tests, and Atlas produced a validated result without demonstrating a need for a second paid provider.
 
-Configuration verification is complete. Three representative task classes and the free-challenger comparison remain incomplete.
+Configuration verification and the learning evaluation are complete.
+
+The touchpad debugging evaluation has a healthy baseline and is waiting for a natural failed-state capture.
+
+The current research evaluation should now map the AI access landscape and determine which included capability or paid challenger should receive the next bounded pilot.
 
 ---
 

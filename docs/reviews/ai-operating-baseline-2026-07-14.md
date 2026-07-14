@@ -758,7 +758,9 @@ Verify them manually.
 
 The owner has preferences and impressions but not a consistent comparison set across representative tasks.
 
-Use Claude Free or another available challenger before paying.
+Begin with free or already-included access when it can support a fair evaluation.
+
+A paid one-month trial is acceptable when free limits prevent a meaningful comparison and the evaluation has a defined task, duration, evidence record, and cancellation decision.
 
 ### Task-Scoped Context
 
@@ -786,7 +788,7 @@ This is acceptable until a valuable blocked workflow proves the need.
 8. Keep Highly Restricted information out of general hosted AI and the repository.
 9. Use web search or Deep Research when current facts matter.
 10. Test free challengers before buying another subscription.
-11. Do not purchase Claude Pro, Google AI, Copilot, API usage, or local-AI hardware now.
+11. Do not purchase Claude Pro, Google AI, Copilot, API usage, or local-AI hardware without evidence; additional spending is acceptable when repeated real-task value justifies it.
 12. Do not implement automatic routing, Personal AI, or autonomous agents during this baseline.
 13. Reassess through workflow evidence rather than hype or permanent model rankings.
 
