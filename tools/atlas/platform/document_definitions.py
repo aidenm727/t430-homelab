@@ -487,6 +487,27 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/ai-operating-baseline-2026-07-14.md": DocumentDefinition(
+        path="docs/reviews/ai-operating-baseline-2026-07-14.md",
+        purpose="Records the dated current AI access inventory, task profiles, provisional operating decisions, privacy boundaries, challenger policy, evaluation method, and reassessment triggers.",
+        capability="Artificial Intelligence",
+        tags=[
+            "artificial-intelligence",
+            "ai-operating-baseline",
+            "provider-evaluation",
+            "workflow-evaluation",
+            "human-reviewed",
+        ],
+        related=[
+            "docs/architecture/ai.md",
+            "docs/architecture/ai-operating-model.md",
+            "docs/architecture/knowledge-authority.md",
+            "docs/current-mission.md",
+            "docs/reviews/engineering-opportunity-portfolio-recalibration.md",
+            "docs/roadmaps/platform-strategy.md",
+        ],
+    ),
+
     "docs/reviews/engineering-opportunity-portfolio-recalibration.md": DocumentDefinition(
         path="docs/reviews/engineering-opportunity-portfolio-recalibration.md",
         purpose="Records the accepted human-reviewed classification, relationships, dispositions, priorities, and Distinctness branch decision for the Engineering Opportunity portfolio.",

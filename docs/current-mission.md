@@ -81,6 +81,9 @@ Additional workflows should be added only when they reveal a distinct operating 
 - Confirmed repository validation is Valid.
 - Confirmed repository synchronization is Synchronized.
 - Preserved `wip/distinctness-foundation-calibration` at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
+- Established the dated Current AI Operating Baseline for July 14, 2026.
+- Applied the AI Operating Model to six representative recurring workflows.
+- Retained ChatGPT Plus as the primary AI platform and deferred new subscriptions, API spending, local AI, automatic routing, Personal AI, and agentic execution pending evidence.
 
 ---
 
@@ -116,7 +119,7 @@ The platform does not yet have a dated operating baseline that applies those rul
 
 The owner currently relies heavily on ChatGPT for engineering, planning, learning, and personal assistance, prefers stronger reasoning over speed for important work, and wants additional providers or local AI considered only when they provide a real capability improvement.
 
-The next responsible step is a current, evidence-backed baseline rather than another abstract architecture layer.
+The dated Current AI Operating Baseline is now established and registered. It defines current access, six representative task profiles, mode selection, privacy boundaries, challenger policy, evaluation evidence, and reassessment triggers. The milestone is ready for final verification and mission advancement.
 
 ---
 
