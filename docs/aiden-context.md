@@ -1,233 +1,119 @@
 # Aiden Context
 
-Generated: 2026-07-13
+Generated: 2026-07-14
 
 ## Purpose
 
-This file is an AI-readable context packet for the homelab project.
+This file is an AI-readable context packet for the Aiden Platform engineering repository.
 
-It summarizes the current state, active priorities, and operating rules so an AI assistant can quickly understand where the project stands.
+It summarizes the canonical current mission, infrastructure state, recent changes, and operating rules so a human or AI collaborator can establish accurate engineering context.
 
 ## Current Mission
 
 ### Phase
 
-Engineering Opportunity Intelligence
+Platform Strategic Recalibration
 
 ---
 
 ### Mission
 
-Continue evolving Atlas into the primary deterministic engineering interface for the Aiden Platform.
+Recalibrate the canonical Aiden Platform vision, structural architecture, capability model, and strategic direction before resuming deeper Atlas, Engineering Opportunity Intelligence, or end-user capability implementation.
 
-The immediate objective is to implement the bounded Engineering Opportunity Distinctness Analysis foundation defined by canonical architecture.
+The immediate objective is to establish clear canonical ownership for platform vision, architecture, capabilities, artificial intelligence, strategic planning, and active engineering work.
 
-This milestone should create reusable pairwise and portfolio comparison results, deterministic pair identity, transparent comparison evidence, bounded heuristic candidates, uncertainty states, directional component and umbrella findings, and Engineering Opportunity Assessment integration without automatically merging or closing opportunity objects.
+This phase converts the accepted strategic recalibration into durable repository knowledge while preserving the existing Distinctness Analysis implementation on its isolated calibration branch.
 
 ---
 
 ### Current Focus
 
-- Build the Engineering Opportunity Distinctness Analysis foundation.
-- Implement deterministic unordered pair identity.
-- Define reusable pairwise and portfolio result models.
-- Gather object, relationship, capability, scope, document, and evidence facts.
-- Normalize bounded text fields transparently.
-- Produce explainable exact and token-based heuristic signals.
-- Expose supporting, counter, and boundary evidence.
-- Produce candidate, ambiguous, distinct, insufficient-evidence, and conflicting results.
-- Support component and umbrella directionality.
-- Reserve resolved duplicate findings for explicit human-reviewed evidence.
-- Preserve canonical opportunity objects, lifecycle state, and stable identifiers.
-- Add focused tests and milestone-completion evidence.
+- Establish `docs/vision.md` as the canonical owner of platform purpose, principles, human authority, non-goals, and long-term direction.
+- Recalibrate `docs/architecture/platform.md` around the layered Platform Foundations and Human Agency Domains model.
+- Replace the existing flat capability map with a layered capability architecture and controlled compatibility migration.
+- Clarify the relationships among Atlas, the repository, Personal AI, AidenOS, infrastructure, and human agency domains.
+- Align AI architecture with provider independence, human authority, knowledge provenance, data sensitivity, and deliberate local, cloud, and hybrid use.
+- Create a dated platform strategy roadmap covering the one-, three-, and five-year horizons.
+- Update repository navigation and metadata so the new canonical documents are discoverable by humans and Atlas.
+- Validate, synchronize, review, document, commit, and push the complete architecture checkpoint.
 
 ---
 
 ### Current Priorities
 
-1. Implement reusable `OpportunityDistinctnessEvidence`, pairwise comparison, and portfolio result models.
-2. Implement stable order-independent pair keys.
-3. Reject self-comparison.
-4. Gather deterministic facts for both Engineering Opportunity Objects.
-5. Consume existing explicit relationship findings without reimplementing relationship validation.
-6. Consume Capability Alignment for both opportunities.
-7. Consume Scope Classification for both opportunities.
-8. Expose related-document, evidence, dependency, lifecycle, and repository-path facts.
-9. Implement transparent bounded normalization for title, summary, rationale, evidence, and notes.
-10. Preserve field-level provenance for every textual signal.
-11. Ensure one matching keyword cannot produce a relationship candidate.
-12. Produce explainable multi-field similarity candidates without claiming semantic resolution.
-13. Produce ambiguous results when duplicate, overlap, component, or distinct interpretations compete.
-14. Produce distinct candidates only when positive boundary evidence exists.
-15. Produce insufficient-evidence results when no responsible candidate is supported.
-16. Support component and umbrella as directional inverse findings.
-17. Keep duplicate and overlap pair semantics symmetric.
-18. Support explicit human-reviewed duplicate resolution with High confidence.
-19. Support conflicting human-reviewed evidence.
-20. Allow canonical-target candidates only when selection evidence is explained.
-21. Permit canonical-target candidates to remain unset when no responsible preference exists.
-22. Compose each unordered pair at most once in portfolio analysis.
-23. Expose comparison counts, skipped-pair counts, and explainable skipped-pair reasons.
-24. Distribute portfolio findings to Engineering Opportunity Assessments by stable identifier.
-25. Keep distinctness findings separate from explicit relationship findings.
-26. Preserve canonical objects, lifecycle state, references, and stable identifiers without mutation.
-27. Add focused tests for pair identity, directionality, evidence boundaries, uncertainty, human-reviewed resolution, portfolio composition, assessment integration, and non-mutation.
-28. Establish deterministic milestone-completion evidence for the implementation.
+1. Create the canonical platform Vision document.
+2. Rewrite Platform Architecture around the accepted layered model.
+3. Rewrite the Platform Capability Map with stable foundation and domain identities.
+4. Define compatibility handling for legacy capability identifiers.
+5. Recalibrate AI Architecture and define Personal AI as a cross-cutting subsystem.
+6. Create the Platform Strategy roadmap with six strategic initiatives and dated outcomes.
+7. Update Repository Architecture and the Documentation Map.
+8. Register new canonical documents through the current repository metadata mechanism.
+9. Regenerate derived AI context from canonical sources.
+10. Run repository validation, synchronization, Engineering Review, and final bootstrap verification.
 
 ---
 
 ### Recently Completed
 
-- Engineering Opportunity Distinctness Analysis architecture
-- Stable unordered pair identity contract
-- Pairwise and portfolio comparison contracts
-- Duplicate, overlap, component, umbrella, distinct, ambiguous, insufficient-evidence, and conflicting outcomes
-- Directionality and inverse semantics
-- Duplicate-versus-overlap boundaries
-- Component-versus-umbrella boundaries
-- Explicit relationship and reference evidence roles
-- Capability-aware and scope-aware comparison boundaries
-- Transparent text-normalization and heuristic boundaries
-- Supporting, counter, boundary, and provenance evidence requirements
-- Positive boundary evidence requirements for distinctness
-- Canonical-target candidate behavior
-- Human merge authority and historical traceability
-- Distinctness Analysis architecture registration and milestone recognition
-- Engineering Opportunity Scope Classification foundation
-- Repository-backed six-scope taxonomy
-- Structured scope classification results
-- Deterministic scope facts, structural evidence, provenance, and counterevidence
-- Transparent bounded scope candidate rules
-- Engineering Opportunity Capability Alignment foundation
-- Repository-backed catalog of nine canonical Platform Capabilities
-- Structured capability-alignment results
-- Engineering Opportunity Relationship foundation
-- Typed explicit `depends_on`, `enables`, and `related_to` findings
-- Deterministic portfolio relationship view
-- Engineering Opportunity Evidence foundation
-- Structured references and evidence
-- Engineering Opportunity Assessment foundation
-- Reusable assessment data model
-- Deterministic object-quality reasoning
-- Design Engineering Opportunity Intelligence
-- Engineering Opportunity Object architecture and lifecycle
-- Atlas opportunities interface
-- Repository Synchronization Reasoning
-- Mission Advancement Reasoning
-- Milestone Completion Reasoning
-- Engineering Intelligence
-- Engineering Interpretation
-- Engineering Review
-- Repository validation and synchronization
-- Deterministic engineering startup
+- Confirmed clean and synchronized `main` at the strategic-recalibration baseline.
+- Preserved the passing Distinctness Analysis implementation on `wip/distinctness-foundation-calibration`.
+- Confirmed 65 passing tests on the preserved implementation branch.
+- Reconstructed the Aiden Platform identity and major system boundaries.
+- Accepted a layered model separating Platform Foundations from Human Agency Domains.
+- Clarified Atlas as the deterministic engineering control plane.
+- Clarified the repository as the canonical engineering knowledge record.
+- Clarified Personal AI as a cross-cutting intelligence subsystem.
+- Clarified AidenOS as the future interaction and experience environment.
+- Completed a human-reviewed classification of the 21 existing Engineering Opportunities.
+- Defined one-, three-, and five-year platform outcomes.
+- Defined six strategic initiatives for July 2026 through July 2027.
+- Designed canonical document ownership for Vision, Platform Architecture, Capabilities, AI Architecture, Strategy, and Current Mission.
 
 ---
 
 ### Current Non-Priorities
 
-- Automatically merging opportunity objects
-- Automatically closing objects as duplicates
-- Producing resolved semantic duplicates from heuristics
-- Treating shared capability as duplication
-- Treating shared scope as duplication
-- Treating shared documents as duplication
-- Treating one keyword or title similarity as duplication
-- Depending on embeddings or a language model
-- Introducing an opaque similarity score or ranking
-- Comparing every pair without an explainable gate as the portfolio grows
-- Rewriting explicit relationship declarations
-- Selecting portfolio priority
-- Strategic-value scoring
-- Effort estimation
-- Mission relevance scoring
-- Full architectural-significance evaluation
-- Automatic lifecycle mutation
-- Automatic reference migration
-- Permanent derived comparison artifacts
-- New Atlas comparison commands
-- Engineering Intelligence integration
-- Engineering Review presentation of merge recommendations
-- Agentic Engineering Foundation implementation
-- Large infrastructure expansion
-- New self-hosted services
-- Major hardware changes
-- Building large end-user applications
+- Resuming Distinctness Analysis implementation
+- Merging the Distinctness Analysis calibration branch
+- Modifying the preserved calibration implementation
+- Reclassifying or mutating Engineering Opportunity Objects
+- Implementing Personal AI
+- Building AidenOS interfaces
+- Building nutrition or personal intelligence briefing applications
+- Expanding Atlas reasoning capabilities
+- Implementing autonomous or multi-agent engineering
+- Deploying new self-hosted services
+- Purchasing or expanding local AI hardware
+- Broad infrastructure changes
+- Migrating all repository metadata into a new framework
+- Reorganizing the entire repository
+- Implementing Career and Economic Agency systems
+- Implementing the Knowledge and Learning foundation
 
 ---
 
 ### Current Status
 
-The Engineering Opportunity Distinctness Analysis architecture is designed, registered, and recognized by Atlas with High confidence.
+The live `main` branch is clean, valid, synchronized, and ready for engineering work.
 
-The repository now defines:
+The previous Distinctness Analysis implementation is preserved separately and must remain unchanged during this phase.
 
-- Stable unordered comparison identity
-- Pairwise and portfolio comparison responsibilities
-- Duplicate, overlap, component, umbrella, distinct, ambiguous, insufficient-evidence, and conflicting outcomes
-- Symmetric and directional relationship semantics
-- Duplicate and overlap boundaries
-- Component and umbrella boundaries
-- Capability-aware and scope-aware comparison
-- Explicit relationship and reference evidence roles
-- Transparent text normalization and heuristic limits
-- Supporting, counter, boundary, and provenance evidence
-- Positive boundary evidence for distinctness
-- Canonical-target candidate behavior
-- Human merge authority
-- Stable identifier and historical-traceability requirements
-- A bounded initial implementation contract
-- Focused verification cases
+The current canonical documentation contains a clear platform philosophy but mixes vision, structural architecture, capability taxonomy, implementation examples, and long-term direction across overlapping owners.
 
-The current reasoning implementation does not yet provide:
+The accepted strategic direction now exists in human-reviewed session context but has not yet been integrated into the canonical repository.
 
-- Reusable pairwise distinctness models
-- A reusable portfolio distinctness model
-- Deterministic pair keys
-- Self-comparison rejection
-- Bounded normalized comparison signals
-- Supporting, counter, and boundary evidence composition
-- Candidate, ambiguous, distinct, insufficient-evidence, or conflicting comparison results
-- Component and umbrella inverse findings
-- Human-reviewed duplicate resolution
-- Canonical-target candidates
-- Portfolio pair composition
-- Engineering Opportunity Assessment distinctness integration
-- Focused implementation tests
-- Implementation milestone recognition
-
-The next responsible step is therefore to implement the bounded comparison foundation without pretending semantic duplicate detection has been solved.
+The next responsible step is therefore documentation-first strategic recalibration.
 
 ---
 
 ### Next Milestone
 
-Build Engineering Opportunity Distinctness Analysis Foundation.
+Establish Canonical Platform Vision and Layered Capability Architecture.
 
-Implement reusable pairwise and portfolio result models, deterministic pair identity, transparent comparison evidence, bounded heuristic candidates, uncertainty states, directional component and umbrella findings, assessment integration, tests, and milestone recognition required by the Distinctness Analysis architecture.
+Create and integrate the canonical Vision document, layered Platform Architecture, recalibrated Capability Map, aligned AI Architecture, and dated Platform Strategy roadmap.
 
-The first implementation should support:
-
-- Stable order-independent pair keys
-- Self-comparison rejection
-- One canonical result per unordered pair
-- Object, relationship, capability, scope, document, evidence, lifecycle, and path facts
-- Transparent bounded text normalization
-- Explainable exact and token-based comparison signals
-- Supporting, counter, and boundary evidence
-- Candidate relationship findings
-- Ambiguous findings
-- Distinct candidates with positive boundary evidence
-- Insufficient-evidence findings
-- Conflicting explicit evidence
-- Component and umbrella directional inverses
-- Symmetric duplicate and overlap pair semantics
-- Human-reviewed High-confidence duplicate resolution
-- Explained canonical-target candidates
-- Portfolio composition and skipped-pair explanations
-- Engineering Opportunity Assessment integration
-- Canonical object, lifecycle, reference, and identifier non-mutation
-
-This milestone should not automatically merge or close objects, produce resolved duplicates from heuristics, use keyword similarity alone, depend on embeddings or a language model, introduce opaque ranking, rewrite explicit relationships, establish portfolio priority, mutate lifecycle state, add command-specific reasoning, or store permanent derived comparison artifacts.
+Update repository navigation, document definitions, and generated context so Atlas and future engineering sessions understand the recalibrated platform direction.
 
 ---
 
@@ -235,37 +121,30 @@ This milestone should not automatically merge or close objects, produce resolved
 
 The milestone is complete when:
 
-- Reusable structured distinctness evidence, pairwise comparison, and portfolio models exist.
-- Pair keys are stable and order-independent.
-- Self-comparison is rejected.
-- Portfolio composition emits each unordered pair at most once.
-- Pairwise results preserve both opportunity identifiers and repository paths.
-- Object, explicit relationship, capability, scope, document, evidence, lifecycle, and path facts are collected.
-- Text normalization is transparent and field provenance is preserved.
-- Supporting evidence, counterevidence, and boundary evidence are structurally separate.
-- One keyword cannot produce a relationship candidate.
-- Transparent multi-field evidence can produce a bounded candidate.
-- Duplicate similarity remains pair-symmetric.
-- Overlap remains symmetric and never recommends automatic merge.
-- Component and umbrella findings are directional inverses.
-- Same capability alone cannot establish duplication.
-- Different capabilities provide counterevidence without automatic distinctness.
-- Same scope alone cannot establish duplication.
-- Different scopes provide boundary evidence while permitting component or umbrella interpretation.
-- Explicit `related_to` supports comparison without establishing a stronger relationship.
-- Explicit dependency provides boundary evidence.
-- Shared architecture documents support comparison without establishing duplication.
-- Positive boundary evidence can produce a distinct candidate.
-- Competing interpretations produce an ambiguous result.
-- Sparse evidence produces an insufficient-evidence result.
-- Explicit human-reviewed evidence can resolve a duplicate with High confidence.
-- Conflicting human-reviewed evidence produces a conflicting result.
-- Canonical-target candidates explain their evidence and may remain unset.
-- Engineering Opportunity Assessments consume portfolio findings without reimplementing comparison logic.
-- Canonical Engineering Opportunity Objects, lifecycle states, references, and identifiers remain unchanged.
-- Tests cover pair identity, portfolio uniqueness, evidence boundaries, uncertainty states, directionality, human-reviewed resolution, assessment integration, and non-mutation.
-- Reasoning remains independent of Atlas command rendering and language models.
-- Atlas can recognize completion of the Distinctness Analysis foundation from concrete implementation and test evidence.
+- `docs/vision.md` exists as the canonical Vision-layer owner.
+- Vision clearly defines platform purpose, North Star, principles, human authority, non-goals, ownership, and long-term direction.
+- `docs/architecture/platform.md` defines structural relationships rather than duplicating the Vision document.
+- Platform Architecture distinguishes Platform Foundations from Human Agency Domains.
+- Atlas, the repository, Personal AI, AidenOS, and infrastructure have clear architectural boundaries.
+- `docs/architecture/capabilities.md` defines the new layered capability model.
+- Stable identifiers exist for Platform Foundations and Human Agency Domains.
+- Legacy capability identifiers have an explicit compatibility strategy.
+- Capability maturity evaluates durable capability rather than installed services alone.
+- `docs/architecture/ai.md` aligns with the new capability model.
+- Personal AI is defined as a cross-cutting subsystem rather than the owner of human domains.
+- AI and AidenOS are no longer represented as one capability.
+- `docs/roadmaps/platform-strategy.md` records the one-, three-, and five-year outcomes.
+- The roadmap records the six strategic initiatives, dependencies, parallel work, and deliberate deferrals.
+- `docs/architecture/repository.md` recognizes the new canonical owners.
+- `docs/docs-map.md` provides a top-down reading path beginning with Vision and Platform Architecture.
+- New documents are registered through the current repository metadata mechanism.
+- Generated context reflects the Platform Strategic Recalibration phase and current milestone.
+- Repository validation reports Valid.
+- Repository synchronization reports Synchronized.
+- Engineering Review reports no blocking repository inconsistency.
+- The final working tree is clean.
+- The Distinctness Analysis calibration branch remains unchanged.
+- No Engineering Opportunity Object is modified during this milestone.
 
 ## Infrastructure Snapshot
 
@@ -368,13 +247,6 @@ Purpose:
 - Commit and push from the local machine
 - Never commit secrets
 
-## Current Priorities
-
-1. Create and document the first VM deployment on gamer-pve
-2. Continue improving the infrastructure documentation model
-3. Build the Aiden Context generation workflow
-4. Explore how ChatGPT Projects, source files, and future Aiden OS assistants should share context
-
 ## Known Constraints
 
 - t430-beast should remain the stable production services host
@@ -407,9 +279,3 @@ automation
 
 ## Documentation Outputs
 - [2026-06-26 12:07:09] Updated tools/aiden-context-loader.py as the first prototype of the Aiden engineering toolkit
-
-
-
-## Next Milestone
-
-Deploy the first VM on gamer-pve and document the VM architecture using the new documentation workflow.
