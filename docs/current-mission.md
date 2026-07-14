@@ -65,6 +65,7 @@ This milestone should clarify which opportunities remain distinct, which overlap
 - Confirmed the preserved branch remains at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
 - Completed and accepted the human-reviewed classification of all 21 Engineering Opportunity Objects.
 - Recorded the decision to retain and recalibrate, rather than merge, the preserved Distinctness implementation.
+- Transitioned all 21 Engineering Opportunity Objects from `captured` to `reviewed` after human acceptance, preserving their original declarations, evidence, and stable identifiers.
 
 ---
 
@@ -99,7 +100,7 @@ The portfolio must now be reviewed as repository knowledge rather than treated a
 
 The preserved Distinctness Analysis branch remains useful evidence, but it was designed against the previous capability architecture and must not be merged without recalibration.
 
-The human-reviewed portfolio assessment is now accepted and preserved as canonical evidence. The next responsible step is a separate lifecycle transition that moves the 21 objects from `captured` to `reviewed` without rewriting their original declarations or evidence.
+The human-reviewed portfolio assessment is accepted and preserved as canonical evidence, and all 21 Engineering Opportunity Objects now have `reviewed` lifecycle state. The portfolio recalibration milestone is ready for final verification and mission advancement.
 
 ---
 
