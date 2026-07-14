@@ -444,6 +444,27 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/engineering-opportunity-portfolio-recalibration.md": DocumentDefinition(
+        path="docs/reviews/engineering-opportunity-portfolio-recalibration.md",
+        purpose="Records the accepted human-reviewed classification, relationships, dispositions, priorities, and Distinctness branch decision for the Engineering Opportunity portfolio.",
+        capability="Engineering and Evolution",
+        tags=[
+            "engineering-opportunity",
+            "portfolio-review",
+            "human-reviewed",
+            "strategic-recalibration",
+        ],
+        related=[
+            "docs/current-mission.md",
+            "docs/vision.md",
+            "docs/architecture/capabilities.md",
+            "docs/architecture/engineering-opportunity.md",
+            "docs/architecture/engineering-opportunity-assessment.md",
+            "docs/architecture/engineering-opportunity-distinctness-analysis.md",
+            "docs/roadmaps/platform-strategy.md",
+        ],
+    ),
+
     "docs/architecture/engineering-opportunity-object.md": DocumentDefinition(
         path="docs/architecture/engineering-opportunity-object.md",
         purpose="Defines the Engineering Opportunity Object as the repository-native representation of a potential engineering improvement throughout its lifecycle.",

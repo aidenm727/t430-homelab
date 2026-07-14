@@ -107,6 +107,10 @@ Repository Objects and engineering tools support these layers.
 - `docs/roadmaps/ai-engineering.md`
 - `docs/roadmaps/engineering-toolkit.md`
 
+## Portfolio Reviews
+
+- `docs/reviews/engineering-opportunity-portfolio-recalibration.md` — Accepted human-reviewed interpretation of the complete Engineering Opportunity portfolio, including capability alignment, relationships, dispositions, priorities, and the Distinctness branch decision.
+
 ## Generated Context
 
 - `docs/aiden-context.md`

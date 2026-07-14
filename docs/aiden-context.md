@@ -73,6 +73,8 @@ This milestone should clarify which opportunities remain distinct, which overlap
 - Confirmed repository synchronization is Synchronized.
 - Preserved the Distinctness Analysis implementation on `wip/distinctness-foundation-calibration`.
 - Confirmed the preserved branch remains at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
+- Completed and accepted the human-reviewed classification of all 21 Engineering Opportunity Objects.
+- Recorded the decision to retain and recalibrate, rather than merge, the preserved Distinctness implementation.
 
 ---
 
@@ -107,7 +109,7 @@ The portfolio must now be reviewed as repository knowledge rather than treated a
 
 The preserved Distinctness Analysis branch remains useful evidence, but it was designed against the previous capability architecture and must not be merged without recalibration.
 
-The next responsible step is a bounded, human-reviewed portfolio assessment.
+The human-reviewed portfolio assessment is now accepted and preserved as canonical evidence. The next responsible step is a separate lifecycle transition that moves the 21 objects from `captured` to `reviewed` without rewriting their original declarations or evidence.
 
 ---
 
