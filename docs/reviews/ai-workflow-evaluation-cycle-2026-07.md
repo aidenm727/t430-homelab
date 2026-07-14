@@ -58,21 +58,43 @@ It does not collapse different concerns into one score.
 
 ### Account Training Control
 
-**Status:** Pending owner verification.
+**Status:** Verified on July 14, 2026.
 
-Verify whether `Improve the model for everyone` is disabled for the account used with Aiden Platform and personal context.
+`Improve the model for everyone` is **Off** for the account used with Aiden Platform and personal context.
 
-Record only the setting outcome.
+This is an account-level privacy control.
 
-Do not record account credentials or other secrets.
+The review records only the setting outcome and stores no account credentials or secrets.
 
 ### Project Memory Mode
 
-**Status:** Pending owner verification.
+**Status:** Verified on July 14, 2026.
 
-Record the current memory behavior available to the existing Aiden Platform Project.
+The existing Aiden Platform Project uses **Default** memory.
 
-Do not rebuild or migrate the Project merely to complete this check.
+For this Plus account, the Project may access memories and conversations outside the Project, and outside conversations may reference Project context.
+
+The setting cannot be changed on this existing Project because project-only memory must be selected when a new Project is created.
+
+**Library access:** Enabled while the Project remains private.
+
+### Project Continuity Decision
+
+Keep the current Aiden Platform Project.
+
+Default memory is not treated as canonical authority. GitHub, repository documentation, Atlas evidence, and live verification remain authoritative.
+
+Do not migrate merely to obtain project-only memory.
+
+A project-only pilot becomes justified when:
+
+- Repeated unrelated context leaks into Aiden Platform work.
+- A stronger privacy or cognitive boundary is required.
+- A contained task-context experiment is useful.
+- The Project is intentionally shared.
+- A migration test demonstrates better results than the current arrangement.
+
+A future pilot should create a separate isolated Project, move only a small representative set of chats and sources, and compare real workflows before any full migration.
 
 ---
 
@@ -292,7 +314,9 @@ No paid challenger subscription is authorized by opening this evaluation.
 - Artifact transport and formatting checks remain more visible sources of friction than model reasoning in the completed task.
 - One successful architecture task is insufficient to prove universal superiority.
 - No evidence currently justifies another paid subscription, API spending, or local AI.
-- Configuration verification and cross-model evidence remain incomplete.
+- Account training is verified Off; Project memory is verified Default with Library access enabled.
+- Keep the current Project unless repeated context leakage or a bounded project-only pilot demonstrates a real advantage.
+- Cross-model evidence remains incomplete.
 
 ---
 
@@ -300,6 +324,6 @@ No paid challenger subscription is authorized by opening this evaluation.
 
 The cycle remains open.
 
-Completion requires the configuration checks, debugging task, research task, learning task, and at least one practical free-challenger comparison.
+Configuration verification is complete. Completion still requires the debugging task, research task, learning task, and at least one practical free-challenger comparison.
 
 Do not automate evaluation capture until repeated manual use reveals stable structure and value.

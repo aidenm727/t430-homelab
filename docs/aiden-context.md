@@ -86,6 +86,9 @@ The remaining tasks should be real useful work, not artificial benchmark prompts
 - Defined Work as a bounded multi-step execution mode rather than an open-ended autonomous engineer.
 - Deferred new paid subscriptions, API spending, local AI, automatic routing, Personal AI, and autonomous agents pending evidence.
 - Recorded the completed architecture workflow as the first evaluation case.
+- Verified `Improve the model for everyone` is Off.
+- Verified the existing Aiden Platform Project uses Default memory with Library access enabled.
+- Retained the current Project and deferred project-only migration until a bounded pilot or repeated context leakage demonstrates value.
 - Confirmed 43 passing tests on `main`.
 - Confirmed repository validation is Valid.
 - Confirmed repository synchronization is Synchronized.
@@ -120,7 +123,7 @@ The baseline defines the current operating decisions but identifies missing firs
 
 The completed AI Operating Model and Knowledge Authority architecture work provides the first real evaluation case. ChatGPT High, the Aiden Platform Project, repository context, downloadable implementation runners, Git, tests, and Atlas produced a validated result without demonstrating a need for a second paid provider.
 
-Three representative task classes and the configuration checks remain incomplete.
+Configuration verification is complete. Three representative task classes and the free-challenger comparison remain incomplete.
 
 ---
 
