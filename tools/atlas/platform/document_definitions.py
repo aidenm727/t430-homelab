@@ -532,6 +532,34 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/mission-selection-review-2026-07-15.md": DocumentDefinition(
+        path="docs/reviews/mission-selection-review-2026-07-15.md",
+        purpose="Preserves mission-completion evidence, owner-originated candidate directions, portfolio overlap analysis, engineering-session health assessment, and an unapplied next-mission recommendation.",
+        canonical=False,
+        generated=False,
+        capability="Engineering",
+        status="awaiting-owner-selection",
+        tags=[
+            "mission-selection",
+            "candidate-directions",
+            "session-health",
+            "portfolio-review",
+            "human-decision",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/current-mission.md",
+            "docs/knowledge-promotion.md",
+            "docs/architecture/mission-advancement.md",
+            "docs/architecture/engineering-sessions.md",
+            "docs/reviews/ai-workflow-evaluation-cycle-2026-07.md",
+            "docs/opportunities/reviewed/EO-2026-002-engineering-session-health-assessment.yaml",
+            "docs/opportunities/reviewed/EO-2026-013-task-scoped-agent-context-compilation.yaml",
+            "docs/opportunities/reviewed/EO-2026-020-canonical-knowledge-promotion-workflow.yaml",
+        ],
+    ),
+
     "docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md": DocumentDefinition(
         path="docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md",
         purpose="Preserves the first non-canonical knowledge-promotion pilot as an accepted candidate with its decision, bounded application, execution evidence, validation, and repository traceability.",

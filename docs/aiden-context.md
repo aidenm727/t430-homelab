@@ -12,46 +12,49 @@ It summarizes the canonical current mission, infrastructure state, recent change
 
 ### Phase
 
-Canonical Knowledge Promotion Workflow Operationalization
+Mission Selection — Awaiting Owner Decision
 
 ---
 
-### Mission
+### Mission State
 
-Operationalize the already-established Knowledge Authority Architecture as a practical, reusable, human-reviewed platform capability.
+No engineering mission is active for implementation.
 
-Begin with bounded repository and knowledge workflows, using EO-2026-020 as the primary reviewed opportunity context. Translate the documented promotion flow into explicit operating practice without redesigning the architecture, expanding authority, or changing the opportunity lifecycle implicitly.
+The owner accepted completion of the Canonical Knowledge Promotion Workflow Operationalization mission. Its completion commit is `11d355809a07bf0721e86f9234ba8d2f57ecf9e1`, and clean-state validation exists for that committed checkpoint.
 
-The workflow should preserve capture, provenance, sensitivity, ownership, freshness and conflict review, the proposed change, human decision, application, validation, and traceability from candidate evidence to its accepted, rejected, or deferred outcome.
-
-Exercise the workflow manually before considering automation, and preserve the completed AI operating-stack decision throughout this mission.
+A separate mission-selection review is authorized. No next mission has been selected, no mission is automatically activated, and no Engineering Opportunity lifecycle state is changed by this checkpoint.
 
 ---
 
 ### Current Focus
 
-- Build on `docs/architecture/knowledge-authority.md` rather than redesigning it.
-- Use EO-2026-020 as the primary reviewed opportunity context without mutating its lifecycle state.
-- Use the implemented manual operating contract in `docs/knowledge-promotion.md` for candidate capture, provenance preservation, sensitivity classification, canonical-owner selection, freshness and conflict review, exact proposed change preparation, human decision, application, validation, and traceability.
-- Make acceptance, rejection, and deferral explicit and human-reviewed.
-- Preserve the owner's July 15, 2026 acceptance of the exact Validation Gate Standard and its separately scoped application to `docs/standards/engineering-collaboration.md`.
-- Demonstrate at least one complete manual flow before considering automation.
+- Preserve the accepted completion of the Canonical Knowledge Promotion Workflow Operationalization mission.
+- Use `docs/reviews/mission-selection-review-2026-07-15.md` as non-canonical decision evidence for the next owner checkpoint.
+- Preserve the six owner-originated candidate directions without selecting, activating, or implementing one.
+- Preserve all 21 Engineering Opportunities in their reviewed lifecycle state, including EO-2026-020.
+- Keep mission selection and mission activation under explicit owner authority.
+- Use Repository Synchronization Reasoning to verify this preservation checkpoint without treating it as authorization for new implementation.
 - Preserve generated context as derived and canonical sources as authoritative.
 - Preserve the completed AI operating stack: ChatGPT High for architecture and judgment, ChatGPT Work for substantial researched deliverables, Codex for bounded repository implementation, Claude Free for occasional independent audit, deterministic tools for authority, and the owner for approval and promotion.
-- Use Repository Synchronization Reasoning, tests, Atlas validation, review, and generated context to verify the mission checkpoint.
 
 ---
 
-### Current Priorities
+### Completion History
 
-1. Convert the established Canonical Knowledge Promotion Workflow into a concrete human-reviewed operating procedure.
-2. Select a bounded repository or knowledge candidate with clear provenance, sensitivity, ownership, and validation.
-3. Record freshness, uncertainty, and conflict explicitly before proposing a canonical change.
-4. Present the exact proposed change and required human decision without applying promotion automatically.
-5. Apply only an approved decision, validate the authoritative destination, and retain traceability to the source evidence and disposition.
-6. Exercise the complete flow manually and use observed friction to decide whether any later tooling is justified.
-7. Keep EO-2026-020 in its reviewed lifecycle state unless the owner separately authorizes a lifecycle decision.
-8. Preserve the completed Initial AI Workflow Evaluation Cycle and its final operating decision.
+#### Canonical Knowledge Promotion Workflow Operationalization
+
+- Completion accepted by the owner on July 15, 2026.
+- Completion commit: `11d355809a07bf0721e86f9234ba8d2f57ecf9e1` (`Operationalize canonical knowledge promotion workflow`).
+- Clean-state validation exists for the committed checkpoint.
+- The reusable human-reviewed operating procedure is documented in `docs/knowledge-promotion.md`.
+- The first bounded manual flow and its traceability evidence are preserved in `docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md`.
+- The exact Validation Gate Standard was accepted by the owner and separately applied to `docs/standards/engineering-collaboration.md`.
+- The guarded committed run preserved evidence that all 43 tests passed.
+- Atlas validation was Valid, missing definitions were clean, and synchronization was Synchronized.
+- Engineering Review's Unknown/Low milestone result was non-blocking because no specialized milestone reasoning rule exists or is required.
+- EO-2026-020 remained reviewed.
+- No new Repository Object type, automatic promotion, or authority expansion was introduced.
+- The protected Distinctness calibration branch remained unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
 
 ---
 
@@ -73,15 +76,15 @@ Exercise the workflow manually before considering automation, and preserve the c
 - Completed the Initial AI Workflow Evaluation Cycle on July 15, 2026.
 - Adopted the final operating stack while deferring additional subscriptions, API spending, automatic routing, local AI, and broad agent authority.
 - Preserved the laptop reliability issue as operational follow-up rather than a blocker on the completed AI cycle.
-- Recorded the owner's explicit acceptance of the exact Validation Gate Standard on July 15, 2026, and applied it through a separately scoped canonical change.
-- Confirmed 43 passing tests on `main` before this mission transition.
-- Confirmed repository validation is Valid and synchronization is Synchronized.
-- Preserved `wip/distinctness-foundation-calibration` at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
+- Completed the Canonical Knowledge Promotion Workflow Operationalization mission and obtained owner acceptance on July 15, 2026.
 
 ---
 
 ### Current Non-Priorities
 
+- Selecting or activating a mission without an explicit owner decision.
+- Mutating any Engineering Opportunity lifecycle state.
+- Implementing EO-2026-013, EO-2026-002, or another candidate during mission selection.
 - Universal inbox automation.
 - New Repository Object types.
 - Automatic promotion.
@@ -89,7 +92,6 @@ Exercise the workflow manually before considering automation, and preserve the c
 - Personal AI implementation.
 - Broad/autonomous agents and multi-agent engineering.
 - Automatic model routing.
-- Implicit EO lifecycle mutation.
 - Reopening the completed Initial AI Workflow Evaluation Cycle without an owner decision.
 - Redesigning the Knowledge Authority Architecture.
 - Autonomous conflict resolution or human-decision replacement.
@@ -102,51 +104,33 @@ Exercise the workflow manually before considering automation, and preserve the c
 
 ### Current Status
 
-The Knowledge Authority Architecture and its Canonical Knowledge Promotion Workflow already exist. This mission operationalizes that architecture rather than redesigning it.
+The Canonical Knowledge Promotion Workflow Operationalization mission is complete and accepted. The repository checkpoint at `11d355809a07bf0721e86f9234ba8d2f57ecf9e1` preserves its implementation and validation evidence.
 
-EO-2026-020 remains reviewed and provides the primary opportunity context. No lifecycle mutation is implied by selecting it as mission context.
+The repository is now at a neutral mission-selection checkpoint. The dated review preserves candidate directions, portfolio overlap analysis, engineering-session health evidence, and a recommendation, but that non-canonical evidence does not select or activate a mission.
 
-The manual operating contract has been implemented in `docs/knowledge-promotion.md`. The owner explicitly accepted the exact Validation Gate Standard on July 15, 2026, and the accepted standard has been separately applied to `docs/standards/engineering-collaboration.md` without materially changed wording.
+EO-2026-013 is recommended in the review, EO-2026-002 is the strongest immediate operational alternative, and the human decision remains unmade. EO-2026-020 and every other Engineering Opportunity remain reviewed.
 
-The first bounded pilot now demonstrates candidate capture, provenance, sensitivity, ownership, conflict review, exact proposal, human decision, bounded application, and validation. EO-2026-020 remains reviewed, and no automatic promotion, authority expansion, or new Repository Object type was introduced.
-
-Commit and push, followed by synchronization and clean-state review, provide the remaining repository completion evidence for this checkpoint. The Accept decision itself did not authorize commit or push; those remain separately controlled actions.
-
-The completed Initial AI Workflow Evaluation Cycle establishes the current operating stack and has moved from active evaluation to retained decision evidence. The unresolved laptop reliability issue remains an operational follow-up and does not block this mission.
-
-The mission has not advanced. Even after the guarded repository checkpoint supplies commit, push, synchronization, and clean-state evidence, mission advancement remains a separate human decision; no next mission is invented or selected here. The completed AI operating stack remains preserved throughout this checkpoint.
-
-Downstream AI and idea-intake candidates remain non-active and are referenced through `docs/reviews/ai-workflow-evaluation-cycle-2026-07.md` rather than duplicated into this mission.
+The completed AI operating stack and its non-priorities remain in force. Engineering Mode implementation is not active for a new mission.
 
 ---
 
 ### Next Milestone
 
-Operationalize the Canonical Knowledge Promotion Workflow.
+Owner mission-selection decision based on `docs/reviews/mission-selection-review-2026-07-15.md`.
 
-Create, exercise, and validate a practical human-reviewed promotion capability for bounded repository and knowledge workflows while preserving existing authority boundaries and the completed AI operating decision.
+This checkpoint requires an explicit owner decision. It does not itself authorize repository application, mission activation, or Engineering Opportunity lifecycle mutation.
 
 ---
 
-### Success Criteria
+### Decision Boundary
 
-The milestone is complete when:
+- Human decision: Unmade.
+- Current Mission activated: No.
+- Engineering Opportunity lifecycle changed: No.
+- Repository application for a next mission authorized: No.
+- Automatic mission activation: No.
 
-- An explicit, reusable, human-reviewed promotion workflow is documented and usable.
-- At least one bounded repository or knowledge flow is demonstrated from candidate capture through final disposition.
-- The demonstrated flow records provenance, sensitivity, canonical ownership, uncertainty or conflict, the proposed change, the human decision, application, validation, and end-to-end traceability.
-- Acceptance, rejection, or deferral is explicit and attributable to human authority.
-- No automatic promotion or authority expansion is introduced.
-- No new Repository Object type is created solely for the initial workflow.
-- EO-2026-020 is used as reviewed context without implicit lifecycle mutation.
-- The current AI stack remains intact.
-- Generated context remains derived and canonical ownership remains explicit.
-- All tests pass.
-- Atlas validation reports Valid.
-- Atlas missing reports no missing definitions.
-- Atlas synchronization reports Synchronized.
-- Engineering Review reports no blocking repository inconsistency; absence of a milestone-specific completion rule is not itself a reason to expand Atlas reasoning.
-- The Distinctness calibration branch remains unchanged.
+STOP — Await explicit owner mission-selection decision before activating or implementing any next mission.
 
 ## Infrastructure Snapshot
 
