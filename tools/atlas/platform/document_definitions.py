@@ -326,6 +326,35 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/task-scoped-agent-context-compilation.md": DocumentDefinition(
+        path="docs/architecture/task-scoped-agent-context-compilation.md",
+        purpose="Defines deterministic, repository-owned compilation of reproducible task-specific context packages for replaceable AI consumers.",
+        canonical=True,
+        generated=False,
+        capability="Knowledge and Context",
+        tags=[
+            "architecture",
+            "knowledge-and-context",
+            "context-selection",
+            "task-context",
+            "provenance",
+            "reproducibility",
+            "consumer-contract",
+        ],
+        related=[
+            "docs/architecture/platform.md",
+            "docs/architecture/repository.md",
+            "docs/architecture/atlas.md",
+            "docs/architecture/reasoning.md",
+            "docs/architecture/repository-metadata.md",
+            "docs/architecture/knowledge-authority.md",
+            "docs/architecture/engineering-sessions.md",
+            "docs/standards/engineering-collaboration.md",
+            "docs/current-mission.md",
+            "docs/opportunities/reviewed/EO-2026-013-task-scoped-agent-context-compilation.yaml",
+        ],
+    ),
+
     "docs/knowledge-promotion.md": DocumentDefinition(
         path="docs/knowledge-promotion.md",
         purpose="Defines the canonical human-applied Operations procedure for preparing, deciding, applying, validating, and tracing deliberate knowledge promotion.",

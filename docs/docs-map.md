@@ -47,6 +47,7 @@ Repository Objects and engineering tools support these layers.
 
 - `docs/architecture/ai-operating-model.md`
 - `docs/architecture/knowledge-authority.md`
+- `docs/architecture/task-scoped-agent-context-compilation.md`
 
 ## Engineering Architecture
 
@@ -171,6 +172,19 @@ Repository Objects and engineering tools support these layers.
 7. `docs/current-mission.md`
 8. `./atlas bootstrap`
 9. Architecture relevant to the milestone
+
+### Task-Scoped Context and Agent Work
+
+This is a specialized reading path, not a new documentation layer.
+
+1. `docs/architecture/platform.md`
+2. `docs/architecture/repository.md`
+3. `docs/architecture/atlas.md`
+4. `docs/architecture/reasoning.md`
+5. `docs/architecture/engineering-sessions.md`
+6. `docs/architecture/task-scoped-agent-context-compilation.md`
+7. `docs/current-mission.md`
+8. `./atlas bootstrap`
 
 ### Infrastructure Work
 

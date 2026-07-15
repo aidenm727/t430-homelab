@@ -43,6 +43,7 @@ Primary owners:
 - `docs/architecture/knowledge-authority.md`
 - `docs/architecture/repository.md`
 - `docs/architecture/atlas.md`
+- `docs/architecture/task-scoped-agent-context-compilation.md`
 
 Specialized architecture covers engineering, reasoning, Repository Objects, opportunities, infrastructure capabilities, artifacts, collaboration, and future systems.
 
@@ -156,6 +157,7 @@ Conversation context may explain intent but does not replace canonical repositor
 - AI and Personal AI architecture belong in `docs/architecture/ai.md`.
 - Recurring model, provider, deployment, and AI-use decisions belong in `docs/architecture/ai-operating-model.md`.
 - Knowledge authority, provenance, and promotion belong in `docs/architecture/knowledge-authority.md`.
+- Deterministic compilation of bounded, task-specific generated context packages and their authority, selection, provenance, size, validation, and consumer boundaries belongs in `docs/architecture/task-scoped-agent-context-compilation.md`.
 - The repeatable manual knowledge-promotion workflow belongs in `docs/knowledge-promotion.md`.
 - Strategic sequencing belongs in `docs/roadmaps/platform-strategy.md`.
 - Active work belongs in `docs/current-mission.md`.
