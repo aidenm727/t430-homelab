@@ -22,6 +22,7 @@ This phase should produce operating evidence rather than rankings, subscriptions
 - Verify the account-level training control and current Project memory mode.
 - Run one bounded code-debugging evaluation.
 - Preserve the completed current-information research evaluation and first ChatGPT Work pilot as reviewed evidence.
+- Preserve the completed bounded Codex repository-integration pilot as reviewed evidence.
 - Preserve the completed AI and computer-science learning evaluation.
 - Use the completed cloud-AI capability landscape as dated, non-canonical research evidence.
 - Use ChatGPT High as the baseline arrangement.
@@ -54,7 +55,7 @@ The remaining tasks should be real useful work, not artificial benchmark prompts
 1. Confirm the architecture evaluation record against repository evidence.
 2. Verify `Improve the model for everyone` and Project memory configuration manually.
 3. Select a real debugging task with a reproducible failure and deterministic validation.
-4. Complete the bounded Codex integration pilot and preserve its validated evidence.
+4. Preserve the completed bounded Codex integration pilot and apply its operating lessons to future repository work.
 5. Capture the touchpad failed state when it occurs naturally and use it for the debugging evaluation.
 6. Compare an independent provider, preferably Claude, on at least one high-value task when the inputs can be made reasonably comparable.
 7. Inventory unused capabilities already included in ChatGPT Plus before declaring a gap.
@@ -86,6 +87,9 @@ The remaining tasks should be real useful work, not artificial benchmark prompts
 - Completed the first ChatGPT Work pilot as a successful substantial research deliverable with human-review corrections.
 - Completed the current-information research evaluation and established the first alternative-interface evidence through ChatGPT Work.
 - Completed Stage 1 of the bounded Codex evaluation successfully in strict read-only mode.
+- Completed Stage 2 of the bounded Codex evaluation with an exact six-file scope, 43 passing tests, Valid and Synchronized Atlas state, and no Codex commit or push authority.
+- Integrated and pushed the reviewed research evidence at `26bf416`.
+- Established Codex as a proven included execution interface for bounded repository work while retaining human-controlled scope, review, commit, push, and canonical promotion.
 - Recalibrated AI spending from subscription avoidance to evidence-based willingness to pay.
 - Confirmed 43 passing tests on `main`.
 - Confirmed repository validation is Valid.
@@ -127,7 +131,9 @@ The touchpad debugging evaluation has a healthy baseline and is waiting for a na
 
 The current-information research evaluation and first Work pilot are complete. The cloud-AI landscape report is preserved as dated non-canonical evidence, with its human-reviewed interpretation recorded in the evaluation cycle.
 
-Codex Stage 1 completed successfully in strict read-only mode. The active next checkpoint is completion of the bounded Codex integration pilot with an inspectable, validated repository diff.
+The bounded Codex repository-integration pilot is complete. Codex successfully performed repository orientation, bounded implementation, correction, tests, and Atlas verification while the owner retained commit and push authority.
+
+The active next checkpoint is a practical independent-provider comparison, preferably Claude Free, using a real bounded task and comparable acceptance criteria.
 
 The independent-provider comparison remains pending and should evaluate Claude seriously when a reasonably comparable task is available.
 

@@ -471,6 +471,176 @@ Use the mental model to guide bounded Codex, Work, Claude, multi-model, API, and
 
 ---
 
+## Included-Capability Pilot — Codex Repository Integration
+
+**Status:** Complete.
+
+### Task
+
+Integrate the completed cloud-AI landscape Work report into the repository as explicitly non-canonical evidence, record its human-reviewed interpretation, update mission and navigation, register Atlas metadata, regenerate context, and produce a validated uncommitted diff.
+
+### Date
+
+July 14, 2026.
+
+### Provider and Application
+
+ChatGPT Plus using the Codex CLI in the normal WSL and VS Code engineering environment.
+
+### Visible Model and Mode
+
+- Model: GPT-5.6 Sol.
+- Reasoning: High.
+- Account: ChatGPT Plus.
+- Starting weekly allowance shown by Codex: 92% remaining.
+
+### Environment and Context
+
+- Repository: `~/src/t430-homelab`.
+- Starting branch: `main`.
+- Starting commit: `c348ffb`.
+- Canonical repository architecture, Current Mission, AI Operating Model, Knowledge Authority Architecture, dated baseline, and active evaluation record.
+- Live Git and Atlas state.
+- External Work report supplied as read-only input from `/tmp`.
+
+### Execution Structure
+
+The pilot used two bounded stages:
+
+1. Strict read-only orientation and implementation planning.
+2. Workspace-scoped implementation with an exact six-file writable boundary and no commit, push, branch, PR, internet, subscription, API, production, or external-write authority.
+
+### Data Sensitivity
+
+Ordinary Personal engineering and operating context.
+
+No credentials, API keys, tokens, passwords, private keys, or Highly Restricted information were supplied or preserved.
+
+### Action Authority
+
+Codex could inspect the repository and, in Stage 2, modify only the approved workspace files.
+
+The owner approved the task contract, reviewed the plan and patch, authorized two wording corrections, and retained exclusive authority over staging, commit, and push.
+
+Git, tests, Atlas, and live repository state remained authoritative.
+
+### Result
+
+Successful bounded repository integration.
+
+Codex:
+
+- Established live repository state using Git and Atlas.
+- Proposed a sound ownership and integration design.
+- Preserved the Work report as non-canonical evidence.
+- Updated the human-reviewed evaluation record.
+- Updated Current Mission and documentation navigation.
+- Registered the evidence in Atlas metadata.
+- Regenerated derived context.
+- Produced exactly the approved six-file change.
+- Stopped without committing or pushing.
+
+The owner-controlled commit was:
+
+- `26bf416` — Integrate cloud AI landscape research evidence.
+
+### Validation
+
+- 43 unit tests passed in the writable Stage 2 environment.
+- `./atlas validate` reported Valid.
+- `./atlas missing` reported no missing definitions.
+- `./atlas sync` reported Synchronized.
+- Final `main` matched `origin/main`.
+- Final working tree was clean.
+- The preserved Distinctness branch remained unchanged.
+- The normalized evidence body matched the normalized original Work artifact.
+
+### Corrections Required
+
+Human review requested two wording corrections:
+
+- Replace an implication of exhaustive source verification with representative spot-checking of primary sources and load-bearing claims.
+- Describe Work as the first alternative-interface evidence rather than claiming it completed a separately defined requirement.
+
+Codex applied both corrections within scope and reran the required checks.
+
+### Scope Behavior
+
+No scope violation was observed.
+
+Codex did not:
+
+- Commit or push.
+- Create or switch branches.
+- Access production or homelab systems.
+- Install software.
+- Use internet access during the repository stage.
+- Change architecture, the dated operating baseline, roadmaps, Engineering Opportunity Objects, or milestone rules.
+- Introduce secrets, API access, subscriptions, or purchased credits.
+
+### Time and Friction
+
+Codex reduced large-artifact transport by operating directly against the repository and iterating on the same dirty working tree.
+
+Important friction remained:
+
+- The interactive permissions menu did not expose a true read-only profile, so explicit CLI sandbox flags were required.
+- Four tests could not create temporary directories in strict read-only Stage 1; they passed normally in the writable Stage 2 environment.
+- The workspace sandbox could not create an intent-to-add index entry, so ordinary `git diff --check` did not inspect the untracked research file.
+- The untracked source artifact retained three Markdown hard-break spaces that were caught only during the human commit gate.
+- The implementation required a large explicit execution contract.
+- Post-handoff human commit runners contained two assertion bugs before the final AST-based and whitespace-aware checks succeeded. Those failures were outside Codex's repository reasoning.
+
+### Usage-Limit Impact
+
+No usage-limit blockage occurred.
+
+The Stage 2 Codex session reported approximately 63,802 total tokens, including cached input, and completed its final pass in several minutes.
+
+This is useful operating evidence but not yet enough to establish normal weekly capacity.
+
+### Learning Retained
+
+Codex provides real value when:
+
+- Architecture and authority are already bounded.
+- Live repository inspection matters.
+- Multiple connected edits and verification commands would otherwise require fragile artifact transport.
+- The owner wants an inspectable dirty tree rather than autonomous external action.
+
+The pilot also showed that:
+
+- Read-only and writable stages should remain separate.
+- Untracked files require direct validation or staging-aware checks.
+- Agent summaries do not replace patch review.
+- Human-controlled commit and push remain appropriate.
+- Repository-native execution does not eliminate the need for exact contracts and deterministic verification.
+
+### Would Use Again
+
+Yes.
+
+Use Codex again for bounded, already-approved repository implementation and review.
+
+Do not infer from this documentation-and-metadata task that Codex has already proven every coding or debugging workflow.
+
+A future code-change pilot should test reusable implementation logic, tests, and failure repair separately.
+
+### Operating Decision
+
+Adopt Codex as a proven included execution interface for bounded repository work.
+
+Use the operating split:
+
+- ChatGPT High for architecture, judgment, and task contracts.
+- Codex for approved repository inspection, implementation, and iterative verification.
+- Tests and Atlas for deterministic evidence.
+- The owner for scope, review, commit, push, and canonical promotion.
+
+Do not grant standing broad authority or replace the Project workflow wholesale.
+
+---
+
 ## Independent-Provider Comparison
 
 **Status:** Pending.
@@ -499,7 +669,9 @@ No paid challenger subscription is authorized by opening this evaluation.
 - Work is useful as an included substantial-research and deliverable interface, but its output remains evidence subordinate to human interpretation and live repository verification.
 - The Work task supplies alternative-interface evidence but not independent-provider or Claude comparison evidence.
 - The owner's willingness to pay is evidence-based rather than cost-avoidant: additional subscriptions are acceptable when durable value is demonstrated.
-- Codex implementation evidence, independent-provider comparison, and cross-model evidence remain incomplete.
+- The bounded Codex repository-integration pilot is complete and demonstrates useful included repository-native execution under explicit authority and verification boundaries.
+- Codex reduced artifact-transport friction, but exact contracts, untracked-file validation, human patch review, and human-controlled commit remain necessary.
+- Independent-provider comparison and cross-model evidence remain incomplete.
 
 ---
 
@@ -508,6 +680,8 @@ No paid challenger subscription is authorized by opening this evaluation.
 The cycle remains open.
 
 Configuration verification, the learning evaluation, and the current-information research evaluation are complete.
+
+The bounded Codex included-capability pilot is also complete.
 
 Completion still requires the debugging task and at least one practical independent-provider comparison, with Claude remaining the preferred challenger.
 
