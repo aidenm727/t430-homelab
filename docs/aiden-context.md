@@ -35,8 +35,10 @@ This phase should produce operating evidence rather than rankings, subscriptions
 - Preserve the completed bounded Codex repository-integration pilot as reviewed evidence.
 - Preserve the completed AI and computer-science learning evaluation.
 - Use the completed cloud-AI capability landscape as dated, non-canonical research evidence.
+- Preserve the completed Claude Free independent audit as dated, non-canonical evidence and the completed independent-provider comparison as reviewed evidence.
 - Use ChatGPT High as the baseline arrangement.
-- Use Claude Free or another free challenger on comparable work where practical.
+- Use Claude Free only as an occasional bounded audit and challenge lane where practical.
+- Capture the touchpad failed state when it occurs naturally and complete the real debugging evaluation.
 - Record validation, corrections, friction, scope preservation, and learning retained.
 - Separate firsthand workflow evidence from provider documentation and product marketing.
 - Identify whether any recurring capability gap is demonstrated.
@@ -56,23 +58,21 @@ The initial cycle contains four representative tasks:
 
 The architecture task is already complete and recorded.
 
-The remaining tasks should be real useful work, not artificial benchmark prompts.
+The remaining debugging task should be real useful work, not an artificial benchmark prompt.
 
 ---
 
 ### Current Priorities
 
-1. Confirm the architecture evaluation record against repository evidence.
-2. Verify `Improve the model for everyone` and Project memory configuration manually.
-3. Select a real debugging task with a reproducible failure and deterministic validation.
-4. Preserve the completed bounded Codex integration pilot and apply its operating lessons to future repository work.
-5. Capture the touchpad failed state when it occurs naturally and use it for the debugging evaluation.
-6. Compare an independent provider, preferably Claude, on at least one high-value task when the inputs can be made reasonably comparable.
-7. Inventory unused capabilities already included in ChatGPT Plus before declaring a gap.
-8. Treat willingness to pay as evidence-based rather than cost-avoidant.
-9. Record narrative evidence without creating an opaque universal score.
-10. Identify repeated or material value before adopting another durable capability.
-11. Register, validate, synchronize, document, commit, and push the completed evaluation cycle.
+1. Capture the touchpad failed state when it occurs naturally and use it for the real debugging evaluation.
+2. Require reproduction, exact failure evidence, cause explanation, a bounded fix or review, and deterministic validation before satisfying the debugging criterion.
+3. Preserve the completed bounded Codex integration pilot and apply its operating lessons to future repository work.
+4. Preserve the completed Claude Free independent-provider comparison without treating it as a pure model-only comparison.
+5. Inventory unused capabilities already included in ChatGPT Plus before declaring a gap.
+6. Treat willingness to pay as evidence-based rather than cost-avoidant.
+7. Record narrative evidence without creating an opaque universal score.
+8. Identify repeated or material value before adopting another durable capability.
+9. Register, validate, synchronize, document, commit, and push the completed evaluation cycle only after the debugging requirement is satisfied and the owner approves closure.
 
 ---
 
@@ -100,6 +100,10 @@ The remaining tasks should be real useful work, not artificial benchmark prompts
 - Completed Stage 2 of the bounded Codex evaluation with an exact six-file scope, 43 passing tests, Valid and Synchronized Atlas state, and no Codex commit or push authority.
 - Integrated and pushed the reviewed research evidence at `26bf416`.
 - Established Codex as a proven included execution interface for bounded repository work while retaining human-controlled scope, review, commit, push, and canonical promotion.
+- Completed a substantial Claude Free native-web audit using Sonnet 5, Max effort, and Thinking enabled.
+- Preserved the complete Claude Free audit as dated, non-canonical Source Record and Evidence with human-review corrections.
+- Completed the independent-provider comparison and established the first cross-provider evidence without adding a subscription or granting repository or external-write authority.
+- Established Claude Free as an occasional bounded audit and challenge lane while retaining ChatGPT Plus as the primary arrangement.
 - Recalibrated AI spending from subscription avoidance to evidence-based willingness to pay.
 - Confirmed 43 passing tests on `main`.
 - Confirmed repository validation is Valid.
@@ -131,7 +135,7 @@ The remaining tasks should be real useful work, not artificial benchmark prompts
 
 The live `main` branch is clean, valid, synchronized, and contains the canonical AI architecture, Knowledge Authority Architecture, and dated Current AI Operating Baseline.
 
-The baseline defines the current operating decisions but identifies missing firsthand cross-model evidence and recommends a short manual evaluation cycle.
+The baseline defines the current operating decisions and the active manual evaluation cycle now includes firsthand cross-provider evidence.
 
 The completed AI Operating Model and Knowledge Authority architecture work provides the first real evaluation case. ChatGPT High, the Aiden Platform Project, repository context, downloadable implementation runners, Git, tests, and Atlas produced a validated result without demonstrating a need for a second paid provider.
 
@@ -143,9 +147,11 @@ The current-information research evaluation and first Work pilot are complete. T
 
 The bounded Codex repository-integration pilot is complete. Codex successfully performed repository orientation, bounded implementation, correction, tests, and Atlas verification while the owner retained commit and push authority.
 
-The active next checkpoint is a practical independent-provider comparison, preferably Claude Free, using a real bounded task and comparable acceptance criteria.
+The Claude Free independent audit and independent-provider comparison are complete. The audit independently supported retaining ChatGPT Plus, avoiding new spending, and using bounded pilots while adding useful critique that remains subordinate to human review and live evidence.
 
-The independent-provider comparison remains pending and should evaluate Claude seriously when a reasonably comparable task is available.
+The active next checkpoint is the naturally occurring touchpad failed-state capture and the real debugging evaluation.
+
+The debugging success criterion remains unsatisfied, so the Initial AI Workflow Evaluation Cycle remains open.
 
 ---
 

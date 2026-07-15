@@ -118,6 +118,7 @@ Repository Objects and engineering tools support these layers.
 - `docs/reviews/ai-operating-baseline-2026-07-14.md` — Dated current AI access and workflow baseline, including task profiles, provider decisions, privacy boundaries, challenger policy, evaluation evidence, and reassessment triggers.
 - `docs/reviews/ai-workflow-evaluation-cycle-2026-07.md` — Active manual evaluation cycle containing configuration checks, firsthand workflow evidence, validation, friction, challenger comparisons, and operating decisions.
 - `docs/reviews/ai-capability-landscape-work-research-2026-07-14.md` — Non-canonical dated research evidence preserving the complete ChatGPT Work cloud-AI capability landscape artifact under explicit authority and re-verification limits.
+- `docs/reviews/ai-capability-landscape-claude-free-independent-audit-2026-07-14.md` — Non-canonical dated independent-audit evidence preserving the complete Claude Free challenge artifact under explicit authority, human-review findings, and re-verification limits.
 
 ## Generated Context
 

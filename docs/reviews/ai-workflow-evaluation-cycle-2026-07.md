@@ -643,15 +643,110 @@ Do not grant standing broad authority or replace the Project workflow wholesale.
 
 ## Independent-Provider Comparison
 
-**Status:** Pending.
+**Status:** Complete.
 
-Preferred first challenger: Claude Free.
+### Date
 
-A useful comparison should reuse a real task or a bounded critique request without pretending the applications have identical tools or context.
+July 14, 2026.
 
-Record capability differences separately from context, interface, and tool differences.
+### Provider and Application
 
-No paid challenger subscription is authorized by opening this evaluation.
+Claude Free in the native web application.
+
+### Visible Model and Mode
+
+- Model: Sonnet 5.
+- Effort: Max.
+- Thinking: Enabled.
+
+### Task
+
+Perform an independent audit of the Work-produced cloud-AI capability landscape.
+
+### Context Supplied
+
+- The original complete ChatGPT Work research artifact.
+- A bounded description of live Aiden repository and evaluation state.
+
+This was not a pure model-only comparison. Provider, native application, context packaging, and workflow surface differed from the Work task that produced the audited artifact.
+
+### Data Sensitivity
+
+Ordinary Personal engineering context.
+
+No credentials or Highly Restricted information were supplied.
+
+### Action Authority
+
+Read-only research and artifact generation.
+
+Claude had no repository, subscription, account, or external-write authority.
+
+### Result
+
+Successful substantial independent audit.
+
+Claude independently supported the core operating recommendation to retain ChatGPT Plus, avoid new spending, and use bounded pilots. It also produced useful challenges and additional dated evidence without receiving authority to change the repository or any external system.
+
+### Strengths
+
+- Re-checked load-bearing claims instead of merely summarizing the original artifact.
+- Identified useful evaluation-design concerns involving measurement overhead, shared-usage-pool symmetry, product newness, and adjustable numerical heuristics.
+- Distinguished several confirmed facts from interpretation and kept the primary recommendation stable.
+- Supplied a meaningfully independent provider and application perspective.
+
+### Corrections Required
+
+- Claude claimed Google AI Plus was $7.99. The official Google page reviewed by the human showed $4.99.
+- An official OpenAI source confirmed that the standalone ChatGPT Atlas product is being sunset, but the reviewed official source did not establish Claude's exact August 9 shutdown date.
+- Anthropic's Fable/Mythos export-control event is confirmed. Claude's broader cross-vendor government-release-pattern conclusion remains interpretation rather than established fact.
+- The SWE-Bench Pro figures are dated benchmark evidence, not a substitute for real Aiden workflow results.
+
+These corrections are recorded in the authority banner around the preserved source artifact rather than rewriting the original body.
+
+### Scope Behavior
+
+Scope remained within read-only audit and artifact generation.
+
+Claude did not receive repository access, credentials, subscription authority, account authority, or permission for external writes.
+
+The artifact proposed timing and evaluation refinements, but those proposals did not acquire canonical authority merely by appearing in the source record.
+
+### Time and Friction
+
+The audit completed in one Claude Free session and produced a substantial usable artifact.
+
+Human review was still necessary to correct dated provider facts, separate verified fact from inference, and calibrate benchmark claims.
+
+### Usage-Limit Impact
+
+After the artifact completed, the Claude UI displayed a five-hour free-message limit.
+
+This is firsthand capacity evidence from one session, not a universal or stable quota claim.
+
+### Learning Retained
+
+- A no-cost independent provider can add useful critique without creating a standing subscription.
+- Provider independence can reveal different assumptions even when the core recommendation remains unchanged.
+- Cross-provider evidence must separate model behavior from application, context, and tool differences.
+- Numerical adoption thresholds should remain adjustable operating heuristics rather than externally validated science.
+- Real Aiden task evidence remains more authoritative than provider benchmark tables.
+
+### Would Use Again
+
+Yes, occasionally.
+
+Claude Free is useful as a bounded independent audit and challenge lane when the task fits within available free capacity and Ordinary Personal data boundaries.
+
+### Operating Decision
+
+The independent-provider comparison is complete, and the first cross-provider evidence is established.
+
+This was not a pure model-only comparison.
+
+Use Claude Free as an occasional audit and challenge lane. Keep ChatGPT Plus as the primary arrangement.
+
+No evidence currently justifies Claude Pro, replacing ChatGPT Plus, standing dual subscriptions, Claude Code, Cowork, API spending, or local AI.
 
 ---
 
@@ -667,11 +762,14 @@ No paid challenger subscription is authorized by opening this evaluation.
 - The AI and computer-science learning evaluation is complete and demonstrated practical transfer.
 - The current-information research evaluation is complete through a successful ChatGPT Work task with human-review corrections.
 - Work is useful as an included substantial-research and deliverable interface, but its output remains evidence subordinate to human interpretation and live repository verification.
-- The Work task supplies alternative-interface evidence but not independent-provider or Claude comparison evidence.
+- The Work task supplies alternative-interface evidence, and the completed Claude Free audit now supplies the first independent-provider and cross-provider evidence.
 - The owner's willingness to pay is evidence-based rather than cost-avoidant: additional subscriptions are acceptable when durable value is demonstrated.
 - The bounded Codex repository-integration pilot is complete and demonstrates useful included repository-native execution under explicit authority and verification boundaries.
 - Codex reduced artifact-transport friction, but exact contracts, untracked-file validation, human patch review, and human-controlled commit remain necessary.
-- Independent-provider comparison and cross-model evidence remain incomplete.
+- Claude Free successfully completed a substantial independent audit and is useful as an occasional challenge lane.
+- The Claude comparison was not a pure model-only comparison; application, context, and workflow-surface differences remain part of the evidence.
+- No evidence currently justifies Claude Pro, replacing ChatGPT Plus, standing dual subscriptions, Claude Code, Cowork, API spending, or local AI.
+- The independent-provider comparison is complete; the real debugging evaluation remains incomplete.
 
 ---
 
@@ -679,12 +777,22 @@ No paid challenger subscription is authorized by opening this evaluation.
 
 The cycle remains open.
 
-Configuration verification, the learning evaluation, and the current-information research evaluation are complete.
+Configuration verification is complete.
 
-The bounded Codex included-capability pilot is also complete.
+The architecture evaluation is complete.
 
-Completion still requires the debugging task and at least one practical independent-provider comparison, with Claude remaining the preferred challenger.
+The learning evaluation is complete.
 
-The completed Work task satisfies the alternative-interface portion of the evaluation but does not close the independent-provider requirement.
+The current-information research evaluation is complete.
+
+The Work pilot is complete.
+
+The Codex included-capability pilot is complete.
+
+The independent-provider comparison is complete.
+
+The remaining primary requirement is the real debugging evaluation.
+
+The debugging evaluation is waiting for a naturally occurring touchpad failed-state capture.
 
 Do not automate evaluation capture until repeated manual use reveals stable structure and value.
