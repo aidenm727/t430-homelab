@@ -67,10 +67,13 @@ Describes current deployed state.
 
 Preserve active workflow and history.
 
+- `docs/knowledge-promotion.md` as the repeatable manual Canonical Knowledge Promotion operating procedure
 - `docs/change-session.md`
 - `docs/change-schema.md`
 - `docs/changes.log`
 - `docs/changes/*.yml`
+
+Knowledge Authority Architecture owns promotion principles and authority requirements. `docs/knowledge-promotion.md` owns the repeatable manual workflow that applies those requirements, preserving the distinction between architecture intent and operational procedure.
 
 ### Roadmaps
 
@@ -153,6 +156,7 @@ Conversation context may explain intent but does not replace canonical repositor
 - AI and Personal AI architecture belong in `docs/architecture/ai.md`.
 - Recurring model, provider, deployment, and AI-use decisions belong in `docs/architecture/ai-operating-model.md`.
 - Knowledge authority, provenance, and promotion belong in `docs/architecture/knowledge-authority.md`.
+- The repeatable manual knowledge-promotion workflow belongs in `docs/knowledge-promotion.md`.
 - Strategic sequencing belongs in `docs/roadmaps/platform-strategy.md`.
 - Active work belongs in `docs/current-mission.md`.
 - Current deployment belongs in infrastructure records.

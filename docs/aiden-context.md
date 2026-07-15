@@ -32,9 +32,9 @@ Exercise the workflow manually before considering automation, and preserve the c
 
 - Build on `docs/architecture/knowledge-authority.md` rather than redesigning it.
 - Use EO-2026-020 as the primary reviewed opportunity context without mutating its lifecycle state.
-- Define an explicit, reusable sequence for candidate capture, provenance preservation, sensitivity classification, canonical-owner selection, freshness and conflict review, proposed change preparation, human decision, application, validation, and traceability.
+- Use the implemented manual operating contract in `docs/knowledge-promotion.md` for candidate capture, provenance preservation, sensitivity classification, canonical-owner selection, freshness and conflict review, exact proposed change preparation, human decision, application, validation, and traceability.
 - Make acceptance, rejection, and deferral explicit and human-reviewed.
-- Begin with bounded repository and knowledge workflows whose evidence, owner, proposed change, and validation can be inspected directly.
+- Preserve the owner's July 15, 2026 acceptance of the exact Validation Gate Standard and its separately scoped application to `docs/standards/engineering-collaboration.md`.
 - Demonstrate at least one complete manual flow before considering automation.
 - Preserve generated context as derived and canonical sources as authoritative.
 - Preserve the completed AI operating stack: ChatGPT High for architecture and judgment, ChatGPT Work for substantial researched deliverables, Codex for bounded repository implementation, Claude Free for occasional independent audit, deterministic tools for authority, and the owner for approval and promotion.
@@ -73,6 +73,7 @@ Exercise the workflow manually before considering automation, and preserve the c
 - Completed the Initial AI Workflow Evaluation Cycle on July 15, 2026.
 - Adopted the final operating stack while deferring additional subscriptions, API spending, automatic routing, local AI, and broad agent authority.
 - Preserved the laptop reliability issue as operational follow-up rather than a blocker on the completed AI cycle.
+- Recorded the owner's explicit acceptance of the exact Validation Gate Standard on July 15, 2026, and applied it through a separately scoped canonical change.
 - Confirmed 43 passing tests on `main` before this mission transition.
 - Confirmed repository validation is Valid and synchronization is Synchronized.
 - Preserved `wip/distinctness-foundation-calibration` at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
@@ -105,9 +106,15 @@ The Knowledge Authority Architecture and its Canonical Knowledge Promotion Workf
 
 EO-2026-020 remains reviewed and provides the primary opportunity context. No lifecycle mutation is implied by selecting it as mission context.
 
+The manual operating contract has been implemented in `docs/knowledge-promotion.md`. The owner explicitly accepted the exact Validation Gate Standard on July 15, 2026, and the accepted standard has been separately applied to `docs/standards/engineering-collaboration.md` without materially changed wording.
+
+The first bounded pilot now demonstrates candidate capture, provenance, sensitivity, ownership, conflict review, exact proposal, human decision, bounded application, and validation. EO-2026-020 remains reviewed, and no automatic promotion, authority expansion, or new Repository Object type was introduced.
+
+Commit and push, followed by synchronization and clean-state review, provide the remaining repository completion evidence for this checkpoint. The Accept decision itself did not authorize commit or push; those remain separately controlled actions.
+
 The completed Initial AI Workflow Evaluation Cycle establishes the current operating stack and has moved from active evaluation to retained decision evidence. The unresolved laptop reliability issue remains an operational follow-up and does not block this mission.
 
-The next bounded work is to express the documented promotion stages as a reusable human-reviewed workflow, exercise at least one repository or knowledge flow manually, validate the resulting authority change, and preserve traceability without introducing automatic promotion or broader agent authority.
+The mission has not advanced. Even after the guarded repository checkpoint supplies commit, push, synchronization, and clean-state evidence, mission advancement remains a separate human decision; no next mission is invented or selected here. The completed AI operating stack remains preserved throughout this checkpoint.
 
 Downstream AI and idea-intake candidates remain non-active and are referenced through `docs/reviews/ai-workflow-evaluation-cycle-2026-07.md` rather than duplicated into this mission.
 

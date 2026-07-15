@@ -101,6 +101,7 @@ Repository Objects and engineering tools support these layers.
 
 ## Operations
 
+- `docs/knowledge-promotion.md` — Canonical human-applied procedure for reviewing candidate findings and deliberately promoting accepted knowledge.
 - `docs/change-session.md`
 - `docs/change-schema.md`
 - `docs/changes.log`
@@ -114,6 +115,7 @@ Repository Objects and engineering tools support these layers.
 
 ## Portfolio Reviews
 
+- `docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md` — Non-canonical accepted promotion-pilot record preserving the decision, application, evidence, and validation.
 - `docs/reviews/engineering-opportunity-portfolio-recalibration.md` — Accepted human-reviewed interpretation of the complete Engineering Opportunity portfolio, including capability alignment, relationships, dispositions, priorities, and the Distinctness branch decision.
 - `docs/reviews/ai-operating-baseline-2026-07-14.md` — Dated current AI access and workflow baseline, including task profiles, provider decisions, privacy boundaries, challenger policy, evaluation evidence, and reassessment triggers.
 - `docs/reviews/ai-workflow-evaluation-cycle-2026-07.md` — Completed human-reviewed AI workflow evaluation cycle containing configuration checks, firsthand evidence, validation, challenger comparisons, and the final operating decision.
@@ -153,8 +155,9 @@ Repository Objects and engineering tools support these layers.
 4. `docs/architecture/ai.md`
 5. `docs/architecture/ai-operating-model.md`
 6. `docs/architecture/knowledge-authority.md`
-7. `docs/architecture/repository.md`
-8. `docs/current-mission.md`
+7. `docs/knowledge-promotion.md`
+8. `docs/architecture/repository.md`
+9. `docs/current-mission.md`
 
 ### Engineering Session
 

@@ -112,6 +112,16 @@ Before sending an implementation artifact, ChatGPT must perform artifact preflig
 
 Transport correctness takes priority over artifact brevity.
 
+### Validation Gate Standard
+
+Repository automation and commit gates should validate stable, machine-verifiable invariants structurally.
+
+Exact checks are appropriate for declared contracts such as paths, hashes, metadata values, branch identities, schemas, and explicitly required literals. Human-reviewed documentation prose should not be gated by case-sensitive exact phrase matching unless the exact wording itself is a declared contract.
+
+For editorial documentation, deterministic gates should check available structure and metadata, while human patch review owns wording and meaning. Privacy gates should detect actual private literals or raw-field syntax, not infer leakage from ordinary prose that describes redaction or omission.
+
+When a semantic requirement cannot be expressed as a stable structural invariant, record it as a human-review criterion rather than simulating semantic validation with brittle prose matching.
+
 ## Formatting Standard
 
 During implementation-focused engineering sessions, ChatGPT should optimize formatting for engineering execution rather than conversational presentation.

@@ -326,6 +326,29 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/knowledge-promotion.md": DocumentDefinition(
+        path="docs/knowledge-promotion.md",
+        purpose="Defines the canonical human-applied Operations procedure for preparing, deciding, applying, validating, and tracing deliberate knowledge promotion.",
+        canonical=True,
+        generated=False,
+        capability="Knowledge and Context",
+        status="active",
+        tags=[
+            "operations",
+            "knowledge-promotion",
+            "human-review",
+            "provenance",
+            "canonical",
+        ],
+        related=[
+            "docs/architecture/knowledge-authority.md",
+            "docs/architecture/repository.md",
+            "docs/standards/engineering-collaboration.md",
+            "docs/current-mission.md",
+            "docs/opportunities/reviewed/EO-2026-020-canonical-knowledge-promotion-workflow.yaml",
+        ],
+    ),
+
     "docs/infrastructure.md": DocumentDefinition(
         path="docs/infrastructure.md",
         purpose="Canonical infrastructure record for deployed homelab hosts, services, networking, access, backups, and operations.",
@@ -505,6 +528,29 @@ DOCUMENT_DEFINITIONS = {
             "docs/reviews/ai-capability-landscape-work-research-2026-07-14.md",
             "docs/reviews/ai-capability-landscape-claude-free-independent-audit-2026-07-14.md",
             "docs/reviews/ai-debugging-evaluation-g14-touchpad-2026-07-15.md",
+            "docs/current-mission.md",
+        ],
+    ),
+
+    "docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md": DocumentDefinition(
+        path="docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md",
+        purpose="Preserves the first non-canonical knowledge-promotion pilot as an accepted candidate with its decision, bounded application, execution evidence, validation, and repository traceability.",
+        canonical=False,
+        generated=False,
+        capability="Engineering",
+        status="accepted",
+        tags=[
+            "candidate-finding",
+            "execution-evidence",
+            "knowledge-promotion",
+            "human-decision",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/knowledge-promotion.md",
+            "docs/architecture/knowledge-authority.md",
+            "docs/standards/engineering-collaboration.md",
             "docs/current-mission.md",
         ],
     ),

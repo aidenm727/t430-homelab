@@ -50,6 +50,7 @@ def operations_documents() -> list[str]:
         "change-session.md",
         "change-schema.md",
         "changes.log",
+        "knowledge-promotion.md",
     ]
 
     discovered = [
