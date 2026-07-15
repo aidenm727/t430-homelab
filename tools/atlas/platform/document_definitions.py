@@ -489,7 +489,7 @@ DOCUMENT_DEFINITIONS = {
 
     "docs/reviews/ai-workflow-evaluation-cycle-2026-07.md": DocumentDefinition(
         path="docs/reviews/ai-workflow-evaluation-cycle-2026-07.md",
-        purpose="Records the active manual AI workflow evaluation cycle, including configuration checks, firsthand task evidence, validation, friction, challenger comparisons, and operating decisions.",
+        purpose="Records the completed human-reviewed AI workflow evaluation cycle, including configuration checks, firsthand task evidence, validation, friction, challenger comparisons, and the final operating decision.",
         capability="Artificial Intelligence",
         tags=[
             "artificial-intelligence",
@@ -504,6 +504,29 @@ DOCUMENT_DEFINITIONS = {
             "docs/reviews/ai-operating-baseline-2026-07-14.md",
             "docs/reviews/ai-capability-landscape-work-research-2026-07-14.md",
             "docs/reviews/ai-capability-landscape-claude-free-independent-audit-2026-07-14.md",
+            "docs/reviews/ai-debugging-evaluation-g14-touchpad-2026-07-15.md",
+            "docs/current-mission.md",
+        ],
+    ),
+
+    "docs/reviews/ai-debugging-evaluation-g14-touchpad-2026-07-15.md": DocumentDefinition(
+        path="docs/reviews/ai-debugging-evaluation-g14-touchpad-2026-07-15.md",
+        purpose="Preserves sanitized dated diagnostic evidence for the G14 touchpad debugging evaluation as a non-canonical source record under human-reviewed interpretation.",
+        canonical=False,
+        generated=False,
+        capability="Artificial Intelligence",
+        status="evidence",
+        tags=[
+            "debugging-evaluation",
+            "diagnostic-evidence",
+            "source-record",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/architecture/knowledge-authority.md",
+            "docs/architecture/ai-operating-model.md",
+            "docs/reviews/ai-workflow-evaluation-cycle-2026-07.md",
             "docs/current-mission.md",
         ],
     ),
