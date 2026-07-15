@@ -534,17 +534,20 @@ DOCUMENT_DEFINITIONS = {
 
     "docs/reviews/mission-selection-review-2026-07-15.md": DocumentDefinition(
         path="docs/reviews/mission-selection-review-2026-07-15.md",
-        purpose="Preserves mission-completion evidence, owner-originated candidate directions, portfolio overlap analysis, engineering-session health assessment, and an unapplied next-mission recommendation.",
+        purpose="Preserves mission-completion evidence, owner-originated candidate directions, portfolio overlap, engineering-session health assessment, the accepted selection of EO-2026-013, and the deferred AI Engineering Environment Review.",
         canonical=False,
         generated=False,
         capability="Engineering",
-        status="awaiting-owner-selection",
+        status="accepted",
         tags=[
             "mission-selection",
             "candidate-directions",
             "session-health",
             "portfolio-review",
             "human-decision",
+            "owner-decision",
+            "task-context",
+            "ai-environment-review",
             "dated-evidence",
             "non-canonical",
         ],

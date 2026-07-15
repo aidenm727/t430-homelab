@@ -12,30 +12,120 @@ It summarizes the canonical current mission, infrastructure state, recent change
 
 ### Phase
 
-Mission Selection — Awaiting Owner Decision
+Task-Scoped Agent Context Compilation Design
 
 ---
 
 ### Mission State
 
-No engineering mission is active for implementation.
+The owner selected EO-2026-013 — Task-Scoped Agent Context Compilation on July 15, 2026.
 
-The owner accepted completion of the Canonical Knowledge Promotion Workflow Operationalization mission. Its completion commit is `11d355809a07bf0721e86f9234ba8d2f57ecf9e1`, and clean-state validation exists for that committed checkpoint.
+The active mission is an architecture and design mission. EO-2026-013 remains in the `reviewed` lifecycle state, and no other Engineering Opportunity lifecycle state changes are authorized or made by mission selection.
 
-A separate mission-selection review is authorized. No next mission has been selected, no mission is automatically activated, and no Engineering Opportunity lifecycle state is changed by this checkpoint.
+Mission selection does not authorize capability implementation beyond the documented design checkpoint. The completed AI operating stack remains in force, and the protected branch `wip/distinctness-foundation-calibration` remains out of scope.
+
+---
+
+### Mission Intent
+
+Design a deterministic, reproducible, repository-owned capability for compiling task-specific context packages for bounded engineering missions and tasks.
+
+The model must not be responsible for deciding its own authoritative context.
+
+Repository documentation and Atlas remain deterministic authority. ChatGPT Project, Codex, and future assistant environments are consumers of repository-owned task context rather than canonical owners.
 
 ---
 
 ### Current Focus
 
-- Preserve the accepted completion of the Canonical Knowledge Promotion Workflow Operationalization mission.
-- Use `docs/reviews/mission-selection-review-2026-07-15.md` as non-canonical decision evidence for the next owner checkpoint.
-- Preserve the six owner-originated candidate directions without selecting, activating, or implementing one.
-- Preserve all 21 Engineering Opportunities in their reviewed lifecycle state, including EO-2026-020.
-- Keep mission selection and mission activation under explicit owner authority.
-- Use Repository Synchronization Reasoning to verify this preservation checkpoint without treating it as authorization for new implementation.
-- Preserve generated context as derived and canonical sources as authoritative.
-- Preserve the completed AI operating stack: ChatGPT High for architecture and judgment, ChatGPT Work for substantial researched deliverables, Codex for bounded repository implementation, Claude Free for occasional independent audit, deterministic tools for authority, and the owner for approval and promotion.
+- Define a task-context package schema.
+- Define deterministic source-selection rules.
+- Record why each source is selected.
+- Preserve provenance, authority, freshness, conflicts, unknowns, and omissions.
+- Define context-size and context-budget behavior.
+- Define task goal, scope, non-goals, success criteria, permissions, writable paths, approval points, and required validation.
+- Keep the contract model- and provider-independent.
+- Recognize ChatGPT Project, Codex, and future assistants as consumers rather than canonical owners.
+- Preserve repository documentation and Atlas as deterministic authority.
+- Use Repository Synchronization Reasoning to verify alignment throughout architecture and design.
+- Design before implementation.
+
+---
+
+### Initial Milestone
+
+Define the Task-Scoped Agent Context Compilation architecture and one bounded example package.
+
+The architecture is expected to be documented later, likely under `docs/architecture/`. This mission-selection application does not create that architecture document or begin capability implementation.
+
+#### Included
+
+- Package schema.
+- Deterministic source selection.
+- Source-selection explanations.
+- Provenance and authority.
+- Freshness.
+- Conflicts and unknowns.
+- Context-size behavior.
+- Omissions.
+- Consumer contract.
+- One bounded example package.
+
+#### Excluded
+
+- Embeddings.
+- Vector databases.
+- Model-based retrieval.
+- LLM invocation.
+- Autonomous execution.
+- Broad agent authority.
+- Live ChatGPT Project cleanup.
+- Live Project settings changes.
+- Codex configuration changes.
+- Provider-specific permanent architecture.
+- Engineering Opportunity lifecycle mutation.
+
+---
+
+### Preserved Downstream Follow-Up — AI Engineering Environment Review
+
+A subsequent bounded AI Engineering Environment Review is preserved. The actual AI working environments have not been systematically reviewed recently, but this larger review follows the EO-2026-013 architecture design and requires its own bounded owner authorization.
+
+The future review includes:
+
+- ChatGPT Project instructions.
+- ChatGPT Project source files and their freshness.
+- Project settings, memory, and Library configuration.
+- Model and reasoning workflow conventions.
+- Connectors, tools, skills, and permissions.
+- Codex CLI configuration and launch workflow.
+- Repository instructions and reusable skills.
+- Generated context delivery and refresh behavior.
+- Duplicated or conflicting instructions across repository documentation, ChatGPT Projects, Codex, continuity packets, and fresh-chat openers.
+- Other current or future assistant environments.
+
+Each surface should be classified as Current and useful, Stale, Redundant, Conflicting, Missing, Unused, Poorly owned, or Not verifiable. The review should record its authoritative source, intended consumer, owner, freshness expectation, update mechanism, and evidence for retaining, changing, consolidating, or removing it.
+
+The review may use multiple AI systems only through a structured pattern:
+
+- Atlas and the repository provide deterministic source truth.
+- Codex may collect inventory and perform later bounded repository changes.
+- ChatGPT may perform primary architectural analysis and synthesis.
+- An independent challenger model may review the same evidence package.
+- Findings must separate agreement, disagreement, unsupported speculation, immediate corrections, later opportunities, and items that should remain unchanged.
+- The owner resolves disagreements and authorizes application.
+
+Portfolio treatment remains:
+
+- EO-2026-008 — AI Engineering Excellence is the umbrella direction.
+- EO-2026-007 — AI Collaboration Intelligence covers collaboration reliability.
+- EO-2026-019 — Instruction and Context Effectiveness Evaluation covers effectiveness testing.
+- EO-2026-013 provides deterministic task context and consumer boundaries.
+- EO-2026-009 provides the longer-term shared personal AI context direction.
+- The review is a future bounded deliverable under these existing directions.
+- No new Engineering Opportunity should be created unless later evidence demonstrates a distinct recurring capability boundary.
+
+The review is not part of the first EO-2026-013 milestone. It does not authorize live configuration cleanup or changes.
 
 ---
 
@@ -82,15 +172,19 @@ A separate mission-selection review is authorized. No next mission has been sele
 
 ### Current Non-Priorities
 
-- Selecting or activating a mission without an explicit owner decision.
+- Implementing EO-2026-013 before its architecture and bounded example package are designed and reviewed.
 - Mutating any Engineering Opportunity lifecycle state.
-- Implementing EO-2026-013, EO-2026-002, or another candidate during mission selection.
+- Embeddings, vector databases, model-based retrieval, or LLM-driven context selection.
+- Autonomous execution or broad agent authority.
+- Live ChatGPT Project cleanup or Project settings changes.
+- Codex configuration changes.
+- Performing the broader AI Engineering Environment Review without a separate bounded authorization.
+- Creating a duplicate Engineering Opportunity for that review without evidence of a distinct recurring capability boundary.
 - Universal inbox automation.
 - New Repository Object types.
 - Automatic promotion.
 - Whole-life ingestion.
 - Personal AI implementation.
-- Broad/autonomous agents and multi-agent engineering.
 - Automatic model routing.
 - Reopening the completed Initial AI Workflow Evaluation Cycle without an owner decision.
 - Redesigning the Knowledge Authority Architecture.
@@ -104,33 +198,33 @@ A separate mission-selection review is authorized. No next mission has been sele
 
 ### Current Status
 
-The Canonical Knowledge Promotion Workflow Operationalization mission is complete and accepted. The repository checkpoint at `11d355809a07bf0721e86f9234ba8d2f57ecf9e1` preserves its implementation and validation evidence.
+EO-2026-013 is selected as the active mission basis and remains reviewed. The mission is bounded to architecture and design, with one bounded example context package. No capability implementation or Engineering Opportunity lifecycle mutation is authorized by this selection application.
 
-The repository is now at a neutral mission-selection checkpoint. The dated review preserves candidate directions, portfolio overlap analysis, engineering-session health evidence, and a recommendation, but that non-canonical evidence does not select or activate a mission.
+The completed AI operating stack remains in force: ChatGPT High for architecture and judgment, ChatGPT Work for substantial researched deliverables, Codex for bounded repository implementation, Claude Free for occasional independent audit, deterministic tools for authority, and the owner for approval and promotion.
 
-EO-2026-013 is recommended in the review, EO-2026-002 is the strongest immediate operational alternative, and the human decision remains unmade. EO-2026-020 and every other Engineering Opportunity remain reviewed.
-
-The completed AI operating stack and its non-priorities remain in force. Engineering Mode implementation is not active for a new mission.
+The broader AI Engineering Environment Review is preserved as a downstream bounded deliverable. It follows architecture design and requires its own authorization. The protected branch remains unchanged and out of scope.
 
 ---
 
 ### Next Milestone
 
-Owner mission-selection decision based on `docs/reviews/mission-selection-review-2026-07-15.md`.
+Define the Task-Scoped Agent Context Compilation architecture and one bounded example package.
 
-This checkpoint requires an explicit owner decision. It does not itself authorize repository application, mission activation, or Engineering Opportunity lifecycle mutation.
+The next responsible checkpoint is architecture and design review. Mission selection does not authorize implementation beyond that documented design checkpoint.
 
 ---
 
 ### Decision Boundary
 
-- Human decision: Unmade.
-- Current Mission activated: No.
+- Human decision: EO-2026-013 selected on July 15, 2026.
+- Current Mission activated: Yes, as an architecture and design mission.
 - Engineering Opportunity lifecycle changed: No.
-- Repository application for a next mission authorized: No.
-- Automatic mission activation: No.
+- EO-2026-013 lifecycle state: Reviewed.
+- Capability implementation automatically authorized: No.
+- AI Engineering Environment Review automatically authorized: No.
+- Protected branch in scope: No.
 
-STOP — Await explicit owner mission-selection decision before activating or implementing any next mission.
+STOP — Design the Task-Scoped Agent Context Compilation architecture, then return for human review before capability implementation.
 
 ## Infrastructure Snapshot
 

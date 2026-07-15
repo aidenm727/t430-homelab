@@ -115,7 +115,7 @@ Repository Objects and engineering tools support these layers.
 
 ## Portfolio Reviews
 
-- `docs/reviews/mission-selection-review-2026-07-15.md` — Non-canonical mission-completion, candidate-preservation, session-health, and next-mission comparison evidence awaiting owner selection.
+- `docs/reviews/mission-selection-review-2026-07-15.md` — Non-canonical evidence preserving completed mission evidence, candidate directions, session-health assessment, the accepted EO-2026-013 owner decision, and the deferred AI Engineering Environment Review.
 - `docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md` — Non-canonical accepted promotion-pilot record preserving the decision, application, evidence, and validation.
 - `docs/reviews/engineering-opportunity-portfolio-recalibration.md` — Accepted human-reviewed interpretation of the complete Engineering Opportunity portfolio, including capability alignment, relationships, dispositions, priorities, and the Distinctness branch decision.
 - `docs/reviews/ai-operating-baseline-2026-07-14.md` — Dated current AI access and workflow baseline, including task profiles, provider decisions, privacy boundaries, challenger policy, evaluation evidence, and reassessment triggers.

@@ -1,10 +1,11 @@
 # Mission Selection Review — July 15, 2026
 
-- Authority class: Owner-originated Candidate Direction Review
+- Authority class: Owner-originated Candidate Direction Review with Recorded Owner Decision
 - Canonical: No
 - Generated: No
-- Status: Awaiting Owner Mission Selection
+- Status: Accepted Owner Decision Recorded
 - Date: July 15, 2026
+- Owner decision recorded: July 15, 2026
 - Repository baseline: commit `11d355809a07bf0721e86f9234ba8d2f57ecf9e1`
 - Decision authority: Owner
 
@@ -12,13 +13,13 @@
 
 ## 1. Purpose
 
-This review preserves mission-completion evidence, preserves six new candidate directions, records overlap analysis against the reviewed opportunity portfolio, compares candidate next missions, and stops before mission activation.
+This review preserves mission-completion evidence, preserves six new candidate directions, records overlap analysis against the reviewed opportunity portfolio, and compares candidate next missions. The original read-only review stopped before mission activation; the dated owner-decision record below preserves the later selection without rewriting that historical evidence.
 
-It is non-canonical decision evidence. It neither selects a mission nor authorizes implementation or Engineering Opportunity lifecycle mutation.
+It is non-canonical decision evidence. The recorded owner decision selects the mission through a bounded repository application but does not authorize capability implementation or Engineering Opportunity lifecycle mutation.
 
 ---
 
-## 2. Owner Decisions
+## 2. Original Owner Decisions at the Read-Only Review Checkpoint
 
 - Canonical Knowledge Promotion Workflow Operationalization mission completion accepted.
 - Mission-selection review authorized.
@@ -301,8 +302,8 @@ Large AI-Future Research is a bounded deliverable under Technology Capability In
   - EO-2026-002.
   - Manual Technology Capability Intelligence.
   - General Idea Intake.
-- Human Decision: Unmade.
-- No next mission selected or activated.
+- Human Decision at the original review checkpoint: Unmade.
+- No next mission was selected or activated by the original read-only review.
 
 ---
 
@@ -316,11 +317,97 @@ The owner may:
 - Defer mission selection.
 - Reject the recommendation and request another review.
 
-Current decision state:
+Original decision state at the read-only review checkpoint:
 
 - Decision: Unmade.
 - Current Mission activated: No.
 - Engineering Opportunity lifecycle changed: No.
 - Repository application authorized: No.
 
-STOP — Await explicit owner mission-selection decision before activating or implementing any next mission.
+### Resolved Human Decision Gate — July 15, 2026
+
+- Decision: Select EO-2026-013.
+- Current Mission activated: Yes, through this bounded repository application.
+- Engineering Opportunity lifecycle changed: No.
+- Next capability implementation automatically authorized: No.
+- AI Engineering Environment Review automatically authorized: No.
+
+---
+
+## 11. Accepted Owner Decision — July 15, 2026
+
+- Owner decision date: July 15, 2026.
+- Selected mission: EO-2026-013 — Task-Scoped Agent Context Compilation.
+- Mission form: Architecture and design first.
+- Selection confidence: Medium-high, approximately 0.80.
+- Engineering Opportunity lifecycle changed: No.
+- EO-2026-013 remains reviewed.
+- No capability implementation occurred in this mission-selection change.
+- The competing alternatives remain preserved for later consideration.
+
+The active first milestone is to define the Task-Scoped Agent Context Compilation architecture and one bounded example package. ChatGPT Project, Codex, and future assistant environments are consumers of repository-owned task context; repository documentation and Atlas remain deterministic authority. The first milestone does not authorize live environment cleanup, retrieval deployment, broad automation, or provider-specific permanent architecture.
+
+---
+
+## 12. Owner Refinement — AI Engineering Environment Review
+
+The actual AI working environments have not been systematically reviewed recently. The preserved future AI Engineering Environment Review is broader than ChatGPT Project instructions alone and includes:
+
+- ChatGPT Project instructions.
+- ChatGPT Project source files and their freshness.
+- Project settings, memory, and Library configuration.
+- Model and reasoning workflow conventions.
+- Connectors, tools, skills, and permissions.
+- Codex CLI configuration and launch workflow.
+- Repository instructions and reusable skills.
+- Generated context delivery and refresh behavior.
+- Duplicated or conflicting instructions across repository documentation, ChatGPT Projects, Codex, continuity packets, and fresh-chat openers.
+- Other current or future assistant environments.
+
+The review should use a deterministic inventory and classify each surface as:
+
+- Current and useful.
+- Stale.
+- Redundant.
+- Conflicting.
+- Missing.
+- Unused.
+- Poorly owned.
+- Not verifiable.
+
+For each surface, the review should record:
+
+- Authoritative source.
+- Intended consumer.
+- Owner.
+- Freshness expectation.
+- Update mechanism.
+- Evidence for retaining, changing, consolidating, or removing it.
+
+The review should identify stale, unused, duplicated, conflicting, missing, poorly owned, or otherwise improvable elements. It may use multiple AI systems only through a structured pattern:
+
+- Atlas and the repository provide deterministic source truth.
+- Codex may collect inventory and perform later bounded repository changes.
+- ChatGPT may perform primary architectural analysis and synthesis.
+- An independent challenger model may review the same evidence package.
+- Findings must separate agreement, disagreement, unsupported speculation, immediate corrections, later opportunities, and items that should remain unchanged.
+- The owner resolves disagreements, remains decision authority, and authorizes application.
+
+Portfolio treatment is:
+
+- EO-2026-008 — AI Engineering Excellence is the umbrella direction and the initial home for this bounded deliverable.
+- EO-2026-007 — AI Collaboration Intelligence supports collaboration reliability.
+- EO-2026-019 — Instruction and Context Effectiveness Evaluation supports effectiveness testing.
+- EO-2026-013 provides deterministic task context and consumer boundaries.
+- EO-2026-009 provides the longer-term shared personal AI context direction.
+- No new Engineering Opportunity should be created unless later evidence demonstrates a distinct recurring capability boundary.
+
+The review is not part of the first EO-2026-013 implementation boundary. No live ChatGPT Project, Project settings, Codex, connector, tool, skill, permission, generated-context delivery, or other AI-environment configuration changes are authorized now. The review follows the architecture design and requires its own bounded authorization.
+
+---
+
+## 13. Next Responsible Checkpoint
+
+Design the Task-Scoped Agent Context Compilation architecture.
+
+STOP — Return for human review before capability implementation or the AI Engineering Environment Review.
