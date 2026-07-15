@@ -21,9 +21,9 @@ This phase should produce operating evidence rather than rankings, subscriptions
 - Preserve the completed Aiden Platform architecture work as the first baseline evaluation.
 - Verify the account-level training control and current Project memory mode.
 - Run one bounded code-debugging evaluation.
-- Run one current-information research evaluation.
+- Preserve the completed current-information research evaluation and first ChatGPT Work pilot as reviewed evidence.
 - Preserve the completed AI and computer-science learning evaluation.
-- Map the current cloud-AI access landscape by capability category.
+- Use the completed cloud-AI capability landscape as dated, non-canonical research evidence.
 - Use ChatGPT High as the baseline arrangement.
 - Use Claude Free or another free challenger on comparable work where practical.
 - Record validation, corrections, friction, scope preservation, and learning retained.
@@ -54,10 +54,10 @@ The remaining tasks should be real useful work, not artificial benchmark prompts
 1. Confirm the architecture evaluation record against repository evidence.
 2. Verify `Improve the model for everyone` and Project memory configuration manually.
 3. Select a real debugging task with a reproducible failure and deterministic validation.
-4. Select a real research task with current primary sources and a decision it supports.
-5. Map direct subscriptions, native execution environments, multi-model consumer applications, API routers, cloud model platforms, and local AI by the capabilities they provide.
-6. Inventory unused capabilities already included in ChatGPT Plus before declaring a gap.
-7. Compare a challenger or alternative interface on at least one high-value task when the inputs can be made reasonably comparable.
+4. Complete the bounded Codex integration pilot and preserve its validated evidence.
+5. Capture the touchpad failed state when it occurs naturally and use it for the debugging evaluation.
+6. Compare an independent provider, preferably Claude, on at least one high-value task when the inputs can be made reasonably comparable.
+7. Inventory unused capabilities already included in ChatGPT Plus before declaring a gap.
 8. Treat willingness to pay as evidence-based rather than cost-avoidant.
 9. Record narrative evidence without creating an opaque universal score.
 10. Identify repeated or material value before adopting another durable capability.
@@ -82,6 +82,10 @@ The remaining tasks should be real useful work, not artificial benchmark prompts
 - Verified the existing Aiden Platform Project uses Default memory with Library access enabled.
 - Retained the current Project and deferred project-only migration until a bounded pilot or repeated context leakage demonstrates value.
 - Completed the AI and computer-science learning evaluation with demonstrated transfer.
+- Completed the cloud-AI capability landscape research and preserved the complete Work report as explicitly non-canonical dated evidence.
+- Completed the first ChatGPT Work pilot as a successful substantial research deliverable with human-review corrections.
+- Completed the current-information research evaluation and established the first alternative-interface evidence through ChatGPT Work.
+- Completed Stage 1 of the bounded Codex evaluation successfully in strict read-only mode.
 - Recalibrated AI spending from subscription avoidance to evidence-based willingness to pay.
 - Confirmed 43 passing tests on `main`.
 - Confirmed repository validation is Valid.
@@ -121,7 +125,11 @@ Configuration verification and the learning evaluation are complete.
 
 The touchpad debugging evaluation has a healthy baseline and is waiting for a natural failed-state capture.
 
-The current research evaluation should now map the AI access landscape and determine which included capability or paid challenger should receive the next bounded pilot.
+The current-information research evaluation and first Work pilot are complete. The cloud-AI landscape report is preserved as dated non-canonical evidence, with its human-reviewed interpretation recorded in the evaluation cycle.
+
+Codex Stage 1 completed successfully in strict read-only mode. The active next checkpoint is completion of the bounded Codex integration pilot with an inspectable, validated repository diff.
+
+The independent-provider comparison remains pending and should evaluate Claude seriously when a reasonably comparable task is available.
 
 ---
 

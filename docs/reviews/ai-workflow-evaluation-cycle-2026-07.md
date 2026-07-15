@@ -261,18 +261,121 @@ Required evidence:
 
 ## Evaluation 3 — Current-Information Research and Source Synthesis
 
-**Status:** Pending.
+**Status:** Complete.
 
-Use a real current decision or research question.
+### Task
 
-Required evidence:
+Map the current cloud-AI access landscape by capability category and recommend which included capability or independent provider should receive the next bounded evaluation.
 
-- Date-sensitive question.
-- Primary sources.
-- Conflicting evidence where relevant.
-- Source-grounded synthesis.
-- Validation of the strongest claim.
-- Decision supported by the research.
+### Date
+
+July 14, 2026.
+
+### Provider and Application
+
+ChatGPT Plus using the ChatGPT Work interface.
+
+This task did not use the separate Deep Research interface.
+
+### Visible Model and Mode
+
+- Model: GPT-5.6 Sol.
+- Effort: strongest available Work effort selected by the owner.
+- Speed: Standard.
+
+### Context Supplied
+
+- The current Aiden Platform mission and AI operating context available to the Work task.
+- A date-sensitive research question covering consumer applications, native execution environments, APIs, routers, cloud platforms, and local AI.
+- The owner's operating principles, current ChatGPT Plus arrangement, and decision constraints.
+
+### Tools Used
+
+- ChatGPT Work.
+- Work's current-information research and deliverable workflow.
+- Primary provider product, pricing, help, privacy, and developer sources recorded in the artifact.
+- Human review.
+- Live local Git and Atlas comparison during repository integration.
+
+### Data Sensitivity
+
+Ordinary Personal engineering and operating context.
+
+No credentials, secrets, or Highly Restricted information were required or preserved.
+
+### Action Authority
+
+The Work task researched and produced a substantial Markdown artifact.
+
+The owner selected the task, effort, operating constraints, corrections, and approved interpretation.
+
+The repository, Git, Atlas, and deterministic verification remain authoritative for repository state.
+
+### Result
+
+Successful substantial research artifact with human-review corrections.
+
+The complete source artifact is preserved as non-canonical dated research evidence in `docs/reviews/ai-capability-landscape-work-research-2026-07-14.md`.
+
+### Strengths
+
+- Capability-based taxonomy rather than a single model leaderboard.
+- Broad discovery across relevant access and execution categories.
+- A substantial primary-source record.
+- Clear distinction between native applications and API access.
+- Bounded recommendations tied to demonstrated needs.
+- Strong alignment with Aiden principles, including human authority, repository authority, determinism, and deferred complexity.
+
+### Corrections Required
+
+- Some Project or Library repository snapshots were stale relative to live repository state.
+- The artifact sometimes grouped Work and Deep Research too closely; this evaluation used Work and does not establish use of the separate Deep Research interface.
+- Numerical adoption thresholds were more precise than the evidence supports and remain provisional heuristics rather than canonical policy.
+- Broad awareness categories exceeded the immediate decision set and should not be interpreted as implementation scope.
+
+### Validation
+
+- Human spot-checking of representative primary sources and load-bearing claims.
+- Human reasoning and recommendation review.
+- Live Git comparison against the repository state.
+- Live Atlas comparison against registered and generated repository knowledge.
+- Mechanical verification that the preserved original artifact body matches the normalized source artifact.
+
+### Scope Behavior
+
+The research remained advisory and produced no subscription, account, API, router, cloud-platform, local-AI, production, homelab, or autonomous-agent change.
+
+The broad landscape is retained as dated awareness evidence, not as an expanded implementation agenda.
+
+### Time and Friction
+
+Work was effective for a large source-grounded deliverable.
+
+Human review was still required to reconcile stale repository snapshots, distinguish Work from Deep Research, temper precise thresholds, and narrow the immediate decision set.
+
+### Usage-Limit Impact
+
+No usage-limit blockage was reported for this task.
+
+### Learning Retained
+
+The useful comparison unit is a capability and native operating environment, not only a model or provider brand.
+
+Included capabilities should be tested before overlapping products are purchased, while an independent-provider comparison remains necessary to avoid drawing conclusions from one provider's interfaces.
+
+### Would Use Again
+
+Yes.
+
+Use Work again for substantial research and deliverables when the question, authority boundary, source expectations, and human review are explicit.
+
+### Operating Decision
+
+Retain ChatGPT Plus, treat Work as a useful included capability, continue the Codex pilot, evaluate Claude seriously later, and keep APIs, routers, cloud platforms, and local AI deferred pending real needs.
+
+This Work task counts as the current-information research evaluation and as an alternative-interface evaluation.
+
+It does not satisfy the still-pending independent-provider or Claude comparison.
 
 ---
 
@@ -368,7 +471,7 @@ Use the mental model to guide bounded Codex, Work, Claude, multi-model, API, and
 
 ---
 
-## Free Challenger Comparison
+## Independent-Provider Comparison
 
 **Status:** Pending.
 
@@ -392,8 +495,11 @@ No paid challenger subscription is authorized by opening this evaluation.
 - Account training is verified Off; Project memory is verified Default with Library access enabled.
 - Keep the current Project unless repeated context leakage or a bounded project-only pilot demonstrates a real advantage.
 - The AI and computer-science learning evaluation is complete and demonstrated practical transfer.
+- The current-information research evaluation is complete through a successful ChatGPT Work task with human-review corrections.
+- Work is useful as an included substantial-research and deliverable interface, but its output remains evidence subordinate to human interpretation and live repository verification.
+- The Work task supplies alternative-interface evidence but not independent-provider or Claude comparison evidence.
 - The owner's willingness to pay is evidence-based rather than cost-avoidant: additional subscriptions are acceptable when durable value is demonstrated.
-- Cross-model, coding-agent, extended-research, and multi-model access evidence remains incomplete.
+- Codex implementation evidence, independent-provider comparison, and cross-model evidence remain incomplete.
 
 ---
 
@@ -401,8 +507,10 @@ No paid challenger subscription is authorized by opening this evaluation.
 
 The cycle remains open.
 
-Configuration verification and the learning evaluation are complete.
+Configuration verification, the learning evaluation, and the current-information research evaluation are complete.
 
-Completion still requires the debugging task, current research task, and at least one practical challenger or alternative-interface comparison.
+Completion still requires the debugging task and at least one practical independent-provider comparison, with Claude remaining the preferred challenger.
+
+The completed Work task satisfies the alternative-interface portion of the evaluation but does not close the independent-provider requirement.
 
 Do not automate evaluation capture until repeated manual use reveals stable structure and value.
