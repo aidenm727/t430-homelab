@@ -116,6 +116,7 @@ Repository Objects and engineering tools support these layers.
 
 ## Portfolio Reviews
 
+- `docs/reviews/eo-2026-013-implementation-planning-review-2026-07-15.md` — Non-canonical evidence preserving accepted EO-2026-013 architecture completion, owner-approved mission advancement into implementation planning, the bounded vertical-slice plan and two future checkpoints, and the explicit withholding of implementation authorization.
 - `docs/reviews/mission-selection-review-2026-07-15.md` — Non-canonical evidence preserving completed mission evidence, candidate directions, session-health assessment, the accepted EO-2026-013 owner decision, and the deferred AI Engineering Environment Review.
 - `docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md` — Non-canonical accepted promotion-pilot record preserving the decision, application, evidence, and validation.
 - `docs/reviews/engineering-opportunity-portfolio-recalibration.md` — Accepted human-reviewed interpretation of the complete Engineering Opportunity portfolio, including capability alignment, relationships, dispositions, priorities, and the Distinctness branch decision.
@@ -183,8 +184,9 @@ This is a specialized reading path, not a new documentation layer.
 4. `docs/architecture/reasoning.md`
 5. `docs/architecture/engineering-sessions.md`
 6. `docs/architecture/task-scoped-agent-context-compilation.md`
-7. `docs/current-mission.md`
-8. `./atlas bootstrap`
+7. `docs/reviews/eo-2026-013-implementation-planning-review-2026-07-15.md`
+8. `docs/current-mission.md`
+9. `./atlas bootstrap`
 
 ### Infrastructure Work
 

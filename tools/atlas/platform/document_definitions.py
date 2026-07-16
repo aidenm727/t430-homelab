@@ -592,6 +592,35 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/eo-2026-013-implementation-planning-review-2026-07-15.md": DocumentDefinition(
+        path="docs/reviews/eo-2026-013-implementation-planning-review-2026-07-15.md",
+        purpose="Preserves architecture-completion evidence, owner-approved mission advancement into implementation planning, the bounded vertical-slice plan, and the explicit implementation-authorization gate.",
+        canonical=False,
+        generated=False,
+        capability="Engineering",
+        status="accepted",
+        tags=[
+            "mission-advancement",
+            "implementation-planning",
+            "task-context",
+            "context-compilation",
+            "architecture-completion",
+            "owner-decision",
+            "human-reviewed",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/current-mission.md",
+            "docs/architecture/task-scoped-agent-context-compilation.md",
+            "docs/architecture/mission-advancement.md",
+            "docs/architecture/engineering-sessions.md",
+            "docs/standards/engineering-collaboration.md",
+            "docs/reviews/mission-selection-review-2026-07-15.md",
+            "docs/opportunities/reviewed/EO-2026-013-task-scoped-agent-context-compilation.yaml",
+        ],
+    ),
+
     "docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md": DocumentDefinition(
         path="docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md",
         purpose="Preserves the first non-canonical knowledge-promotion pilot as an accepted candidate with its decision, bounded application, execution evidence, validation, and repository traceability.",

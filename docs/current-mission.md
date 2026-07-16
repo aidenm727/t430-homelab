@@ -2,78 +2,83 @@
 
 ## Phase
 
-Task-Scoped Agent Context Compilation Design
+Task-Scoped Agent Context Compilation Checkpoint A Implementation
 
 ---
 
 ## Mission State
 
-The owner selected EO-2026-013 — Task-Scoped Agent Context Compilation on July 15, 2026.
+The owner accepted the reconciled EO-2026-013 implementation plan and authorized Checkpoint A — Deterministic Foundations on July 16, 2026.
 
-The active mission is an architecture and design mission. EO-2026-013 remains in the `reviewed` lifecycle state, and no other Engineering Opportunity lifecycle state changes are authorized or made by mission selection.
+The accepted architecture checkpoint remains commit `2de09693ed1c922500477c5ba1c6903513ab4dd3` (`Define task-scoped context compilation architecture`). EO-2026-013 and all 21 Engineering Opportunities remain in the `reviewed` lifecycle state.
 
-Mission selection does not authorize capability implementation beyond the documented design checkpoint. The completed AI operating stack remains in force, and the protected branch `wip/distinctness-foundation-calibration` remains out of scope.
+Checkpoint A implementation is authorized only within the exact create, modify, and exclude scopes recorded in `docs/reviews/eo-2026-013-implementation-planning-review-2026-07-15.md`. Checkpoint B, the executable compiler path, remains withheld pending separate verification and owner acceptance.
+
+The completed AI operating stack remains in force. The protected branch `wip/distinctness-foundation-calibration` remains unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698`, excluded, and out of scope.
 
 ---
 
 ## Mission Intent
 
-Design a deterministic, reproducible, repository-owned capability for compiling task-specific context packages for bounded engineering missions and tasks.
+Implement and verify the deterministic foundations required by Task-Scoped Agent Context Compilation without beginning the executable compilation path.
 
-The model must not be responsible for deciding its own authoritative context.
+Checkpoint A establishes repository-owned task-context schemas and policies, strict request loading, the canonical-JSON interface and implementation decision, safe-integer behavior, digest and identifier primitives, structural validation foundations, independently verified expected values, and minimal Atlas visibility through one canonical Markdown owner/index.
 
-Repository documentation and Atlas remain deterministic authority. ChatGPT Project, Codex, and future assistant environments are consumers of repository-owned task context rather than canonical owners.
+Task authority remains external to compilation. Repository documentation and Atlas remain deterministic authority. Checkpoint A must return for owner review before Checkpoint B begins.
+
+Repository Synchronization Reasoning remains the deterministic check for alignment between this mission, canonical architecture, generated context, repository metadata, and the accepted plan.
 
 ---
 
 ## Current Focus
 
-- Define a task-context package schema.
-- Define deterministic source-selection rules.
-- Record why each source is selected.
-- Preserve provenance, authority, freshness, conflicts, unknowns, and omissions.
-- Define context-size and context-budget behavior.
-- Define task goal, scope, non-goals, success criteria, permissions, writable paths, approval points, and required validation.
-- Keep the contract model- and provider-independent.
-- Recognize ChatGPT Project, Codex, and future assistants as consumers rather than canonical owners.
-- Preserve repository documentation and Atlas as deterministic authority.
-- Use Repository Synchronization Reasoning to verify alignment throughout architecture and design.
-- Design before implementation.
+- Create the exact Checkpoint A schemas, policies, request fixture, expected-values fixture, Python foundation modules, and tests authorized by the accepted plan.
+- Create `docs/task-context/index.md` as the canonical human-readable owner of the structured task-context artifact family.
+- Register only that Markdown index through existing Atlas document discovery.
+- Complete the bounded RFC 8785 build-versus-adopt comparison before accepting `canonical_json.py`.
+- Enforce the accepted safe-integer, strict JSON, digest-surface, identifier, and structural-validation contracts.
+- Preserve the exact historical request fixture and policy identities.
+- Keep the package golden fixture, Git snapshot adapter, source selection, selectors, payload materialization, full compiler, explanations, YAML dependency decision, and Checkpoint B tests out of scope.
+- Verify all existing tests plus the new Checkpoint A tests.
+- Regenerate managed context, validate, synchronize, document, commit, and push.
+- Return for owner acceptance before Checkpoint B.
 
 ---
 
 ## Initial Milestone
 
-Define the Task-Scoped Agent Context Compilation architecture and one bounded example package.
-
-The architecture is expected to be documented later, likely under `docs/architecture/`. This mission-selection application does not create that architecture document or begin capability implementation.
+Implement and verify Checkpoint A — Deterministic Foundations.
 
 ### Included
 
-- Package schema.
-- Deterministic source selection.
-- Source-selection explanations.
-- Provenance and authority.
-- Freshness.
-- Conflicts and unknowns.
-- Context-size behavior.
-- Omissions.
-- Consumer contract.
-- One bounded example package.
+- `docs/task-context/index.md`.
+- Four versioned JSON Schemas.
+- One versioned selection policy and one versioned budget policy.
+- One exact compilation-request fixture.
+- One independently verified foundation-values fixture.
+- `context_compilation` models, canonical JSON, inputs, digests, and validation foundations.
+- Checkpoint A unit tests.
+- Registration of only the canonical Markdown task-context index.
+- A recorded RFC 8785 build-versus-adopt decision.
+- Verification, documentation, synchronization, commit, and push.
+- A return to owner review before Checkpoint B.
 
 ### Excluded
 
-- Embeddings.
-- Vector databases.
-- Model-based retrieval.
-- LLM invocation.
-- Autonomous execution.
-- Broad agent authority.
-- Live ChatGPT Project cleanup.
-- Live Project settings changes.
-- Codex configuration changes.
-- Provider-specific permanent architecture.
+- The executable package golden fixture.
+- Git snapshot resolution.
+- Source selection reasoning implementation.
+- YAML-field or heading selectors.
+- Payload materialization.
+- Full package compilation.
+- Explanation rendering.
+- A YAML dependency or parser decision.
+- Atlas commands or generic structured-resource discovery.
+- Checkpoint B implementation.
+- EO-2026-014 task-contract implementation.
+- Agent execution, autonomy, approval automation, provider routing, or AI-environment changes.
 - Engineering Opportunity lifecycle mutation.
+- Protected-branch access or change.
 
 ---
 
@@ -121,6 +126,32 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ## Completion History
 
+### EO-2026-013 Reconciled Implementation Plan Acceptance
+
+- Reconciled implementation plan accepted by the owner on July 16, 2026.
+- Checkpoint A — Deterministic Foundations authorized.
+- Checkpoint B — Executable Compilation Path remains withheld.
+- External implementation-readiness research and constrained independent challenge evidence were reconciled into the accepted plan.
+- No Engineering Opportunity lifecycle state changed.
+- No implementation was performed by the acceptance decision itself.
+- The protected branch remained unchanged and out of scope.
+
+
+### EO-2026-013 Task-Scoped Agent Context Compilation Architecture
+
+- Architecture completion accepted by the owner on July 15, 2026.
+- Architecture commit: `2de09693ed1c922500477c5ba1c6903513ab4dd3` (`Define task-scoped context compilation architecture`).
+- Canonical architecture: `docs/architecture/task-scoped-agent-context-compilation.md`.
+- The architecture defines deterministic task authority, source selection, ordering, provenance, freshness, conflicts, unknowns, omissions, UTF-8 byte budgeting, digest surfaces, validation invariants, and consumer boundaries.
+- One bounded, manually assembled, informative, non-executable example records five accepted sources and exact selector behavior without claiming compiler or validator execution.
+- Human review corrections were incorporated before the guarded architecture commit.
+- The guarded committed run preserved evidence that all 43 tests passed.
+- Atlas validation was Valid, missing definitions were clean, and synchronization was Synchronized.
+- Engineering Review's generic `Unknown / Low` result was non-blocking because no specialized milestone reasoning rule exists or is required.
+- EO-2026-013 and all 21 Engineering Opportunities remained `reviewed`.
+- No compiler, selector, validator, policy, fixture, lifecycle, Atlas command, Atlas reasoning, agent behavior, or AI-environment configuration change was introduced.
+- The protected branch remained unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698`.
+
 ### Canonical Knowledge Promotion Workflow Operationalization
 
 - Completion accepted by the owner on July 15, 2026.
@@ -157,61 +188,59 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 - Adopted the final operating stack while deferring additional subscriptions, API spending, automatic routing, local AI, and broad agent authority.
 - Preserved the laptop reliability issue as operational follow-up rather than a blocker on the completed AI cycle.
 - Completed the Canonical Knowledge Promotion Workflow Operationalization mission and obtained owner acceptance on July 15, 2026.
+- Completed the EO-2026-013 Task-Scoped Agent Context Compilation architecture milestone and obtained owner acceptance on July 15, 2026.
 
 ---
 
 ## Current Non-Priorities
 
-- Implementing EO-2026-013 before its architecture and bounded example package are designed and reviewed.
+- Beginning Checkpoint B before Checkpoint A is verified and separately accepted.
+- Creating the executable package golden fixture.
+- Implementing Git snapshot resolution, source selection, selectors, payload materialization, the full compiler, or explanations during Checkpoint A.
+- Adding an Atlas context command, generic structured-resource discovery, or milestone-specific Atlas reasoning.
+- Adding a YAML parser dependency or relying on ambient workstation packages during Checkpoint A.
 - Mutating any Engineering Opportunity lifecycle state.
-- Embeddings, vector databases, model-based retrieval, or LLM-driven context selection.
-- Autonomous execution or broad agent authority.
-- Live ChatGPT Project cleanup or Project settings changes.
-- Codex configuration changes.
-- Performing the broader AI Engineering Environment Review without a separate bounded authorization.
-- Creating a duplicate Engineering Opportunity for that review without evidence of a distinct recurring capability boundary.
-- Universal inbox automation.
-- New Repository Object types.
-- Automatic promotion.
-- Whole-life ingestion.
-- Personal AI implementation.
-- Automatic model routing.
-- Reopening the completed Initial AI Workflow Evaluation Cycle without an owner decision.
-- Redesigning the Knowledge Authority Architecture.
-- Autonomous conflict resolution or human-decision replacement.
-- Purchasing another standing AI subscription without new evidence.
-- Adding API spending or deploying a local model runtime.
+- Embeddings, vector databases, semantic retrieval, model-based retrieval, or LLM-driven context selection.
+- Autonomous execution, broad agent authority, approval automation, provider routing, or agent consumption.
+- Live ChatGPT Project cleanup, Project settings changes, or Codex configuration changes.
+- Performing the broader AI Engineering Environment Review without separate authorization.
+- Creating recurring research automation or purchasing another standing AI subscription from this mission.
 - Resuming or merging the Distinctness implementation.
-- Expanding Atlas reasoning solely to produce a green milestone status.
+- Accessing or changing the protected branch.
 
 ---
 
 ## Current Status
 
-EO-2026-013 is selected as the active mission basis and remains reviewed. The mission is bounded to architecture and design, with one bounded example context package. No capability implementation or Engineering Opportunity lifecycle mutation is authorized by this selection application.
+The reconciled EO-2026-013 implementation plan is owner-accepted. Checkpoint A — Deterministic Foundations is authorized within the exact scope recorded by the dated implementation-planning review. Checkpoint B remains unauthorized.
 
-The completed AI operating stack remains in force: ChatGPT High for architecture and judgment, ChatGPT Work for substantial researched deliverables, Codex for bounded repository implementation, Claude Free for occasional independent audit, deterministic tools for authority, and the owner for approval and promotion.
+EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`. No schema, policy, fixture, Python module, or test has yet been created under the Checkpoint A authorization.
 
-The broader AI Engineering Environment Review is preserved as a downstream bounded deliverable. It follows architecture design and requires its own authorization. The protected branch remains unchanged and out of scope.
+The broader AI Engineering Environment Review and the candidate Structured Research Orchestration and Evidence Portability direction remain downstream and separately governed.
 
 ---
 
 ## Next Milestone
 
-Define the Task-Scoped Agent Context Compilation architecture and one bounded example package.
+Implement and verify Checkpoint A — Deterministic Foundations, then obtain owner acceptance before Checkpoint B.
 
-The next responsible checkpoint is architecture and design review. Mission selection does not authorize implementation beyond that documented design checkpoint.
+The next responsible checkpoint is a clean, tested, synchronized, documented, committed, and pushed Checkpoint A implementation. Checkpoint B must not begin automatically.
 
 ---
 
 ## Decision Boundary
 
-- Human decision: EO-2026-013 selected on July 15, 2026.
-- Current Mission activated: Yes, as an architecture and design mission.
+- Human decision: Reconciled EO-2026-013 implementation plan accepted on July 16, 2026.
+- Architecture checkpoint: `2de09693ed1c922500477c5ba1c6903513ab4dd3`.
+- Current Mission advanced: Yes, to Checkpoint A implementation.
+- Checkpoint A authorized: Yes, within the exact accepted scope.
+- Checkpoint B authorized: No.
 - Engineering Opportunity lifecycle changed: No.
 - EO-2026-013 lifecycle state: Reviewed.
-- Capability implementation automatically authorized: No.
-- AI Engineering Environment Review automatically authorized: No.
+- Atlas command or generic discovery work authorized: No.
+- YAML dependency authorized: No.
+- AI Engineering Environment Review authorized: No.
+- Recurring research automation authorized: No.
 - Protected branch in scope: No.
 
-STOP — Design the Task-Scoped Agent Context Compilation architecture, then return for human review before capability implementation.
+STOP — Implement and verify Checkpoint A only, then return for owner review before Checkpoint B.
