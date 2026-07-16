@@ -355,6 +355,27 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/task-context/index.md": DocumentDefinition(
+        path="docs/task-context/index.md",
+        purpose="Owns the identity, inventory, stewardship, loading contract, and checkpoint boundary for repository-owned task-context schemas and policies.",
+        canonical=True,
+        generated=False,
+        capability="Knowledge and Context",
+        tags=[
+            "knowledge-and-context",
+            "task-context",
+            "structured-resources",
+            "schemas",
+            "policies",
+        ],
+        related=[
+            "docs/architecture/task-scoped-agent-context-compilation.md",
+            "docs/architecture/knowledge-authority.md",
+            "docs/architecture/repository.md",
+            "docs/current-mission.md",
+        ],
+    ),
+
     "docs/knowledge-promotion.md": DocumentDefinition(
         path="docs/knowledge-promotion.md",
         purpose="Defines the canonical human-applied Operations procedure for preparing, deciding, applying, validating, and tracing deliberate knowledge promotion.",

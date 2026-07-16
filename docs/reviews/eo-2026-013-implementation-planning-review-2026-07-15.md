@@ -3,10 +3,11 @@
 - Authority class: Human-Reviewed Mission Advancement and Implementation-Planning Decision
 - Canonical: No
 - Generated: No
-- Status: Accepted Implementation Plan and Checkpoint A Authorization Recorded
+- Status: Checkpoint A Completion Accepted; Checkpoint B Withheld
 - Date: July 15, 2026
 - Owner decision recorded: July 15, 2026
 - Plan acceptance and Checkpoint A authorization recorded: July 16, 2026
+- Checkpoint A completion acceptance recorded: July 16, 2026
 - Repository baseline: commit `2de09693ed1c922500477c5ba1c6903513ab4dd3`
 - Architecture checkpoint: commit `2de09693ed1c922500477c5ba1c6903513ab4dd3`
 - Decision authority: Owner
@@ -15,9 +16,11 @@
 
 ## 1. Purpose and Authority
 
-This non-canonical dated review records the owner's acceptance of EO-2026-013 architecture completion and owner-approved advancement of the active mission into implementation planning. It preserves repository evidence, reviewer assessment, the owner decision, a proposed first executable vertical-slice plan, and the gate that withholds implementation.
+This non-canonical dated review records the decision history for EO-2026-013 architecture completion, implementation planning, Checkpoint A authorization, and Checkpoint A completion acceptance.
 
-The owner decision authorizes the mission-state and documentation changes recorded here. It does not accept the proposed implementation plan, authorize implementation, change an Engineering Opportunity lifecycle state, or authorize downstream AI-environment work. Proposed responsibilities, paths, checkpoints, and tests are planned future work until the owner reviews and separately accepts them.
+The owner accepted the reconciled implementation plan and authorized Checkpoint A on July 16, 2026. After implementation, bounded correction, source audit, and independent final verification, the owner accepted Checkpoint A as complete and authorized recording, committing, and pushing it.
+
+This review does not authorize Checkpoint B, change an Engineering Opportunity lifecycle state, authorize downstream AI-environment work, or broaden task authority.
 
 ## 2. Verified Repository State
 
@@ -65,21 +68,25 @@ Recorded July 15, 2026. This accepted architecture completion and advanced the m
 
 > Accept the reconciled EO-2026-013 implementation plan and authorize Checkpoint A only.
 
-Recorded July 16, 2026. This accepts the reconciled plan and authorizes Checkpoint A — Deterministic Foundations within the exact create, modify, and exclude scopes recorded below.
+Recorded July 16, 2026. This accepted the reconciled plan and authorized Checkpoint A — Deterministic Foundations within the exact create, modify, and exclude scopes recorded below.
 
-The July 16 decision does not authorize Checkpoint B, the executable compiler path, a YAML dependency, an Atlas command, agent behavior, AI-environment changes, Engineering Opportunity lifecycle mutation, or protected-branch work.
+> Accept EO-2026-013 Checkpoint A as complete. Authorize recording, committing, and pushing the Checkpoint A completion. Do not authorize Checkpoint B.
+
+Recorded July 16, 2026. This accepted the independently verified Checkpoint A implementation and authorized its canonical repository commit and push.
+
+None of these decisions authorizes Checkpoint B, a YAML dependency, an Atlas command, agent behavior, AI-environment changes, Engineering Opportunity lifecycle mutation, or protected-branch work.
 
 ## 5. Mission Advancement
 
 The active phase advances to:
 
-`Task-Scoped Agent Context Compilation Checkpoint A Implementation`
+`Task-Scoped Agent Context Compilation Checkpoint A Complete`
 
 The next milestone is:
 
-`Implement and verify Checkpoint A — Deterministic Foundations, then obtain owner acceptance before Checkpoint B.`
+`Obtain a separate owner decision on Checkpoint B — Executable Compilation Path.`
 
-EO-2026-013 remains `reviewed`, as do all 21 opportunities. Checkpoint A is authorized only within this review's exact accepted scope. Checkpoint B remains withheld. The protected branch remains unchanged and outside the mission. The broader AI Engineering Environment Review remains downstream and separately authorized.
+EO-2026-013 remains `reviewed`, as do all 21 opportunities. Checkpoint A is complete and accepted. Checkpoint B remains withheld. The protected branch remains unchanged and outside the mission. The broader AI Engineering Environment Review and Structured Research Orchestration direction remain downstream and separately authorized.
 
 ## 6. Proposed Current Focus
 
@@ -456,11 +463,11 @@ The research cycle is sufficient for owner review of this plan. Further external
 
 ## 20. Explicit Non-Authorization
 
-This record authorizes only the Checkpoint A create and modify scopes explicitly listed in Sections 12 and 14, together with verification, documentation, synchronization, commit, and push needed to complete that checkpoint.
+Checkpoint A completion authorizes only recording, committing, and pushing the accepted Checkpoint A implementation and its completion-state documentation.
 
-It does not authorize the Checkpoint B package fixture, Git snapshot adapter, source-selection implementation, YAML or heading selectors, payload materialization, compiler, explanations, Checkpoint B tests, Atlas commands, generic repository discovery, milestone-specific Atlas reasoning, a YAML dependency, agent behavior, task-contract implementation, autonomy or approval automation, execution records, provider routing, AI-environment configuration, Engineering Opportunity lifecycle mutation, protected refs, or protected-branch work.
+It does not authorize the Checkpoint B package fixture, Git snapshot adapter, source-selection implementation, YAML or heading selectors, payload materialization, compiler, package-integrity implementation, explanations, Checkpoint B tests, Atlas commands, generic repository discovery, milestone-specific Atlas reasoning, a YAML dependency, agent behavior, task-contract implementation, autonomy or approval automation, execution records, provider routing, AI-environment configuration, Engineering Opportunity lifecycle mutation, protected refs, or protected-branch work.
 
-Checkpoint A completion does not automatically authorize Checkpoint B. A verified Checkpoint A must return for separate owner acceptance.
+Checkpoint A completion does not automatically authorize Checkpoint B. A separate owner decision remains mandatory.
 
 ## 21. Decision Traceability
 
@@ -469,12 +476,15 @@ Checkpoint A completion does not automatically authorize Checkpoint B. A verifie
 - Architecture checkpoint: `2de09693ed1c922500477c5ba1c6903513ab4dd3` — `Define task-scoped context compilation architecture`.
 - July 15, 2026 owner decision: architecture completion accepted and mission advanced to Implementation Planning.
 - July 16, 2026 owner decision: reconciled implementation plan accepted and Checkpoint A — Deterministic Foundations authorized.
+- Checkpoint A authorization baseline: `6d1ee11f4e79b7e7781746b5cf44a17f00390e01` — `Authorize EO-2026-013 Checkpoint A`.
+- July 16, 2026 technical verification: exact 18-created / 2-modified scope; no Checkpoint B paths or unapproved dependencies; stable schema URNs; preserved policy and request digests; deep immutability; validator parity; 83 passing tests; Atlas Valid, complete, and Synchronized.
+- July 16, 2026 owner decision: Checkpoint A accepted as complete; recording, commit, and push authorized; Checkpoint B explicitly withheld.
 - Lifecycle decision: EO-2026-013 and all 21 opportunities remain `reviewed`.
-- Atlas decision: no command, generic structured-resource discovery, or milestone-specific rule is authorized by plan acceptance.
-- Dependency decision: no YAML dependency is authorized during Checkpoint A; RFC 8785 implementation choice remains subject to the accepted build-versus-adopt gate.
+- Atlas decision: no command, generic structured-resource discovery, or milestone-specific rule is authorized.
+- Dependency decision: no YAML dependency is authorized; the restricted standard-library canonicalizer remains the accepted Checkpoint A implementation.
 - Protected-reference decision: `wip/distinctness-foundation-calibration` remains unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698` and out of scope.
 - Downstream decision: Checkpoint B, the AI Engineering Environment Review, recurring research automation, and Structured Research Orchestration remain separately governed.
-- Current authorization: Checkpoint A create/modify scope, verification, documentation, synchronization, commit, and push only.
-- Next decision gate: owner acceptance, revision, or rejection of the verified Checkpoint A implementation before Checkpoint B.
+- Current authorization: record, commit, and push accepted Checkpoint A completion only.
+- Next decision gate: separate owner authorization, revision, deferral, or rejection of Checkpoint B.
 
-STOP — Implement and verify Checkpoint A only, then return for owner review before Checkpoint B.
+STOP — Preserve Checkpoint A. Do not begin Checkpoint B without a separate owner decision.

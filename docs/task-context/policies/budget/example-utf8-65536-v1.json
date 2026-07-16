@@ -1,0 +1,28 @@
+{
+  "schema_version": "aiden.task-context.budget-policy/v1",
+  "id": "example.utf8-byte-budget",
+  "version": "1.0.0",
+  "normative_unit": "utf8_bytes",
+  "limit_bytes": 65536,
+  "allocation_order": [
+    "mandatory_control_envelope",
+    "mandatory_authoritative_sources",
+    "required_supporting_sources",
+    "optional_evidence"
+  ],
+  "control_envelope_measurement": {
+    "canonicalization": "rfc8785-jcs",
+    "remove": [
+      "package.digest",
+      "payloads[*].content",
+      "budget.measurement"
+    ]
+  },
+  "mandatory_tier_overflow": "non_consumable_budget_exceeded",
+  "arbitrary_character_truncation": "forbidden",
+  "digest": {
+    "algorithm": "sha256",
+    "canonicalization": "rfc8785-jcs",
+    "value": "717dabd3850eaea04caf2439ca77b859a3e0343ec52bc336b2e01ee42727db05"
+  }
+}

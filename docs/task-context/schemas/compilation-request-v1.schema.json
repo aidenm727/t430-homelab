@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aiden-platform:task-context:schema:compilation-request:v1",
+  "title": "Aiden task-context compilation request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "repository_request",
+    "task",
+    "declared_constraints",
+    "selection_policy",
+    "budget_policy",
+    "protected_references",
+    "as_of",
+    "compiler"
+  ],
+  "properties": {
+    "schema_version": {"const": "aiden.task-context.compilation-request/v1"},
+    "repository_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity", "requested_revision"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1},
+        "requested_revision": {"type": "string", "minLength": 1}
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "goal", "scope", "non_goals", "completion_criteria", "mission_references", "opportunity_references"],
+      "properties": {
+        "id": {"$ref": "#/$defs/attributed"},
+        "type": {"$ref": "#/$defs/attributed"},
+        "goal": {"$ref": "#/$defs/attributed"},
+        "scope": {"$ref": "#/$defs/attributed"},
+        "non_goals": {"$ref": "#/$defs/attributed"},
+        "completion_criteria": {"$ref": "#/$defs/attributed"},
+        "mission_references": {"$ref": "#/$defs/attributed"},
+        "opportunity_references": {"$ref": "#/$defs/attributed"}
+      }
+    },
+    "declared_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["permissions", "forbidden_actions", "writable_paths", "approval_points", "required_validation"],
+      "properties": {
+        "permissions": {"$ref": "#/$defs/attributed"},
+        "forbidden_actions": {"$ref": "#/$defs/attributed"},
+        "writable_paths": {"$ref": "#/$defs/attributed"},
+        "approval_points": {"$ref": "#/$defs/attributed"},
+        "required_validation": {"$ref": "#/$defs/attributed"}
+      }
+    },
+    "selection_policy": {
+      "allOf": [
+        {"$ref": "#/$defs/policyReference"},
+        {"properties": {"id": {"const": "example.read-only-architecture-assessment"}, "version": {"const": "1.0.0"}}}
+      ]
+    },
+    "budget_policy": {
+      "allOf": [
+        {"$ref": "#/$defs/policyReference"},
+        {"properties": {"id": {"const": "example.utf8-byte-budget"}, "version": {"const": "1.0.0"}}}
+      ]
+    },
+    "protected_references": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/protectedReference"}
+    },
+    "as_of": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "compiler": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity", "version"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1}
+      }
+    },
+    "fixture_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected_tree"],
+      "properties": {
+        "expected_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "canonicalization", "value"],
+      "properties": {
+        "algorithm": {"const": "sha256"},
+        "canonicalization": {"const": "rfc8785-jcs"},
+        "value": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "policyReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "digest"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "owner"],
+      "properties": {
+        "class": {"type": "string", "minLength": 1},
+        "owner": {"type": "string", "minLength": 1}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "selector"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "selector": {"type": "string", "minLength": 1}
+      }
+    },
+    "attributed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "value", "authority", "provenance"],
+      "properties": {
+        "state": {"const": "known"},
+        "value": {"$ref": "#/$defs/normativeValue"},
+        "authority": {"$ref": "#/$defs/authority"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      }
+    },
+    "normativeValue": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "boolean"},
+        {"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991},
+        {"type": "string"},
+        {"type": "array", "items": {"$ref": "#/$defs/normativeValue"}},
+        {"type": "object", "additionalProperties": {"$ref": "#/$defs/normativeValue"}}
+      ]
+    },
+    "protectedReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "expected_object", "authoritatively_targeted", "selection"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "expected_object": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "authoritatively_targeted": {"type": "boolean"},
+        "selection": {"enum": ["forbidden", "allowed"]}
+      },
+      "if": {"properties": {"selection": {"const": "allowed"}}},
+      "then": {"properties": {"authoritatively_targeted": {"const": true}}}
+    }
+  }
+}

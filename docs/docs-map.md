@@ -48,6 +48,7 @@ Repository Objects and engineering tools support these layers.
 - `docs/architecture/ai-operating-model.md`
 - `docs/architecture/knowledge-authority.md`
 - `docs/architecture/task-scoped-agent-context-compilation.md`
+- `docs/task-context/index.md`
 
 ## Engineering Architecture
 

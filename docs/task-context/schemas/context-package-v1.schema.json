@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aiden-platform:task-context:schema:context-package:v1",
+  "title": "Aiden task-context package v1",
+  "description": "Structural contract only; schema validity does not establish compilation, integrity, or consumability.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "package",
+    "compilation",
+    "repository",
+    "task",
+    "declared_constraints",
+    "sources",
+    "payloads",
+    "budget",
+    "conflicts",
+    "unknowns",
+    "omissions",
+    "validation",
+    "consumer_contract"
+  ],
+  "properties": {
+    "schema_version": {"const": "aiden.task-context/v1"},
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "identity_digest", "digest", "status", "generated", "canonical", "consumability", "non_consumable_reasons"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^tcp-[0-9a-f]{24}$"},
+        "identity_digest": {"$ref": "#/$defs/digest"},
+        "digest": {"$ref": "#/$defs/digest"},
+        "status": {"type": "string", "minLength": 1},
+        "generated": {"const": true},
+        "canonical": {"const": false},
+        "consumability": {"enum": ["consumable", "non_consumable"]},
+        "non_consumable_reasons": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "compilation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["compiler", "selection_policy", "budget_policy", "request_digest", "as_of"],
+      "properties": {
+        "compiler": {"$ref": "#/$defs/compiler"},
+        "selection_policy": {
+          "allOf": [
+            {"$ref": "#/$defs/policyReference"},
+            {"properties": {"id": {"const": "example.read-only-architecture-assessment"}, "version": {"const": "1.0.0"}}}
+          ]
+        },
+        "budget_policy": {
+          "allOf": [
+            {"$ref": "#/$defs/policyReference"},
+            {"properties": {"id": {"const": "example.utf8-byte-budget"}, "version": {"const": "1.0.0"}}}
+          ]
+        },
+        "request_digest": {"$ref": "#/$defs/digest"},
+        "as_of": {"$ref": "#/$defs/rfc3339"}
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity", "requested_revision", "object_format", "commit", "tree", "snapshot_mode", "snapshot_fingerprint", "protected_references"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1},
+        "requested_revision": {"type": "string", "minLength": 1},
+        "object_format": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "minLength": 1},
+        "tree": {"type": "string", "minLength": 1},
+        "advisory_branch": {"type": ["string", "null"]},
+        "snapshot_mode": {"const": "clean_committed"},
+        "snapshot_fingerprint": {"$ref": "#/$defs/digest"},
+        "protected_references": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/protectedReference"}
+        }
+      }
+    },
+    "task": {"$ref": "#/$defs/task"},
+    "declared_constraints": {"$ref": "#/$defs/constraints"},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+    "payloads": {"type": "array", "items": {"$ref": "#/$defs/payload"}},
+    "budget": {"$ref": "#/$defs/budget"},
+    "conflicts": {"type": "array", "items": {"$ref": "#/$defs/conflict"}},
+    "unknowns": {"type": "array", "items": {"$ref": "#/$defs/unknown"}},
+    "omissions": {"type": "array", "items": {"$ref": "#/$defs/omission"}},
+    "validation": {"$ref": "#/$defs/validation"},
+    "consumer_contract": {"$ref": "#/$defs/consumerContract"}
+  },
+  "$defs": {
+    "safeInteger": {"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991},
+    "safeNonNegativeInteger": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+    "stringArray": {"type": "array", "items": {"type": "string"}},
+    "rfc3339": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "canonicalization", "value"],
+      "properties": {
+        "algorithm": {"const": "sha256"},
+        "canonicalization": {"const": "rfc8785-jcs"},
+        "value": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "byteDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": {"const": "sha256"},
+        "value": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "compiler": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity", "version"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1}
+      }
+    },
+    "policyReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "digest"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "protectedReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "expected_object", "authoritatively_targeted", "selection"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "expected_object": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "authoritatively_targeted": {"type": "boolean"},
+        "selection": {"enum": ["forbidden", "allowed"]}
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "owner"],
+      "properties": {
+        "class": {"type": "string", "minLength": 1},
+        "owner": {"type": "string", "minLength": 1}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "selector"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "selector": {"type": "string", "minLength": 1}
+      }
+    },
+    "attributed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "value", "authority", "provenance"],
+      "properties": {
+        "state": {"enum": ["known", "unknown"]},
+        "value": {"$ref": "#/$defs/normativeValue"},
+        "authority": {"$ref": "#/$defs/authority"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      }
+    },
+    "normativeValue": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "boolean"},
+        {"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991},
+        {"type": "string"},
+        {"type": "array", "items": {"$ref": "#/$defs/normativeValue"}},
+        {"type": "object", "additionalProperties": {"$ref": "#/$defs/normativeValue"}}
+      ]
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "goal", "scope", "non_goals", "completion_criteria", "mission_references", "opportunity_references"],
+      "properties": {
+        "id": {"$ref": "#/$defs/attributed"},
+        "type": {"$ref": "#/$defs/attributed"},
+        "goal": {"$ref": "#/$defs/attributed"},
+        "scope": {"$ref": "#/$defs/attributed"},
+        "non_goals": {"$ref": "#/$defs/attributed"},
+        "completion_criteria": {"$ref": "#/$defs/attributed"},
+        "mission_references": {"$ref": "#/$defs/attributed"},
+        "opportunity_references": {"$ref": "#/$defs/attributed"}
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["permissions", "forbidden_actions", "writable_paths", "approval_points", "required_validation"],
+      "properties": {
+        "permissions": {"$ref": "#/$defs/attributed"},
+        "forbidden_actions": {"$ref": "#/$defs/attributed"},
+        "writable_paths": {"$ref": "#/$defs/attributed"},
+        "approval_points": {"$ref": "#/$defs/attributed"},
+        "required_validation": {"$ref": "#/$defs/attributed"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "structured_object_identity", "selector", "priority_tier", "selection_rule", "selection_reason", "trigger", "selection_chain", "authority_class", "canonical_owner", "commit", "immutable_source_identity", "source_content_digest", "transformation", "freshness", "included_utf8_bytes", "payload_ref"],
+      "properties": {
+        "id": {"type": "string"},
+        "path": {"type": "string"},
+        "structured_object_identity": {"type": ["string", "null"]},
+        "selector": {"type": "string"},
+        "priority_tier": {"$ref": "#/$defs/safeNonNegativeInteger"},
+        "selection_rule": {"type": "string"},
+        "selection_reason": {"type": "string"},
+        "trigger": {"type": "string"},
+        "selection_chain": {"$ref": "#/$defs/stringArray"},
+        "authority_class": {"type": "string"},
+        "canonical_owner": {"type": "string"},
+        "commit": {"type": "string"},
+        "immutable_source_identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "object_format", "value"],
+          "properties": {
+            "type": {"type": "string"},
+            "object_format": {"type": "string"},
+            "value": {"type": "string"}
+          }
+        },
+        "source_content_digest": {"$ref": "#/$defs/byteDigest"},
+        "transformation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {
+            "type": {"type": "string"},
+            "selected_fields": {"$ref": "#/$defs/stringArray"},
+            "output": {"type": "string"},
+            "line_endings": {"type": "string"},
+            "start_heading": {"type": "string"},
+            "occurrence": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+            "end_rule": {"type": "string"},
+            "source_line_endings": {"type": "string"},
+            "content_change": {"type": "string"}
+          }
+        },
+        "freshness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "basis", "rule", "as_of"],
+          "properties": {
+            "status": {"enum": ["current_at_snapshot", "stale", "unknown", "not_applicable"]},
+            "basis": {"type": "string"},
+            "rule": {"type": "string"},
+            "as_of": {"$ref": "#/$defs/rfc3339"}
+          }
+        },
+        "included_utf8_bytes": {"$ref": "#/$defs/safeNonNegativeInteger"},
+        "payload_ref": {"type": "string"}
+      }
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source_ref", "media_type", "encoding", "content", "utf8_bytes", "digest"],
+      "properties": {
+        "id": {"type": "string"},
+        "source_ref": {"type": "string"},
+        "media_type": {"type": "string"},
+        "encoding": {"const": "utf-8"},
+        "content": {"type": "string"},
+        "utf8_bytes": {"$ref": "#/$defs/safeNonNegativeInteger"},
+        "digest": {"$ref": "#/$defs/byteDigest"}
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["normative_unit", "limit_bytes", "allocation_order", "measurement", "outcome"],
+      "properties": {
+        "normative_unit": {"const": "utf8_bytes"},
+        "limit_bytes": {"$ref": "#/$defs/safeNonNegativeInteger"},
+        "allocation_order": {"$ref": "#/$defs/stringArray"},
+        "measurement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["control_envelope_bytes", "included_payload_bytes", "consumed_bytes", "remaining_bytes"],
+          "properties": {
+            "control_envelope_bytes": {"$ref": "#/$defs/safeNonNegativeInteger"},
+            "included_payload_bytes": {"$ref": "#/$defs/safeNonNegativeInteger"},
+            "consumed_bytes": {"$ref": "#/$defs/safeNonNegativeInteger"},
+            "remaining_bytes": {"$ref": "#/$defs/safeNonNegativeInteger"}
+          }
+        },
+        "outcome": {"type": "string"}
+      }
+    },
+    "conflict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "affected_fields", "claims", "detection_rule", "blocking"],
+      "properties": {
+        "id": {"type": "string"},
+        "affected_fields": {"$ref": "#/$defs/stringArray"},
+        "claims": {"type": "array", "items": {"$ref": "#/$defs/normativeValue"}},
+        "detection_rule": {"type": "string"},
+        "blocking": {"type": "boolean"}
+      }
+    },
+    "unknown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "field", "attempted_resolution", "owner", "consequence", "blocking"],
+      "properties": {
+        "id": {"type": "string"},
+        "field": {"type": "string"},
+        "attempted_resolution": {"type": "string"},
+        "owner": {"type": "string"},
+        "consequence": {"type": "string"},
+        "blocking": {"type": "boolean"}
+      }
+    },
+    "omission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "record_type", "boundary", "individual", "rule", "reason", "consequence", "blocking", "reconsideration_condition"],
+      "properties": {
+        "id": {"type": "string"},
+        "record_type": {"enum": ["individual", "policy_class"]},
+        "boundary": {"type": "string"},
+        "individual": {
+          "oneOf": [
+            {"type": "null"},
+            {"type": "object", "additionalProperties": {"$ref": "#/$defs/normativeValue"}}
+          ]
+        },
+        "rule": {"type": "string"},
+        "reason": {"type": "string"},
+        "consequence": {"type": "string"},
+        "blocking": {"type": "boolean"},
+        "reconsideration_condition": {"type": "string"}
+      }
+    },
+    "validationCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["invariant", "status"],
+      "properties": {
+        "invariant": {"type": "string"},
+        "status": {"type": "string"}
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "executable_validation_performed", "checks", "errors", "limitations"],
+      "properties": {
+        "status": {"type": "string"},
+        "executable_validation_performed": {"type": "boolean"},
+        "checks": {"type": "array", "items": {"$ref": "#/$defs/validationCheck"}},
+        "errors": {"$ref": "#/$defs/stringArray"},
+        "limitations": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "consumerContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "must", "must_not", "stop_conditions", "live_revalidation_required"],
+      "properties": {
+        "version": {"const": "aiden.task-context-consumer/v1"},
+        "must": {"$ref": "#/$defs/stringArray"},
+        "must_not": {"$ref": "#/$defs/stringArray"},
+        "stop_conditions": {"$ref": "#/$defs/stringArray"},
+        "live_revalidation_required": {"$ref": "#/$defs/stringArray"}
+      }
+    }
+  }
+}

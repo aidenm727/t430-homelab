@@ -1,0 +1,124 @@
+{
+  "classification": {
+    "foundation_evidence": true,
+    "compiled_package": false,
+    "golden_package": false,
+    "statement": "Checkpoint A deterministic foundation evidence only; no snapshot was resolved, no source was selected, and no package was compiled."
+  },
+  "schema_ids": {
+    "selection_policy": {
+      "id": "urn:aiden-platform:task-context:schema:selection-policy:v1",
+      "version": "aiden.task-context.selection-policy/v1"
+    },
+    "budget_policy": {
+      "id": "urn:aiden-platform:task-context:schema:budget-policy:v1",
+      "version": "aiden.task-context.budget-policy/v1"
+    },
+    "compilation_request": {
+      "id": "urn:aiden-platform:task-context:schema:compilation-request:v1",
+      "version": "aiden.task-context.compilation-request/v1"
+    },
+    "context_package": {
+      "id": "urn:aiden-platform:task-context:schema:context-package:v1",
+      "version": "aiden.task-context/v1"
+    }
+  },
+  "canonicalization_vectors": [
+    {
+      "name": "scalars-and-rfc8785-string-escaping",
+      "input": [
+        null,
+        false,
+        true,
+        -1,
+        0,
+        1,
+        "A\n\"\\é"
+      ],
+      "canonical_utf8": "[null,false,true,-1,0,1,\"A\\n\\\"\\\\é\"]",
+      "canonical_utf8_hex": "5b6e756c6c2c66616c73652c747275652c2d312c302c312c22415c6e5c225c5cc3a9225d"
+    },
+    {
+      "name": "nested-structures-and-no-normalization",
+      "input": {
+        "z": [
+          3,
+          {
+            "b": true,
+            "a": null
+          }
+        ],
+        "a": "é"
+      },
+      "canonical_utf8": "{\"a\":\"é\",\"z\":[3,{\"a\":null,\"b\":true}]}",
+      "canonical_utf8_hex": "7b2261223a2265cc81222c227a223a5b332c7b2261223a6e756c6c2c2262223a747275657d5d7d"
+    },
+    {
+      "name": "rfc8785-property-order",
+      "input": {
+        "€": "Euro Sign",
+        "\r": "Carriage Return",
+        "דּ": "Hebrew Letter Dalet With Dagesh",
+        "1": "One",
+        "😀": "Emoji: Grinning Face",
+        "": "Control",
+        "ö": "Latin Small Letter O With Diaeresis"
+      },
+      "canonical_utf8": "{\"\\r\":\"Carriage Return\",\"1\":\"One\",\"\":\"Control\",\"ö\":\"Latin Small Letter O With Diaeresis\",\"€\":\"Euro Sign\",\"😀\":\"Emoji: Grinning Face\",\"דּ\":\"Hebrew Letter Dalet With Dagesh\"}",
+      "canonical_utf8_hex": "7b225c72223a2243617272696167652052657475726e222c2231223a224f6e65222c22c280223a22436f6e74726f6c222c22c3b6223a224c6174696e20536d616c6c204c6574746572204f205769746820446961657265736973222c22e282ac223a224575726f205369676e222c22f09f9880223a22456d6f6a693a204772696e6e696e672046616365222c22efacb3223a22486562726577204c65747465722044616c6574205769746820446167657368227d"
+    }
+  ],
+  "safe_integer_boundaries": {
+    "accepted": [
+      -9007199254740991,
+      9007199254740991
+    ],
+    "rejected_decimal_strings": [
+      "-9007199254740992",
+      "9007199254740992"
+    ]
+  },
+  "exact_byte_sha256_vector": {
+    "input_utf8": "foundation-bytes",
+    "value": "b9b135cd6eb09da3bbc86f09b6f67e22504409829b5af552710d752f905a1a1b"
+  },
+  "selection_policy_digest": {
+    "algorithm": "sha256",
+    "canonicalization": "rfc8785-jcs",
+    "value": "708b6c73208db65dc94fcd89d1810666048895821b2e6e0feef5aa6b9ccf5448"
+  },
+  "budget_policy_digest": {
+    "algorithm": "sha256",
+    "canonicalization": "rfc8785-jcs",
+    "value": "717dabd3850eaea04caf2439ca77b859a3e0343ec52bc336b2e01ee42727db05"
+  },
+  "request_digest": {
+    "algorithm": "sha256",
+    "canonicalization": "rfc8785-jcs",
+    "value": "840adc1dad2347230a05720faeee71b553c802f2cef25e08232d292f02be8390"
+  },
+  "package_identity_helper": {
+    "foundation_only": true,
+    "snapshot_fingerprint_kind": "synthetic_test_vector_not_resolved_repository_state",
+    "synthetic_snapshot_fingerprint": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    "surface": {
+      "request_digest": "840adc1dad2347230a05720faeee71b553c802f2cef25e08232d292f02be8390",
+      "snapshot_fingerprint": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    },
+    "canonical_utf8": "{\"request_digest\":\"840adc1dad2347230a05720faeee71b553c802f2cef25e08232d292f02be8390\",\"snapshot_fingerprint\":\"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\"}",
+    "identity_digest": {
+      "algorithm": "sha256",
+      "canonicalization": "rfc8785-jcs",
+      "value": "6007762250f7992a72c91e080502104cf9fa82e90ce16039a012edd7a349b9e6"
+    },
+    "package_id": "tcp-6007762250f7992a72c91e08"
+  },
+  "compiler_identity_input": {
+    "identity": "aiden.context-compilation",
+    "version": "1.0.0",
+    "explicit_required": true,
+    "ambient_default": false,
+    "included_in_request_digest": false,
+    "statement": "Compiler identity is an explicit fixture input and no compiler execution is claimed."
+  }
+}

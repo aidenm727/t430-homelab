@@ -1,0 +1,230 @@
+{
+  "schema_version": "aiden.task-context.compilation-request/v1",
+  "repository_request": {
+    "identity": "github.com/aidenm727/t430-homelab",
+    "requested_revision": "79eef80af3d5969ece7eb9fe7f802be35575f450"
+  },
+  "task": {
+    "id": {
+      "state": "known",
+      "value": "example-eo-2026-013-read-only-assessment",
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "task.id"
+      }
+    },
+    "type": {
+      "state": "known",
+      "value": "architecture_assessment",
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "task.type"
+      }
+    },
+    "goal": {
+      "state": "known",
+      "value": "Assess the repository-owned architecture basis for a bounded EO-2026-013 context-compilation design checkpoint.",
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "task.goal"
+      }
+    },
+    "scope": {
+      "state": "known",
+      "value": [
+        "Read immutable repository sources selected by the example policy.",
+        "Identify the authority, reproducibility, selection, and consumer boundaries required by the design."
+      ],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "task.scope"
+      }
+    },
+    "non_goals": {
+      "state": "known",
+      "value": [
+        "Implement a compiler, validator, Atlas command, retrieval system, or execution capability.",
+        "Modify repository content, mission state, opportunity lifecycle state, protected refs, or AI-environment configuration."
+      ],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "task.non_goals"
+      }
+    },
+    "completion_criteria": {
+      "state": "known",
+      "value": [
+        "Selected sources and exclusions are explained with immutable provenance.",
+        "Architecture responsibilities and unresolved implementation work are reported for human review."
+      ],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "task.completion_criteria"
+      }
+    },
+    "mission_references": {
+      "state": "known",
+      "value": [
+        "docs/current-mission.md"
+      ],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "task.mission_references"
+      }
+    },
+    "opportunity_references": {
+      "state": "known",
+      "value": [
+        "docs/opportunities/reviewed/EO-2026-013-task-scoped-agent-context-compilation.yaml"
+      ],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "task.opportunity_references"
+      }
+    }
+  },
+  "declared_constraints": {
+    "permissions": {
+      "state": "known",
+      "value": [
+        "Read content from the pinned repository snapshot.",
+        "Compute deterministic selectors, UTF-8 byte sizes, and hashes in temporary local workspace."
+      ],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "declared_constraints.permissions"
+      }
+    },
+    "forbidden_actions": {
+      "state": "known",
+      "value": [
+        "Write or mutate repository content.",
+        "Stage, commit, push, create or switch branches, or modify refs.",
+        "Change the active mission or any Engineering Opportunity lifecycle state.",
+        "Read from or modify the protected branch.",
+        "Implement or execute the proposed context-compilation capability.",
+        "Modify ChatGPT Project, Codex, or other AI-environment configuration."
+      ],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "declared_constraints.forbidden_actions"
+      }
+    },
+    "writable_paths": {
+      "state": "known",
+      "value": [],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "declared_constraints.writable_paths"
+      }
+    },
+    "approval_points": {
+      "state": "known",
+      "value": [
+        "Human review is required before any architecture application, implementation, staging, or commit."
+      ],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "declared_constraints.approval_points"
+      }
+    },
+    "required_validation": {
+      "state": "known",
+      "value": [
+        "Verify the pinned commit and tree identities.",
+        "Verify every selected source blob, source digest, selector output, payload size, and payload digest.",
+        "State that this manual example did not execute a compiler or package validator."
+      ],
+      "authority": {
+        "class": "human_declaration",
+        "owner": "repository_owner"
+      },
+      "provenance": {
+        "source": "example-eo-2026-013-read-only-assessment-v1",
+        "selector": "declared_constraints.required_validation"
+      }
+    }
+  },
+  "selection_policy": {
+    "id": "example.read-only-architecture-assessment",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "canonicalization": "rfc8785-jcs",
+      "value": "708b6c73208db65dc94fcd89d1810666048895821b2e6e0feef5aa6b9ccf5448"
+    }
+  },
+  "budget_policy": {
+    "id": "example.utf8-byte-budget",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "canonicalization": "rfc8785-jcs",
+      "value": "717dabd3850eaea04caf2439ca77b859a3e0343ec52bc336b2e01ee42727db05"
+    }
+  },
+  "protected_references": [
+    {
+      "name": "refs/heads/wip/distinctness-foundation-calibration",
+      "expected_object": "fcbc5957b89fe65a4313a3c23eb814e02a014698",
+      "authoritatively_targeted": false,
+      "selection": "forbidden"
+    }
+  ],
+  "as_of": "2026-07-15T15:40:26-04:00",
+  "compiler": {
+    "identity": "aiden.context-compilation",
+    "version": "1.0.0"
+  },
+  "fixture_evidence": {
+    "expected_tree": "3d2853517e64209cffde91766a62e9f70ceb2e47"
+  }
+}

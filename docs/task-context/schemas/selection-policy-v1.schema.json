@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aiden-platform:task-context:schema:selection-policy:v1",
+  "title": "Aiden task-context selection policy v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "version",
+    "task_profile",
+    "relationship_traversal",
+    "source_ordering",
+    "rules",
+    "exclusion_rules",
+    "maximum_sensitivity",
+    "omission_candidate_universe",
+    "digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "aiden.task-context.selection-policy/v1"},
+    "id": {"const": "example.read-only-architecture-assessment"},
+    "version": {"const": "1.0.0"},
+    "task_profile": {"type": "string", "minLength": 1},
+    "relationship_traversal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_hops", "allowlisted"],
+      "properties": {
+        "max_hops": {"const": 1},
+        "allowlisted": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "direction"],
+            "properties": {
+              "type": {"type": "string", "minLength": 1},
+              "direction": {"enum": ["outbound", "inbound"]}
+            }
+          }
+        }
+      }
+    },
+    "source_ordering": {
+      "const": [
+        "priority_tier",
+        "selection_rule_id",
+        "normalized_path_or_object_id",
+        "selector"
+      ]
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/selectionRule"}
+    },
+    "exclusion_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/exclusionRule"}
+    },
+    "maximum_sensitivity": {"enum": ["public", "ordinary_personal", "sensitive", "highly_restricted"]},
+    "omission_candidate_universe": {
+      "const": [
+        "explicit_request_anchors",
+        "exact_task_profile_candidates",
+        "allowlisted_one_hop_relationship_candidates"
+      ]
+    },
+    "digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "safeNonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "canonicalization", "value"],
+      "properties": {
+        "algorithm": {"const": "sha256"},
+        "canonicalization": {"const": "rfc8785-jcs"},
+        "value": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": {"enum": ["repository_object", "document"]},
+        "path": {"type": "string", "minLength": 1},
+        "object_type": {"type": "string", "minLength": 1},
+        "field_contract_owner": {"type": "string", "minLength": 1}
+      }
+    },
+    "selector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "fields"],
+          "properties": {
+            "type": {"const": "yaml_fields"},
+            "fields": {"const": ["id", "title", "status", "summary"]}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "heading_text", "occurrence"],
+          "properties": {
+            "type": {"const": "heading"},
+            "heading_text": {"type": "string", "minLength": 1},
+            "occurrence": {"type": "integer", "minimum": 1, "maximum": 9007199254740991}
+          }
+        }
+      ]
+    },
+    "selectionRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "priority_tier", "source", "selector"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {"enum": ["explicit_anchor", "task_profile", "allowlisted_relationship"]},
+        "priority_tier": {"$ref": "#/$defs/safeNonNegativeInteger"},
+        "source": {"$ref": "#/$defs/source"},
+        "selector": {"$ref": "#/$defs/selector"}
+      }
+    },
+    "exclusionRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "reason"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "schema_version": "aiden.task-context.selection-policy/v1",
+  "id": "example.read-only-architecture-assessment",
+  "version": "1.0.0",
+  "task_profile": "eo-architecture-assessment",
+  "relationship_traversal": {
+    "max_hops": 1,
+    "allowlisted": [
+      {
+        "type": "related_documents",
+        "direction": "outbound"
+      }
+    ]
+  },
+  "source_ordering": [
+    "priority_tier",
+    "selection_rule_id",
+    "normalized_path_or_object_id",
+    "selector"
+  ],
+  "rules": [
+    {
+      "id": "S010-explicit-opportunity-anchor",
+      "type": "explicit_anchor",
+      "priority_tier": 10,
+      "source": {
+        "kind": "repository_object",
+        "object_type": "engineering-opportunity",
+        "field_contract_owner": "docs/architecture/engineering-opportunity-object.md"
+      },
+      "selector": {
+        "type": "yaml_fields",
+        "fields": [
+          "id",
+          "title",
+          "status",
+          "summary"
+        ]
+      }
+    },
+    {
+      "id": "S020-current-mission-milestone",
+      "type": "explicit_anchor",
+      "priority_tier": 10,
+      "source": {
+        "kind": "document",
+        "path": "docs/current-mission.md"
+      },
+      "selector": {
+        "type": "heading",
+        "heading_text": "## Initial Milestone",
+        "occurrence": 1
+      }
+    },
+    {
+      "id": "S030-canonical-repository-authority",
+      "type": "allowlisted_relationship",
+      "priority_tier": 20,
+      "source": {
+        "kind": "document",
+        "path": "docs/architecture/repository.md"
+      },
+      "selector": {
+        "type": "heading",
+        "heading_text": "## Source of Truth Hierarchy",
+        "occurrence": 1
+      }
+    },
+    {
+      "id": "S040-mandatory-knowledge-authority",
+      "type": "task_profile",
+      "priority_tier": 30,
+      "source": {
+        "kind": "document",
+        "path": "docs/architecture/knowledge-authority.md"
+      },
+      "selector": {
+        "type": "heading",
+        "heading_text": "### Generated Context",
+        "occurrence": 1
+      }
+    },
+    {
+      "id": "S050-mandatory-collaboration",
+      "type": "allowlisted_relationship",
+      "priority_tier": 30,
+      "source": {
+        "kind": "document",
+        "path": "docs/standards/engineering-collaboration.md"
+      },
+      "selector": {
+        "type": "heading",
+        "heading_text": "## Responsibilities",
+        "occurrence": 1
+      }
+    }
+  ],
+  "exclusion_rules": [
+    {
+      "id": "X010-generated-duplicate",
+      "type": "generated_duplicate",
+      "reason": "Exclude generated context that duplicates a selected canonical source."
+    },
+    {
+      "id": "X020-provider-or-conversation-memory",
+      "type": "ambient_provider_context",
+      "reason": "Exclude provider memory, Project files, and conversation history unless explicitly supplied as labeled non-canonical evidence."
+    },
+    {
+      "id": "X030-outside-pinned-snapshot",
+      "type": "outside_snapshot",
+      "reason": "Exclude content outside the exact pinned repository snapshot."
+    },
+    {
+      "id": "X040-protected-reference",
+      "type": "protected_reference",
+      "reason": "Exclude protected-reference content unless explicitly and authoritatively targeted."
+    },
+    {
+      "id": "X050-disallowed-sensitivity",
+      "type": "sensitivity",
+      "reason": "Exclude secrets and content above ordinary_personal sensitivity."
+    },
+    {
+      "id": "X060-unsupported-binary",
+      "type": "unsupported_binary",
+      "reason": "Exclude binary and non-UTF-8 source content."
+    },
+    {
+      "id": "X070-free-text-relationship",
+      "type": "free_text_relationship",
+      "reason": "Exclude relationship expansion inferred from prose or unregistered mentions."
+    },
+    {
+      "id": "X080-recursive-opportunity-expansion",
+      "type": "recursive_opportunity_expansion",
+      "reason": "Exclude related opportunities that are not explicit anchors or exact policy candidates."
+    },
+    {
+      "id": "X090-model-generated-or-inferred",
+      "type": "model_generated_or_inferred",
+      "reason": "Exclude model-generated summaries, semantic retrieval results, and inferred facts."
+    }
+  ],
+  "maximum_sensitivity": "ordinary_personal",
+  "omission_candidate_universe": [
+    "explicit_request_anchors",
+    "exact_task_profile_candidates",
+    "allowlisted_one_hop_relationship_candidates"
+  ],
+  "digest": {
+    "algorithm": "sha256",
+    "canonicalization": "rfc8785-jcs",
+    "value": "708b6c73208db65dc94fcd89d1810666048895821b2e6e0feef5aa6b9ccf5448"
+  }
+}
