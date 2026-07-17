@@ -5,9 +5,9 @@
 **Authority class:** Human-Reviewed Implementation-Planning Decision
 **Canonical:** No
 **Generated:** No
-**Status:** Checkpoint A.1 Completion Accepted; B1 and B2 Withheld
+**Status:** Checkpoint A.1 Complete; Revised B1a Authorized; B1b and B2 Withheld
 **Owner decision recorded:** July 16, 2026
-**Current state:** Checkpoint A and A.1 complete and owner-accepted; B1 and B2 unauthorized
+**Current state:** Checkpoint A and A.1 complete; B1a authorized; B1b and B2 unauthorized
 
 ---
 
@@ -355,6 +355,24 @@ It rejects:
 This parser must not reuse the existing working-tree `parse_simple_yaml` implementation.
 
 ---
+
+## Superseding B1a and B1b Decision
+
+The former single Checkpoint B1 plan in this review is superseded for future authorization purposes by `docs/reviews/eo-2026-013-b1a-authorization-review-2026-07-16.md`.
+
+On July 16, 2026, the owner accepted this revised sequence:
+
+1. Checkpoint B1a — Immutable Snapshot Boundary.
+2. Checkpoint B1b — Deterministic Selectors and Selection Plan.
+3. Checkpoint B2 — Compilation, Integrity Validation, Explanation, and Golden Replay.
+
+Only Checkpoint B1a is authorized.
+
+B1a establishes the trusted Git and immutable-object boundary. B1b remains separately withheld for parsing, relationship verification, and selection-plan behavior. B2 remains separately withheld for package compilation and golden replay.
+
+The protected branch content remains out of scope. B1a may compare only the exact declared protected-ref name and exact object identity. No protected object peel, traversal, tree read, blob read, selection, exposure, or mutation is authorized.
+
+STOP — Use the B1a authorization review as the active authorization source after Checkpoint A.1.
 
 ## Decision Traceability
 
