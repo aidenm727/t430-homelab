@@ -1,4 +1,4 @@
-"""Immutable values for Checkpoint A task-context foundations."""
+"""Immutable values for task-context foundations and selectors."""
 
 from __future__ import annotations
 
@@ -334,4 +334,51 @@ class ImmutableBlob:
             "mode": self.mode,
             "object_format": self.object_format,
             "object_id": self.object_id,
+        }
+
+
+@dataclass(frozen=True)
+class SelectorOutput:
+    selector_type: str
+    media_type: str
+    encoding: str
+    content: bytes
+    source_line_endings: str
+    transformation: Mapping[str, Any]
+
+    def __post_init__(self) -> None:
+        for field_name in (
+            "selector_type",
+            "media_type",
+            "encoding",
+            "source_line_endings",
+        ):
+            value = getattr(self, field_name)
+            if not isinstance(value, str) or any(
+                0xD800 <= ord(character) <= 0xDFFF for character in value
+            ):
+                raise ModelValueError(
+                    f"{field_name} must contain only Unicode scalar values"
+                )
+        if not isinstance(self.content, bytes):
+            raise ModelValueError("selector content must be bytes")
+        if self.source_line_endings not in ("lf", "crlf", "none"):
+            raise ModelValueError("source_line_endings is invalid")
+        if not isinstance(self.transformation, Mapping):
+            raise ModelValueError("selector transformation must be a mapping")
+        object.__setattr__(
+            self,
+            "transformation",
+            cast(Mapping[str, Any], deep_freeze(self.transformation)),
+        )
+
+    def as_dict(self) -> dict[str, Any]:
+        """Return selector metadata without inspecting raw selected bytes."""
+
+        return {
+            "selector_type": self.selector_type,
+            "media_type": self.media_type,
+            "encoding": self.encoding,
+            "source_line_endings": self.source_line_endings,
+            "transformation": self.transformation,
         }

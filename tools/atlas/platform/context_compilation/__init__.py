@@ -1,4 +1,4 @@
-"""Public Checkpoint A foundations for task-context compilation."""
+"""Public deterministic foundations and selectors for task context."""
 
 from atlas.platform.context_compilation.canonical_json import (
     MAX_SAFE_INTEGER,
@@ -25,6 +25,17 @@ from atlas.platform.context_compilation.models import (
     ProtectedReferenceIdentity,
     RepositoryIdentityEvidence,
     RepositorySnapshot,
+    SelectorOutput,
+)
+from atlas.platform.context_compilation.selectors import (
+    SelectorContractError,
+    SelectorEncodingError,
+    SelectorError,
+    SelectorNotFoundError,
+    SelectorSyntaxError,
+    parse_bounded_yaml_mapping,
+    select_markdown_heading,
+    select_yaml_fields,
 )
 from atlas.platform.context_compilation.snapshot import (
     SNAPSHOT_MODE,
@@ -64,6 +75,7 @@ __all__ = [
     "ProtectedReferenceIdentity",
     "RepositorySnapshot",
     "ImmutableBlob",
+    "SelectorOutput",
     "SNAPSHOT_MODE",
     "SnapshotError",
     "SnapshotEnvironmentError",
@@ -78,4 +90,12 @@ __all__ = [
     "resolve_snapshot",
     "read_snapshot_blob",
     "normalize_repository_path",
+    "SelectorError",
+    "SelectorEncodingError",
+    "SelectorSyntaxError",
+    "SelectorContractError",
+    "SelectorNotFoundError",
+    "parse_bounded_yaml_mapping",
+    "select_yaml_fields",
+    "select_markdown_heading",
 ]

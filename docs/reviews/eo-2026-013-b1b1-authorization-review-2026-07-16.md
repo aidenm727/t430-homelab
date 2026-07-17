@@ -3,7 +3,7 @@
 - Authority class: Human-Reviewed Implementation-Planning Decision
 - Canonical: No
 - Generated: No
-- Status: Accepted Revised B1b Plan and Checkpoint B1b1 Authorization Recorded
+- Status: Checkpoint B1b1 Completion Accepted; B1b2 and B2 Withheld
 - Date: July 16, 2026
 - Repository baseline: `e89d765ab7d62c97976091f53ce59dd3f767e4cb`
 - Decision authority: Owner
@@ -31,6 +31,42 @@ The owner recorded:
 > Accept the revised EO-2026-013 B1b plan. Authorize Checkpoint B1b1 — Deterministic Selector Primitives only. Do not authorize Checkpoint B1b2 or Checkpoint B2. Preserve Checkpoint B1a and the protected-reference boundary unchanged. Preserve protected-branch content as out of scope.
 
 Recorded July 16, 2026.
+
+---
+
+## 2A. Checkpoint B1b1 Completion Acceptance
+
+The owner recorded:
+
+> Accept EO-2026-013 Checkpoint B1b1 as complete. Authorize recording, committing, and pushing the Checkpoint B1b1 completion. Do not authorize Checkpoint B1b2 or Checkpoint B2. Preserve Checkpoint B1a and the protected-reference boundary unchanged. Preserve protected-branch content as out of scope.
+
+Recorded July 16, 2026.
+
+The accepted implementation:
+
+- created exactly `tools/atlas/platform/context_compilation/selectors.py` and `tests/test_context_selectors.py`;
+- modified exactly the task-context index, context-compilation exports, and immutable models;
+- added the exact `SelectorOutput` model, five selector exceptions, and three selector functions;
+- enforced strict bytes-only UTF-8, BOM, NUL, Unicode-scalar, bare-CR, and mixed-line-ending boundaries;
+- implemented the accepted bounded Engineering Opportunity YAML grammar;
+- retained plain accepted scalars as strings and top-level sequences as immutable tuples;
+- implemented exact folded and literal block-string behavior;
+- emitted exact repository-canonical JSON bytes for requested YAML fields;
+- implemented exact ATX Markdown occurrence and section extraction with bounded backtick and tilde fence handling;
+- preserved exact Markdown source bytes, whitespace, line endings, blank lines, deeper headings, and terminal-newline state;
+- verified the historical EO mapping and four exact historical Markdown sections;
+- corrected the mutable module-level `__all__` list to an immutable tuple before final acceptance;
+- added 61 focused selector tests and passed 205 total repository tests;
+- left Atlas Valid, complete, and Synchronized;
+- preserved Checkpoint B1a byte-identically;
+- performed no Git, filesystem, network, environment, clock, randomness, digest, policy-reasoning, relationship, selection-plan, budgeting, package, protected-reference, or protected-content behavior; and
+- performed no staging, commit, or push before owner acceptance.
+
+Checkpoint B1b2 and Checkpoint B2 remain unauthorized.
+
+Checkpoint B1a and the protected-reference boundary remain unchanged.
+
+Protected-branch content remains out of scope.
 
 ---
 
@@ -518,7 +554,7 @@ Checkpoint B1b1 does not authorize:
 
 ## 18. Planned Checkpoint B1b2 — Unauthorized
 
-Checkpoint B1b2 remains unauthorized until B1b1 is complete and owner-accepted.
+Checkpoint B1b2 remains unauthorized and requires a separate owner decision after B1b1 completion.
 
 Its future bounded responsibility is to consume:
 
@@ -571,8 +607,14 @@ Protected-branch content remains entirely out of scope.
 - Checkpoint A.1 completion: `f0ae21a34d525e6f4ce4c7b50790779e664138c4`.
 - Checkpoint B1a authorization: `b7046e6fdd7302e1b5aaada3db0970e35c0f0e6c`.
 - Checkpoint B1a completion: `e89d765ab7d62c97976091f53ce59dd3f767e4cb`.
-- Revised B1b plan accepted: July 16, 2026.
-- Checkpoint B1b1 authorized: Yes, exact two-created and three-modified implementation scope.
+- Checkpoint B1b1 authorization: `de97f3d87cc7a90e404c3cf4ea313e6f12e5410a`.
+- Checkpoint B1b1 completion accepted: July 16, 2026.
+- Checkpoint B1b1 exact implementation scope: two created and three modified files.
+- Focused selector tests: 61 passing.
+- Final repository verification: 205 tests passed.
+- Historical YAML output: 324 bytes.
+- Historical Markdown outputs: 910, 1000, 357, and 503 bytes.
+- Final technical verification: Atlas Valid, complete, and Synchronized; independent public-interface, immutable-model, pure-capability, YAML, Markdown, historical-output, scope, B1a-preservation, and mutable-global probes passed.
 - Checkpoint B1b2 authorized: No.
 - Checkpoint B2 authorized: No.
 - Checkpoint B1a changes authorized: No.
@@ -582,6 +624,6 @@ Protected-branch content remains entirely out of scope.
 - Third-party dependency authorized: No.
 - Canonical architecture change authorized: No.
 - Engineering Opportunity lifecycle state: `reviewed`.
-- Next gate: implement and verify Checkpoint B1b1, then return for owner acceptance before B1b2.
+- Next gate: separate owner authorization, revision, deferral, or rejection of Checkpoint B1b2.
 
-STOP — Implement and verify Checkpoint B1b1 only. Do not begin B1b2 or B2.
+STOP — Preserve Checkpoint B1b1. Do not begin B1b2 or B2 without a separate owner decision.

@@ -2,23 +2,29 @@
 
 ## Phase
 
-Task-Scoped Agent Context Compilation Checkpoint B1b1 Implementation
+Task-Scoped Agent Context Compilation Checkpoint B1b1 Complete
 
 ---
 
 ## Mission State
 
-The owner accepted the revised EO-2026-013 B1b plan and authorized Checkpoint B1b1 — Deterministic Selector Primitives on July 16, 2026.
+The owner accepted EO-2026-013 Checkpoint B1b1 — Deterministic Selector Primitives as complete on July 16, 2026 and authorized recording, committing, and pushing the completed checkpoint.
 
-The authorization is recorded in `docs/reviews/eo-2026-013-b1b1-authorization-review-2026-07-16.md` against Checkpoint B1a completion commit `e89d765ab7d62c97976091f53ce59dd3f767e4cb`.
+Checkpoint B1b1 was implemented against authorization baseline `de97f3d87cc7a90e404c3cf4ea313e6f12e5410a`. The accepted change creates exactly two files and modifies exactly three existing files.
 
-Checkpoint B1b1 may create exactly two files and modify exactly three existing files. It implements pure bounded YAML and Markdown selector transformations only. It does not derive candidates, verify relationships, select sources, produce omissions or unknowns, or construct a package.
+The completed selector boundary now provides strict bytes-only UTF-8 handling, explicit LF/CRLF/no-ending classification, a bounded Engineering Opportunity YAML parser, canonical JSON `yaml_fields` transformation, and exact ATX Markdown section extraction with bounded backtick and tilde fence awareness.
+
+`SelectorOutput` preserves exact selected bytes outside canonical JSON metadata, deeply freezes transformation metadata, and rejects mutable byte containers and invalid Unicode-scalar fields.
+
+The implementation is pure and deterministic. It performs no Git access, repository discovery, network access, filesystem read or write, environment access, clock access, randomness, digest calculation, policy lookup, relationship verification, source-selection reasoning, budgeting, or package construction.
+
+The mutable module-level `__all__` list discovered by the first independent review was corrected to an immutable tuple before acceptance. The complete independent gate then passed.
 
 Checkpoint B1b2 and Checkpoint B2 remain explicitly unauthorized.
 
-Checkpoint B1a and its Git snapshot boundary remain unchanged.
+Checkpoint B1a and its Git snapshot and protected-reference boundaries remain byte-identical and unchanged.
 
-The protected branch `wip/distinctness-foundation-calibration` remains unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698`. Its content remains out of scope. B1b1 performs no protected-reference operation and no Git access.
+The protected branch `wip/distinctness-foundation-calibration` remains unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698`. Its content remains out of scope and was never selector input.
 
 EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
 
@@ -26,74 +32,82 @@ EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
 
 ## Mission Intent
 
-Establish deterministic selector primitives over immutable bytes before source-selection reasoning begins.
+Preserve the accepted deterministic selector boundary and hold source-selection reasoning behind a separate owner decision.
 
-Checkpoint B1b1 defines strict UTF-8 and line-ending handling, one bounded Engineering Opportunity YAML subset, canonical JSON field extraction, and exact ATX Markdown section extraction with bounded fenced-code awareness.
+Checkpoint B1b1 transforms caller-supplied immutable bytes through exactly bounded YAML-field and Markdown-heading selectors. It does not determine which sources belong in a task context, why a source is selected, whether a relationship exists, whether a candidate is omitted or unknown, or how a package is assembled.
 
-Selector primitives remain pure transformations. They consume caller-supplied bytes and perform no Git access, repository discovery, policy lookup, relationship verification, selection reasoning, hashing, budgeting, package construction, network access, or filesystem write.
+Task authority remains external to compilation, repository documentation and Atlas remain deterministic authority, and generated task context remains non-canonical.
 
-Checkpoint B1b1 returns for owner review before B1b2 begins.
-
-Repository Synchronization Reasoning remains the deterministic check for alignment between this mission, the accepted B1b1 review, canonical architecture, generated context, repository metadata, and the exact B1b1 authorization boundary.
+Repository Synchronization Reasoning remains the deterministic check for alignment between this mission, the accepted B1b1 review, canonical architecture, generated context, repository metadata, and the completed B1b1 boundary.
 
 ---
 
 ## Current Focus
 
-- Implement a strict shared UTF-8 and line-ending boundary for selectors.
-- Implement the exact bounded top-level Engineering Opportunity YAML subset.
-- Preserve plain accepted scalars as strings without implicit YAML typing.
-- Implement deterministic folded and literal block-string behavior.
-- Reject duplicate keys, aliases, anchors, merge keys, tags, flow collections, nested structures, directives, document markers, unsupported indicators, tabs, and malformed indentation.
-- Implement exact YAML-field selection into repository-owned canonical JSON.
-- Retain `related_documents` in the full parsed mapping for later B1b2 use without selecting it into the first payload.
-- Implement exact ATX heading selection with occurrence, section boundary, line-ending, whitespace, and terminal-newline preservation.
-- Prevent fenced-code heading text from becoming a match or section boundary.
-- Verify all five historical selector inputs and exact outputs through B1a immutable blob reads in tests.
+- Preserve strict bytes-only UTF-8, BOM, NUL, Unicode-scalar, bare-CR, and mixed-line-ending rejection.
+- Preserve deterministic `lf`, `crlf`, and `none` line-ending classification.
+- Preserve the explicitly bounded top-level Engineering Opportunity YAML grammar.
+- Preserve plain accepted YAML scalars as strings without implicit typing.
+- Preserve exact folded and literal block-string behavior with one clipped final newline.
+- Preserve top-level string sequences as deeply immutable tuples.
+- Preserve canonical JSON `yaml_fields` output containing only requested fields.
+- Preserve exact ATX Markdown occurrence and equal-or-higher section-boundary behavior.
+- Preserve exact Markdown source bytes, whitespace, line endings, blank lines, deeper headings, and terminal-newline state.
+- Preserve bounded backtick and tilde fence behavior that prevents false heading matches.
+- Preserve `SelectorOutput` byte-content and metadata immutability.
+- Preserve the absence of Git, filesystem, network, environment, clock, randomness, digest, mutable-global, and side-effect capabilities.
+- Preserve all exact historical selector outputs and independent byte-length and SHA-256 evidence.
 - Preserve B1a unchanged.
-- Create and modify only the exact five B1b1 implementation paths.
-- Keep B1b2, B2, protected references, Git access inside selectors, selection reasoning, digests, budgeting, and packages withheld.
-- Run all tests and Atlas verification.
-- Return for owner acceptance before B1b2.
+- Keep B1b2, B2, protected-reference changes, selection reasoning, relationship verification, budgeting, and package behavior withheld.
+- Require a separate owner review before B1b2 begins.
+- Keep EO-2026-013 and the full Engineering Opportunity portfolio in the `reviewed` lifecycle state.
 
 ---
 
 ## Initial Milestone
 
-Implement and verify Checkpoint B1b1 — Deterministic Selector Primitives.
+Checkpoint B1b1 — Deterministic Selector Primitives is complete and owner-accepted.
 
-### Included
+### Completed
 
-- `tools/atlas/platform/context_compilation/selectors.py`.
-- `tests/test_context_selectors.py`.
-- Bounded selector documentation in `docs/task-context/index.md`.
-- Public selector exports in `tools/atlas/platform/context_compilation/__init__.py`.
-- One deeply immutable `SelectorOutput` model in `tools/atlas/platform/context_compilation/models.py`.
-- Strict UTF-8, BOM, NUL, Unicode-scalar, and line-ending validation.
-- Bounded top-level YAML mapping parsing for strings, string sequences, folded blocks, and literal blocks.
-- Exact `yaml_fields` transformation to RFC 8785 canonical JSON bytes.
-- Exact Markdown ATX heading selection with bounded backtick and tilde fence awareness.
-- Exact source-byte preservation for Markdown selector output.
-- Historical EO object parsing and four historical Markdown section fixtures.
-- Deep immutability and side-effect-free behavior.
-- Full test and Atlas verification.
-- Return to owner review before B1b2.
+- Created `tools/atlas/platform/context_compilation/selectors.py`.
+- Created `tests/test_context_selectors.py`.
+- Updated the task-context index, context-compilation exports, and immutable models.
+- Added the exact public `SelectorOutput` model, selector functions, and narrow exception hierarchy.
+- Added strict UTF-8, BOM, NUL, Unicode-scalar, bare-CR, and mixed-line-ending rejection.
+- Added deterministic `lf`, `crlf`, and `none` source-line-ending classification.
+- Added a deliberately bounded top-level YAML mapping parser for strings, immutable string sequences, folded blocks, and literal blocks.
+- Added exact rejection of duplicate keys, tabs, directives, document markers, anchors, aliases, merge keys, tags, flow collections, complex keys, nested mappings and sequences, unsupported block indicators, comments, malformed quotes, and unsupported indentation.
+- Added canonical JSON `yaml_fields` transformation using repository-owned RFC 8785 canonicalization.
+- Added exact ATX Markdown heading occurrence and section extraction.
+- Added bounded backtick and tilde fence handling, including longer closers, rejected shorter closers, and unclosed-fence behavior.
+- Preserved exact Markdown source bytes and terminal-newline state.
+- Verified the historical EO mapping and `related_documents`.
+- Verified exact historical four-field canonical JSON: 324 bytes.
+- Verified exact historical Markdown sections:
+  - Current Mission `## Initial Milestone`: 910 bytes.
+  - Repository `## Source of Truth Hierarchy`: 1000 bytes.
+  - Knowledge Authority `### Generated Context`: 357 bytes.
+  - Engineering Collaboration `## Responsibilities`: 503 bytes.
+- Added 61 focused selector tests.
+- Passed 205 repository tests.
+- Passed independent public-interface, immutability, pure-capability, YAML, Markdown, historical-output, scope, B1a-preservation, and mutable-global acceptance probes.
+- Corrected `__all__` from a mutable list to an immutable tuple before final acceptance.
+- Atlas remained Valid, complete, and Synchronized.
+- No B1b2 or B2 capability was implemented.
+- No dependency, schema, policy, fixture, snapshot, digest, reasoning, canonical architecture, lifecycle, protected-reference, or protected-content change occurred.
+- Nothing was staged, committed, or pushed before owner acceptance.
 
-### Excluded
+### Still Excluded
 
 - Checkpoint B1b2.
 - Checkpoint B2.
-- Generic YAML support.
-- CommonMark conformance claims.
-- Git access inside selector primitives.
-- Protected-reference operations or changes.
 - Source candidate derivation.
 - Task-profile dispatch.
 - Generic policy discovery.
 - Relationship verification.
 - Source selection.
-- Selection reasons or chains.
-- Source IDs.
+- Selection reasons, chains, or source IDs.
 - Omissions.
 - Unknowns.
 - Freshness.
@@ -103,8 +117,9 @@ Implement and verify Checkpoint B1b1 — Deterministic Selector Primitives.
 - Source-content or payload digests.
 - Package source or payload records.
 - Budget execution.
-- Package assembly or integrity.
-- Explanations or golden replay.
+- Package assembly, integrity, explanations, or golden replay.
+- Git access inside selector primitives.
+- Protected-reference operations or changes.
 - Atlas commands.
 - Dependencies.
 - Canonical architecture changes.
@@ -157,6 +172,28 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 ---
 
 ## Completion History
+
+### EO-2026-013 Checkpoint B1b1 — Deterministic Selector Primitives
+
+- Completion accepted by the owner on July 16, 2026.
+- Recording, commit, and push authorized.
+- Authorization baseline: `de97f3d87cc7a90e404c3cf4ea313e6f12e5410a`.
+- Exact implementation scope: two created files and three modified existing files.
+- Public boundary: frozen `SelectorOutput`; bounded YAML parser; `yaml_fields`; exact Markdown `heading`; five selector exceptions.
+- Exact historical YAML output: 324 bytes.
+- Exact historical Markdown outputs: 910, 1000, 357, and 503 bytes.
+- The first independent review detected a mutable module-level `__all__` list.
+- `__all__` was corrected to an immutable tuple without changing selector behavior.
+- Sixty-one focused selector tests passed.
+- Two hundred five repository tests passed.
+- Atlas validation was Valid, missing definitions were clean, and synchronization was Synchronized.
+- Independent final acceptance review passed.
+- Checkpoint B1a remained byte-identical to the authorization baseline.
+- No Git, filesystem, network, environment, clock, randomness, digest, or mutable-global capability remains in selector primitives.
+- No B1b2, B2, dependency, schema, policy, fixture, snapshot, digest, reasoning, canonical architecture, lifecycle, protected-reference, or protected-content change occurred before acceptance.
+- Checkpoint B1b2 and Checkpoint B2 remain unauthorized.
+- Protected-branch content remains out of scope.
+
 
 ### EO-2026-013 Revised B1b Plan and Checkpoint B1b1 Authorization
 
@@ -326,16 +363,15 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ## Current Non-Priorities
 
-- Beginning Checkpoint B1b2 or Checkpoint B2.
-- Modifying any path outside the exact five B1b1 implementation paths.
-- Modifying Checkpoint B1a snapshot or protected-reference behavior.
-- Treating the bounded YAML parser as general YAML.
+- Beginning Checkpoint B1b2 or Checkpoint B2 without a separate owner decision.
+- Broadening the bounded YAML parser into general YAML.
 - Claiming CommonMark conformance.
-- Git subprocesses, repository discovery, network access, or filesystem writes inside selector primitives.
+- Adding Git, filesystem, network, environment, clock, randomness, digest, or mutable-global capability to selector primitives.
+- Modifying Checkpoint B1a snapshot or protected-reference behavior.
 - Source candidate derivation or task-profile dispatch.
 - Generic policy discovery.
 - Historical relationship verification.
-- Source selection, selection reasons, chains, IDs, omissions, unknowns, freshness, conflicts, or deduplication.
+- Source selection, reasons, chains, IDs, omissions, unknowns, freshness, conflicts, or deduplication.
 - Sensitivity or budget-tier enforcement.
 - Source-content or payload digests.
 - Payload materialization or budget execution.
@@ -353,32 +389,32 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ## Current Status
 
-EO-2026-013 Checkpoint A, Checkpoint A.1, and Checkpoint B1a are complete and owner-accepted.
+EO-2026-013 Checkpoint A, Checkpoint A.1, Checkpoint B1a, and Checkpoint B1b1 are complete, independently verified, and owner-accepted.
 
-The revised B1b plan is accepted. Checkpoint B1b1 — Deterministic Selector Primitives is authorized within the exact two-created and three-modified scope recorded in `docs/reviews/eo-2026-013-b1b1-authorization-review-2026-07-16.md`.
+Checkpoint B1b1 contains the exact accepted two-created and three-modified implementation. The final acceptance gate verified the public selector interface, frozen model boundary, pure-capability boundary, bounded YAML behavior, canonical JSON transformation, Markdown heading and fence behavior, historical output byte lengths and SHA-256 oracles, B1a preservation, 205 passing tests, and Valid, complete, Synchronized Atlas state.
 
-Checkpoint B1b2 and Checkpoint B2 remain unauthorized. Checkpoint B1a remains unchanged. Protected-reference behavior remains unchanged, and protected-branch content remains out of scope. EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
+Checkpoint B1b2 and Checkpoint B2 remain unauthorized. Checkpoint B1a and protected-reference behavior remain unchanged. Protected-branch content remains out of scope. EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
 
 ---
 
 ## Next Milestone
 
-Implement and verify Checkpoint B1b1 — Deterministic Selector Primitives, then obtain owner acceptance before B1b2.
+Obtain a separate owner decision on Checkpoint B1b2 — Bounded Selection Plan.
 
-No selection-plan or package-compilation implementation begins automatically from this authorization.
+That review may authorize B1b2 unchanged, require bounded revision, defer it, or reject it. B1b2 does not begin automatically from B1b1 completion. Checkpoint B2 remains downstream and unauthorized.
 
 ---
 
 ## Decision Boundary
 
-- Human decision: Revised EO-2026-013 B1b plan accepted on July 16, 2026.
-- Checkpoint B1a completion: `e89d765ab7d62c97976091f53ce59dd3f767e4cb`.
-- Checkpoint B1b1 authorized: Yes, exact two-created and three-modified scope.
+- Human decision: EO-2026-013 Checkpoint B1b1 accepted as complete on July 16, 2026.
+- Recording, commit, and push authorized: Yes.
+- Checkpoint B1b1 authorization baseline: `de97f3d87cc7a90e404c3cf4ea313e6f12e5410a`.
+- Checkpoint B1b1 complete: Yes.
 - Checkpoint B1b2 authorized: No.
 - Checkpoint B2 authorized: No.
-- B1b1 created paths authorized: `selectors.py` and `test_context_selectors.py`.
-- B1b1 modified paths authorized: task-context index, context-compilation exports, and models.
-- Selector families authorized: bounded `yaml_fields` and exact ATX `heading`.
+- Exact B1b1 implementation scope: two created and three modified files.
+- Selector families implemented: bounded `yaml_fields` and exact ATX `heading`.
 - Selector Git access authorized: No.
 - Source-selection reasoning authorized: No.
 - Relationship verification authorized: No.
@@ -396,4 +432,4 @@ No selection-plan or package-compilation implementation begins automatically fro
 - AI Engineering Environment Review authorized: No.
 - Structured Research Orchestration implementation authorized: No.
 
-STOP — Implement and verify Checkpoint B1b1 only. Do not begin B1b2 or B2.
+STOP — Preserve Checkpoint B1b1. Do not begin B1b2 or B2 without a separate owner decision.
