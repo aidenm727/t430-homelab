@@ -56,7 +56,7 @@
     "selection_policy": {
       "allOf": [
         {"$ref": "#/$defs/policyReference"},
-        {"properties": {"id": {"const": "example.read-only-architecture-assessment"}, "version": {"const": "1.0.0"}}}
+        {"properties": {"id": {"const": "example.read-only-architecture-assessment"}, "version": {"const": "1.0.1"}}}
       ]
     },
     "budget_policy": {

@@ -26,7 +26,19 @@ CONTEXT_PACKAGE_SCHEMA_VERSION = "aiden.task-context/v1"
 CONSUMER_CONTRACT_VERSION = "aiden.task-context-consumer/v1"
 SELECTION_POLICY_ID = "example.read-only-architecture-assessment"
 BUDGET_POLICY_ID = "example.utf8-byte-budget"
-EXAMPLE_POLICY_VERSION = "1.0.0"
+SELECTION_POLICY_VERSION = "1.0.1"
+BUDGET_POLICY_VERSION = "1.0.0"
+SOURCE_BUDGET_TIERS = (
+    "mandatory_authoritative_sources",
+    "required_supporting_sources",
+    "optional_evidence",
+)
+SENSITIVITY_ORDER = (
+    "public",
+    "ordinary_personal",
+    "sensitive",
+    "highly_restricted",
+)
 
 RFC3339_PATTERN = re.compile(
     r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$"
@@ -324,19 +336,15 @@ def validate_selection_policy(value: Any) -> ValidationResult:
         _issue(issues, "unsupported_version", "$.schema_version", "unsupported selection-policy schema")
     for field in ("id", "version", "task_profile"):
         _string(value.get(field), f"$.{field}", issues, non_empty=True)
-    if value.get("maximum_sensitivity") not in (
-        "public",
-        "ordinary_personal",
-        "sensitive",
-        "highly_restricted",
-    ):
+    maximum_sensitivity = value.get("maximum_sensitivity")
+    if maximum_sensitivity not in SENSITIVITY_ORDER:
         _issue(
             issues,
             "maximum_sensitivity",
             "$.maximum_sensitivity",
             "is not an accepted v1 sensitivity",
         )
-    if value.get("id") != SELECTION_POLICY_ID or value.get("version") != EXAMPLE_POLICY_VERSION:
+    if value.get("id") != SELECTION_POLICY_ID or value.get("version") != SELECTION_POLICY_VERSION:
         _issue(issues, "unsupported_policy", "$.id", "unsupported selection-policy identity or version")
     traversal = value.get("relationship_traversal")
     if _fixed_object(
@@ -379,7 +387,14 @@ def validate_selection_policy(value: Any) -> ValidationResult:
         seen: set[str] = set()
         for index, rule in enumerate(rules):
             path = f"$.rules[{index}]"
-            rule_fields = ("id", "type", "priority_tier", "source", "selector")
+            rule_fields = (
+                "id",
+                "type",
+                "priority_tier",
+                "budget_tier",
+                "source",
+                "selector",
+            )
             if not _fixed_object(rule, path, rule_fields, rule_fields, issues):
                 continue
             rule_id = rule.get("id")
@@ -391,15 +406,52 @@ def validate_selection_policy(value: Any) -> ValidationResult:
             if rule.get("type") not in ("explicit_anchor", "task_profile", "allowlisted_relationship"):
                 _issue(issues, "rule_type", f"{path}.type", "is unsupported")
             _integer(rule.get("priority_tier"), f"{path}.priority_tier", issues, non_negative=True)
+            if rule.get("budget_tier") not in SOURCE_BUDGET_TIERS:
+                _issue(
+                    issues,
+                    "budget_tier",
+                    f"{path}.budget_tier",
+                    "is not an accepted source budget tier",
+                )
             source = rule.get("source")
-            source_allowed = ("kind", "path", "object_type", "field_contract_owner")
-            if _fixed_object(source, f"{path}.source", ("kind",), source_allowed, issues):
+            source_allowed = (
+                "kind",
+                "sensitivity",
+                "path",
+                "object_type",
+                "field_contract_owner",
+            )
+            if _fixed_object(
+                source,
+                f"{path}.source",
+                ("kind", "sensitivity"),
+                source_allowed,
+                issues,
+            ):
                 if source.get("kind") not in ("repository_object", "document"):
                     _issue(
                         issues,
                         "source_kind",
                         f"{path}.source.kind",
                         "must be repository_object or document",
+                    )
+                sensitivity = source.get("sensitivity")
+                if sensitivity not in SENSITIVITY_ORDER:
+                    _issue(
+                        issues,
+                        "source_sensitivity",
+                        f"{path}.source.sensitivity",
+                        "is not an accepted v1 sensitivity",
+                    )
+                elif maximum_sensitivity in SENSITIVITY_ORDER and (
+                    SENSITIVITY_ORDER.index(sensitivity)
+                    > SENSITIVITY_ORDER.index(maximum_sensitivity)
+                ):
+                    _issue(
+                        issues,
+                        "sensitivity_ceiling",
+                        f"{path}.source.sensitivity",
+                        "must not exceed maximum_sensitivity",
                     )
                 for field in ("path", "object_type", "field_contract_owner"):
                     if field in source:
@@ -483,7 +535,7 @@ def validate_budget_policy(value: Any) -> ValidationResult:
         _issue(issues, "unsupported_version", "$.schema_version", "unsupported budget-policy schema")
     for field in ("id", "version"):
         _string(value.get(field), f"$.{field}", issues)
-    if value.get("id") != BUDGET_POLICY_ID or value.get("version") != EXAMPLE_POLICY_VERSION:
+    if value.get("id") != BUDGET_POLICY_ID or value.get("version") != BUDGET_POLICY_VERSION:
         _issue(issues, "unsupported_policy", "$.id", "unsupported budget-policy identity or version")
     if value.get("normative_unit") != "utf8_bytes":
         _issue(issues, "budget_unit", "$.normative_unit", "must be utf8_bytes")
@@ -586,13 +638,13 @@ def validate_compilation_request(value: Any) -> ValidationResult:
     selection_reference = value.get("selection_policy")
     if isinstance(selection_reference, Mapping) and (
         selection_reference.get("id") != SELECTION_POLICY_ID
-        or selection_reference.get("version") != EXAMPLE_POLICY_VERSION
+        or selection_reference.get("version") != SELECTION_POLICY_VERSION
     ):
         _issue(issues, "unsupported_policy", "$.selection_policy", "unsupported selection-policy identity or version")
     budget_reference = value.get("budget_policy")
     if isinstance(budget_reference, Mapping) and (
         budget_reference.get("id") != BUDGET_POLICY_ID
-        or budget_reference.get("version") != EXAMPLE_POLICY_VERSION
+        or budget_reference.get("version") != BUDGET_POLICY_VERSION
     ):
         _issue(issues, "unsupported_policy", "$.budget_policy", "unsupported budget-policy identity or version")
     protected = value.get("protected_references")
@@ -819,13 +871,13 @@ def validate_context_package(value: Any) -> ValidationResult:
         selection_reference = compilation.get("selection_policy")
         if isinstance(selection_reference, Mapping) and (
             selection_reference.get("id") != SELECTION_POLICY_ID
-            or selection_reference.get("version") != EXAMPLE_POLICY_VERSION
+            or selection_reference.get("version") != SELECTION_POLICY_VERSION
         ):
             _issue(issues, "unsupported_policy", "$.compilation.selection_policy", "unsupported selection-policy identity or version")
         budget_reference = compilation.get("budget_policy")
         if isinstance(budget_reference, Mapping) and (
             budget_reference.get("id") != BUDGET_POLICY_ID
-            or budget_reference.get("version") != EXAMPLE_POLICY_VERSION
+            or budget_reference.get("version") != BUDGET_POLICY_VERSION
         ):
             _issue(issues, "unsupported_policy", "$.compilation.budget_policy", "unsupported budget-policy identity or version")
         _digest_record(compilation.get("request_digest"), "$.compilation.request_digest", issues)

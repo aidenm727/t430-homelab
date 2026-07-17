@@ -1,7 +1,7 @@
 {
   "schema_version": "aiden.task-context.selection-policy/v1",
   "id": "example.read-only-architecture-assessment",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "task_profile": "eo-architecture-assessment",
   "relationship_traversal": {
     "max_hops": 1,
@@ -23,8 +23,10 @@
       "id": "S010-explicit-opportunity-anchor",
       "type": "explicit_anchor",
       "priority_tier": 10,
+      "budget_tier": "mandatory_authoritative_sources",
       "source": {
         "kind": "repository_object",
+        "sensitivity": "public",
         "object_type": "engineering-opportunity",
         "field_contract_owner": "docs/architecture/engineering-opportunity-object.md"
       },
@@ -42,8 +44,10 @@
       "id": "S020-current-mission-milestone",
       "type": "explicit_anchor",
       "priority_tier": 10,
+      "budget_tier": "mandatory_authoritative_sources",
       "source": {
         "kind": "document",
+        "sensitivity": "public",
         "path": "docs/current-mission.md"
       },
       "selector": {
@@ -56,8 +60,10 @@
       "id": "S030-canonical-repository-authority",
       "type": "allowlisted_relationship",
       "priority_tier": 20,
+      "budget_tier": "required_supporting_sources",
       "source": {
         "kind": "document",
+        "sensitivity": "public",
         "path": "docs/architecture/repository.md"
       },
       "selector": {
@@ -70,8 +76,10 @@
       "id": "S040-mandatory-knowledge-authority",
       "type": "task_profile",
       "priority_tier": 30,
+      "budget_tier": "required_supporting_sources",
       "source": {
         "kind": "document",
+        "sensitivity": "public",
         "path": "docs/architecture/knowledge-authority.md"
       },
       "selector": {
@@ -84,8 +92,10 @@
       "id": "S050-mandatory-collaboration",
       "type": "allowlisted_relationship",
       "priority_tier": 30,
+      "budget_tier": "required_supporting_sources",
       "source": {
         "kind": "document",
+        "sensitivity": "public",
         "path": "docs/standards/engineering-collaboration.md"
       },
       "selector": {
@@ -151,6 +161,6 @@
   "digest": {
     "algorithm": "sha256",
     "canonicalization": "rfc8785-jcs",
-    "value": "708b6c73208db65dc94fcd89d1810666048895821b2e6e0feef5aa6b9ccf5448"
+    "value": "69577722ea4eb6f479424f3bf324866cc2992d5df82b3224e5f20571ef081938"
   }
 }

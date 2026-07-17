@@ -5,9 +5,9 @@
 **Authority class:** Human-Reviewed Implementation-Planning Decision
 **Canonical:** No
 **Generated:** No
-**Status:** Accepted Revised Executable-Path Plan and Checkpoint A.1 Authorization Recorded
+**Status:** Checkpoint A.1 Completion Accepted; B1 and B2 Withheld
 **Owner decision recorded:** July 16, 2026
-**Current state:** Checkpoint A complete and owner-accepted; Checkpoint A.1 authorized; B1 and B2 unauthorized
+**Current state:** Checkpoint A and A.1 complete and owner-accepted; B1 and B2 unauthorized
 
 ---
 
@@ -16,6 +16,31 @@
 > Accept the revised EO-2026-013 executable-path plan. Authorize Checkpoint A.1 — Executable-Policy Contract Correction only. Do not authorize Checkpoint B1 or Checkpoint B2. Preserve the protected branch content as out of scope; authorize only identity comparison of the declared protected ref during later B1 review.
 
 Recorded July 16, 2026.
+
+## Checkpoint A.1 Completion Acceptance
+
+The owner recorded:
+
+> Accept EO-2026-013 Checkpoint A.1 as complete. Authorize recording, committing, and pushing the Checkpoint A.1 completion. Do not authorize Checkpoint B1 or Checkpoint B2. Preserve the protected branch content as out of scope.
+
+Recorded July 16, 2026.
+
+The accepted implementation:
+
+- modified exactly the ten authorized existing files;
+- created and deleted no files;
+- advanced the selection-policy instance to `1.0.1`;
+- preserved the budget-policy instance at `1.0.0`;
+- added the exact accepted budget tier and `public` sensitivity to all five first-replay sources;
+- preserved the budget schema and policy byte-for-byte;
+- preserved the four stable schema URNs;
+- recomputed every affected policy, request, and package-identity foundation value;
+- passed 90 tests;
+- passed independent negative, sensitivity-bound, version, digest, identity, and structural-reference probes;
+- left Atlas Valid, complete, and Synchronized; and
+- performed no B1, B2, dependency, protected-branch access, staging, commit, or push before owner acceptance.
+
+Checkpoint B1 and Checkpoint B2 remain unauthorized.
 
 ## Accepted Recommendation
 
@@ -27,7 +52,7 @@ The executable direction remains valid, but implementation should proceed throug
 2. **Checkpoint B1 — Immutable Snapshot, Selectors, and Selection Plan**
 3. **Checkpoint B2 — Compilation, Integrity Validation, Explanation, and Golden Replay**
 
-Authorize only Checkpoint A.1 now.
+Checkpoint A.1 was the only implementation checkpoint authorized by that decision.
 
 This preserves the architecture while preventing the compiler from inventing policy behavior and avoids combining Git plumbing, a strict YAML subset, source selection, budgeting, package construction, validation, explanations, and golden reproduction into one oversized implementation change.
 
@@ -206,7 +231,7 @@ No files are created.
 
 ## Checkpoint B1 — Immutable Selection Path
 
-B1 remains unauthorized until A.1 is accepted.
+B1 remains unauthorized and requires a separate owner decision after A.1 completion.
 
 ### Create
 
@@ -255,7 +280,7 @@ B1 remains unauthorized until A.1 is accepted.
 
 ## Checkpoint B2 — Compilation and Golden Replay
 
-B2 remains unauthorized until B1 is accepted.
+B2 remains unauthorized and requires a separate owner decision after B1 completion.
 
 ### Create
 
@@ -335,11 +360,18 @@ This parser must not reuse the existing working-tree `parse_simple_yaml` impleme
 
 - Checkpoint A completion: `6e0fb536eac8113a2a07547661d5a9b89c0a65b6`.
 - Revised executable-path plan accepted: July 16, 2026.
-- Checkpoint A.1 authorized: Yes, exact ten-file modify-only scope.
+- Checkpoint A.1 authorization baseline: `1f2595b8a3489979b275dfad0884b4e0fe09c585`.
+- Checkpoint A.1 completion accepted: July 16, 2026.
+- Checkpoint A.1 exact implementation scope: ten modified existing files, no created or deleted files.
+- Selection-policy version: `1.0.1`.
+- Budget-policy version: `1.0.0`.
+- Final technical verification: 90 tests passed; Atlas Valid, complete, and Synchronized; independent contract and deterministic-transition probes passed.
 - Checkpoint B1 authorized: No.
 - Checkpoint B2 authorized: No.
 - Protected branch content in scope: No.
+- Protected-ref identity comparison authorized: No.
 - Future protected-ref identity comparison: planned only, subject to separate B1 authorization.
 - EO-2026-013 lifecycle state: `reviewed`.
+- Next decision gate: separate owner authorization, revision, deferral, or rejection of Checkpoint B1.
 
-STOP — Implement and verify Checkpoint A.1 only. Do not begin B1 or B2.
+STOP — Preserve Checkpoint A.1. Do not begin B1 or B2 without a separate owner decision.

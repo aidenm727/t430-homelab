@@ -19,7 +19,7 @@ The following JSON Schema Draft 2020-12 documents are canonical machine-readable
 
 The following versioned policies are canonical machine-readable repository knowledge:
 
-- `docs/task-context/policies/selection/example-read-only-architecture-assessment-v1.json` — policy ID `example.read-only-architecture-assessment`; version `1.0.0`; owns the exact historical example task profile, typed source rules, one-hop relationship allowlist, selector data, ordering, exclusions, sensitivity ceiling, and bounded omission-candidate universe.
+- `docs/task-context/policies/selection/example-read-only-architecture-assessment-v1.json` — policy ID `example.read-only-architecture-assessment`; version `1.0.1`; owns the exact historical example task profile, typed source rules, explicit source budget tiers and sensitivity classifications, one-hop relationship allowlist, selector data, ordering, exclusions, sensitivity ceiling, and bounded omission-candidate universe.
 - `docs/task-context/policies/budget/example-utf8-65536-v1.json` — policy ID `example.utf8-byte-budget`; version `1.0.0`; owns the exact 65,536 UTF-8-byte limit, allocation order, control-envelope removal surface, mandatory-tier overflow result, and truncation prohibition.
 
 The JSON files under `tests/fixtures/task_context/requests/` and `tests/fixtures/task_context/expected/` are non-canonical test evidence. The request fixture preserves an exact historical replay input. The expected-values fixture preserves independently reproducible Checkpoint A calculations. Neither fixture owns architecture or policy, and the expected-values fixture is neither a compiled package nor a golden package.
@@ -49,6 +49,8 @@ Policy values are therefore identified by exact repository path plus exact self-
 Changes require a bounded reviewed repository change. A maintainer updates the owning schema or policy, advances its version when its accepted contract changes, recomputes every affected self-excluding policy and request digest, updates non-canonical expected evidence, runs the full unittest and Atlas verification sequence, and obtains human review.
 
 An existing version must not be silently reinterpreted. A schema or policy defect discovered after Checkpoint A returns through a bounded correction review. Checkpoint B must not silently change a frozen Checkpoint A contract.
+
+Checkpoint A.1 is a reviewed, digest-changing, pre-executable defect correction. It advances only the selection-policy instance to `1.0.1`; the budget-policy instance remains `1.0.0`, and all four stable schema URNs remain unchanged. Every selection rule now owns an explicit source allocation `budget_tier`, and every rule source owns an explicit `sensitivity` classification.
 
 ## Canonical JSON Build-versus-Adopt Decision
 
@@ -82,8 +84,8 @@ This minimal registration makes the family visible through existing Atlas docume
 
 ## Checkpoint Boundary
 
-Checkpoint A establishes deterministic foundations only: schemas, exact policies, a strict request fixture, independently reproducible expected values, immutable typed values, strict JSON loading, canonical JSON, digest and identifier helpers, and structural validation.
+Checkpoint A and its A.1 contract correction establish deterministic foundations only: schemas, exact policies, a strict request fixture, independently reproducible expected values, immutable typed values, strict JSON loading, canonical JSON, digest and identifier helpers, and structural validation.
 
-Checkpoint A does not resolve a Git snapshot, traverse relationships, select sources, execute heading or YAML selectors, materialize payloads, allocate a real package budget, compile a package, calculate package integrity, render explanations, add an Atlas command, or produce a package fixture. Structural validation of a deliberately non-consumable test object demonstrates only the accepted package shape.
+Checkpoint A.1 does not resolve a Git snapshot, traverse relationships, select sources, parse YAML or headings, materialize payloads, execute budgeting, compile or assemble a package, calculate package integrity, render explanations, add an Atlas command, or produce a package fixture. Structural validation of a deliberately non-consumable test object demonstrates only the accepted package shape and does not establish compilation, integrity, or consumability.
 
 Checkpoint B is the separately governed executable compilation path. It remains unauthorized until a verified Checkpoint A receives separate owner acceptance.

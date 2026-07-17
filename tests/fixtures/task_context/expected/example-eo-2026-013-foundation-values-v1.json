@@ -23,6 +23,10 @@
       "version": "aiden.task-context/v1"
     }
   },
+  "policy_versions": {
+    "selection": "1.0.1",
+    "budget": "1.0.0"
+  },
   "canonicalization_vectors": [
     {
       "name": "scalars-and-rfc8785-string-escaping",
@@ -85,7 +89,7 @@
   "selection_policy_digest": {
     "algorithm": "sha256",
     "canonicalization": "rfc8785-jcs",
-    "value": "708b6c73208db65dc94fcd89d1810666048895821b2e6e0feef5aa6b9ccf5448"
+    "value": "69577722ea4eb6f479424f3bf324866cc2992d5df82b3224e5f20571ef081938"
   },
   "budget_policy_digest": {
     "algorithm": "sha256",
@@ -95,23 +99,23 @@
   "request_digest": {
     "algorithm": "sha256",
     "canonicalization": "rfc8785-jcs",
-    "value": "840adc1dad2347230a05720faeee71b553c802f2cef25e08232d292f02be8390"
+    "value": "4839411214fa20cde0b842a72ad9baf5d525c494fca3c931cd58d63364c8c01b"
   },
   "package_identity_helper": {
     "foundation_only": true,
     "snapshot_fingerprint_kind": "synthetic_test_vector_not_resolved_repository_state",
     "synthetic_snapshot_fingerprint": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
     "surface": {
-      "request_digest": "840adc1dad2347230a05720faeee71b553c802f2cef25e08232d292f02be8390",
+      "request_digest": "4839411214fa20cde0b842a72ad9baf5d525c494fca3c931cd58d63364c8c01b",
       "snapshot_fingerprint": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
     },
-    "canonical_utf8": "{\"request_digest\":\"840adc1dad2347230a05720faeee71b553c802f2cef25e08232d292f02be8390\",\"snapshot_fingerprint\":\"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\"}",
+    "canonical_utf8": "{\"request_digest\":\"4839411214fa20cde0b842a72ad9baf5d525c494fca3c931cd58d63364c8c01b\",\"snapshot_fingerprint\":\"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\"}",
     "identity_digest": {
       "algorithm": "sha256",
       "canonicalization": "rfc8785-jcs",
-      "value": "6007762250f7992a72c91e080502104cf9fa82e90ce16039a012edd7a349b9e6"
+      "value": "711062df74645329c3078b575b8ddfc737a41e3b3a0a9aeaca3ea9bafcb85678"
     },
-    "package_id": "tcp-6007762250f7992a72c91e08"
+    "package_id": "tcp-711062df74645329c3078b57"
   },
   "compiler_identity_input": {
     "identity": "aiden.context-compilation",

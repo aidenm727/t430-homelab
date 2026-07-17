@@ -195,11 +195,11 @@
   },
   "selection_policy": {
     "id": "example.read-only-architecture-assessment",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "digest": {
       "algorithm": "sha256",
       "canonicalization": "rfc8785-jcs",
-      "value": "708b6c73208db65dc94fcd89d1810666048895821b2e6e0feef5aa6b9ccf5448"
+      "value": "69577722ea4eb6f479424f3bf324866cc2992d5df82b3224e5f20571ef081938"
     }
   },
   "budget_policy": {

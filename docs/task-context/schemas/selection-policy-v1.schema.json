@@ -20,7 +20,7 @@
   "properties": {
     "schema_version": {"const": "aiden.task-context.selection-policy/v1"},
     "id": {"const": "example.read-only-architecture-assessment"},
-    "version": {"const": "1.0.0"},
+    "version": {"const": "1.0.1"},
     "task_profile": {"type": "string", "minLength": 1},
     "relationship_traversal": {
       "type": "object",
@@ -89,9 +89,10 @@
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind"],
+      "required": ["kind", "sensitivity"],
       "properties": {
         "kind": {"enum": ["repository_object", "document"]},
+        "sensitivity": {"enum": ["public", "ordinary_personal", "sensitive", "highly_restricted"]},
         "path": {"type": "string", "minLength": 1},
         "object_type": {"type": "string", "minLength": 1},
         "field_contract_owner": {"type": "string", "minLength": 1}
@@ -123,11 +124,12 @@
     "selectionRule": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "type", "priority_tier", "source", "selector"],
+      "required": ["id", "type", "priority_tier", "budget_tier", "source", "selector"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
         "type": {"enum": ["explicit_anchor", "task_profile", "allowlisted_relationship"]},
         "priority_tier": {"$ref": "#/$defs/safeNonNegativeInteger"},
+        "budget_tier": {"enum": ["mandatory_authoritative_sources", "required_supporting_sources", "optional_evidence"]},
         "source": {"$ref": "#/$defs/source"},
         "selector": {"$ref": "#/$defs/selector"}
       }

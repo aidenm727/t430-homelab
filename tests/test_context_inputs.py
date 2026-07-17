@@ -16,7 +16,17 @@ from atlas.platform.context_compilation.inputs import (
     load_selection_policy,
 )
 from atlas.platform.context_compilation.canonical_json import canonicalize
+from atlas.platform.context_compilation.digests import (
+    budget_policy_digest,
+    selection_policy_digest,
+)
 from atlas.platform.context_compilation.models import CompilationRequest, LoadedPolicy
+from atlas.platform.context_compilation.validation import (
+    BUDGET_POLICY_VERSION,
+    SELECTION_POLICY_VERSION,
+    SENSITIVITY_ORDER,
+    SOURCE_BUDGET_TIERS,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,10 +67,33 @@ class ContextInputTests(unittest.TestCase):
         selection = load_selection_policy(SELECTION)
         budget = load_budget_policy(BUDGET)
         request = load_compilation_request(REQUEST)
+        self.assertEqual(selection["version"], SELECTION_POLICY_VERSION)
+        self.assertEqual(budget["version"], BUDGET_POLICY_VERSION)
+        self.assertEqual(request["selection_policy"]["version"], SELECTION_POLICY_VERSION)
+        self.assertEqual(request["budget_policy"]["version"], BUDGET_POLICY_VERSION)
         self.assertEqual(selection["id"], request["selection_policy"]["id"])
         self.assertEqual(budget["id"], request["budget_policy"]["id"])
         load_selection_policy(SELECTION, request["selection_policy"])
         load_budget_policy(BUDGET, request["budget_policy"])
+
+    def test_first_replay_rule_classifications_are_exact(self) -> None:
+        selection = load_selection_policy(SELECTION)
+        expected_tiers = {
+            "S010-explicit-opportunity-anchor": "mandatory_authoritative_sources",
+            "S020-current-mission-milestone": "mandatory_authoritative_sources",
+            "S030-canonical-repository-authority": "required_supporting_sources",
+            "S040-mandatory-knowledge-authority": "required_supporting_sources",
+            "S050-mandatory-collaboration": "required_supporting_sources",
+        }
+        self.assertEqual(
+            {rule["id"]: rule["budget_tier"] for rule in selection["rules"]},
+            expected_tiers,
+        )
+        self.assertEqual(
+            [rule["source"]["sensitivity"] for rule in selection["rules"]],
+            [SENSITIVITY_ORDER[0]] * 5,
+        )
+        self.assertNotIn(SOURCE_BUDGET_TIERS[-1], expected_tiers.values())
 
     def test_validated_mappings_construct_exact_typed_values(self) -> None:
         selection = load_selection_policy(SELECTION)
@@ -193,15 +226,57 @@ class ContextInputTests(unittest.TestCase):
         invalid_selector_type["rules"][0]["selector"]["type"] = "semantic"
         invalid_selector_shape = copy.deepcopy(selection)
         invalid_selector_shape["rules"][1]["selector"]["fields"] = ["id"]
+        invalid_budget_tier = copy.deepcopy(selection)
+        invalid_budget_tier["rules"][0]["budget_tier"] = "mandatory_control_envelope"
+        missing_budget_tier = copy.deepcopy(selection)
+        del missing_budget_tier["rules"][0]["budget_tier"]
+        invalid_source_sensitivity = copy.deepcopy(selection)
+        invalid_source_sensitivity["rules"][0]["source"]["sensitivity"] = "secret"
+        missing_source_sensitivity = copy.deepcopy(selection)
+        del missing_source_sensitivity["rules"][0]["source"]["sensitivity"]
         for value in (
             invalid_sensitivity,
             invalid_source_kind,
             invalid_direction,
             invalid_selector_type,
             invalid_selector_shape,
+            invalid_budget_tier,
+            missing_budget_tier,
+            invalid_source_sensitivity,
+            missing_source_sensitivity,
         ):
             with self.subTest(value=value), self.assertRaises(InputContractError):
                 load_selection_policy(self._write(value))
+
+    def test_source_sensitivity_ceiling_is_enforced(self) -> None:
+        selection = json.loads(SELECTION.read_text(encoding="utf-8"))
+        above_maximum = copy.deepcopy(selection)
+        above_maximum["maximum_sensitivity"] = SENSITIVITY_ORDER[0]
+        above_maximum["rules"][0]["source"]["sensitivity"] = SENSITIVITY_ORDER[1]
+        above_maximum["digest"] = selection_policy_digest(above_maximum).as_dict()
+        with self.assertRaises(InputContractError):
+            load_selection_policy(self._write(above_maximum))
+
+        permitted = copy.deepcopy(selection)
+        permitted["maximum_sensitivity"] = SENSITIVITY_ORDER[0]
+        permitted["digest"] = selection_policy_digest(permitted).as_dict()
+        self.assertEqual(
+            load_selection_policy(self._write(permitted))["maximum_sensitivity"],
+            SENSITIVITY_ORDER[0],
+        )
+
+    def test_selection_and_budget_runtime_versions_are_independent(self) -> None:
+        selection = json.loads(SELECTION.read_text(encoding="utf-8"))
+        selection["version"] = BUDGET_POLICY_VERSION
+        selection["digest"] = selection_policy_digest(selection).as_dict()
+        with self.assertRaises(InputContractError):
+            load_selection_policy(self._write(selection))
+
+        budget = json.loads(BUDGET.read_text(encoding="utf-8"))
+        budget["version"] = SELECTION_POLICY_VERSION
+        budget["digest"] = budget_policy_digest(budget).as_dict()
+        with self.assertRaises(InputContractError):
+            load_budget_policy(self._write(budget))
 
     def test_budget_limit_is_safe_and_non_negative(self) -> None:
         budget = json.loads(BUDGET.read_text(encoding="utf-8"))

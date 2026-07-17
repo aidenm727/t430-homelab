@@ -12,21 +12,21 @@ It summarizes the canonical current mission, infrastructure state, recent change
 
 ### Phase
 
-Task-Scoped Agent Context Compilation Checkpoint A.1 Implementation
+Task-Scoped Agent Context Compilation Checkpoint A.1 Complete
 
 ---
 
 ### Mission State
 
-The owner accepted the revised EO-2026-013 executable-path plan and authorized Checkpoint A.1 — Executable-Policy Contract Correction on July 16, 2026.
+The owner accepted EO-2026-013 Checkpoint A.1 — Executable-Policy Contract Correction as complete on July 16, 2026 and authorized recording, committing, and pushing the completed checkpoint.
 
-The authorization is recorded in `docs/reviews/eo-2026-013-executable-path-review-2026-07-16.md` against Checkpoint A completion commit `6e0fb536eac8113a2a07547661d5a9b89c0a65b6`.
+Checkpoint A.1 was implemented against authorization baseline `1f2595b8a3489979b275dfad0884b4e0fe09c585`. The accepted change modifies exactly ten existing files and creates no file.
 
-Checkpoint A remains complete and accepted. Checkpoint A.1 may modify only the exact ten existing files listed in the accepted executable-path review. It creates no file and implements no executable compilation capability.
+The completed contract now binds every first-replay source to an explicit budget tier and sensitivity classification. The selection-policy instance is `1.0.1`; the budget-policy instance remains `1.0.0`. Selection and budget runtime versions are independent, the four stable schema URNs are preserved, and every affected deterministic foundation value has been recomputed.
 
 Checkpoint B1 and Checkpoint B2 remain explicitly unauthorized.
 
-The protected branch `wip/distinctness-foundation-calibration` remains unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698`. Its content is out of scope. A later B1 review may authorize identity comparison of the declared protected ref only; no content access is authorized now.
+The protected branch `wip/distinctness-foundation-calibration` remains unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698`. Its content remains out of scope. No protected-reference resolution or identity comparison occurred during A.1.
 
 EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
 
@@ -34,66 +34,68 @@ EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
 
 ### Mission Intent
 
-Correct the executable-policy contract before any executable compilation work begins.
+Preserve the accepted executable-policy correction and hold the immutable selection path behind a separate owner decision.
 
-Checkpoint A.1 adds explicit digest-bound source budget tiers and sensitivity classifications, advances the selection-policy instance to `1.0.1`, separates selection-policy and budget-policy runtime version support, and recomputes affected deterministic foundation values.
+Checkpoint A.1 completes the digest-bound contract information required before executable work: explicit source budget tiers, explicit source sensitivities, independent selection and budget policy versions, and recomputed deterministic policy, request, and package-identity foundation values.
 
-The checkpoint preserves the accepted architecture, four stable schema URNs, budget policy `1.0.0`, task-authority boundary, repository ownership, non-canonical package classification, and all Checkpoint A guarantees.
+No executable compilation capability exists yet. Task authority remains external to compilation, repository documentation and Atlas remain deterministic authority, and generated task context remains non-canonical.
 
-Checkpoint A.1 must return for owner review before B1 begins.
-
-Repository Synchronization Reasoning remains the deterministic check for alignment between this mission, the accepted executable-path review, canonical architecture, generated context, repository metadata, and the Checkpoint A.1 authorization boundary.
+Repository Synchronization Reasoning remains the deterministic check for alignment between this mission, the accepted executable-path review, canonical architecture, generated context, repository metadata, and the completed A.1 boundary.
 
 ---
 
 ### Current Focus
 
-- Add exact `budget_tier` values to all five first-replay selection rules.
-- Add exact `sensitivity: public` values to all five rule sources.
-- Assign the first two rules to `mandatory_authoritative_sources`.
-- Assign the remaining three rules to `required_supporting_sources`.
-- Advance the selection-policy instance from `1.0.0` to `1.0.1`.
-- Keep the budget-policy instance at `1.0.0`.
-- Split shared runtime policy-version handling into separate selection-policy and budget-policy constants.
-- Recompute the selection-policy digest, request digest, and dependent package-identity foundation values.
-- Update only the exact ten authorized existing files.
-- Run all tests and Atlas verification.
-- Return for owner acceptance before B1.
-- Keep B1, B2, protected-branch content, executable code, dependencies, and lifecycle changes out of scope.
+- Preserve the accepted selection-policy instance at `1.0.1`.
+- Preserve the budget-policy instance at `1.0.0`.
+- Preserve all five exact budget-tier and `public` sensitivity assignments.
+- Preserve the recomputed selection-policy, request, identity, and package-ID values.
+- Preserve independent runtime support for selection and budget policy versions.
+- Preserve the four stable non-network schema URNs.
+- Keep B1 and B2 entirely withheld.
+- Require a separate owner review before Git snapshot resolution, protected-ref identity comparison, YAML or heading selection, relationship verification, or selection-plan implementation.
+- Keep protected-branch content, dependencies, Atlas commands, lifecycle changes, and AI-environment work out of scope.
+- Keep EO-2026-013 and the full Engineering Opportunity portfolio in the `reviewed` lifecycle state.
 
 ---
 
 ### Initial Milestone
 
-Implement and verify Checkpoint A.1 — Executable-Policy Contract Correction.
+Checkpoint A.1 — Executable-Policy Contract Correction is complete and owner-accepted.
 
-#### Included
+#### Completed
 
-- Exact budget-tier classification for every first-replay selection rule.
-- Exact source sensitivity classification for every first-replay rule.
-- Selection-policy instance version `1.0.1`.
-- Budget-policy instance preserved at `1.0.0`.
-- Separate runtime support constants for selection and budget policy versions.
-- Recomputed policy, request, and package-identity foundation values.
-- Validator and test updates for the corrected contract.
-- Documentation of the explicit pre-executable defect correction.
-- Full test and Atlas verification.
-- Return to owner review before B1.
+- Added exact `budget_tier` values to all five first-replay selection rules.
+- Added exact `sensitivity: public` values to all five rule sources.
+- Assigned the first two rules to `mandatory_authoritative_sources`.
+- Assigned the remaining three rules to `required_supporting_sources`.
+- Advanced the selection-policy instance from `1.0.0` to `1.0.1`.
+- Preserved the budget-policy instance at `1.0.0`.
+- Split runtime selection-policy and budget-policy version constants.
+- Recomputed the selection-policy digest, request digest, package identity digest, and package ID.
+- Updated the portable schema boundaries, strict request fixture, foundation evidence, local validator, and focused tests.
+- Preserved the budget schema and policy byte-for-byte.
+- Preserved all four schema URNs.
+- Passed 90 repository tests.
+- Passed independent acceptance probes for versions, classifications, sensitivity ceilings, budget compatibility, schema references, deterministic transitions, and structural package references.
+- Atlas remained Valid, complete, and Synchronized.
+- No file was created.
+- No B1 or B2 capability was implemented.
+- No dependency, protected-branch access, staging, commit, or push occurred before owner acceptance.
 
-#### Excluded
+#### Still Excluded
 
-- New files.
 - Checkpoint B1.
 - Checkpoint B2.
-- Git snapshot resolution.
+- Git snapshot resolution or raw Git object access.
+- Protected-reference identity comparison.
 - Protected-branch content access.
-- YAML or heading selectors.
-- Source selection.
-- Payload materialization.
-- Budget execution.
-- Compilation or package integrity.
-- Explanations or golden fixture.
-- Atlas commands.
+- Strict YAML parsing or heading selection.
+- Historical relationship verification.
+- Source selection, omissions, unknowns, or selection plans.
+- Payload materialization or budget execution.
+- Compilation, package integrity, explanations, or golden replay.
+- Atlas commands or generic structured-resource discovery.
 - Dependencies.
 - Canonical architecture changes.
 - Engineering Opportunity lifecycle changes.
@@ -144,6 +146,27 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 ---
 
 ### Completion History
+
+#### EO-2026-013 Checkpoint A.1 — Executable-Policy Contract Correction
+
+- Completion accepted by the owner on July 16, 2026.
+- Recording, commit, and push authorized.
+- Authorization baseline: `1f2595b8a3489979b275dfad0884b4e0fe09c585`.
+- Exact implementation scope: ten modified existing files and no created or deleted files.
+- Selection-policy instance advanced to `1.0.1`.
+- Budget-policy instance preserved at `1.0.0`.
+- All five first-replay rules gained explicit digest-bound budget tiers and `public` source sensitivity.
+- Selection-policy digest changed from `708b6c73208db65dc94fcd89d1810666048895821b2e6e0feef5aa6b9ccf5448` to `69577722ea4eb6f479424f3bf324866cc2992d5df82b3224e5f20571ef081938`.
+- Request digest changed from `840adc1dad2347230a05720faeee71b553c802f2cef25e08232d292f02be8390` to `4839411214fa20cde0b842a72ad9baf5d525c494fca3c931cd58d63364c8c01b`.
+- Package identity digest changed from `6007762250f7992a72c91e080502104cf9fa82e90ce16039a012edd7a349b9e6` to `711062df74645329c3078b575b8ddfc737a41e3b3a0a9aeaca3ea9bafcb85678`.
+- Package ID changed from `tcp-6007762250f7992a72c91e08` to `tcp-711062df74645329c3078b57`.
+- Ninety tests passed.
+- Atlas validation was Valid, missing definitions were clean, and synchronization was Synchronized.
+- Independent final acceptance review passed.
+- No B1, B2, dependency, protected-branch access, lifecycle mutation, staging, commit, or push occurred before owner acceptance.
+- Checkpoint B1 and Checkpoint B2 remain unauthorized.
+- Protected-branch content remains out of scope.
+
 
 #### EO-2026-013 Revised Executable-Path Plan Acceptance
 
@@ -243,12 +266,12 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ### Current Non-Priorities
 
-- Beginning Checkpoint B1 or Checkpoint B2.
-- Creating any new implementation file.
+- Beginning Checkpoint B1 or Checkpoint B2 without a separate owner decision.
 - Git snapshot resolution, raw object reads, or clean-target compilation.
 - Reading, selecting, traversing, checking out, switching to, or modifying protected-branch content.
-- Implementing protected-ref identity comparison during A.1.
+- Performing protected-ref identity comparison without B1 authorization.
 - Implementing strict YAML parsing or heading selection.
+- Implementing historical relationship verification.
 - Implementing source selection, omissions, unknowns, or selection plans.
 - Materializing payloads or applying the byte budget.
 - Compiling or validating a complete package.
@@ -265,36 +288,36 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ### Current Status
 
-EO-2026-013 Checkpoint A is complete and accepted.
+EO-2026-013 Checkpoint A and Checkpoint A.1 are complete, independently verified, and owner-accepted.
 
-The revised executable-path plan is accepted. Checkpoint A.1 — Executable-Policy Contract Correction is authorized within the exact ten-file modify-only scope recorded in `docs/reviews/eo-2026-013-executable-path-review-2026-07-16.md`.
+Checkpoint A.1 contains the exact accepted ten-file modify-only correction. The final acceptance gate verified unchanged budget resources, independent selection and budget versions, exact source classifications, deterministic digest transitions, sensitivity-ceiling behavior, schema and runtime reference parity, 90 passing tests, and Valid, complete, Synchronized Atlas state.
 
-Checkpoint B1 and Checkpoint B2 remain unauthorized. The protected branch content remains out of scope. EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
+Checkpoint B1 and Checkpoint B2 remain unauthorized. Protected-branch content remains out of scope. EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
 
 ---
 
 ### Next Milestone
 
-Implement and verify Checkpoint A.1 — Executable-Policy Contract Correction, then obtain owner acceptance before B1.
+Obtain a separate owner decision on Checkpoint B1 — Immutable Snapshot, Selectors, and Selection Plan.
 
-No executable-path implementation begins automatically from this authorization.
+That review may authorize B1 unchanged, require bounded revision, defer it, or reject it. B1 does not begin automatically from A.1 completion. B2 remains downstream and unauthorized.
 
 ---
 
 ### Decision Boundary
 
-- Human decision: Revised EO-2026-013 executable-path plan accepted on July 16, 2026.
+- Human decision: EO-2026-013 Checkpoint A.1 accepted as complete on July 16, 2026.
+- Recording, commit, and push authorized: Yes.
 - Checkpoint A completion: `6e0fb536eac8113a2a07547661d5a9b89c0a65b6`.
+- Checkpoint A.1 authorization baseline: `1f2595b8a3489979b275dfad0884b4e0fe09c585`.
 - Checkpoint A complete: Yes.
-- Checkpoint A.1 authorized: Yes, exact ten-file modify-only scope.
+- Checkpoint A.1 complete: Yes.
 - Checkpoint B1 authorized: No.
 - Checkpoint B2 authorized: No.
-- New files authorized during A.1: No.
-- Selection policy target version: `1.0.1`.
-- Budget policy target version: `1.0.0`.
+- Selection policy version: `1.0.1`.
+- Budget policy version: `1.0.0`.
 - Protected branch content in scope: No.
 - Protected-ref identity comparison authorized now: No.
-- Future protected-ref identity comparison planned for B1 review: Yes.
 - Third-party dependency authorized: No.
 - Canonical architecture changes authorized: No.
 - Atlas command or generic discovery authorized: No.
@@ -303,7 +326,7 @@ No executable-path implementation begins automatically from this authorization.
 - AI Engineering Environment Review authorized: No.
 - Structured Research Orchestration implementation authorized: No.
 
-STOP — Implement and verify Checkpoint A.1 only. Do not begin B1 or B2.
+STOP — Preserve Checkpoint A.1. Do not begin B1 or B2 without a separate owner decision.
 
 ## Infrastructure Snapshot
 

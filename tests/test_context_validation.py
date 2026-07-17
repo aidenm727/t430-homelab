@@ -35,6 +35,11 @@ from atlas.platform.context_compilation.models import (
     deep_freeze,
 )
 from atlas.platform.context_compilation.validation import (
+    BUDGET_POLICY_VERSION,
+    SELECTION_POLICY_VERSION,
+    SENSITIVITY_ORDER,
+    SOURCE_BUDGET_TIERS,
+    validate_budget_policy,
     validate_compilation_request,
     validate_context_package,
     validate_selection_policy,
@@ -75,6 +80,50 @@ class ContextValidationTests(unittest.TestCase):
                 self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")
                 self.assertEqual(schema["$id"], SCHEMA_IDS[name])
 
+    def test_selection_schema_requires_rule_classifications(self) -> None:
+        schema = json.loads(SCHEMAS["selection_policy"].read_text(encoding="utf-8"))
+        rule = schema["$defs"]["selectionRule"]
+        source = schema["$defs"]["source"]
+        self.assertIn("budget_tier", rule["required"])
+        self.assertEqual(tuple(rule["properties"]["budget_tier"]["enum"]), SOURCE_BUDGET_TIERS)
+        self.assertIn("sensitivity", source["required"])
+        self.assertEqual(tuple(source["properties"]["sensitivity"]["enum"]), SENSITIVITY_ORDER)
+
+    def test_policy_versions_and_reference_schema_constants_are_independent(self) -> None:
+        self.assertEqual(self.selection["version"], SELECTION_POLICY_VERSION)
+        self.assertEqual(self.budget["version"], BUDGET_POLICY_VERSION)
+        self.assertTrue(validate_selection_policy(self.selection).valid)
+        self.assertTrue(validate_budget_policy(self.budget).valid)
+
+        request_schema = json.loads(
+            SCHEMAS["compilation_request"].read_text(encoding="utf-8")
+        )
+        package_schema = json.loads(
+            SCHEMAS["context_package"].read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            request_schema["properties"]["selection_policy"]["allOf"][1]["properties"]["version"]["const"],
+            SELECTION_POLICY_VERSION,
+        )
+        self.assertEqual(
+            request_schema["properties"]["budget_policy"]["allOf"][1]["properties"]["version"]["const"],
+            BUDGET_POLICY_VERSION,
+        )
+        self.assertEqual(
+            package_schema["properties"]["compilation"]["properties"]["selection_policy"]["allOf"][1]["properties"]["version"]["const"],
+            SELECTION_POLICY_VERSION,
+        )
+        self.assertEqual(
+            package_schema["properties"]["compilation"]["properties"]["budget_policy"]["allOf"][1]["properties"]["version"]["const"],
+            BUDGET_POLICY_VERSION,
+        )
+
+    def test_source_budget_tiers_match_loaded_budget_allocation_order(self) -> None:
+        self.assertEqual(tuple(self.budget["allocation_order"][1:]), SOURCE_BUDGET_TIERS)
+        selected_tiers = [rule["budget_tier"] for rule in self.selection["rules"]]
+        self.assertTrue(set(selected_tiers).issubset(set(self.budget["allocation_order"])))
+        self.assertNotIn(SOURCE_BUDGET_TIERS[-1], selected_tiers)
+
     def test_runtime_validators_accept_repository_fixtures(self) -> None:
         self.assertTrue(validate_selection_policy(self.selection).valid)
         self.assertTrue(validate_compilation_request(self.request).valid)
@@ -105,6 +154,11 @@ class ContextValidationTests(unittest.TestCase):
         self.assertEqual(sha256_bytes(exact_bytes["input_utf8"].encode()), exact_bytes["value"])
         self.assertEqual(expected["selection_policy_digest"], self.selection["digest"])
         self.assertEqual(expected["budget_policy_digest"], self.budget["digest"])
+        self.assertEqual(expected["policy_versions"]["selection"], self.selection["version"])
+        self.assertEqual(expected["policy_versions"]["budget"], self.budget["version"])
+        self.assertEqual(request_digest(self.request).as_dict(), expected["request_digest"])
+        self.assertEqual(self.request["selection_policy"]["digest"], self.selection["digest"])
+        self.assertEqual(self.request["budget_policy"]["digest"], self.budget["digest"])
 
     def test_package_identity_helper_vector(self) -> None:
         vector = self.expected["package_identity_helper"]
@@ -202,6 +256,21 @@ class ContextValidationTests(unittest.TestCase):
         self.assertTrue(result.valid, result.issues)
         self.assertEqual(package["package"]["consumability"], "non_consumable")
         self.assertFalse(package["validation"]["executable_validation_performed"])
+
+    def test_request_and_package_policy_reference_versions_are_required(self) -> None:
+        request_selection = copy.deepcopy(self.request)
+        request_selection["selection_policy"]["version"] = BUDGET_POLICY_VERSION
+        self.assertFalse(validate_compilation_request(request_selection).valid)
+        request_budget = copy.deepcopy(self.request)
+        request_budget["budget_policy"]["version"] = SELECTION_POLICY_VERSION
+        self.assertFalse(validate_compilation_request(request_budget).valid)
+
+        package_selection = self._structural_package()
+        package_selection["compilation"]["selection_policy"]["version"] = BUDGET_POLICY_VERSION
+        self.assertFalse(validate_context_package(package_selection).valid)
+        package_budget = self._structural_package()
+        package_budget["compilation"]["budget_policy"]["version"] = SELECTION_POLICY_VERSION
+        self.assertFalse(validate_context_package(package_budget).valid)
 
     def test_typed_models_are_deeply_immutable_copies(self) -> None:
         source_request = copy.deepcopy(self.request)
