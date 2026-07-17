@@ -3,7 +3,7 @@
 - Authority class: Human-Reviewed Implementation-Planning Decision
 - Canonical: No
 - Generated: No
-- Status: Checkpoint B1a Completion Accepted; B1b and B2 Withheld
+- Status: B1a Complete; Revised B1b1 Authorized; B1b2 and B2 Withheld
 - Date: July 16, 2026
 - Repository baseline: `f0ae21a34d525e6f4ce4c7b50790779e664138c4`
 - Decision authority: Owner
@@ -517,6 +517,28 @@ No B1b file or behavior is authorized now.
 Checkpoint B2 remains unauthorized.
 
 It begins only after B1a and B1b are separately complete and accepted.
+
+---
+
+## Superseding B1b1 and B1b2 Decision
+
+The former single Checkpoint B1b plan in this review is superseded for future authorization purposes by `docs/reviews/eo-2026-013-b1b1-authorization-review-2026-07-16.md`.
+
+On July 16, 2026, the owner accepted this revised sequence:
+
+1. Checkpoint B1b1 — Deterministic Selector Primitives.
+2. Checkpoint B1b2 — Bounded Selection Plan.
+3. Checkpoint B2 — Compilation, Integrity Validation, Explanation, and Golden Replay.
+
+Only Checkpoint B1b1 is authorized.
+
+B1b1 implements pure selector transformations over immutable bytes. B1b2 remains separately withheld for candidate derivation, relationship verification, source selection, omissions, unknowns, sensitivity and budget-tier enforcement, and selection-plan production. B2 remains separately withheld for package compilation and golden replay.
+
+Checkpoint B1a and the protected-reference boundary remain unchanged.
+
+Protected branch content remains out of scope.
+
+STOP — Use the B1b1 authorization review as the active authorization source after Checkpoint B1a.
 
 ---
 

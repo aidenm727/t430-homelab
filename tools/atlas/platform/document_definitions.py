@@ -698,6 +698,35 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/eo-2026-013-b1b1-authorization-review-2026-07-16.md": DocumentDefinition(
+        path="docs/reviews/eo-2026-013-b1b1-authorization-review-2026-07-16.md",
+        purpose="Preserves the accepted split of EO-2026-013 Checkpoint B1b into B1b1 and B1b2, including the exact Deterministic Selector Primitives authorization and continued withholding of selection reasoning and package compilation.",
+        canonical=False,
+        generated=False,
+        capability="Engineering",
+        status="accepted",
+        tags=[
+            "implementation-planning",
+            "task-context",
+            "context-compilation",
+            "checkpoint-b1b1",
+            "deterministic-selectors",
+            "bounded-yaml",
+            "markdown-heading",
+            "owner-decision",
+            "human-reviewed",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/current-mission.md",
+            "docs/architecture/task-scoped-agent-context-compilation.md",
+            "docs/task-context/index.md",
+            "docs/reviews/eo-2026-013-b1a-authorization-review-2026-07-16.md",
+            "docs/opportunities/reviewed/EO-2026-013-task-scoped-agent-context-compilation.yaml",
+        ],
+    ),
+
     "docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md": DocumentDefinition(
         path="docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md",
         purpose="Preserves the first non-canonical knowledge-promotion pilot as an accepted candidate with its decision, bounded application, execution evidence, validation, and repository traceability.",
