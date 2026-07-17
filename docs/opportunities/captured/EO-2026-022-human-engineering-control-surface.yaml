@@ -1,0 +1,110 @@
+id: EO-2026-022
+
+title: Human Engineering Control Surface
+
+status: captured
+
+capability: Engineering
+
+created: 2026-07-17
+
+source: architecture-discovery-and-validation
+
+summary: >
+  Develop a human-facing engineering control surface that renders
+  repository-, GitHub-, and Atlas-owned task state, approvals, evidence,
+  platform relationships, blockers, and next actions without becoming a
+  separate source of truth.
+
+rationale: >
+  GitHub preserves the canonical engineering record and Atlas provides
+  deterministic repository understanding, but neither currently gives the
+  owner one coherent visual operating interface for understanding active
+  work, authority, completion state, dependencies, evidence, and required
+  decisions. A generated control surface would increase human agency and
+  reduce conversational handoff friction while preserving repository
+  authority, explicit approval boundaries, and replaceable AI workspaces.
+
+dependencies:
+  - EO-2026-013
+  - EO-2026-014
+  - EO-2026-015
+  - EO-2026-016
+  - EO-2026-017
+  - EO-2026-021
+
+related_opportunities:
+  - EO-2026-007
+  - EO-2026-011
+  - EO-2026-019
+  - EO-2026-020
+
+related_documents:
+  - docs/architecture/platform.md
+  - docs/architecture/repository.md
+  - docs/architecture/atlas.md
+  - docs/architecture/engineering-review.md
+  - docs/standards/engineering-collaboration.md
+  - docs/reviews/aiden-platform-operating-model-discovery-2026-07-17.md
+  - docs/reviews/aiden-platform-operating-model-validation-study-2026-07-17.md
+  - docs/reviews/aiden-platform-operating-model-owner-decision-2026-07-17.md
+  - docs/reviews/aiden-platform-operating-model-overlap-review-2026-07-17.md
+
+evidence: |
+  - The July 17 architecture discovery identified a missing human operating
+    layer between repository and Atlas evidence and replaceable AI workspaces.
+  - External design validation supported a Git-native operating model with
+    durable task state, explicit approval gates, inspectable execution
+    evidence, and a narrow generated human control surface.
+  - Repository overlap review found that task context, contracts, autonomy,
+    evidence, machine-readable interfaces, skills, evaluation, knowledge
+    promotion, and orchestration already have existing Engineering
+    Opportunity owners.
+  - The overlap review found no existing opportunity whose central outcome is
+    the human-facing product experience itself.
+  - The owner accepted a minimal first experience consisting of Home, Task
+    Detail, Approval Queue, Review and Evidence, and Platform Map.
+
+notes: |
+  The working product name is Aiden Platform Console. Product naming remains
+  an open design question and should not block capability capture.
+
+  The control surface should initially derive its state from GitHub, canonical
+  repository objects, and Atlas evidence. It should not introduce an
+  independently mutable application database or become another authority for
+  engineering state.
+
+  A minimal first experience may include:
+
+  - Home.
+  - Task Detail.
+  - Approval Queue.
+  - Review and Evidence.
+  - Platform Map.
+
+  The interface may expose links among task objects, GitHub issues, branches,
+  pull requests, context packages, approval state, verification evidence,
+  capabilities, systems, documentation, agents, and infrastructure.
+
+  This opportunity is distinct from EO-2026-017. EO-2026-017 owns stable
+  machine-readable Atlas and repository interfaces. EO-2026-022 owns the
+  human-facing experience that consumes those interfaces.
+
+  This opportunity is distinct from EO-2026-021. EO-2026-021 owns the
+  Human-AI engineering collaboration loop and its lifecycle semantics.
+  EO-2026-022 renders that loop for human understanding and decision.
+
+  This opportunity is distinct from EO-2026-011. Documentation Intelligence
+  improves knowledge capture, validation, synchronization, and understanding.
+  EO-2026-022 provides the operational human interface across tasks,
+  approvals, evidence, and platform relationships.
+
+  Separate approval gates should remain visible for plan approval, privileged
+  actions, merge, and deployment. Initial agent authority should stop at
+  bounded preparation, verification, evidence production, and draft pull
+  requests unless separately authorized.
+
+  This captured object does not authorize architecture, implementation,
+  lifecycle advancement, active-mission selection, automatic merge or
+  deployment, EO-2026-013 Checkpoint B1b2 or B2, or creation of a general
+  workflow engine.
