@@ -642,6 +642,33 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/eo-2026-013-executable-path-review-2026-07-16.md": DocumentDefinition(
+        path="docs/reviews/eo-2026-013-executable-path-review-2026-07-16.md",
+        purpose="Preserves the accepted revision of the EO-2026-013 executable path into Checkpoint A.1, B1, and B2, including the exact A.1 authorization and protected-reference boundary.",
+        canonical=False,
+        generated=False,
+        capability="Engineering",
+        status="accepted",
+        tags=[
+            "implementation-planning",
+            "task-context",
+            "context-compilation",
+            "checkpoint-a-1",
+            "executable-path",
+            "owner-decision",
+            "human-reviewed",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/current-mission.md",
+            "docs/architecture/task-scoped-agent-context-compilation.md",
+            "docs/task-context/index.md",
+            "docs/reviews/eo-2026-013-implementation-planning-review-2026-07-15.md",
+            "docs/opportunities/reviewed/EO-2026-013-task-scoped-agent-context-compilation.yaml",
+        ],
+    ),
+
     "docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md": DocumentDefinition(
         path="docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md",
         purpose="Preserves the first non-canonical knowledge-promotion pilot as an accepted candidate with its decision, bounded application, execution evidence, validation, and repository traceability.",

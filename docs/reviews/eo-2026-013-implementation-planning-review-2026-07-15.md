@@ -488,3 +488,19 @@ Checkpoint A completion does not automatically authorize Checkpoint B. A separat
 - Next decision gate: separate owner authorization, revision, deferral, or rejection of Checkpoint B.
 
 STOP — Preserve Checkpoint A. Do not begin Checkpoint B without a separate owner decision.
+
+## 22. Superseding Executable-Path Decision
+
+The original single Checkpoint B implementation shape in this review is superseded for future authorization purposes by `docs/reviews/eo-2026-013-executable-path-review-2026-07-16.md`.
+
+On July 16, 2026, the owner accepted a revised sequence:
+
+1. Checkpoint A.1 — Executable-Policy Contract Correction.
+2. Checkpoint B1 — Immutable Snapshot, Selectors, and Selection Plan.
+3. Checkpoint B2 — Compilation, Integrity Validation, Explanation, and Golden Replay.
+
+Only Checkpoint A.1 is authorized. B1 and B2 remain unauthorized.
+
+The protected branch content remains out of scope. Only future identity comparison of the declared protected ref may be considered during a separately authorized B1 review.
+
+STOP — Use the July 16 executable-path review as the active authorization source for work after Checkpoint A.
