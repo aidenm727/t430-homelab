@@ -12,21 +12,23 @@ It summarizes the canonical current mission, infrastructure state, recent change
 
 ### Phase
 
-Task-Scoped Agent Context Compilation Checkpoint B1a Implementation
+Task-Scoped Agent Context Compilation Checkpoint B1a Complete
 
 ---
 
 ### Mission State
 
-The owner accepted the revised EO-2026-013 B1 plan and authorized Checkpoint B1a — Immutable Snapshot Boundary on July 16, 2026.
+The owner accepted EO-2026-013 Checkpoint B1a — Immutable Snapshot Boundary as complete on July 16, 2026 and authorized recording, committing, and pushing the completed checkpoint.
 
-The authorization is recorded in `docs/reviews/eo-2026-013-b1a-authorization-review-2026-07-16.md` against Checkpoint A.1 completion commit `f0ae21a34d525e6f4ce4c7b50790779e664138c4`.
+Checkpoint B1a was implemented against authorization baseline `b7046e6fdd7302e1b5aaada3db0970e35c0f0e6c`. The accepted change creates exactly two files and modifies exactly four existing files.
 
-Checkpoint B1a may create exactly two files and modify exactly four existing files. It establishes the trusted immutable Git snapshot boundary only. It does not parse repository content or produce a selection plan.
+The completed boundary now verifies an explicit clean local repository target, bounded repository identity, exact full-SHA commit and root tree, SHA-1 object format, deterministic snapshot fingerprint, exact immutable-tree regular-blob reads, and content-blind protected-ref identity matching.
+
+Every production Git command is replacement-disabled, lazy-fetch-disabled, optional-lock-disabled, literal-path, locale-stable, shell-free, and fixed with command-line configuration isolation for fsmonitor, untracked cache, and hooks. Unsafe repository-local include, fsmonitor, hook, worktree, filter, diff, textconv, submodule, and related configuration is rejected before clean-state inspection.
 
 Checkpoint B1b and Checkpoint B2 remain explicitly unauthorized.
 
-The protected branch `wip/distinctness-foundation-calibration` remains unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698`. Its content is out of scope. B1a may compare only the exact declared protected-ref name and exact object identity. It may not inspect, peel, traverse, read, select, expose, or modify the protected object or its content.
+The protected branch `wip/distinctness-foundation-calibration` remains unchanged at `fcbc5957b89fe65a4313a3c23eb814e02a014698`. Its content remains out of scope. The accepted B1a behavior compares only the exact declared protected-ref name and direct object identity; no protected object peel, traversal, content read, selection, exposure, or mutation occurred.
 
 EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
 
@@ -34,63 +36,62 @@ EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
 
 ### Mission Intent
 
-Establish the deterministic immutable repository boundary required before content parsing or selection reasoning begins.
+Preserve the accepted immutable repository trust boundary and hold deterministic parsing and selection reasoning behind a separate owner decision.
 
-Checkpoint B1a verifies an explicit clean local repository target, bounded repository identity, one exact full SHA-1 commit, root tree, object format, snapshot fingerprint, exact regular-file blob lookup, and content-blind protected-ref identity matching.
+Checkpoint B1a establishes the exact local Git snapshot and raw-blob boundary needed by future selectors. It does not parse, interpret, select, summarize, budget, or compile repository content.
 
-The checkpoint must keep Git execution isolated from ambient repository, worktree, index, object-store, replacement, alternate, lazy-fetch, injected-configuration, locale, pathspec, network, and write effects.
+Task authority remains external to compilation, repository documentation and Atlas remain deterministic authority, and generated task context remains non-canonical.
 
-Checkpoint B1a returns for owner review before B1b begins.
-
-Repository Synchronization Reasoning remains the deterministic check for alignment between this mission, the accepted B1a review, canonical architecture, generated context, repository metadata, and the exact B1a authorization boundary.
+Repository Synchronization Reasoning remains the deterministic check for alignment between this mission, the accepted B1a review, canonical architecture, generated context, repository metadata, and the completed B1a boundary.
 
 ---
 
 ### Current Focus
 
-- Implement an explicit target-repository snapshot adapter.
-- Accept only an exact full lowercase 40-character SHA-1 commit identifier.
-- Verify repository identity against the bounded accepted GitHub origin forms.
-- Verify a non-bare clean target before and after every snapshot operation.
-- Reject replacement refs, grafts, object alternates, injected Git-control state, and lazy object fetching.
-- Verify SHA-1 object format, exact commit identity, and exact root tree.
-- Add a repository-owned `snapshot_fingerprint` digest helper with the accepted canonical surface.
-- Normalize exact repository paths without rewriting case or Unicode.
-- Read only exact regular blob objects from the immutable tree.
-- Reject symlinks, gitlinks, trees, unsupported modes, missing paths, and ambiguous paths.
-- Compare only the exact protected-ref name and object identity.
-- Prove no protected object content, network, target write, parsing, selection, B1b, or B2 behavior occurs.
-- Create and modify only the exact six B1a implementation paths.
-- Run all tests and Atlas verification.
-- Return for owner acceptance before B1b.
+- Preserve the explicit clean target-repository boundary.
+- Preserve the bounded GitHub repository-identity forms.
+- Preserve exact full lowercase SHA-1 commit-only revision support.
+- Preserve exact commit, root-tree, object-format, and snapshot-fingerprint verification.
+- Preserve the fixed production Git command prefix and sanitized environment.
+- Preserve rejection of unsafe ambient and repository-local Git configuration.
+- Preserve replacement-ref, graft, object-alternate, lazy-fetch, symlink, gitlink, tree, path, and unsupported-mode rejection.
+- Preserve exact raw regular-blob bytes from the immutable tree rather than the worktree.
+- Preserve protected-ref exact name and direct identity comparison only.
+- Keep B1b and B2 entirely withheld.
+- Require a separate owner review before YAML or Markdown parsing, relationship verification, source selection, omissions, unknowns, or selection-plan implementation.
+- Keep protected content, dependencies, Atlas commands, lifecycle changes, package compilation, and AI-environment work out of scope.
+- Keep EO-2026-013 and the full Engineering Opportunity portfolio in the `reviewed` lifecycle state.
 
 ---
 
 ### Initial Milestone
 
-Implement and verify Checkpoint B1a — Immutable Snapshot Boundary.
+Checkpoint B1a — Immutable Snapshot Boundary is complete and owner-accepted.
 
-#### Included
+#### Completed
 
-- `tools/atlas/platform/context_compilation/snapshot.py`.
-- `tests/test_context_snapshot.py`.
-- Bounded snapshot documentation in `docs/task-context/index.md`.
-- Public snapshot exports in `tools/atlas/platform/context_compilation/__init__.py`.
-- Deeply immutable snapshot and blob models in `tools/atlas/platform/context_compilation/models.py`.
-- Named snapshot-fingerprint helper in `tools/atlas/platform/context_compilation/digests.py`.
-- Explicit clean target path.
-- Bounded repository identity normalization.
-- Full-SHA commit-only requested-revision support.
-- SHA-1 object-format enforcement.
-- Exact commit and root-tree verification.
-- Sanitized content-blind Git object plumbing.
-- Exact path and regular-blob reads.
-- Symlink and gitlink rejection.
-- Protected-ref exact name and identity comparison only.
-- Full test and Atlas verification.
-- Return to owner review before B1b.
+- Created `tools/atlas/platform/context_compilation/snapshot.py`.
+- Created `tests/test_context_snapshot.py`.
+- Updated the task-context index, context-compilation exports, immutable models, and digest helpers.
+- Added the exact public B1a models, functions, constants, and exception hierarchy.
+- Added explicit non-bare clean target-repository handling.
+- Added bounded repository identity normalization for the four accepted GitHub origin forms.
+- Added exact full lowercase SHA-1 commit-only resolution.
+- Added exact commit, root-tree, object-format, and snapshot-fingerprint verification.
+- Added exact immutable-tree regular-blob reads for modes `100644` and `100755`.
+- Added strict path validation and symlink, gitlink, tree, unsupported-mode, missing-path, and malformed-entry rejection.
+- Added ambient Git-control rejection and repository metadata rejection for replacements, grafts, and alternates.
+- Added a fixed command-line Git configuration prefix disabling fsmonitor, untracked cache, and hooks.
+- Added rejection of unsafe local includes, fsmonitor, hooks, worktree redirection, filters, diff, textconv, submodule, and related configuration.
+- Added exact protected-ref name and direct object-identity comparison only.
+- Independently reproduced historical snapshot fingerprint `14053ce1b4ce71c90c18316bed3928a85a67be6d48fd1bc330ffd8a00464fed8`.
+- Passed 144 repository tests.
+- Passed independent public-interface, command-boundary, configuration-isolation, historical-snapshot, raw-blob, no-network, no-write, and protected-content-blind acceptance probes.
+- Atlas remained Valid, complete, and Synchronized.
+- No B1b or B2 capability was implemented.
+- No dependency, canonical architecture change, lifecycle mutation, protected-content access, staging, commit, or push occurred before owner acceptance.
 
-#### Excluded
+#### Still Excluded
 
 - Checkpoint B1b.
 - Checkpoint B2.
@@ -103,10 +104,8 @@ Implement and verify Checkpoint B1a — Immutable Snapshot Boundary.
 - Source-content or payload digests.
 - Payload materialization.
 - Budget application.
-- Package construction or integrity.
-- Explanations or package fixtures.
-- Atlas commands.
-- Generic discovery.
+- Package construction, integrity, explanations, or golden replay.
+- Atlas commands or generic discovery.
 - Dependencies.
 - Canonical architecture changes.
 - Engineering Opportunity lifecycle changes.
@@ -158,6 +157,28 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 ---
 
 ### Completion History
+
+#### EO-2026-013 Checkpoint B1a — Immutable Snapshot Boundary
+
+- Completion accepted by the owner on July 16, 2026.
+- Recording, commit, and push authorized.
+- Authorization baseline: `b7046e6fdd7302e1b5aaada3db0970e35c0f0e6c`.
+- Exact implementation scope: two created files and four modified existing files.
+- Historical commit verified: `79eef80af3d5969ece7eb9fe7f802be35575f450`.
+- Historical root tree verified: `3d2853517e64209cffde91766a62e9f70ceb2e47`.
+- Historical snapshot fingerprint verified: `14053ce1b4ce71c90c18316bed3928a85a67be6d48fd1bc330ffd8a00464fed8`.
+- Production Git execution is shell-free, replacement-disabled, lazy-fetch-disabled, optional-lock-disabled, literal-path, locale-stable, network-free, and target-write-free.
+- The fixed command prefix disables fsmonitor and untracked cache and redirects hooks to the platform null device.
+- Unsafe ambient and repository-local Git configuration is rejected before clean-state inspection.
+- Exact regular blob bytes are read from the immutable root tree rather than the worktree.
+- Protected-reference handling is limited to exact ref-name and direct object-identity comparison.
+- One hundred forty-four tests passed.
+- Atlas validation was Valid, missing definitions were clean, and synchronization was Synchronized.
+- Independent final acceptance review passed.
+- No B1b, B2, dependency, canonical architecture change, lifecycle mutation, protected-content access, staging, commit, or push occurred before owner acceptance.
+- Checkpoint B1b and Checkpoint B2 remain unauthorized.
+- Protected-branch content remains out of scope.
+
 
 #### EO-2026-013 Revised B1 Plan and Checkpoint B1a Authorization
 
@@ -291,11 +312,11 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ### Current Non-Priorities
 
-- Beginning Checkpoint B1b or Checkpoint B2.
-- Modifying any path outside the exact six B1a implementation paths.
-- Accepting branch names, tags, abbreviated object IDs, revision expressions, reflog syntax, or non-commit objects as requested revisions.
-- Reading selected content from the target worktree.
-- Reading, peeling, traversing, selecting, or exposing protected-object content.
+- Beginning Checkpoint B1b or Checkpoint B2 without a separate owner decision.
+- Broadening requested revisions beyond exact full lowercase SHA-1 commits.
+- Broadening repository identity beyond the accepted GitHub origin forms.
+- Reading selected source content from a mutable target worktree.
+- Reading, peeling, traversing, selecting, exposing, or mutating protected-object content.
 - Checkout, switching, merge, ref mutation, target-repository writes, or network access.
 - YAML parsing or Markdown heading selection.
 - Historical relationship verification.
@@ -314,9 +335,9 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ### Current Status
 
-EO-2026-013 Checkpoint A and Checkpoint A.1 are complete and owner-accepted.
+EO-2026-013 Checkpoint A, Checkpoint A.1, and Checkpoint B1a are complete, independently verified, and owner-accepted.
 
-The revised B1 plan is accepted. Checkpoint B1a — Immutable Snapshot Boundary is authorized within the exact two-created and four-modified scope recorded in `docs/reviews/eo-2026-013-b1a-authorization-review-2026-07-16.md`.
+Checkpoint B1a contains the exact accepted two-created and four-modified implementation. The final acceptance gate verified the public snapshot interface, fixed Git command prefix, repository-local configuration isolation, historical commit and tree, deterministic fingerprint, exact raw-blob behavior, protected-ref identity-only access, read-only command families, 144 passing tests, and Valid, complete, Synchronized Atlas state.
 
 Checkpoint B1b and Checkpoint B2 remain unauthorized. Protected-branch content remains out of scope. EO-2026-013 and all 21 Engineering Opportunities remain `reviewed`.
 
@@ -324,28 +345,29 @@ Checkpoint B1b and Checkpoint B2 remain unauthorized. Protected-branch content r
 
 ### Next Milestone
 
-Implement and verify Checkpoint B1a — Immutable Snapshot Boundary, then obtain owner acceptance before B1b.
+Obtain a separate owner decision on Checkpoint B1b — Deterministic Selectors and Selection Plan.
 
-No selector, selection-plan, or package-compilation implementation begins automatically from this authorization.
+That review may authorize B1b unchanged, require bounded revision, defer it, or reject it. B1b does not begin automatically from B1a completion. Checkpoint B2 remains downstream and unauthorized.
 
 ---
 
 ### Decision Boundary
 
-- Human decision: Revised EO-2026-013 B1 plan accepted on July 16, 2026.
-- Checkpoint A.1 completion: `f0ae21a34d525e6f4ce4c7b50790779e664138c4`.
-- Checkpoint B1a authorized: Yes, exact two-created and four-modified scope.
+- Human decision: EO-2026-013 Checkpoint B1a accepted as complete on July 16, 2026.
+- Recording, commit, and push authorized: Yes.
+- Checkpoint B1a authorization baseline: `b7046e6fdd7302e1b5aaada3db0970e35c0f0e6c`.
+- Checkpoint B1a complete: Yes.
 - Checkpoint B1b authorized: No.
 - Checkpoint B2 authorized: No.
-- B1a created paths authorized: `snapshot.py` and `test_context_snapshot.py`.
-- B1a modified paths authorized: task-context index, context-compilation exports, models, and digests.
+- Exact B1a implementation scope: two created and four modified files.
 - Requested revision boundary: exact full lowercase SHA-1 commit only.
 - Initial object format: SHA-1 only.
+- Historical snapshot fingerprint: `14053ce1b4ce71c90c18316bed3928a85a67be6d48fd1bc330ffd8a00464fed8`.
 - Target repository writes authorized: No.
 - Network access authorized: No.
 - Protected branch content in scope: No.
-- Protected-ref exact name and object-identity comparison authorized: Yes.
-- Protected object peel, traversal, content read, selection, or exposure authorized: No.
+- Protected-ref exact name and direct object-identity comparison preserved: Yes.
+- Protected object peel, traversal, content read, selection, exposure, or mutation authorized: No.
 - YAML or Markdown selector work authorized: No.
 - Selection reasoning authorized: No.
 - Third-party dependency authorized: No.
@@ -356,7 +378,7 @@ No selector, selection-plan, or package-compilation implementation begins automa
 - AI Engineering Environment Review authorized: No.
 - Structured Research Orchestration implementation authorized: No.
 
-STOP — Implement and verify Checkpoint B1a only. Do not begin B1b or B2.
+STOP — Preserve Checkpoint B1a. Do not begin B1b or B2 without a separate owner decision.
 
 ## Infrastructure Snapshot
 

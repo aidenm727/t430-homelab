@@ -3,7 +3,7 @@
 - Authority class: Human-Reviewed Implementation-Planning Decision
 - Canonical: No
 - Generated: No
-- Status: Accepted Revised B1 Plan and Checkpoint B1a Authorization Recorded
+- Status: Checkpoint B1a Completion Accepted; B1b and B2 Withheld
 - Date: July 16, 2026
 - Repository baseline: `f0ae21a34d525e6f4ce4c7b50790779e664138c4`
 - Decision authority: Owner
@@ -29,6 +29,37 @@ The owner recorded:
 > Accept the revised EO-2026-013 B1 plan. Authorize Checkpoint B1a — Immutable Snapshot Boundary only. Do not authorize Checkpoint B1b or Checkpoint B2. Preserve protected-branch content as out of scope; authorize only exact protected-ref name and object-identity comparison in B1a, with no protected object or content access.
 
 Recorded July 16, 2026.
+
+---
+
+## 2A. Checkpoint B1a Completion Acceptance
+
+The owner recorded:
+
+> Accept EO-2026-013 Checkpoint B1a as complete. Authorize recording, committing, and pushing the Checkpoint B1a completion. Do not authorize Checkpoint B1b or Checkpoint B2. Preserve protected-branch content as out of scope; preserve only exact protected-ref name and object-identity comparison, with no protected object or content access.
+
+Recorded July 16, 2026.
+
+The accepted implementation:
+
+- created exactly `tools/atlas/platform/context_compilation/snapshot.py` and `tests/test_context_snapshot.py`;
+- modified exactly the task-context index, context-compilation exports, models, and digest helpers;
+- preserved the standard-library-only dependency boundary;
+- implemented the accepted public snapshot models, helpers, functions, constants, and error hierarchy;
+- verified explicit clean local repository targets, bounded repository identity, exact full-SHA commits, SHA-1 object format, exact root trees, and deterministic snapshot fingerprints;
+- read exact regular-file blob bytes from immutable Git trees rather than mutable worktrees;
+- rejected unsafe paths, symlinks, gitlinks, trees, unsupported modes, replacement refs, grafts, object alternates, lazy fetch, and unsafe ambient Git state;
+- applied the fixed command-level configuration prefix disabling fsmonitor and untracked cache and redirecting hooks to the platform null device;
+- rejected unsafe repository-local includes, fsmonitor, hooks, worktree redirection, filters, diff, textconv, submodule, and related configuration before clean-state inspection;
+- limited protected-reference handling to exact ref-name and direct object-identity comparison;
+- reproduced historical snapshot fingerprint `14053ce1b4ce71c90c18316bed3928a85a67be6d48fd1bc330ffd8a00464fed8`;
+- passed 144 tests;
+- left Atlas Valid, complete, and Synchronized; and
+- performed no B1b, B2, dependency, canonical architecture change, lifecycle mutation, protected-content access, staging, commit, or push before owner acceptance.
+
+Checkpoint B1b and Checkpoint B2 remain unauthorized.
+
+The protected branch content remains out of scope. Only exact protected-ref name and direct object-identity comparison is preserved.
 
 ---
 
@@ -460,7 +491,7 @@ Checkpoint B1a does not authorize:
 
 ## 19. Planned Checkpoint B1b — Unauthorized
 
-Checkpoint B1b remains unauthorized until B1a is complete and owner-accepted.
+Checkpoint B1b remains unauthorized and requires a separate owner decision after B1a completion.
 
 Its future planned responsibilities are:
 
@@ -495,16 +526,21 @@ It begins only after B1a and B1b are separately complete and accepted.
 - Checkpoint A completion: `6e0fb536eac8113a2a07547661d5a9b89c0a65b6`.
 - Checkpoint A.1 authorization: `1f2595b8a3489979b275dfad0884b4e0fe09c585`.
 - Checkpoint A.1 completion: `f0ae21a34d525e6f4ce4c7b50790779e664138c4`.
-- Revised B1 plan accepted: July 16, 2026.
-- Checkpoint B1a authorized: Yes, exact two-created and four-modified scope.
+- Checkpoint B1a authorization: `b7046e6fdd7302e1b5aaada3db0970e35c0f0e6c`.
+- Checkpoint B1a completion accepted: July 16, 2026.
+- Checkpoint B1a exact implementation scope: two created and four modified files.
+- Historical commit: `79eef80af3d5969ece7eb9fe7f802be35575f450`.
+- Historical root tree: `3d2853517e64209cffde91766a62e9f70ceb2e47`.
+- Historical snapshot fingerprint: `14053ce1b4ce71c90c18316bed3928a85a67be6d48fd1bc330ffd8a00464fed8`.
+- Final technical verification: 144 tests passed; Atlas Valid, complete, and Synchronized; independent public-interface, configuration-isolation, command-boundary, snapshot, blob, and protected-reference probes passed.
 - Checkpoint B1b authorized: No.
 - Checkpoint B2 authorized: No.
 - Protected branch content in scope: No.
-- Protected-ref identity comparison authorized: Yes, exact name and object identity only.
+- Protected-ref exact name and direct object-identity comparison preserved: Yes.
 - Protected object or content access authorized: No.
 - Third-party dependency authorized: No.
 - Canonical architecture change authorized: No.
 - Engineering Opportunity lifecycle state: `reviewed`.
-- Next gate: implement and verify Checkpoint B1a, then return for owner acceptance before B1b.
+- Next gate: separate owner authorization, revision, deferral, or rejection of Checkpoint B1b.
 
-STOP — Implement and verify Checkpoint B1a only. Do not begin B1b or B2.
+STOP — Preserve Checkpoint B1a. Do not begin B1b or B2 without a separate owner decision.

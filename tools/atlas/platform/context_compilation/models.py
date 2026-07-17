@@ -246,3 +246,92 @@ class FoundationIdentifierValues:
     snapshot_fingerprint: DigestRecord
     identity_digest: DigestRecord
     package_id: str
+
+
+@dataclass(frozen=True)
+class RepositoryIdentityEvidence:
+    requested_identity: str
+    origin_urls: Tuple[str, ...]
+    normalized_identity: str
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "origin_urls", tuple(self.origin_urls))
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "requested_identity": self.requested_identity,
+            "origin_urls": list(self.origin_urls),
+            "normalized_identity": self.normalized_identity,
+        }
+
+
+@dataclass(frozen=True)
+class ProtectedReferenceIdentity:
+    name: str
+    expected_object: str
+    actual_object: str | None
+    authoritatively_targeted: bool
+    selection: str
+    matched: bool
+    blocking: bool
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "expected_object": self.expected_object,
+            "actual_object": self.actual_object,
+            "authoritatively_targeted": self.authoritatively_targeted,
+            "selection": self.selection,
+            "matched": self.matched,
+            "blocking": self.blocking,
+        }
+
+
+@dataclass(frozen=True)
+class RepositorySnapshot:
+    repository: RepositoryIdentityEvidence
+    requested_revision: str
+    object_format: str
+    commit: str
+    tree: str
+    snapshot_mode: str
+    fingerprint: DigestRecord
+    protected_references: Tuple[ProtectedReferenceIdentity, ...]
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self, "protected_references", tuple(self.protected_references)
+        )
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "repository": self.repository.as_dict(),
+            "requested_revision": self.requested_revision,
+            "object_format": self.object_format,
+            "commit": self.commit,
+            "tree": self.tree,
+            "snapshot_mode": self.snapshot_mode,
+            "fingerprint": self.fingerprint.as_dict(),
+            "protected_references": [
+                reference.as_dict() for reference in self.protected_references
+            ],
+        }
+
+
+@dataclass(frozen=True)
+class ImmutableBlob:
+    path: str
+    mode: str
+    object_format: str
+    object_id: str
+    content: bytes
+
+    def as_dict(self) -> dict[str, str]:
+        """Return JSON-compatible metadata; raw content remains bytes."""
+
+        return {
+            "path": self.path,
+            "mode": self.mode,
+            "object_format": self.object_format,
+            "object_id": self.object_id,
+        }

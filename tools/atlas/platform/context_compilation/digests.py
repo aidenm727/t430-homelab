@@ -1,4 +1,4 @@
-"""SHA-256 digest surfaces authorized for Checkpoint A."""
+"""SHA-256 digest surfaces for task-context foundations and snapshots."""
 
 from __future__ import annotations
 
@@ -38,6 +38,40 @@ def selection_policy_digest(policy: Mapping[str, Any]) -> DigestRecord:
 
 def budget_policy_digest(policy: Mapping[str, Any]) -> DigestRecord:
     return digest_canonical_json(_without_own_digest(policy))
+
+
+def snapshot_fingerprint_surface(
+    repository_identity: str,
+    object_format: str,
+    commit: str,
+    tree: str,
+    snapshot_mode: str,
+) -> dict[str, str]:
+    return {
+        "repository_identity": repository_identity,
+        "object_format": object_format,
+        "commit": commit,
+        "tree": tree,
+        "snapshot_mode": snapshot_mode,
+    }
+
+
+def snapshot_fingerprint(
+    repository_identity: str,
+    object_format: str,
+    commit: str,
+    tree: str,
+    snapshot_mode: str,
+) -> DigestRecord:
+    return digest_canonical_json(
+        snapshot_fingerprint_surface(
+            repository_identity,
+            object_format,
+            commit,
+            tree,
+            snapshot_mode,
+        )
+    )
 
 
 def request_digest(request: Mapping[str, Any]) -> DigestRecord:
