@@ -831,10 +831,8 @@ class SelectorCapabilityBoundaryTests(unittest.TestCase):
         )
         self.assertEqual(result.stdout, b"")
 
-    def test_no_b1b2_or_b2_path_exists(self) -> None:
+    def test_b2_paths_remain_absent(self) -> None:
         forbidden = (
-            "tools/atlas/platform/reasoning/context_selection.py",
-            "tests/test_context_selection.py",
             "tools/atlas/platform/context_compilation/compiler.py",
             "tools/atlas/platform/context_compilation/explanation.py",
         )

@@ -94,7 +94,7 @@ Every production Git operation in this boundary is read-only, replacement-disabl
 
 Protected-reference handling is content-blind. B1a queries only an exact declared full ref name, compares only its direct object identity with the expected identity, and never peels, traverses, reads, selects, exposes, checks out, or mutates protected content. Missing or mismatched protected-ref identity is blocking.
 
-Returned blob content remains exact raw bytes. B1a does not decode, parse, select, transform, summarize, hash as source content or payload, apply a budget, or construct a package. B1a remains unchanged by the separately authorized B1b1 selector boundary below. Checkpoint B1b2 remains unauthorized for relationship verification and selection reasoning. Checkpoint B2 remains unauthorized for compilation, integrity validation, explanation, budgeting, and golden replay. Protected-branch content remains out of scope.
+Returned blob content remains exact raw bytes. B1a does not decode, parse, select, transform, summarize, hash as source content or payload, apply a budget, or construct a package. B1a remains unchanged by the separately authorized B1b1 selector boundary below. Checkpoint B1b2 is authorized only for the bounded relationship verification and selection-plan implementation described below. Checkpoint B2 remains unauthorized for compilation, integrity validation, explanation, budgeting, and golden replay. Protected-branch content remains out of scope.
 
 Checkpoint B1b1 adds only pure deterministic selector primitives over caller-supplied immutable bytes. All selector inputs cross one strict UTF-8 boundary that rejects a byte-order mark, invalid UTF-8, NUL, lone surrogates, bare carriage returns, and mixed LF and CRLF input. Accepted source line endings are classified explicitly as `lf`, `crlf`, or `none`, without Unicode normalization or ambient newline conversion.
 
@@ -102,4 +102,22 @@ The bounded YAML parser supports only the documented historical Engineering Oppo
 
 The Markdown `heading` selector matches one exact ATX heading occurrence outside the bounded backtick and tilde fence model. It returns the selected heading and following section through the byte immediately before the next outside-fence ATX heading of equal or higher level, or through end of file. The returned section preserves the exact original bytes, including LF or CRLF endings, blank lines, whitespace, and terminal-newline state.
 
-B1b1 performs no Git access, repository discovery, generic policy selection, relationship verification, source selection, digest calculation, budget execution, or package work. Checkpoint B1a and its content-blind protected-reference behavior remain unchanged. B1b2 and B2 remain unauthorized, and protected content remains outside the selector input and capability boundary.
+B1b1 performs no Git access, repository discovery, generic policy selection, relationship verification, source selection, digest calculation, budget execution, or package work. Checkpoint B1a and its content-blind protected-reference behavior remain unchanged. B1b2 may consume B1a and B1b1 only through the separately authorized bounded selection-plan contract below. B2 remains unauthorized, and protected content remains outside the selector input and capability boundary.
+
+## Checkpoint B1b2 — Bounded Selection Plan
+
+Checkpoint B1b2 is authorized for implementation as a bounded Repository Reasoning capability. It consumes one typed immutable `CompilationRequest`, the exact digest-bound selection policy `example.read-only-architecture-assessment` version `1.0.1`, one accepted B1a `RepositorySnapshot`, and the accepted B1a immutable-blob and B1b1 selector interfaces.
+
+The canonical live selection-policy digest is `69577722ea4eb6f479424f3bf324866cc2992d5df82b3224e5f20571ef081938`. Earlier non-canonical transition prose containing `69557722...` is stale; this implementation does not modify policy bytes or reinterpret the policy.
+
+The first boundary considers exactly five policy candidates. It performs no policy discovery, directory scan, graph scan, recursive opportunity expansion, free-text relationship expansion, semantic retrieval, or model-selected context. Exact one-hop outbound `related_documents` membership is evaluated only for the two policy-named relationship candidates.
+
+The B1b2 reasoning result contains deeply immutable selected, omitted, and unknown records plus derived readiness for downstream compilation. Stable reason codes, triggers, selection chains, authority ownership, sensitivity, budget tier, selector intent, commit, mode, object format, and blob identity are retained. Selector output is executed only to prove applicability; selected content is discarded and is not part of the plan.
+
+A known policy exclusion becomes an omission. A required fact that cannot be established deterministically becomes a rule-specific unknown. A known unsupported or contradictory request, policy, snapshot, selector, duplicate-candidate, or ordering contract raises a fatal `SelectionContractError`. Invalid UTF-8, byte-order marks, NUL, bare carriage returns, and mixed line endings are handled through the accepted `X060-unsupported-binary` omission boundary. Above-ceiling sensitivity is omitted before source bytes are read.
+
+`ready_for_compilation` is derived from the absence of blocking omissions and unknowns. Both source tiers present in the first policy are blocking, but B1b2 performs no byte measurement, allocation, or budget execution.
+
+B1b2 does not call `resolve_snapshot`, query or compare protected refs, inspect protected content, calculate source or payload digests, retain payload bytes, create package identifiers, evaluate freshness or conflicts, assemble or validate a package, render explanations, produce a golden replay, add an Atlas command, or perform repository writes.
+
+Checkpoint B2 remains unauthorized.

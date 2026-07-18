@@ -382,3 +382,312 @@ class SelectorOutput:
             "source_line_endings": self.source_line_endings,
             "transformation": self.transformation,
         }
+
+def _require_model_string(value: Any, field_name: str) -> str:
+    if (
+        not isinstance(value, str)
+        or not value
+        or any(0xD800 <= ord(character) <= 0xDFFF for character in value)
+    ):
+        raise ModelValueError(
+            f"{field_name} must be a nonempty Unicode-scalar string"
+        )
+    return value
+
+
+def _freeze_model_string_tuple(
+    value: Any,
+    field_name: str,
+) -> Tuple[str, ...]:
+    if not isinstance(value, (list, tuple)):
+        raise ModelValueError(f"{field_name} must be a sequence")
+    copied = tuple(value)
+    for item in copied:
+        _require_model_string(item, field_name)
+    return copied
+
+
+@dataclass(frozen=True)
+class SelectedSourcePlan:
+    rule_id: str
+    rule_type: str
+    priority_tier: int
+    budget_tier: str
+    source_kind: str
+    sensitivity: str
+    path: str
+    structured_object_identity: str | None
+    normalized_path_or_object_id: str
+    selector: Mapping[str, Any]
+    selection_reason: str
+    trigger: str
+    selection_chain: Tuple[str, ...]
+    authority_class: str
+    canonical_owner: str
+    commit: str
+    mode: str
+    object_format: str
+    blob: str
+
+    def __post_init__(self) -> None:
+        for field_name in (
+            "rule_id",
+            "rule_type",
+            "budget_tier",
+            "source_kind",
+            "sensitivity",
+            "path",
+            "normalized_path_or_object_id",
+            "selection_reason",
+            "trigger",
+            "authority_class",
+            "canonical_owner",
+            "commit",
+            "mode",
+            "object_format",
+            "blob",
+        ):
+            _require_model_string(getattr(self, field_name), field_name)
+        if self.structured_object_identity is not None:
+            _require_model_string(
+                self.structured_object_identity,
+                "structured_object_identity",
+            )
+        if (
+            not isinstance(self.priority_tier, int)
+            or isinstance(self.priority_tier, bool)
+            or not 0 <= self.priority_tier <= MAX_SAFE_INTEGER
+        ):
+            raise ModelValueError(
+                "priority_tier must be a nonnegative safe integer"
+            )
+        if not isinstance(self.selector, Mapping):
+            raise ModelValueError("selector must be a mapping")
+        object.__setattr__(
+            self,
+            "selector",
+            cast(Mapping[str, Any], deep_freeze(self.selector)),
+        )
+        object.__setattr__(
+            self,
+            "selection_chain",
+            _freeze_model_string_tuple(
+                self.selection_chain,
+                "selection_chain",
+            ),
+        )
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "rule_id": self.rule_id,
+            "rule_type": self.rule_type,
+            "priority_tier": self.priority_tier,
+            "budget_tier": self.budget_tier,
+            "source_kind": self.source_kind,
+            "sensitivity": self.sensitivity,
+            "path": self.path,
+            "structured_object_identity": self.structured_object_identity,
+            "normalized_path_or_object_id": self.normalized_path_or_object_id,
+            "selector": self.selector,
+            "selection_reason": self.selection_reason,
+            "trigger": self.trigger,
+            "selection_chain": self.selection_chain,
+            "authority_class": self.authority_class,
+            "canonical_owner": self.canonical_owner,
+            "commit": self.commit,
+            "mode": self.mode,
+            "object_format": self.object_format,
+            "blob": self.blob,
+        }
+
+
+@dataclass(frozen=True)
+class SelectionOmissionPlan:
+    rule_id: str
+    exclusion_rule_id: str
+    boundary: str
+    individual: Mapping[str, Any]
+    trigger: str
+    selection_chain: Tuple[str, ...]
+    reason: str
+    consequence: str
+    blocking: bool
+    reconsideration_condition: str
+
+    def __post_init__(self) -> None:
+        for field_name in (
+            "rule_id",
+            "exclusion_rule_id",
+            "boundary",
+            "trigger",
+            "reason",
+            "consequence",
+            "reconsideration_condition",
+        ):
+            _require_model_string(getattr(self, field_name), field_name)
+        if not isinstance(self.individual, Mapping):
+            raise ModelValueError("individual must be a mapping")
+        if not isinstance(self.blocking, bool):
+            raise ModelValueError("blocking must be a boolean")
+        object.__setattr__(
+            self,
+            "individual",
+            cast(Mapping[str, Any], deep_freeze(self.individual)),
+        )
+        object.__setattr__(
+            self,
+            "selection_chain",
+            _freeze_model_string_tuple(
+                self.selection_chain,
+                "selection_chain",
+            ),
+        )
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "rule_id": self.rule_id,
+            "exclusion_rule_id": self.exclusion_rule_id,
+            "boundary": self.boundary,
+            "individual": self.individual,
+            "trigger": self.trigger,
+            "selection_chain": self.selection_chain,
+            "reason": self.reason,
+            "consequence": self.consequence,
+            "blocking": self.blocking,
+            "reconsideration_condition": self.reconsideration_condition,
+        }
+
+
+@dataclass(frozen=True)
+class SelectionUnknownPlan:
+    rule_id: str
+    boundary: str
+    field: str
+    attempted_resolution: str
+    owner: str
+    trigger: str
+    selection_chain: Tuple[str, ...]
+    consequence: str
+    blocking: bool
+
+    def __post_init__(self) -> None:
+        for field_name in (
+            "rule_id",
+            "boundary",
+            "field",
+            "attempted_resolution",
+            "owner",
+            "trigger",
+            "consequence",
+        ):
+            _require_model_string(getattr(self, field_name), field_name)
+        if not isinstance(self.blocking, bool):
+            raise ModelValueError("blocking must be a boolean")
+        object.__setattr__(
+            self,
+            "selection_chain",
+            _freeze_model_string_tuple(
+                self.selection_chain,
+                "selection_chain",
+            ),
+        )
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "rule_id": self.rule_id,
+            "boundary": self.boundary,
+            "field": self.field,
+            "attempted_resolution": self.attempted_resolution,
+            "owner": self.owner,
+            "trigger": self.trigger,
+            "selection_chain": self.selection_chain,
+            "consequence": self.consequence,
+            "blocking": self.blocking,
+        }
+
+
+@dataclass(frozen=True)
+class SelectionPlan:
+    request_task_id: str
+    selection_policy_id: str
+    selection_policy_version: str
+    selection_policy_digest: DigestRecord
+    repository_identity: str
+    requested_revision: str
+    commit: str
+    tree: str
+    object_format: str
+    snapshot_mode: str
+    snapshot_fingerprint: DigestRecord
+    selected: Tuple[SelectedSourcePlan, ...]
+    omissions: Tuple[SelectionOmissionPlan, ...]
+    unknowns: Tuple[SelectionUnknownPlan, ...]
+
+    def __post_init__(self) -> None:
+        for field_name in (
+            "request_task_id",
+            "selection_policy_id",
+            "selection_policy_version",
+            "repository_identity",
+            "requested_revision",
+            "commit",
+            "tree",
+            "object_format",
+            "snapshot_mode",
+        ):
+            _require_model_string(getattr(self, field_name), field_name)
+        if not isinstance(self.selection_policy_digest, DigestRecord):
+            raise ModelValueError(
+                "selection_policy_digest must be a DigestRecord"
+            )
+        if not isinstance(self.snapshot_fingerprint, DigestRecord):
+            raise ModelValueError(
+                "snapshot_fingerprint must be a DigestRecord"
+            )
+        selected = tuple(self.selected)
+        omissions = tuple(self.omissions)
+        unknowns = tuple(self.unknowns)
+        if not all(isinstance(item, SelectedSourcePlan) for item in selected):
+            raise ModelValueError(
+                "selected must contain SelectedSourcePlan values"
+            )
+        if not all(
+            isinstance(item, SelectionOmissionPlan) for item in omissions
+        ):
+            raise ModelValueError(
+                "omissions must contain SelectionOmissionPlan values"
+            )
+        if not all(
+            isinstance(item, SelectionUnknownPlan) for item in unknowns
+        ):
+            raise ModelValueError(
+                "unknowns must contain SelectionUnknownPlan values"
+            )
+        object.__setattr__(self, "selected", selected)
+        object.__setattr__(self, "omissions", omissions)
+        object.__setattr__(self, "unknowns", unknowns)
+
+    @property
+    def ready_for_compilation(self) -> bool:
+        return not any(
+            record.blocking for record in (*self.omissions, *self.unknowns)
+        )
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "request_task_id": self.request_task_id,
+            "selection_policy_id": self.selection_policy_id,
+            "selection_policy_version": self.selection_policy_version,
+            "selection_policy_digest": self.selection_policy_digest.as_dict(),
+            "repository_identity": self.repository_identity,
+            "requested_revision": self.requested_revision,
+            "commit": self.commit,
+            "tree": self.tree,
+            "object_format": self.object_format,
+            "snapshot_mode": self.snapshot_mode,
+            "snapshot_fingerprint": self.snapshot_fingerprint.as_dict(),
+            "selected": [record.as_dict() for record in self.selected],
+            "omissions": [record.as_dict() for record in self.omissions],
+            "unknowns": [record.as_dict() for record in self.unknowns],
+            "ready_for_compilation": self.ready_for_compilation,
+        }

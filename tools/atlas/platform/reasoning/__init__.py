@@ -1,3 +1,8 @@
+from atlas.platform.reasoning.context_selection import (
+    SelectionContractError,
+    SelectionError,
+    build_bounded_selection_plan,
+)
 from atlas.platform.reasoning.guidance import build_guidance
 from atlas.platform.reasoning.impact import analyze_impact
 from atlas.platform.reasoning.opportunity_capability_alignment import (
@@ -45,6 +50,9 @@ from atlas.platform.reasoning.validation import validate_repository
 __all__ = [
     "CapabilityDefinition",
     "ScopeDefinition",
+    "SelectionError",
+    "SelectionContractError",
+    "build_bounded_selection_plan",
     "GuidanceReport",
     "ImpactReport",
     "EngineeringOpportunityAssessment",

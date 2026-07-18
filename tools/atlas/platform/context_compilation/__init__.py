@@ -21,10 +21,16 @@ from atlas.platform.context_compilation.digests import (
     snapshot_fingerprint_surface,
 )
 from atlas.platform.context_compilation.models import (
+    CompilationRequest,
     ImmutableBlob,
+    LoadedPolicy,
     ProtectedReferenceIdentity,
     RepositoryIdentityEvidence,
     RepositorySnapshot,
+    SelectedSourcePlan,
+    SelectionOmissionPlan,
+    SelectionPlan,
+    SelectionUnknownPlan,
     SelectorOutput,
 )
 from atlas.platform.context_compilation.selectors import (
@@ -76,6 +82,12 @@ __all__ = [
     "RepositorySnapshot",
     "ImmutableBlob",
     "SelectorOutput",
+    "CompilationRequest",
+    "LoadedPolicy",
+    "SelectedSourcePlan",
+    "SelectionOmissionPlan",
+    "SelectionUnknownPlan",
+    "SelectionPlan",
     "SNAPSHOT_MODE",
     "SnapshotError",
     "SnapshotEnvironmentError",
