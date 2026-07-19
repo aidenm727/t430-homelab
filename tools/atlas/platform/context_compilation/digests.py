@@ -7,7 +7,10 @@ from collections.abc import Mapping
 from typing import Any
 
 from atlas.platform.context_compilation.canonical_json import canonicalize
-from atlas.platform.context_compilation.models import DigestRecord
+from atlas.platform.context_compilation.models import (
+    ByteDigestRecord,
+    DigestRecord,
+)
 
 
 ALGORITHM = "sha256"
@@ -107,3 +110,78 @@ def package_identity(
         package_identity_surface(request_digest_value, snapshot_fingerprint_value)
     )
     return digest, f"tcp-{digest.value[:24]}"
+
+def _require_digest_text(value: str, length: int, field_name: str) -> str:
+    if (
+        not isinstance(value, str)
+        or len(value) != length
+        or any(character not in "0123456789abcdef" for character in value)
+    ):
+        raise ValueError(
+            f"{field_name} must be exactly {length} lowercase hexadecimal characters"
+        )
+    return value
+
+
+def _require_identity_text(value: str, field_name: str) -> str:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{field_name} must be a nonempty string")
+    return value
+
+
+def byte_digest(value: bytes) -> ByteDigestRecord:
+    """Return the frozen SHA-256 record for exact uninterpreted bytes."""
+
+    if not isinstance(value, bytes):
+        raise TypeError("byte digest input must be bytes")
+    return ByteDigestRecord(ALGORITHM, sha256_bytes(value))
+
+
+def source_identifier(
+    path: str,
+    commit: str,
+    blob: str,
+    selector_descriptor: str,
+) -> str:
+    """Derive the architecture-defined first-slice source identifier."""
+
+    surface = {
+        "source_identity": {
+            "path": _require_identity_text(path, "source path"),
+            "commit": _require_digest_text(commit, 40, "source commit"),
+            "blob": _require_digest_text(blob, 40, "source blob"),
+        },
+        "selector": _require_identity_text(
+            selector_descriptor,
+            "selector descriptor",
+        ),
+    }
+    return f"src-{sha256_bytes(canonicalize(surface))[:16]}"
+
+
+def payload_identifier(payload_digest_value: str) -> str:
+    """Derive the architecture-defined first-slice payload identifier."""
+
+    value = _require_digest_text(
+        payload_digest_value,
+        64,
+        "payload digest",
+    )
+    return f"payload-{value[:16]}"
+
+
+def omission_identifier(
+    rule: str,
+    boundary: str,
+    individual: Mapping[str, Any] | None,
+) -> str:
+    """Derive the architecture-defined first-slice omission identifier."""
+
+    if individual is not None and not isinstance(individual, Mapping):
+        raise TypeError("omission individual must be a mapping or null")
+    surface = {
+        "rule": _require_identity_text(rule, "omission rule"),
+        "boundary": _require_identity_text(boundary, "omission boundary"),
+        "individual": individual,
+    }
+    return f"omit-{sha256_bytes(canonicalize(surface))[:16]}"

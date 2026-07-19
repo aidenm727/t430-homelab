@@ -818,7 +818,7 @@ class SelectorCapabilityBoundaryTests(unittest.TestCase):
 
         self.assertEqual(mutable_assignments, [])
 
-    def test_b1a_implementation_files_match_the_authorization_baseline(self) -> None:
+    def test_b1a_snapshot_boundary_files_match_the_authorization_baseline(self) -> None:
         result = fixture_git(
             None,
             "diff",
@@ -826,7 +826,6 @@ class SelectorCapabilityBoundaryTests(unittest.TestCase):
             BASELINE,
             "--",
             "tools/atlas/platform/context_compilation/snapshot.py",
-            "tools/atlas/platform/context_compilation/digests.py",
             "tests/test_context_snapshot.py",
         )
         self.assertEqual(result.stdout, b"")

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Any, Mapping, Tuple, cast
@@ -690,4 +691,306 @@ class SelectionPlan:
             "omissions": [record.as_dict() for record in self.omissions],
             "unknowns": [record.as_dict() for record in self.unknowns],
             "ready_for_compilation": self.ready_for_compilation,
+        }
+
+def _require_lower_hex(
+    value: Any,
+    length: int,
+    field_name: str,
+) -> str:
+    value = _require_model_string(value, field_name)
+    if len(value) != length or any(
+        character not in "0123456789abcdef" for character in value
+    ):
+        raise ModelValueError(
+            f"{field_name} must be exactly {length} lowercase hexadecimal characters"
+        )
+    return value
+
+
+def _require_prefixed_identifier(
+    value: Any,
+    prefix: str,
+    hexadecimal_length: int,
+    field_name: str,
+) -> str:
+    value = _require_model_string(value, field_name)
+    if not value.startswith(prefix):
+        raise ModelValueError(f"{field_name} must start with {prefix}")
+    suffix = value[len(prefix):]
+    if len(suffix) != hexadecimal_length or any(
+        character not in "0123456789abcdef" for character in suffix
+    ):
+        raise ModelValueError(
+            f"{field_name} must use {prefix} plus "
+            f"{hexadecimal_length} lowercase hexadecimal characters"
+        )
+    return value
+
+
+_RFC3339_PATTERN = (
+    r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"
+    r"(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})\Z"
+)
+_FRESHNESS_STATUSES = frozenset(
+    ("current_at_snapshot", "stale", "unknown", "not_applicable")
+)
+
+
+@dataclass(frozen=True)
+class ByteDigestRecord:
+    algorithm: str
+    value: str
+
+    def __post_init__(self) -> None:
+        if self.algorithm != "sha256":
+            raise ModelValueError("byte digest algorithm must be sha256")
+        _require_lower_hex(self.value, 64, "byte digest value")
+
+    def as_dict(self) -> dict[str, str]:
+        return {"algorithm": self.algorithm, "value": self.value}
+
+
+@dataclass(frozen=True)
+class ImmutableSourceIdentityRecord:
+    type: str
+    object_format: str
+    value: str
+
+    def __post_init__(self) -> None:
+        if self.type != "git_blob":
+            raise ModelValueError("immutable source identity type must be git_blob")
+        if self.object_format != "sha1":
+            raise ModelValueError("immutable source object format must be sha1")
+        _require_lower_hex(self.value, 40, "immutable source identity value")
+
+    def as_dict(self) -> dict[str, str]:
+        return {
+            "type": self.type,
+            "object_format": self.object_format,
+            "value": self.value,
+        }
+
+
+@dataclass(frozen=True)
+class FreshnessRecord:
+    status: str
+    basis: str
+    rule: str
+    as_of: str
+
+    def __post_init__(self) -> None:
+        if self.status not in _FRESHNESS_STATUSES:
+            raise ModelValueError("freshness status is invalid")
+        _require_model_string(self.basis, "freshness basis")
+        _require_model_string(self.rule, "freshness rule")
+        _require_model_string(self.as_of, "freshness as_of")
+        if re.fullmatch(_RFC3339_PATTERN, self.as_of) is None:
+            raise ModelValueError("freshness as_of must be RFC 3339")
+
+    def as_dict(self) -> dict[str, str]:
+        return {
+            "status": self.status,
+            "basis": self.basis,
+            "rule": self.rule,
+            "as_of": self.as_of,
+        }
+
+
+@dataclass(frozen=True)
+class MaterializedPayload:
+    id: str
+    source_ref: str
+    media_type: str
+    encoding: str
+    content: bytes
+    utf8_bytes: int
+    digest: ByteDigestRecord
+
+    def __post_init__(self) -> None:
+        _require_prefixed_identifier(self.id, "payload-", 16, "payload id")
+        _require_prefixed_identifier(self.source_ref, "src-", 16, "source reference")
+        _require_model_string(self.media_type, "media_type")
+        if self.encoding != "utf-8":
+            raise ModelValueError("payload encoding must be utf-8")
+        if not isinstance(self.content, bytes):
+            raise ModelValueError("materialized payload content must be bytes")
+        try:
+            self.content.decode("utf-8", errors="strict")
+        except UnicodeDecodeError:
+            raise ModelValueError(
+                "materialized payload content must be valid UTF-8"
+            ) from None
+        if (
+            not isinstance(self.utf8_bytes, int)
+            or isinstance(self.utf8_bytes, bool)
+            or not 0 <= self.utf8_bytes <= MAX_SAFE_INTEGER
+            or self.utf8_bytes != len(self.content)
+        ):
+            raise ModelValueError(
+                "payload utf8_bytes must equal the exact payload byte length"
+            )
+        if not isinstance(self.digest, ByteDigestRecord):
+            raise ModelValueError("payload digest must be a ByteDigestRecord")
+
+    def as_dict(self) -> dict[str, Any]:
+        """Return canonical metadata without exposing exact payload bytes."""
+
+        return {
+            "id": self.id,
+            "source_ref": self.source_ref,
+            "media_type": self.media_type,
+            "encoding": self.encoding,
+            "utf8_bytes": self.utf8_bytes,
+            "digest": self.digest.as_dict(),
+        }
+
+
+@dataclass(frozen=True)
+class MaterializedSource:
+    id: str
+    plan: SelectedSourcePlan
+    selector_descriptor: str
+    immutable_source_identity: ImmutableSourceIdentityRecord
+    source_content_digest: ByteDigestRecord
+    transformation: Mapping[str, Any]
+    freshness: FreshnessRecord
+    included_utf8_bytes: int
+    payload_ref: str
+
+    def __post_init__(self) -> None:
+        _require_prefixed_identifier(self.id, "src-", 16, "source id")
+        if not isinstance(self.plan, SelectedSourcePlan):
+            raise ModelValueError("materialized source plan is invalid")
+        _require_model_string(self.selector_descriptor, "selector descriptor")
+        if not isinstance(
+            self.immutable_source_identity,
+            ImmutableSourceIdentityRecord,
+        ):
+            raise ModelValueError("immutable source identity record is invalid")
+        if not isinstance(self.source_content_digest, ByteDigestRecord):
+            raise ModelValueError("source content digest is invalid")
+        if not isinstance(self.transformation, Mapping):
+            raise ModelValueError("source transformation must be a mapping")
+        object.__setattr__(
+            self,
+            "transformation",
+            cast(Mapping[str, Any], deep_freeze(self.transformation)),
+        )
+        if not isinstance(self.freshness, FreshnessRecord):
+            raise ModelValueError("source freshness record is invalid")
+        if (
+            not isinstance(self.included_utf8_bytes, int)
+            or isinstance(self.included_utf8_bytes, bool)
+            or not 0 <= self.included_utf8_bytes <= MAX_SAFE_INTEGER
+        ):
+            raise ModelValueError(
+                "included_utf8_bytes must be a nonnegative safe integer"
+            )
+        _require_prefixed_identifier(
+            self.payload_ref,
+            "payload-",
+            16,
+            "payload reference",
+        )
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "plan": self.plan.as_dict(),
+            "selector_descriptor": self.selector_descriptor,
+            "immutable_source_identity": self.immutable_source_identity.as_dict(),
+            "source_content_digest": self.source_content_digest.as_dict(),
+            "transformation": self.transformation,
+            "freshness": self.freshness.as_dict(),
+            "included_utf8_bytes": self.included_utf8_bytes,
+            "payload_ref": self.payload_ref,
+        }
+
+
+@dataclass(frozen=True)
+class IdentifiedOmission:
+    id: str
+    plan: SelectionOmissionPlan
+
+    def __post_init__(self) -> None:
+        _require_prefixed_identifier(self.id, "omit-", 16, "omission id")
+        if not isinstance(self.plan, SelectionOmissionPlan):
+            raise ModelValueError("identified omission plan is invalid")
+
+    def as_dict(self) -> dict[str, Any]:
+        return {"id": self.id, "plan": self.plan.as_dict()}
+
+
+@dataclass(frozen=True)
+class MaterializationResult:
+    request_task_id: str
+    repository_identity: str
+    requested_revision: str
+    commit: str
+    tree: str
+    object_format: str
+    snapshot_mode: str
+    snapshot_fingerprint: DigestRecord
+    sources: Tuple[MaterializedSource, ...]
+    payloads: Tuple[MaterializedPayload, ...]
+    omissions: Tuple[IdentifiedOmission, ...]
+    unknowns: Tuple[SelectionUnknownPlan, ...]
+
+    def __post_init__(self) -> None:
+        for field_name in (
+            "request_task_id",
+            "repository_identity",
+            "requested_revision",
+            "commit",
+            "tree",
+            "object_format",
+            "snapshot_mode",
+        ):
+            _require_model_string(getattr(self, field_name), field_name)
+        if not isinstance(self.snapshot_fingerprint, DigestRecord):
+            raise ModelValueError(
+                "materialization snapshot fingerprint must be a DigestRecord"
+            )
+        sources = tuple(self.sources)
+        payloads = tuple(self.payloads)
+        omissions = tuple(self.omissions)
+        unknowns = tuple(self.unknowns)
+        if not all(isinstance(item, MaterializedSource) for item in sources):
+            raise ModelValueError(
+                "sources must contain MaterializedSource values"
+            )
+        if not all(isinstance(item, MaterializedPayload) for item in payloads):
+            raise ModelValueError(
+                "payloads must contain MaterializedPayload values"
+            )
+        if not all(isinstance(item, IdentifiedOmission) for item in omissions):
+            raise ModelValueError(
+                "omissions must contain IdentifiedOmission values"
+            )
+        if not all(isinstance(item, SelectionUnknownPlan) for item in unknowns):
+            raise ModelValueError(
+                "unknowns must contain SelectionUnknownPlan values"
+            )
+        object.__setattr__(self, "sources", sources)
+        object.__setattr__(self, "payloads", payloads)
+        object.__setattr__(self, "omissions", omissions)
+        object.__setattr__(self, "unknowns", unknowns)
+
+    def as_dict(self) -> dict[str, Any]:
+        """Return deterministic metadata without embedding exact payload bytes."""
+
+        return {
+            "request_task_id": self.request_task_id,
+            "repository_identity": self.repository_identity,
+            "requested_revision": self.requested_revision,
+            "commit": self.commit,
+            "tree": self.tree,
+            "object_format": self.object_format,
+            "snapshot_mode": self.snapshot_mode,
+            "snapshot_fingerprint": self.snapshot_fingerprint.as_dict(),
+            "sources": [record.as_dict() for record in self.sources],
+            "payloads": [record.as_dict() for record in self.payloads],
+            "omissions": [record.as_dict() for record in self.omissions],
+            "unknowns": [record.as_dict() for record in self.unknowns],
         }

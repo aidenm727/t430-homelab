@@ -2,58 +2,53 @@
 
 ## Phase
 
-Task-Scoped Agent Context Compilation Checkpoint B1b2 Complete
+Task-Scoped Agent Context Compilation Checkpoint B2a Complete
 
 ---
 
 ## Mission State
 
-The owner accepted EO-2026-013 Checkpoint B1b2 — Bounded Selection Plan as implementation-complete on July 17, 2026. B1b2 was committed and pushed as `54e5791789a883a98d72c2371d26a16c77f4a1b3`.
+The owner accepted EO-2026-013 Checkpoint B2a — Materialization and Content Identity as implementation-complete on 2026-07-19.
 
-The post-B1b2 mission synchronization and Engineering Health and Operating Review were committed and pushed as `042897590bf90de33a345cf6ab8fad346a45a4c1`.
+The accepted implementation is the exact nine-path working-tree state verified from canonical baseline `937dc844ce894ec6237e1aaa3a31dfa514c3f419`.
 
-The Remaining Executable Path Review and three-checkpoint decomposition were committed and pushed as `eb51c2952c1a10c4143cc8f59a3f7798ece1dbef` (`Record EO-2026-013 remaining path decomposition`).
+The accepted state contains:
 
-The authorized read-only B2a Authorization Review challenged the proposed Materialization and Content Identity boundary against the accepted architecture, frozen schemas and policies, current code, historical request, immutable snapshot behavior, selectors, digest surfaces, trace records, and verification boundaries.
+- `tools/atlas/platform/context_compilation/materialization.py`;
+- `tests/test_context_materialization.py`;
+- `tools/atlas/platform/context_compilation/__init__.py`;
+- `tools/atlas/platform/context_compilation/models.py`;
+- `tools/atlas/platform/context_compilation/digests.py`;
+- `tests/test_context_selectors.py`;
+- `docs/reviews/eo-2026-013-b2a-structured-object-ownership-contract-correction-review-2026-07-17.md`;
+- `docs/current-mission.md`;
+- `docs/aiden-context.md`.
 
-The review retained B2a as one coherent checkpoint but revised its module boundary.
+Verification established fourteen focused portable tests, one separately enabled guarded historical integration, and 224 safe broad-regression tests with fifteen protected exclusions and zero obsolete exclusions. Atlas was Valid, complete, and Synchronized with zero errors and zero warnings. The staged set was empty and `HEAD`, local `main`, and `origin/main` remained at the authorization baseline before completion recording.
 
-The reviewed recommendation is:
+B2a owns exact selected-source reread, selector execution, source and payload byte digests, stable source, payload, and omission identities, snapshot-relative first-slice freshness, structured Engineering Opportunity ownership separation, immutable materialization records, identified omissions, and preserved unknowns.
 
-- create `tools/atlas/platform/context_compilation/materialization.py`;
-- create `tests/test_context_materialization.py`;
-- modify context-compilation `__init__.py`;
-- modify `models.py`;
-- modify `digests.py`;
-- reserve `compiler.py` and `tests/test_context_compilation.py` for proposed B2b.
+Checkpoint A, Checkpoint A.1, Checkpoint B1a, Checkpoint B1b1, Checkpoint B1b2, and Checkpoint B2a are complete and owner-accepted.
 
-The revised B2a input is one validated CompilationRequest, one accepted RepositorySnapshot, one ready B1b2 SelectionPlan, and one explicit repository path.
-
-The revised B2a output consists of deeply immutable materialized sources, exact payloads, byte digests and identities, snapshot-relative first-slice freshness, identified omissions, preserved unknowns, and one immutable materialization result.
-
-Checkpoint A, Checkpoint A.1, Checkpoint B1a, Checkpoint B1b1, and Checkpoint B1b2 remain complete and unchanged.
-
-B2a, B2b, and B2c remain unauthorized.
+B2b and B2c remain unauthorized. `compiler.py`, `tests/test_context_compilation.py`, and `explanation.py` remain absent.
 
 EO-2026-013 remains `reviewed`. EO-2026-022 — Human Engineering Control Surface remains `captured`.
 
-Architecture, schemas, policies, dependencies, CI, Atlas commands, lifecycle state, protected-reference behavior, protected content, EO-2026-022 implementation, and AI-environment changes remain outside the active authorization.
+No architecture, schema, policy, dependency, CI, Atlas-command, protected-reference, protected-content, lifecycle, EO-2026-022 implementation, or AI-environment change was authorized by this acceptance.
 
 ---
 
 ## Mission Intent
 
-Preserve the accepted deterministic path through bounded selection planning and obtain a separately authorized, responsibility-accurate implementation decision for Materialization and Content Identity.
+Preserve the accepted deterministic executable path through Materialization and Content Identity.
 
-The revised B2a boundary converts one accepted B1b2 plan and B1a snapshot into exact immutable source and payload records without claiming complete package compilation.
+Repository Synchronization Reasoning remains responsible for deterministic internal alignment.
 
-`materialization.py` owns only selected-source reread, exact selector execution, byte digests, stable identities, deterministic first-slice freshness, identified omissions, preserved unknowns, deep immutability, and repeatability.
+The next responsible checkpoint is a bounded authorization review for Checkpoint B2b — Budgeted Package Assembly and Validation. That review must challenge the proposed compiler boundary, byte-budget execution, control-envelope measurement, package assembly, package identity, unknown and trace projection, complete validation, and consumability against the accepted architecture and completed A through B2a contracts.
 
-`compiler.py` remains reserved for proposed B2b, where budgeted package assembly and complete validation can exist truthfully.
+No B2b implementation begins automatically. Task authority remains external, generated task context remains non-canonical, and human acceptance remains required before implementation.
 
-Task authority remains external. Generated task context remains non-canonical. No checkpoint begins automatically.
-
-Repository Synchronization Reasoning remains responsible for deterministic internal alignment. The semantic synchronization boundary remains recorded under existing Engineering Opportunity ownership.
+B2c — Golden Replay and Explanation remains downstream and unauthorized.
 
 ---
 
@@ -63,81 +58,57 @@ Repository Synchronization Reasoning remains responsible for deterministic inter
 - Preserve Checkpoint A.1 selection-policy version `1.0.1` and its accepted digest.
 - Preserve Checkpoint B1a immutable snapshot, clean-state, exact blob, and content-blind protected-reference identity boundaries.
 - Preserve Checkpoint B1b1 strict bytes-only selector behavior and repository-owned bounded YAML parser.
-- Preserve Checkpoint B1b2 exact candidate universe, one-hop relationship limit, stable ordering, explicit omissions and unknowns, discarded selector content, and derived readiness.
-- Preserve the reviewed B2a/B2b/B2c sequencing.
-- Preserve B2a as one coherent checkpoint.
-- Use `materialization.py` and `test_context_materialization.py` for the revised B2a recommendation.
-- Reserve `compiler.py` and `test_context_compilation.py` for proposed B2b.
-- Preserve the exact five-path recommended B2a scope.
-- Preserve exact request, snapshot, selection-plan, and repository-path input binding.
-- Preserve exact source-content, payload, source-ID, payload-ID, and omission-ID surfaces.
-- Preserve Current Mission freshness as `unknown` without independent synchronization evidence.
-- Preserve ordinary selected canonical-source freshness as snapshot-relative `current_at_snapshot` only under exact reviewed conditions.
-- Preserve B1b2 omissions and unknowns without new selection reasoning.
-- Obtain a separate owner decision on implementation of revised B2a.
-- Keep B2a, B2b, and B2c unauthorized until separately accepted.
+- Preserve Checkpoint B1b2 exact bounded selection-plan contract.
+- Preserve Checkpoint B2a materialization, content-identity, ownership, freshness, omission, unknown-preservation, and immutability contracts.
+- Record and publish the accepted exact nine-path B2a completion.
+- Treat a bounded B2b authorization review as the next checkpoint.
+- Reserve `compiler.py` and `tests/test_context_compilation.py` for proposed B2b.
+- Reserve `explanation.py` and golden replay for proposed B2c.
+- Keep B2b and B2c implementation unauthorized until separately reviewed and accepted.
 - Preserve EO-2026-013 as `reviewed` and EO-2026-022 as `captured`.
 - Preserve the downstream AI Engineering Environment Review.
 - Preserve architecture, schema, policy, dependency, CI, Atlas-command, lifecycle, protected-reference, EO-2026-022, and AI-environment exclusions.
-- Require any schema, policy, dependency, completed-boundary, protected-content, freshness, selector, trace, or path-scope issue to stop and return for bounded review.
 
 ---
 
 ## Initial Milestone
 
-Checkpoint B1b2 — Bounded Selection Plan remains complete and owner-accepted.
+Checkpoint B2a — Materialization and Content Identity is complete and owner-accepted.
 
 ### Completed
 
-- Completed and published Checkpoint A — Deterministic Foundations.
-- Completed and published Checkpoint A.1 — Executable-Policy Contract Correction.
-- Completed and published Checkpoint B1a — Immutable Snapshot Boundary.
-- Completed and published Checkpoint B1b1 — Deterministic Selector Primitives.
-- Completed and published Checkpoint B1b2 — Bounded Selection Plan.
-- Completed and published the Remaining Executable Path Review.
-- Completed the read-only B2a Authorization Review.
-- Retained B2a as one coherent checkpoint.
-- Rejected further division into identity and orchestration checkpoints.
-- Rejected creating `compiler.py` during B2a.
-- Recommended `materialization.py` and `test_context_materialization.py`.
-- Reserved compiler and compilation tests for proposed B2b.
-- Recommended an exact five-path B2a scope.
-- Defined the exact B2a input and immutable output contracts.
-- Defined byte-digest, source, payload, and omission identity surfaces.
-- Defined exact immutable reread and fatal post-plan selector behavior.
-- Defined snapshot-relative first-slice freshness.
-- Preserved SelectionUnknownPlan records unchanged.
-- Enriched omissions only with deterministic omission IDs.
-- Preserved final package unknown IDs and trace projection as B2b decisions.
-- Preserved the schema-correction stop condition for B2b.
-- Left B2a, B2b, and B2c unauthorized.
+- Implemented the exact accepted Materialization and Content Identity boundary.
+- Added immutable materialized source, payload, omission, and complete materialization-result records.
+- Added exact source-content and payload digests and stable identities.
+- Preserved each `SelectedSourcePlan` in materialized records.
+- Distinguished structured Engineering Opportunity source path, structured identity, and canonical field-contract ownership.
+- Preserved ordinary canonical documents as self-owned by selected path.
+- Preserved Current Mission freshness as `unknown`.
+- Preserved B1b2 omissions and unknowns without new selection reasoning.
+- Corrected the obsolete B1a historical guard so only snapshot boundary files remain immutable from the B1a baseline.
+- Preserved `compiler.py` and `explanation.py` absence.
+- Passed fourteen focused portable tests.
+- Executed and passed the guarded historical integration.
+- Passed 224 safe broad-regression tests with fifteen protected exclusions and zero obsolete exclusions.
+- Passed `git diff --check`.
+- Verified Atlas Valid, complete, and Synchronized with zero errors and zero warnings.
+- Verified exact nine-path scope, empty staged set, unchanged refs, and byte-identical preservation of all previously verified B2a paths.
 
 ### Still Excluded
 
-- Implementation or authorization of B2a, B2b, or B2c.
-- Creation of `materialization.py` or its tests.
-- Modification of context-compilation code.
-- Creation of `compiler.py`, `explanation.py`, compilation tests, or package fixtures.
-- Selected-source payload retention in production.
-- Source-content and payload digest implementation.
-- Source, payload, or omission identifier implementation.
-- Freshness record implementation.
-- Byte-budget execution.
+- Authorization or implementation of B2b or B2c.
+- Creation of `compiler.py`, `tests/test_context_compilation.py`, or `explanation.py`.
+- Byte-budget execution or allocation.
 - Control-envelope measurement.
-- Package assembly and package integrity.
-- Final package unknown-ID construction.
-- Final package trace projection.
-- Complete package validation and consumability.
-- Explanation rendering.
-- Golden replay.
-- Atlas commands or generic structured-resource discovery.
-- Dependencies, runtime-contract changes, or CI.
-- Canonical architecture, schema, or policy changes.
+- Package assembly, final package identity, or complete package integrity validation.
+- Final package unknown-ID construction or trace projection.
+- Consumer-readiness or consumability claims beyond B2a materialization readiness.
+- Golden replay or explanation rendering.
+- Architecture, schema, policy, dependency, CI, runtime-contract, or Atlas-command changes.
 - Engineering Opportunity lifecycle changes.
+- Protected-reference behavior or protected-content access.
 - EO-2026-022 architecture or implementation.
-- Task execution, autonomy, provider routing, or AI-environment changes.
-- Protected-reference behavior changes.
-- Protected-object peel, traversal, content read, selection, exposure, or mutation.
+- AI-environment changes.
 
 ---
 
@@ -184,6 +155,52 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 ---
 
 ## Completion History
+
+### EO-2026-013 Checkpoint B2a — Materialization and Content Identity
+
+- Completion accepted by the owner on 2026-07-19.
+- Authorization baseline: `937dc844ce894ec6237e1aaa3a31dfa514c3f419`.
+- Exact accepted scope: nine working-tree paths.
+- Added Materialization and Content Identity without complete package compilation.
+- Added exact source-content and payload digests and stable source, payload, and omission identities.
+- Added immutable materialized source, payload, omission, and complete result records.
+- Preserved `SelectedSourcePlan` trace ownership in each materialized record.
+- Corrected structured Engineering Opportunity ownership by separating source path, structured identity, and field-contract owner.
+- Preserved ordinary canonical documents as self-owned by selected path.
+- Preserved Current Mission freshness as `unknown`.
+- Corrected one obsolete B1a historical immutability guard while retaining `compiler.py` and `explanation.py` absence.
+- Fourteen focused portable tests passed.
+- The guarded historical integration executed and passed.
+- 224 safe broad-regression tests passed with fifteen protected exclusions and zero obsolete exclusions.
+- Atlas validation was Valid, missing definitions were complete, and synchronization was Synchronized with zero errors and zero warnings.
+- Exact nine-path scope, empty staged set, unchanged refs, and byte-identical preservation were verified.
+- B2b and B2c remain unauthorized.
+- EO-2026-013 remains `reviewed`.
+- EO-2026-022 remains `captured`.
+- No architecture, schema, policy, dependency, CI, Atlas-command, lifecycle, protected-reference, protected-content, EO-2026-022 implementation, or AI-environment change occurred.
+
+### EO-2026-013 Checkpoint B2a Structured-Object Ownership Contract-Correction Review
+
+- Review authorized and completed on July 17, 2026.
+- Verified canonical baseline: `937dc844ce894ec6237e1aaa3a31dfa514c3f419`.
+- Preserved the exact five-path in-progress B2a implementation.
+- Recorded that all 11 focused portable B2a tests passed.
+- Recorded that the guarded historical integration stopped before materialization with `MaterializationContractError: selected canonical owner is inconsistent`.
+- Confirmed that verification changed no implementation bytes.
+- Confirmed that nothing was staged, committed, or pushed.
+- Distinguished immutable selected source path, stable structured identity, and field-contract ownership.
+- Preserved the EO YAML as selected immutable source.
+- Preserved `engineering-opportunity:EO-2026-013` as the structured identity.
+- Preserved the Engineering Opportunity Object Architecture as field-contract owner.
+- Preserved ordinary canonical document owner equality with selected path.
+- Preserved Current Mission freshness as `unknown`.
+- Found no accepted B1b2, policy, schema, or B2a architecture defect requiring change.
+- Bounded the future implementation correction to `materialization.py` and `test_context_materialization.py`.
+- Required `__init__.py`, `models.py`, and `digests.py` to remain byte-identical.
+- Preserved final package ownership projection as a B2b decision with a stop-for-clarification condition.
+- Left B2a in progress and incomplete.
+- Left B2b and B2c unauthorized.
+
 
 ### EO-2026-013 Checkpoint B2a Authorization Review
 
@@ -421,6 +438,8 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ## Recently Completed
 
+- Completed and owner-accepted EO-2026-013 Checkpoint B2a — Materialization and Content Identity on 2026-07-19.
+- Completed and recorded the EO-2026-013 Checkpoint B2a Structured-Object Ownership Contract-Correction Review.
 - Completed and recorded the EO-2026-013 Checkpoint B2a Authorization Review and revised materialization boundary.
 - Completed and recorded the EO-2026-013 Remaining Executable Path Review and three-checkpoint recommendation.
 - Completed and published EO-2026-013 Checkpoint B1b2 — Bounded Selection Plan at `54e5791789a883a98d72c2371d26a16c77f4a1b3`.
@@ -449,49 +468,56 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ## Current Non-Priorities
 
-- Beginning revised B2a without a separate owner implementation decision.
-- Treating the B2a authorization review as implementation authority.
-- Creating `compiler.py` before budgeted package assembly exists.
-- Dividing B2a again without evidence that the reviewed unit is not implementable.
-- Modifying accepted Checkpoint A schemas or policies without a separately reviewed defect.
+- Beginning B2b implementation before a separate bounded authorization review and owner decision.
+- Creating `compiler.py` or `tests/test_context_compilation.py` before that decision.
+- Beginning B2c, golden replay, or explanation work.
+- Reopening or broadening accepted B2a without a newly evidenced defect.
+- Modifying accepted Checkpoint A schemas or policies.
 - Broadening the B1b1 bounded YAML parser.
-- Adding a third-party YAML dependency.
 - Modifying B1a snapshot or protected-reference behavior.
-- Expanding B1b2 beyond its exact selection-plan contract.
-- Converting post-plan reread or selector failures into new selection omissions or unknowns.
-- Using wall-clock time, Atlas execution, unselected reads, or external observations for B2a freshness.
-- Inventing final package unknown IDs in B2a.
-- Silently losing B1b2 trace information during later package projection.
+- Expanding B1b2 selection reasoning.
 - Generic discovery, semantic retrieval, embeddings, vector search, or model-selected context.
-- Atlas commands.
 - Dependencies, runtime configuration, CI, or reusable workflow expansion.
 - Canonical architecture changes.
-- Engineering Opportunity lifecycle mutation.
+- Engineering Opportunity lifecycle changes.
 - EO-2026-022 architecture or implementation.
-- Task-contract implementation, execution, autonomy, provider routing, or AI-environment changes.
-- Reading, peeling, traversing, selecting, exposing, or mutating protected-object content.
-- Implementing Structured Research Orchestration inside EO-2026-013.
-- Resuming or merging the Distinctness implementation.
+- AI-environment changes.
+- Protected-object peel, traversal, content read, selection, exposure, or mutation.
 
 ---
 
 ## Current Status
 
-EO-2026-013 Checkpoint A, Checkpoint A.1, Checkpoint B1a, Checkpoint B1b1, and Checkpoint B1b2 are complete, independently verified, owner-accepted, and published to `main`.
+EO-2026-013 Checkpoint A, A.1, B1a, B1b1, and B1b2 remain complete, independently verified, owner-accepted, and published.
 
-The B2a Authorization Review determined that Materialization and Content Identity is one coherent checkpoint, but the proposed original module boundary was inaccurate.
+B2a implementation is in progress in exactly five local working-tree paths.
 
-The revised recommendation creates `materialization.py` and `test_context_materialization.py`, modifies exports, models, and digests, and reserves compiler and compilation tests for proposed B2b.
+All 11 focused portable B2a tests passed.
 
-The revised B2a responsibility is limited to exact immutable reread, selector execution, source and payload byte digests, stable source, payload, and omission identities, snapshot-relative first-slice freshness, deeply immutable materialized records, identified omissions, preserved unknowns, and repeatability.
+The guarded historical integration stopped before materialization because the B2a implementation required every selected source's `canonical_owner` to equal its path.
 
-Current Mission freshness remains `unknown` when the compilation inputs carry no independent synchronization evidence. Ordinary selected canonical documents may be `current_at_snapshot` only through the exact reviewed snapshot-relative rule.
+That rule is incorrect for the structured EO source.
 
-Any post-plan immutable reread or selector failure is fatal and cannot change B1b2 selection reasoning.
+The accepted first-slice distinction is:
 
-Final package unknown IDs and final trace projection remain B2b decisions. B2b must stop for bounded schema correction review if the frozen package schema cannot preserve the accepted trace contract.
+- selected immutable source path:
+  `docs/opportunities/reviewed/EO-2026-013-task-scoped-agent-context-compilation.yaml`;
+- structured object identity:
+  `engineering-opportunity:EO-2026-013`;
+- field-contract owner:
+  `docs/architecture/engineering-opportunity-object.md`.
 
-B2a, B2b, and B2c remain unauthorized. The next decision concerns implementation of revised B2a only.
+Ordinary canonical documents continue requiring owner equality with selected path.
+
+Current Mission freshness remains `unknown`.
+
+No defect was found in accepted B1b2, the selection policy, the schema, or the B2a architecture boundary.
+
+The existing implementation may be retained. Only `materialization.py` and `test_context_materialization.py` require a separately authorized correction. The other three implementation files must remain byte-identical.
+
+Final package projection of structured-object ownership remains a B2b decision. B2b must stop for bounded clarification if the accepted distinction cannot be preserved without ambiguity or information loss.
+
+B2a is not complete. B2b and B2c remain unauthorized.
 
 EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`. Protected-reference behavior and protected content remain unchanged and out of scope.
 
@@ -499,79 +525,64 @@ EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`. Protected-refere
 
 ## Next Milestone
 
-Obtain a separate owner decision on implementation of revised Checkpoint B2a — Materialization and Content Identity.
+Conduct a bounded authorization review for Checkpoint B2b — Budgeted Package Assembly and Validation.
 
-The implementation decision must authorize or reject the exact recommended five-path scope:
+The review must determine whether the accepted architecture and completed A through B2a contracts support one coherent compiler checkpoint without schema, policy, dependency, protected-reference, or completed-boundary changes.
 
-Create:
-
-- `tools/atlas/platform/context_compilation/materialization.py`
-- `tests/test_context_materialization.py`
-
-Modify:
-
-- `tools/atlas/platform/context_compilation/__init__.py`
-- `tools/atlas/platform/context_compilation/models.py`
-- `tools/atlas/platform/context_compilation/digests.py`
-
-The decision must preserve the reviewed input, output, identity, freshness, trace, exception, export, portable-test, guarded-integration, completion, and stop-condition boundaries.
-
-B2a does not begin automatically. B2b and B2c remain downstream and unauthorized.
+The review may recommend an exact implementation scope, but it does not authorize implementation. B2c remains downstream and unauthorized.
 
 ---
 
 ## Decision Boundary
 
-- Human decision: record the revised B2a authorization-review result.
-- Verified canonical baseline: `eb51c2952c1a10c4143cc8f59a3f7798ece1dbef`.
-- Read-only review completed: Yes.
-- Atlas Valid and Synchronized: Yes.
-- Working tree remained clean: Yes.
-- Repository or protected-reference mutation occurred: No.
+- Human decision: record the B2a Structured-Object Ownership Contract-Correction Review.
+- Verified canonical baseline: `937dc844ce894ec6237e1aaa3a31dfa514c3f419`.
+- Current B2a implementation path count: Five.
+- Focused portable B2a tests passed: 11.
+- Guarded historical integration completed: No.
+- Guarded stop occurred before source materialization: Yes.
+- Guarded stop error: `MaterializationContractError: selected canonical owner is inconsistent`.
+- Verification changed implementation bytes: No.
+- Staged, committed, or pushed during verification: No.
+- Selected EO immutable source path: `docs/opportunities/reviewed/EO-2026-013-task-scoped-agent-context-compilation.yaml`.
+- Selected EO structured identity: `engineering-opportunity:EO-2026-013`.
+- Selected EO field-contract owner: `docs/architecture/engineering-opportunity-object.md`.
+- Source path, structured identity, and field-contract owner are interchangeable: No.
+- Ordinary canonical document owner equals selected path: Yes.
+- Current Mission owner equals selected path: Yes.
+- Current Mission freshness status: `unknown`.
+- Current Mission freshness rule: `F020-current-mission-synchronization-unverified`.
+- EO snapshot-relative freshness rule remains `F010-pinned-canonical-source`: Yes.
+- Accepted B1b2 defect found: No.
+- Selection-policy defect found: No.
+- B2a schema defect found: No.
+- B2a architecture change required: No.
+- Original B2a ownership clause requires correction: Yes.
+- Current materialization ownership validation requires correction: Yes.
+- Portable EO fixture requires correction: Yes.
+- Existing five-path implementation may otherwise be retained: Yes.
+- Future correction path count: Two.
+- Future correction modifies `materialization.py`: Yes.
+- Future correction modifies `test_context_materialization.py`: Yes.
+- `__init__.py` must remain byte-identical: Yes.
+- `models.py` must remain byte-identical: Yes.
+- `digests.py` must remain byte-identical: Yes.
+- Ownership disagreement remains fatal: Yes.
+- Ownership disagreement becomes a new omission or unknown: No.
+- Final structured-object package projection decided in B2a: No.
+- B2b must stop if final projection cannot preserve the distinction: Yes.
 - Checkpoint A complete and unchanged: Yes.
 - Checkpoint A.1 complete and unchanged: Yes.
 - Checkpoint B1a complete and unchanged: Yes.
 - Checkpoint B1b1 complete and unchanged: Yes.
 - Checkpoint B1b2 complete and unchanged: Yes.
-- Retain B2a as one checkpoint: Yes.
-- Divide B2a further: No.
-- Create `materialization.py` in recommended B2a scope: Yes.
-- Create `test_context_materialization.py` in recommended B2a scope: Yes.
-- Modify `__init__.py`, `models.py`, and `digests.py` in recommended B2a scope: Yes.
-- Create `compiler.py` in B2a: No.
-- Create `test_context_compilation.py` in B2a: No.
-- Reserve compiler and compilation tests for proposed B2b: Yes.
-- Recommended B2a path count: Five.
-- Exact validated request input required: Yes.
-- Exact accepted snapshot input required: Yes.
-- Exact ready B1b2 plan input required: Yes.
-- Explicit repository path required: Yes.
-- Preserve complete SelectedSourcePlan in materialized source: Yes.
-- Preserve SelectionUnknownPlan unchanged: Yes.
-- Enrich omissions only with omission IDs: Yes.
-- Define final package unknown IDs in B2a: No.
-- Exact source-content digest surface defined: Yes.
-- Exact payload digest surface defined: Yes.
-- Exact source-ID surface defined: Yes.
-- Exact payload-ID surface defined: Yes.
-- Exact omission-ID surface defined: Yes.
-- Collisions or identity disagreement are fatal: Yes.
-- Post-plan reread or selector failures are fatal: Yes.
-- Current Mission first-slice freshness: `unknown`.
-- Current Mission freshness rule: `F020-current-mission-synchronization-unverified`.
-- Ordinary canonical-source first-slice freshness may be `current_at_snapshot`: Yes, under exact reviewed conditions.
-- Ordinary canonical-source freshness rule: `F010-pinned-canonical-source`.
-- `as_of` is freshness evidence: No.
-- Ambient time, Atlas execution, unselected reads, or external observations authorized: No.
-- Guarded historical commit: `79eef80af3d5969ece7eb9fe7f802be35575f450`.
-- Guarded historical tree: `3d2853517e64209cffde91766a62e9f70ceb2e47`.
-- B2b must stop if frozen schema cannot preserve accepted trace: Yes.
-- B2a implementation authorized: No.
-- B2b implementation authorized: No.
-- B2c implementation authorized: No.
-- Dependency or CI change authorized: No.
-- Atlas command authorized: No.
+- B2a implementation correction authorized: No.
+- B2a completion accepted: No.
+- B2b authorized: No.
+- B2c authorized: No.
 - Architecture, schema, or policy change authorized: No.
+- Dependency or CI change authorized: No.
+- Atlas command authorized in materialization: No.
 - Protected-reference behavior change authorized: No.
 - Protected content in scope: No.
 - Engineering Opportunity lifecycle changed: No.
@@ -582,4 +593,4 @@ B2a does not begin automatically. B2b and B2c remain downstream and unauthorized
 - AI Engineering Environment Review execution authorized: No.
 - Staging, commit, or push authorized: No.
 
-STOP — Preserve the completed path through B1b2. Obtain a separate owner decision before implementing revised B2a.
+STOP — Preserve the exact five-path implementation. Obtain a separate owner decision before applying the two-file correction.

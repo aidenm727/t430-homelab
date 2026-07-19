@@ -1,4 +1,4 @@
-"""Public deterministic foundations and selectors for task context."""
+"""Public deterministic foundations, selectors, and materialization."""
 
 from atlas.platform.context_compilation.canonical_json import (
     MAX_SAFE_INTEGER,
@@ -13,17 +13,35 @@ from atlas.platform.context_compilation.canonical_json import (
 )
 from atlas.platform.context_compilation.digests import (
     budget_policy_digest,
+    byte_digest,
+    omission_identifier,
     package_identity,
+    payload_identifier,
     request_digest,
     selection_policy_digest,
     sha256_bytes,
     snapshot_fingerprint,
     snapshot_fingerprint_surface,
+    source_identifier,
+)
+from atlas.platform.context_compilation.materialization import (
+    MaterializationContractError,
+    MaterializationError,
+    MaterializationIdentityError,
+    MaterializationSourceError,
+    materialize_selection_plan,
 )
 from atlas.platform.context_compilation.models import (
+    ByteDigestRecord,
     CompilationRequest,
+    FreshnessRecord,
+    IdentifiedOmission,
     ImmutableBlob,
+    ImmutableSourceIdentityRecord,
     LoadedPolicy,
+    MaterializationResult,
+    MaterializedPayload,
+    MaterializedSource,
     ProtectedReferenceIdentity,
     RepositoryIdentityEvidence,
     RepositorySnapshot,
@@ -60,7 +78,7 @@ from atlas.platform.context_compilation.snapshot import (
     resolve_snapshot,
 )
 
-__all__ = [
+__all__ = (
     "MAX_SAFE_INTEGER",
     "MIN_SAFE_INTEGER",
     "CanonicalJSONError",
@@ -71,12 +89,16 @@ __all__ = [
     "canonicalize",
     "canonicalize_text",
     "budget_policy_digest",
+    "byte_digest",
+    "omission_identifier",
     "package_identity",
+    "payload_identifier",
     "request_digest",
     "selection_policy_digest",
     "sha256_bytes",
     "snapshot_fingerprint",
     "snapshot_fingerprint_surface",
+    "source_identifier",
     "RepositoryIdentityEvidence",
     "ProtectedReferenceIdentity",
     "RepositorySnapshot",
@@ -88,6 +110,13 @@ __all__ = [
     "SelectionOmissionPlan",
     "SelectionUnknownPlan",
     "SelectionPlan",
+    "ByteDigestRecord",
+    "ImmutableSourceIdentityRecord",
+    "FreshnessRecord",
+    "MaterializedSource",
+    "MaterializedPayload",
+    "IdentifiedOmission",
+    "MaterializationResult",
     "SNAPSHOT_MODE",
     "SnapshotError",
     "SnapshotEnvironmentError",
@@ -110,4 +139,9 @@ __all__ = [
     "parse_bounded_yaml_mapping",
     "select_yaml_fields",
     "select_markdown_heading",
-]
+    "MaterializationError",
+    "MaterializationContractError",
+    "MaterializationIdentityError",
+    "MaterializationSourceError",
+    "materialize_selection_plan",
+)
