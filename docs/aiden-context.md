@@ -20,6 +20,8 @@ Task-Scoped Agent Context Compilation Checkpoint B2a Complete
 
 The owner accepted EO-2026-013 Checkpoint B2a — Materialization and Content Identity as implementation-complete on 2026-07-19.
 
+The accepted B2a completion was committed as `50294c059c8044e4747a89e6cb11a03feec7398d`.
+
 The accepted implementation is the exact nine-path working-tree state verified from canonical baseline `937dc844ce894ec6237e1aaa3a31dfa514c3f419`.
 
 The accepted state contains:
@@ -168,6 +170,7 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 #### EO-2026-013 Checkpoint B2a — Materialization and Content Identity
 
+- Completion commit: `50294c059c8044e4747a89e6cb11a03feec7398d`.
 - Completion accepted by the owner on 2026-07-19.
 - Authorization baseline: `937dc844ce894ec6237e1aaa3a31dfa514c3f419`.
 - Exact accepted scope: nine working-tree paths.
