@@ -14,7 +14,10 @@ from atlas.platform.context_compilation.canonical_json import (
 from atlas.platform.context_compilation.digests import (
     budget_policy_digest,
     byte_digest,
+    control_envelope_bytes,
+    control_envelope_surface,
     omission_identifier,
+    package_digest,
     package_identity,
     payload_identifier,
     request_digest,
@@ -23,6 +26,11 @@ from atlas.platform.context_compilation.digests import (
     snapshot_fingerprint,
     snapshot_fingerprint_surface,
     source_identifier,
+    unknown_identifier,
+)
+from atlas.platform.context_compilation.compiler import (
+    CompilationContractError,
+    compile_context_package,
 )
 from atlas.platform.context_compilation.materialization import (
     MaterializationContractError,
@@ -34,6 +42,7 @@ from atlas.platform.context_compilation.materialization import (
 from atlas.platform.context_compilation.models import (
     ByteDigestRecord,
     CompilationRequest,
+    CompilationResult,
     FreshnessRecord,
     IdentifiedOmission,
     ImmutableBlob,
@@ -50,6 +59,9 @@ from atlas.platform.context_compilation.models import (
     SelectionPlan,
     SelectionUnknownPlan,
     SelectorOutput,
+)
+from atlas.platform.context_compilation.validation import (
+    validate_compiled_context_package,
 )
 from atlas.platform.context_compilation.selectors import (
     SelectorContractError,
@@ -90,7 +102,10 @@ __all__ = (
     "canonicalize_text",
     "budget_policy_digest",
     "byte_digest",
+    "control_envelope_bytes",
+    "control_envelope_surface",
     "omission_identifier",
+    "package_digest",
     "package_identity",
     "payload_identifier",
     "request_digest",
@@ -99,12 +114,14 @@ __all__ = (
     "snapshot_fingerprint",
     "snapshot_fingerprint_surface",
     "source_identifier",
+    "unknown_identifier",
     "RepositoryIdentityEvidence",
     "ProtectedReferenceIdentity",
     "RepositorySnapshot",
     "ImmutableBlob",
     "SelectorOutput",
     "CompilationRequest",
+    "CompilationResult",
     "LoadedPolicy",
     "SelectedSourcePlan",
     "SelectionOmissionPlan",
@@ -144,4 +161,7 @@ __all__ = (
     "MaterializationIdentityError",
     "MaterializationSourceError",
     "materialize_selection_plan",
+    "CompilationContractError",
+    "compile_context_package",
+    "validate_compiled_context_package",
 )

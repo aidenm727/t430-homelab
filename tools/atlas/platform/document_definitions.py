@@ -821,6 +821,54 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/aiden-platform-owner-intent-recalibration-2026-07-19.md": DocumentDefinition(
+        path="docs/reviews/aiden-platform-owner-intent-recalibration-2026-07-19.md",
+        purpose="Preserves the owner-authored and owner-accepted dated intent recalibration covering platform purpose, freedom and agency outcomes, human ownership, direct-use direction, cautions, and unresolved decisions.",
+        canonical=False,
+        generated=False,
+        capability="Platform Direction and Governance",
+        status="accepted",
+        tags=[
+            "owner-intent",
+            "platform-strategy",
+            "strategic-recalibration",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/vision.md",
+            "docs/roadmaps/platform-strategy.md",
+            "docs/current-mission.md",
+            "docs/reviews/aiden-platform-portfolio-recalibration-owner-decision-2026-07-20.md",
+        ],
+    ),
+
+    "docs/reviews/aiden-platform-portfolio-recalibration-owner-decision-2026-07-20.md": DocumentDefinition(
+        path="docs/reviews/aiden-platform-portfolio-recalibration-owner-decision-2026-07-20.md",
+        purpose="Preserves the owner-accepted portfolio recalibration, 90-day sequence, exact EO-2026-013 B2b authorization and hard kill switch, next-consumer condition, rejected claims, unresolved decisions, and explicit exclusions.",
+        canonical=False,
+        generated=False,
+        capability="Platform Direction and Governance",
+        status="accepted",
+        tags=[
+            "owner-decision",
+            "portfolio-review",
+            "strategic-recalibration",
+            "eo-2026-013",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/reviews/aiden-platform-owner-intent-recalibration-2026-07-19.md",
+            "docs/vision.md",
+            "docs/roadmaps/platform-strategy.md",
+            "docs/current-mission.md",
+            "docs/architecture/task-scoped-agent-context-compilation.md",
+            "docs/opportunities/reviewed/EO-2026-013-task-scoped-agent-context-compilation.yaml",
+            "docs/opportunities/captured/EO-2026-022-human-engineering-control-surface.yaml",
+        ],
+    ),
+
     "docs/reviews/ai-operating-baseline-2026-07-14.md": DocumentDefinition(
         path="docs/reviews/ai-operating-baseline-2026-07-14.md",
         purpose="Records the dated current AI access inventory, task profiles, provisional operating decisions, privacy boundaries, challenger policy, evaluation method, and reassessment triggers.",

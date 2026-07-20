@@ -105,71 +105,56 @@ Guardrail: start with workflow and information design, then automate stable part
 
 ## Sequencing
 
-### Stage 1 — Strategic Foundation
+### Accepted 90-Day Direction — July 20, 2026
 
-July through August 2026.
+The next 90 days prioritize release conversion, human operability, and repeated direct use while preserving the existing engineering foundation.
 
-Primary work:
+The accepted sequence is:
 
-- Platform Direction and Governance.
+1. Establish an engineering-system v1.0 that makes active work, authorization, implementation, verification, documentation, and synchronization easier to understand and execute.
+2. Ship a bounded useful school-learning capability before or shortly after the Fall 2026 semester begins.
+3. Begin one practical bounded career workflow.
+4. Deploy a web-accessible hub or control surface that presents repository-owned state without becoming a second mutable source of truth.
+5. Reduce unnecessary ceremony through tooling and automation driven by observed friction.
 
-Expected result:
+Exact product, architecture, Engineering Opportunity, lifecycle, and implementation boundaries still require their own repository review and owner authorization.
 
-- Canonical Vision.
-- Layered capability architecture.
-- Strategy roadmap.
-- Recalibrated mission.
-- Defined next checkpoint.
+### Outcome Gates
 
-### Stage 2 — Consolidation and Operating Rules
+#### Engineering-System v1.0
 
-September through October 2026.
+- Active work, authorization state, implementation evidence, verification, and next actions are understandable without reconstructing long conversations.
+- At least one bounded capability moves from authorized implementation through independent review and owner acceptance using the system.
+- Documentation and generated context synchronize without weakening human approval or deterministic validation.
+- Further foundation work names a concrete near-term consumer and demonstrates a short path to use.
 
-Parallel work:
+EO-2026-013 Checkpoint B2b is the bounded minimum functional release gate. B2c does not continue automatically and must earn priority through real consumption.
 
-- Engineering Platform Consolidation.
-- AI Operating Model and Personal AI Architecture.
+#### School-Learning Capability
 
-Expected result:
+- A bounded workflow supports actual course material, grounded questions or explanations, concept review, exam preparation, or practice.
+- The owner uses it repeatedly for real Fall 2026 school work.
+- It preserves an understandable learning signal such as weak topics, retained progress, or prioritized review.
+- The first release may use manual uploads; perfect ingestion or a complete knowledge graph is not a gate.
 
-- Clear Atlas boundary.
-- Reconciled repository.
-- AI governance and provider strategy.
-- Personal AI design.
-- Decision on the preserved Distinctness work.
+#### Career Workflow
 
-### Stage 3 — Knowledge and Economic Foundations
+- One recurring career task, such as opportunity discovery, comparison, application support, skill planning, or interview preparation, is completed with actionable output.
+- The boundary is useful without attempting to automate the whole career domain.
 
-November 2026 through January 2027.
+#### Hub or Control Surface
 
-Parallel work:
+- One deployed web origin exposes active mission, priorities, dependencies, completed releases, blockers, approvals, evidence, and next actions.
+- Displayed state is derived from repository-owned sources and does not become competing canonical state.
+- The interface improves human operability before broader framework or module expansion.
 
-- Knowledge and Learning Foundation.
-- Career and Economic Agency.
+#### Ceremony Reduction
 
-Expected result:
+- Repeated manual steps are reduced based on observed workflow friction.
+- Evidence, review depth, and approval remain proportionate to risk.
+- Maintenance burden remains lower than the agency and usefulness created.
 
-- Practical knowledge workflow.
-- Research and learning structures.
-- Skill-gap process.
-- Public project strategy.
-- Business-experiment process.
-- Better financial organization.
-
-### Stage 4 — Prove Cross-Domain Value
-
-February through July 2027.
-
-Primary work:
-
-- Personal Capability Pilots.
-
-Continuing work:
-
-- Career projects.
-- AI evaluation.
-- Knowledge refinement.
-- Bounded engineering improvements driven by pilot needs.
+After B2b acceptance, a bounded school-learning capability and/or EO-2026-022 read-only control-surface pilot is the next consumer direction. Neither direction is implemented or automatically authorized by this roadmap.
 
 ---
 

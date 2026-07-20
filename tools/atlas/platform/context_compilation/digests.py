@@ -111,6 +111,54 @@ def package_identity(
     )
     return digest, f"tcp-{digest.value[:24]}"
 
+
+def package_digest(package: Mapping[str, Any]) -> DigestRecord:
+    """Digest the complete package after removing only ``package.digest``."""
+
+    package_record = package.get("package")
+    if not isinstance(package_record, Mapping):
+        raise TypeError("package.package must be a mapping")
+    surface = dict(package)
+    surface["package"] = {
+        key: value for key, value in package_record.items() if key != "digest"
+    }
+    return digest_canonical_json(surface)
+
+
+def control_envelope_surface(package: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the exact first-slice budget control-envelope surface."""
+
+    package_record = package.get("package")
+    payloads = package.get("payloads")
+    budget = package.get("budget")
+    if not isinstance(package_record, Mapping):
+        raise TypeError("package.package must be a mapping")
+    if not isinstance(payloads, (list, tuple)):
+        raise TypeError("package.payloads must be a sequence")
+    if not isinstance(budget, Mapping):
+        raise TypeError("package.budget must be a mapping")
+
+    surface = dict(package)
+    surface["package"] = {
+        key: value for key, value in package_record.items() if key != "digest"
+    }
+    surface["payloads"] = [
+        {key: value for key, value in payload.items() if key != "content"}
+        if isinstance(payload, Mapping)
+        else payload
+        for payload in payloads
+    ]
+    surface["budget"] = {
+        key: value for key, value in budget.items() if key != "measurement"
+    }
+    return surface
+
+
+def control_envelope_bytes(package: Mapping[str, Any]) -> int:
+    """Measure the canonical UTF-8 bytes of the control-envelope surface."""
+
+    return len(canonicalize(control_envelope_surface(package)))
+
 def _require_digest_text(value: str, length: int, field_name: str) -> str:
     if (
         not isinstance(value, str)
@@ -185,3 +233,30 @@ def omission_identifier(
         "individual": individual,
     }
     return f"omit-{sha256_bytes(canonicalize(surface))[:16]}"
+
+
+def unknown_identifier(
+    field: str,
+    attempted_resolution: str,
+    owner: str,
+    consequence: str,
+    blocking: bool,
+) -> str:
+    """Derive an ID from the complete unknown record surface retained in v1."""
+
+    if not isinstance(blocking, bool):
+        raise TypeError("unknown blocking state must be a boolean")
+    surface = {
+        "field": _require_identity_text(field, "unknown field"),
+        "attempted_resolution": _require_identity_text(
+            attempted_resolution,
+            "unknown attempted resolution",
+        ),
+        "owner": _require_identity_text(owner, "unknown owner"),
+        "consequence": _require_identity_text(
+            consequence,
+            "unknown consequence",
+        ),
+        "blocking": blocking,
+    }
+    return f"unknown-{sha256_bytes(canonicalize(surface))[:16]}"

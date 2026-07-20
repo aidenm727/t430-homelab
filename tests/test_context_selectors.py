@@ -830,12 +830,13 @@ class SelectorCapabilityBoundaryTests(unittest.TestCase):
         )
         self.assertEqual(result.stdout, b"")
 
-    def test_b2_paths_remain_absent(self) -> None:
-        forbidden = (
-            "tools/atlas/platform/context_compilation/compiler.py",
-            "tools/atlas/platform/context_compilation/explanation.py",
+    def test_b2c_explanation_path_remains_absent(self) -> None:
+        self.assertFalse(
+            (
+                ROOT
+                / "tools/atlas/platform/context_compilation/explanation.py"
+            ).exists()
         )
-        self.assertTrue(all(not (ROOT / path).exists() for path in forbidden))
 
     def test_existing_deep_freeze_behavior_remains_intact(self) -> None:
         frozen = deep_freeze({"nested": ["value"]})

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Aiden Platform is a long-term personal capability platform.
+The Aiden Platform is a long-term personal capability platform for increasing the owner's freedom and agency.
 
 Its purpose is to increase the owner's ability to understand, learn, build, create, organize, decide, operate, and pursue meaningful goals through intentionally engineered systems.
 
@@ -44,6 +44,8 @@ The number of services, models, automations, documents, or interfaces is not the
 Every meaningful platform improvement should increase the owner's ability to understand or act.
 
 The platform should amplify judgment rather than replace it.
+
+Engineering rigor should create dependable leverage and direct usefulness. Procedural complexity is not an outcome in itself.
 
 ### Capability Before Tools
 
@@ -132,6 +134,8 @@ The Aiden Platform is not intended to become:
 - A permanent archive of every message, bookmark, or observation.
 - A substitute for doctors, financial professionals, teachers, collaborators, or human relationships.
 - A bureaucracy that consumes more agency than it creates.
+- Architecture pursued for its own sake without a short path to use.
+- Process rigor that repeatedly delays direct benefit.
 - A science-fiction imitation built before useful capabilities exist.
 
 ---

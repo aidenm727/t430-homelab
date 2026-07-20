@@ -117,6 +117,8 @@ Repository Objects and engineering tools support these layers.
 
 ## Portfolio Reviews
 
+- `docs/reviews/aiden-platform-owner-intent-recalibration-2026-07-19.md` — Owner-authored and owner-accepted non-canonical dated evidence preserving durable platform purpose, desired agency outcomes, human ownership, near-term direction, cautions, and unresolved decisions.
+- `docs/reviews/aiden-platform-portfolio-recalibration-owner-decision-2026-07-20.md` — Owner-accepted non-canonical decision record preserving the bounded recalibration promotion, accepted 90-day sequence, EO-2026-013 B2b authorization and hard kill switch, next-consumer condition, rejected claims, and explicit exclusions.
 - `docs/reviews/aiden-platform-operating-model-overlap-review-2026-07-17.md` — Accepted non-canonical portfolio evidence mapping July 17 operating-model concepts to existing Engineering Opportunities, identifying one distinct Human Engineering Control Surface candidate, and preserving all implementation and mission boundaries.
 - `docs/reviews/aiden-platform-operating-model-owner-decision-2026-07-17.md` — Non-canonical owner decision evidence preserving the accepted hybrid task-state model, minimal console scope, four approval gates, draft-pull-request authority ceiling, pilot criteria, and open naming question.
 - `docs/reviews/aiden-platform-operating-model-validation-study-2026-07-17.md` — Non-canonical external design-validation evidence supporting a Git-native operating model, durable task state, human approval, explicit execution evidence, and a narrowed first control-surface checkpoint.

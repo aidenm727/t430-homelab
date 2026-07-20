@@ -2,19 +2,32 @@
 
 from __future__ import annotations
 
+import json
 import re
 from collections.abc import Mapping
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Iterable
 
 from atlas.platform.context_compilation.canonical_json import (
     MAX_SAFE_INTEGER,
     MIN_SAFE_INTEGER,
+    canonicalize,
 )
 from atlas.platform.context_compilation.digests import (
     CANONICALIZATION,
     budget_policy_digest,
+    control_envelope_bytes,
+    omission_identifier,
+    package_digest,
+    package_identity,
+    payload_identifier,
+    request_digest,
     selection_policy_digest,
+    sha256_bytes,
+    snapshot_fingerprint,
+    source_identifier,
+    unknown_identifier,
 )
 from atlas.platform.context_compilation.models import ValidationIssue, ValidationResult
 
@@ -28,6 +41,20 @@ SELECTION_POLICY_ID = "example.read-only-architecture-assessment"
 BUDGET_POLICY_ID = "example.utf8-byte-budget"
 SELECTION_POLICY_VERSION = "1.0.1"
 BUDGET_POLICY_VERSION = "1.0.0"
+SELECTION_POLICY_DIGEST_VALUE = (
+    "69577722ea4eb6f479424f3bf324866cc2992d5df82b3224e5f20571ef081938"
+)
+BUDGET_POLICY_DIGEST_VALUE = (
+    "717dabd3850eaea04caf2439ca77b859a3e0343ec52bc336b2e01ee42727db05"
+)
+BUDGET_CAPACITY_OMISSION_RULE = "B2b-budget-capacity"
+BUDGET_CAPACITY_OMISSION_REASON = (
+    "Optional source and payload pair exceeds remaining UTF-8 byte capacity."
+)
+BUDGET_CAPACITY_RECONSIDERATION = (
+    "Increase the byte budget or reduce earlier higher-priority package content "
+    "and recompile."
+)
 SOURCE_BUDGET_TIERS = (
     "mandatory_authoritative_sources",
     "required_supporting_sources",
@@ -46,6 +73,339 @@ RFC3339_PATTERN = re.compile(
 LOWER_HEX_64 = re.compile(r"^[0-9a-f]{64}$")
 GIT_SHA1 = re.compile(r"^[0-9a-f]{40}$")
 
+CONSUMER_MUST = (
+    "verify_schema_compatibility",
+    (
+        "verify_payload_digests_and_treat_whole_source_digests_as_claims_pending_"
+        "immutable_source_revalidation"
+    ),
+    "verify_repository_revision",
+    "preserve_authority_and_provenance",
+    "treat_constraints_as_copied_declarations_not_package_created_permissions",
+    "refuse_to_infer_approval_from_missing_information",
+    "stop_on_blocking_conflicts_or_unknowns",
+    "request_recompilation_or_owner_resolution_for_stale_conflicting_insufficient_or_oversized_context",
+    "revalidate_live_state_when_required",
+    "distinguish_source_content_from_consumer_inference",
+    "preserve_provider_independence",
+)
+CONSUMER_MUST_NOT = (
+    "replace_authoritative_sources",
+    "broaden_goal_scope_permissions_writable_paths_approval_or_autonomy",
+    "silently_discard_mandatory_context",
+    "silently_resolve_consequential_conflicts",
+    "promote_generated_content_or_inference_to_canonical_status",
+    "treat_package_as_authorization_execution_evidence_or_proof_of_completion",
+    "mutate_repository_because_an_item_is_present_in_context",
+)
+CONSUMER_STOP_CONDITIONS = (
+    "package_is_non_consumable",
+    "integrity_verification_fails",
+    "repository_revision_does_not_match",
+    "blocking_conflict_or_unknown_exists",
+    "required_live_state_cannot_be_revalidated",
+)
+IMMUTABLE_SOURCE_LIVE_REVALIDATION_REQUIREMENT = (
+    "verify_immutable_git_blob_identity_and_whole_source_content_digest_before_"
+    "relying_on_whole_source_authenticity"
+)
+EXECUTABLE_VALIDATION_CHECKS = (
+    "supported_schema_policy_and_consumer_contract",
+    "request_snapshot_and_package_identity",
+    "fixed_source_identity_authority_and_payload_integrity_linkage_and_ordering",
+    "budget_measurement_allocation_and_no_truncation",
+    "package_integrity_and_classification",
+    "consumability_state_and_reasons",
+)
+EXECUTABLE_VALIDATION_LIMITATIONS = (
+    "Deterministic validation cannot establish absence of every semantic conflict.",
+    (
+        "Excerpt-only package validation independently verifies payload bytes and "
+        "payload digests; whole-source content digests are compiler-carried claims "
+        "that require immutable Git blob revalidation outside the package."
+    ),
+)
+
+
+@dataclass(frozen=True)
+class _FirstSliceRuleContract:
+    rule_id: str
+    rule_type: str
+    priority_tier: int
+    budget_tier: str
+    source_kind: str
+    sensitivity: str
+    path: str
+    structured_object_identity: str | None
+    selector_type: str
+    selector_fields: tuple[str, ...]
+    heading_text: str | None
+    occurrence: int | None
+    selector_descriptor: str
+    authority_class: str
+    canonical_owner: str
+    selection_reason: str
+    trigger: str
+    selection_chain: tuple[str, ...]
+    media_type: str
+    freshness_status: str
+    freshness_basis: str
+    freshness_rule: str
+
+    @property
+    def normalized_identity(self) -> str:
+        return self.structured_object_identity or self.path
+
+
+_PINNED_CANONICAL_FRESHNESS_BASIS = (
+    "The registered Engineering Opportunity object is read from the exact "
+    "requested snapshot, its source path, structured identity, and field-contract "
+    "owner match, and the accepted selected lifecycle value is reviewed."
+)
+_MISSION_FRESHNESS_BASIS = (
+    "The exact Current Mission source is established at the pinned snapshot, but "
+    "the compilation inputs contain no independent synchronization finding proving "
+    "semantic alignment."
+)
+_CANONICAL_DOCUMENT_FRESHNESS_BASIS = (
+    "The selected canonical document is read from the exact requested snapshot, "
+    "its canonical owner matches its normalized path, and no blocking B1b2 record "
+    "exists for the boundary."
+)
+
+# This tuple is the single immutable, digest-bound first-slice rule contract used
+# by both the public compiler boundary and offline executable validation. It is a
+# code projection of selection policy 1.0.1 plus the accepted B1b2/B2a trace,
+# authority, selector, transformation, media, and freshness contracts.
+FIRST_SLICE_RULE_CONTRACT = (
+    _FirstSliceRuleContract(
+        rule_id="S010-explicit-opportunity-anchor",
+        rule_type="explicit_anchor",
+        priority_tier=10,
+        budget_tier="mandatory_authoritative_sources",
+        source_kind="repository_object",
+        sensitivity="public",
+        path=(
+            "docs/opportunities/reviewed/"
+            "EO-2026-013-task-scoped-agent-context-compilation.yaml"
+        ),
+        structured_object_identity="engineering-opportunity:EO-2026-013",
+        selector_type="yaml_fields",
+        selector_fields=("id", "title", "status", "summary"),
+        heading_text=None,
+        occurrence=None,
+        selector_descriptor="yaml-fields:/id,/title,/status,/summary",
+        authority_class="structured_repository_object",
+        canonical_owner="docs/architecture/engineering-opportunity-object.md",
+        selection_reason="explicit_opportunity_reference",
+        trigger="task.opportunity_references[0]",
+        selection_chain=(
+            "task.opportunity_references[0]",
+            "S010-explicit-opportunity-anchor",
+        ),
+        media_type="application/json",
+        freshness_status="current_at_snapshot",
+        freshness_basis=_PINNED_CANONICAL_FRESHNESS_BASIS,
+        freshness_rule="F010-pinned-canonical-source",
+    ),
+    _FirstSliceRuleContract(
+        rule_id="S020-current-mission-milestone",
+        rule_type="explicit_anchor",
+        priority_tier=10,
+        budget_tier="mandatory_authoritative_sources",
+        source_kind="document",
+        sensitivity="public",
+        path="docs/current-mission.md",
+        structured_object_identity=None,
+        selector_type="heading",
+        selector_fields=(),
+        heading_text="## Initial Milestone",
+        occurrence=1,
+        selector_descriptor="heading:## Initial Milestone",
+        authority_class="canonical_document",
+        canonical_owner="docs/current-mission.md",
+        selection_reason="explicit_mission_reference",
+        trigger="task.mission_references[0]",
+        selection_chain=(
+            "task.mission_references[0]",
+            "S020-current-mission-milestone",
+        ),
+        media_type="text/markdown",
+        freshness_status="unknown",
+        freshness_basis=_MISSION_FRESHNESS_BASIS,
+        freshness_rule="F020-current-mission-synchronization-unverified",
+    ),
+    _FirstSliceRuleContract(
+        rule_id="S030-canonical-repository-authority",
+        rule_type="allowlisted_relationship",
+        priority_tier=20,
+        budget_tier="required_supporting_sources",
+        source_kind="document",
+        sensitivity="public",
+        path="docs/architecture/repository.md",
+        structured_object_identity=None,
+        selector_type="heading",
+        selector_fields=(),
+        heading_text="## Source of Truth Hierarchy",
+        occurrence=1,
+        selector_descriptor="heading:## Source of Truth Hierarchy",
+        authority_class="canonical_document",
+        canonical_owner="docs/architecture/repository.md",
+        selection_reason="allowlisted_related_document",
+        trigger="task.opportunity_references[0]",
+        selection_chain=(
+            "task.opportunity_references[0]",
+            "related_documents:outbound",
+            "docs/architecture/repository.md",
+            "S030-canonical-repository-authority",
+        ),
+        media_type="text/markdown",
+        freshness_status="current_at_snapshot",
+        freshness_basis=_CANONICAL_DOCUMENT_FRESHNESS_BASIS,
+        freshness_rule="F010-pinned-canonical-source",
+    ),
+    _FirstSliceRuleContract(
+        rule_id="S040-mandatory-knowledge-authority",
+        rule_type="task_profile",
+        priority_tier=30,
+        budget_tier="required_supporting_sources",
+        source_kind="document",
+        sensitivity="public",
+        path="docs/architecture/knowledge-authority.md",
+        structured_object_identity=None,
+        selector_type="heading",
+        selector_fields=(),
+        heading_text="### Generated Context",
+        occurrence=1,
+        selector_descriptor="heading:### Generated Context",
+        authority_class="canonical_document",
+        canonical_owner="docs/architecture/knowledge-authority.md",
+        selection_reason="task_profile_required_source",
+        trigger="task.type=architecture_assessment",
+        selection_chain=(
+            "task.type=architecture_assessment",
+            "task_profile=eo-architecture-assessment",
+            "S040-mandatory-knowledge-authority",
+        ),
+        media_type="text/markdown",
+        freshness_status="current_at_snapshot",
+        freshness_basis=_CANONICAL_DOCUMENT_FRESHNESS_BASIS,
+        freshness_rule="F010-pinned-canonical-source",
+    ),
+    _FirstSliceRuleContract(
+        rule_id="S050-mandatory-collaboration",
+        rule_type="allowlisted_relationship",
+        priority_tier=30,
+        budget_tier="required_supporting_sources",
+        source_kind="document",
+        sensitivity="public",
+        path="docs/standards/engineering-collaboration.md",
+        structured_object_identity=None,
+        selector_type="heading",
+        selector_fields=(),
+        heading_text="## Responsibilities",
+        occurrence=1,
+        selector_descriptor="heading:## Responsibilities",
+        authority_class="canonical_document",
+        canonical_owner="docs/standards/engineering-collaboration.md",
+        selection_reason="allowlisted_related_document",
+        trigger="task.opportunity_references[0]",
+        selection_chain=(
+            "task.opportunity_references[0]",
+            "related_documents:outbound",
+            "docs/standards/engineering-collaboration.md",
+            "S050-mandatory-collaboration",
+        ),
+        media_type="text/markdown",
+        freshness_status="current_at_snapshot",
+        freshness_basis=_CANONICAL_DOCUMENT_FRESHNESS_BASIS,
+        freshness_rule="F010-pinned-canonical-source",
+    ),
+)
+
+
+def fixed_first_slice_rule(rule_id: Any) -> _FirstSliceRuleContract | None:
+    """Return the immutable fixed-rule contract for one accepted rule ID."""
+
+    for rule in FIRST_SLICE_RULE_CONTRACT:
+        if rule.rule_id == rule_id:
+            return rule
+    return None
+
+
+def fixed_first_slice_selector(rule: _FirstSliceRuleContract) -> dict[str, Any]:
+    """Return a fresh policy selector projection for one fixed rule."""
+
+    if rule.selector_type == "yaml_fields":
+        return {"type": "yaml_fields", "fields": list(rule.selector_fields)}
+    return {
+        "type": "heading",
+        "heading_text": rule.heading_text,
+        "occurrence": rule.occurrence,
+    }
+
+
+def fixed_first_slice_transformation_matches(
+    rule: _FirstSliceRuleContract,
+    transformation: Any,
+    payload_content: bytes,
+) -> bool:
+    """Check the exact selector transformation shape available in-package."""
+
+    if not isinstance(transformation, Mapping):
+        return False
+    if rule.selector_type == "yaml_fields":
+        return _mutable_json_value(transformation) == {
+            "type": "yaml_field_selection",
+            "selected_fields": ["/id", "/title", "/status", "/summary"],
+            "output": "rfc8785-jcs",
+            "line_endings": "not_applicable",
+        }
+
+    line_endings = transformation.get("source_line_endings")
+    if line_endings not in ("lf", "crlf", "none"):
+        return False
+    expected = {
+        "type": "heading_bounded_excerpt",
+        "start_heading": rule.heading_text,
+        "occurrence": 1,
+        "end_rule": "before_next_atx_heading_of_equal_or_greater_level_or_eof",
+        "source_line_endings": line_endings,
+        "content_change": "none",
+    }
+    if _mutable_json_value(transformation) != expected:
+        return False
+    if line_endings == "crlf":
+        return b"\r\n" in payload_content and b"\n" not in payload_content.replace(
+            b"\r\n", b""
+        )
+    if line_endings == "lf":
+        return b"\r" not in payload_content and b"\n" in payload_content
+    return b"\r" not in payload_content and b"\n" not in payload_content
+
+
+def fixed_first_slice_freshness(
+    rule: _FirstSliceRuleContract,
+    as_of: str,
+) -> dict[str, str]:
+    """Return the exact first-slice freshness projection for one fixed rule."""
+
+    return {
+        "status": rule.freshness_status,
+        "basis": rule.freshness_basis,
+        "rule": rule.freshness_rule,
+        "as_of": as_of,
+    }
+
+
+def budget_capacity_consequence(payload_utf8_bytes: int) -> str:
+    """Return the stable whole-pair capacity consequence for one byte count."""
+
+    return (
+        f"Excluded the complete optional {payload_utf8_bytes}-byte payload; "
+        "no content was truncated or summarized."
+    )
+
 
 class ContractValidationError(ValueError):
     """Raised when a bounded v1 contract is not valid."""
@@ -56,6 +416,35 @@ class ContractValidationError(ValueError):
             f"{issue.path}: {issue.message}" for issue in result.issues
         )
         super().__init__(detail or "contract validation failed")
+
+
+def consumer_contract_value() -> dict[str, Any]:
+    """Return the fixed first-slice consumer contract as a fresh value."""
+
+    return {
+        "version": CONSUMER_CONTRACT_VERSION,
+        "must": list(CONSUMER_MUST),
+        "must_not": list(CONSUMER_MUST_NOT),
+        "stop_conditions": list(CONSUMER_STOP_CONDITIONS),
+        "live_revalidation_required": [
+            IMMUTABLE_SOURCE_LIVE_REVALIDATION_REQUIREMENT
+        ],
+    }
+
+
+def executable_validation_value() -> dict[str, Any]:
+    """Return the fixed executable-validation record carried by B2b packages."""
+
+    return {
+        "status": "passed",
+        "executable_validation_performed": True,
+        "checks": [
+            {"invariant": invariant, "status": "passed"}
+            for invariant in EXECUTABLE_VALIDATION_CHECKS
+        ],
+        "errors": [],
+        "limitations": list(EXECUTABLE_VALIDATION_LIMITATIONS),
+    }
 
 
 def _issue(issues: list[ValidationIssue], code: str, path: str, message: str) -> None:
@@ -771,7 +1160,7 @@ def _unknown_record(value: Any, path: str, issues: list[ValidationIssue]) -> Non
     if not _fixed_object(value, path, fields, fields, issues):
         return
     for field in ("id", "field", "attempted_resolution", "owner", "consequence"):
-        _string(value.get(field), f"{path}.{field}", issues)
+        _string(value.get(field), f"{path}.{field}", issues, non_empty=True)
     _boolean(value.get("blocking"), f"{path}.blocking", issues)
 
 
@@ -782,19 +1171,38 @@ def _omission_record(value: Any, path: str, issues: list[ValidationIssue]) -> No
     )
     if not _fixed_object(value, path, fields, fields, issues):
         return
-    _string(value.get("id"), f"{path}.id", issues)
-    if value.get("record_type") not in ("individual", "policy_class"):
+    _string(value.get("id"), f"{path}.id", issues, non_empty=True)
+    record_type = value.get("record_type")
+    if record_type not in ("individual", "policy_class"):
         _issue(issues, "omission_type", f"{path}.record_type", "is unsupported")
     for field in ("boundary", "rule", "reason", "consequence", "reconsideration_condition"):
-        _string(value.get(field), f"{path}.{field}", issues)
+        _string(value.get(field), f"{path}.{field}", issues, non_empty=True)
     individual = value.get("individual")
-    if individual is not None:
+    if record_type == "individual":
+        if not isinstance(individual, Mapping) or not individual:
+            _issue(
+                issues,
+                "omission_individual_identity",
+                f"{path}.individual",
+                "must be a nonempty object for an individual omission",
+            )
+        else:
+            _normative_value(individual, f"{path}.individual", issues)
+    elif record_type == "policy_class":
+        if individual is not None:
+            _issue(
+                issues,
+                "omission_individual_identity",
+                f"{path}.individual",
+                "must be null for a policy-class omission",
+            )
+            if isinstance(individual, Mapping):
+                _normative_value(individual, f"{path}.individual", issues)
+    elif individual is not None:
         if not isinstance(individual, Mapping):
             _issue(issues, "type", f"{path}.individual", "must be an object or null")
         else:
             _normative_value(individual, f"{path}.individual", issues)
-    if value.get("record_type") == "policy_class" and individual is not None:
-        _issue(issues, "omission_individual", f"{path}.individual", "must be null for a policy class")
     _boolean(value.get("blocking"), f"{path}.blocking", issues)
 
 
@@ -970,6 +1378,856 @@ def validate_context_package(value: Any) -> ValidationResult:
             _issue(issues, "unsupported_version", "$.consumer_contract.version", "unsupported consumer contract")
         for field in ("must", "must_not", "stop_conditions", "live_revalidation_required"):
             _string_list(contract.get(field), f"$.consumer_contract.{field}", issues)
+    return ValidationResult(tuple(issues))
+
+
+def _mutable_json_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {key: _mutable_json_value(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_mutable_json_value(item) for item in value]
+    return value
+
+
+def _normalized_repository_path(value: Any) -> bool:
+    if (
+        not isinstance(value, str)
+        or not value
+        or value.startswith("/")
+        or "\\" in value
+        or "\x00" in value
+    ):
+        return False
+    return all(part not in ("", ".", "..") for part in value.split("/"))
+
+
+def _expected_policy_reference(
+    policy_id: str,
+    version: str,
+    digest_value: str,
+) -> dict[str, Any]:
+    return {
+        "id": policy_id,
+        "version": version,
+        "digest": {
+            "algorithm": "sha256",
+            "canonicalization": CANONICALIZATION,
+            "value": digest_value,
+        },
+    }
+
+
+def _payload_matches_fixed_selector(
+    rule: _FirstSliceRuleContract,
+    content: str,
+) -> bool:
+    payload_bytes = content.encode("utf-8")
+    if rule.selector_type == "yaml_fields":
+        try:
+            parsed = json.loads(content)
+        except (json.JSONDecodeError, TypeError, ValueError):
+            return False
+        return (
+            isinstance(parsed, dict)
+            and set(parsed) == set(rule.selector_fields)
+            and parsed.get("id") == "EO-2026-013"
+            and parsed.get("status") == "reviewed"
+            and canonicalize(parsed) == payload_bytes
+        )
+
+    assert rule.heading_text is not None
+    return (
+        content == rule.heading_text
+        or content.startswith(f"{rule.heading_text}\n")
+        or content.startswith(f"{rule.heading_text}\r\n")
+    )
+
+
+def _capacity_issue(
+    issues: list[ValidationIssue],
+    code: str,
+    path: str,
+    message: str,
+) -> None:
+    _issue(issues, code, path, message)
+
+
+def _validate_capacity_omission(
+    omission: Mapping[str, Any],
+    path: str,
+    repository: Mapping[str, Any],
+    included_source_ids: set[str],
+    included_payload_ids: set[str],
+    issues: list[ValidationIssue],
+) -> None:
+    if omission.get("record_type") != "individual":
+        _capacity_issue(
+            issues,
+            "budget_omission_record_type",
+            f"{path}.record_type",
+            "must be individual for a B2b capacity omission",
+        )
+    if omission.get("blocking") is not False:
+        _capacity_issue(
+            issues,
+            "budget_omission_blocking",
+            f"{path}.blocking",
+            "must be false for a B2b capacity omission",
+        )
+    if omission.get("reason") != BUDGET_CAPACITY_OMISSION_REASON:
+        _capacity_issue(
+            issues,
+            "budget_omission_reason",
+            f"{path}.reason",
+            "must match the stable whole-pair capacity reason",
+        )
+    if omission.get("reconsideration_condition") != BUDGET_CAPACITY_RECONSIDERATION:
+        _capacity_issue(
+            issues,
+            "budget_omission_reconsideration",
+            f"{path}.reconsideration_condition",
+            "must match the stable capacity reconsideration condition",
+        )
+
+    individual = omission.get("individual")
+    if not isinstance(individual, Mapping):
+        _capacity_issue(
+            issues,
+            "budget_omission_individual",
+            f"{path}.individual",
+            "must be the complete deterministic optional-pair identity",
+        )
+        return
+    individual_fields = {
+        "source_id",
+        "payload_id",
+        "path",
+        "structured_object_identity",
+        "selector",
+        "selection_rule",
+        "budget_tier",
+        "commit",
+        "immutable_source_identity",
+        "source_content_digest",
+        "payload_utf8_bytes",
+        "payload_digest",
+    }
+    if set(individual) != individual_fields:
+        _capacity_issue(
+            issues,
+            "budget_omission_individual_surface",
+            f"{path}.individual",
+            "must contain exactly the fixed optional-pair identity fields",
+        )
+
+    selection_rule = individual.get("selection_rule")
+    rule = fixed_first_slice_rule(selection_rule)
+    if rule is None:
+        _capacity_issue(
+            issues,
+            "budget_omission_rule_identity",
+            f"{path}.individual.selection_rule",
+            "must identify an accepted fixed first-slice rule",
+        )
+    else:
+        expected_rule_fields = {
+            "path": rule.path,
+            "structured_object_identity": rule.structured_object_identity,
+            "selector": rule.selector_descriptor,
+            "budget_tier": rule.budget_tier,
+        }
+        for field, expected in expected_rule_fields.items():
+            if individual.get(field) != expected:
+                _capacity_issue(
+                    issues,
+                    "budget_omission_rule_projection",
+                    f"{path}.individual.{field}",
+                    "does not match the fixed omitted-rule contract",
+                )
+        if omission.get("boundary") != rule.normalized_identity:
+            _capacity_issue(
+                issues,
+                "budget_omission_boundary",
+                f"{path}.boundary",
+                "must equal the fixed omitted-rule normalized identity",
+            )
+        if rule.budget_tier != "optional_evidence":
+            _capacity_issue(
+                issues,
+                "budget_omission_rule_not_optional",
+                f"{path}.individual.selection_rule",
+                "the fixed first-slice contract does not make this rule optional",
+            )
+
+    commit = individual.get("commit")
+    if commit != repository.get("commit"):
+        _capacity_issue(
+            issues,
+            "budget_omission_commit",
+            f"{path}.individual.commit",
+            "must match the package repository commit",
+        )
+    immutable = individual.get("immutable_source_identity")
+    immutable_value = None
+    if not isinstance(immutable, Mapping) or set(immutable) != {
+        "type",
+        "object_format",
+        "value",
+    }:
+        _capacity_issue(
+            issues,
+            "budget_omission_immutable_identity",
+            f"{path}.individual.immutable_source_identity",
+            "must be the exact immutable Git blob identity shape",
+        )
+    else:
+        immutable_value = immutable.get("value")
+        if (
+            immutable.get("type") != "git_blob"
+            or immutable.get("object_format") != repository.get("object_format")
+            or not isinstance(immutable_value, str)
+            or GIT_SHA1.fullmatch(immutable_value) is None
+        ):
+            _capacity_issue(
+                issues,
+                "budget_omission_immutable_identity",
+                f"{path}.individual.immutable_source_identity",
+                "must identify one SHA-1 Git blob in the package object format",
+            )
+
+    source_digest = individual.get("source_content_digest")
+    if (
+        not isinstance(source_digest, Mapping)
+        or set(source_digest) != {"algorithm", "value"}
+        or source_digest.get("algorithm") != "sha256"
+        or not isinstance(source_digest.get("value"), str)
+        or LOWER_HEX_64.fullmatch(source_digest["value"]) is None
+    ):
+        _capacity_issue(
+            issues,
+            "budget_omission_source_digest",
+            f"{path}.individual.source_content_digest",
+            "must carry one SHA-256 whole-source claim",
+        )
+
+    source_id = individual.get("source_id")
+    expected_source_id = None
+    if rule is not None and isinstance(commit, str) and isinstance(immutable_value, str):
+        try:
+            expected_source_id = source_identifier(
+                rule.path,
+                commit,
+                immutable_value,
+                rule.selector_descriptor,
+            )
+        except (TypeError, ValueError):
+            expected_source_id = None
+    if source_id != expected_source_id:
+        _capacity_issue(
+            issues,
+            "budget_omission_source_id",
+            f"{path}.individual.source_id",
+            "does not match the omitted immutable source identity",
+        )
+
+    payload_digest = individual.get("payload_digest")
+    payload_digest_value = None
+    if (
+        not isinstance(payload_digest, Mapping)
+        or set(payload_digest) != {"algorithm", "value"}
+        or payload_digest.get("algorithm") != "sha256"
+        or not isinstance(payload_digest.get("value"), str)
+        or LOWER_HEX_64.fullmatch(payload_digest["value"]) is None
+    ):
+        _capacity_issue(
+            issues,
+            "budget_omission_payload_digest",
+            f"{path}.individual.payload_digest",
+            "must carry one SHA-256 omitted-payload digest",
+        )
+    else:
+        payload_digest_value = payload_digest["value"]
+    expected_payload_id = None
+    if isinstance(payload_digest_value, str):
+        try:
+            expected_payload_id = payload_identifier(payload_digest_value)
+        except (TypeError, ValueError):
+            expected_payload_id = None
+    payload_id = individual.get("payload_id")
+    if payload_id != expected_payload_id:
+        _capacity_issue(
+            issues,
+            "budget_omission_payload_id",
+            f"{path}.individual.payload_id",
+            "does not match the omitted payload digest",
+        )
+
+    payload_bytes = individual.get("payload_utf8_bytes")
+    if (
+        isinstance(payload_bytes, bool)
+        or not isinstance(payload_bytes, int)
+        or not 0 <= payload_bytes <= MAX_SAFE_INTEGER
+    ):
+        _capacity_issue(
+            issues,
+            "budget_omission_payload_size",
+            f"{path}.individual.payload_utf8_bytes",
+            "must be a nonnegative safe UTF-8 byte count",
+        )
+    elif omission.get("consequence") != budget_capacity_consequence(payload_bytes):
+        _capacity_issue(
+            issues,
+            "budget_omission_consequence",
+            f"{path}.consequence",
+            "must be derived exactly from the omitted payload byte count",
+        )
+
+    if (
+        isinstance(source_id, str)
+        and source_id in included_source_ids
+    ) or (
+        isinstance(payload_id, str)
+        and payload_id in included_payload_ids
+    ):
+        _capacity_issue(
+            issues,
+            "budget_omission_overlap",
+            f"{path}.individual",
+            "omitted source and payload IDs must not overlap included records",
+        )
+
+
+def validate_compiled_context_package(value: Any) -> ValidationResult:
+    """Recompute B2b integrity and consumability after structural validation."""
+
+    package = _mutable_json_value(value)
+    structural = validate_context_package(package)
+    if not structural.valid:
+        return structural
+
+    issues: list[ValidationIssue] = []
+    package_record = package["package"]
+    compilation = package["compilation"]
+    repository = package["repository"]
+    sources = package["sources"]
+    payloads = package["payloads"]
+    omissions = package["omissions"]
+    unknowns = package["unknowns"]
+    conflicts = package["conflicts"]
+    budget = package["budget"]
+
+    if package_record["status"] != "compiled":
+        _issue(
+            issues,
+            "compilation_status",
+            "$.package.status",
+            "B2b executable packages must have status compiled",
+        )
+
+    expected_selection = _expected_policy_reference(
+        SELECTION_POLICY_ID,
+        SELECTION_POLICY_VERSION,
+        SELECTION_POLICY_DIGEST_VALUE,
+    )
+    expected_budget = _expected_policy_reference(
+        BUDGET_POLICY_ID,
+        BUDGET_POLICY_VERSION,
+        BUDGET_POLICY_DIGEST_VALUE,
+    )
+    if compilation["selection_policy"] != expected_selection:
+        _issue(
+            issues,
+            "selection_policy_identity",
+            "$.compilation.selection_policy",
+            "must match the accepted first-slice selection policy",
+        )
+    if compilation["budget_policy"] != expected_budget:
+        _issue(
+            issues,
+            "budget_policy_identity",
+            "$.compilation.budget_policy",
+            "must match the accepted first-slice budget policy",
+        )
+
+    request_surface = {
+        "repository_request": {
+            "identity": repository["identity"],
+            "requested_revision": repository["requested_revision"],
+        },
+        "task": package["task"],
+        "declared_constraints": package["declared_constraints"],
+        "selection_policy": compilation["selection_policy"],
+        "budget_policy": compilation["budget_policy"],
+        "protected_references": repository["protected_references"],
+        "as_of": compilation["as_of"],
+    }
+    expected_request_digest = request_digest(request_surface).as_dict()
+    if compilation["request_digest"] != expected_request_digest:
+        _issue(
+            issues,
+            "request_digest_mismatch",
+            "$.compilation.request_digest",
+            "does not match the request surface reconstructed from the package",
+        )
+
+    if repository["object_format"] != "sha1":
+        _issue(
+            issues,
+            "object_format",
+            "$.repository.object_format",
+            "the accepted first slice requires sha1 Git identities",
+        )
+    if repository["requested_revision"] != repository["commit"]:
+        _issue(
+            issues,
+            "requested_revision_commit_linkage",
+            "$.repository.requested_revision",
+            "must equal the exact compiled repository commit",
+        )
+    for field in ("commit", "tree"):
+        if not GIT_SHA1.fullmatch(repository[field]):
+            _issue(
+                issues,
+                "git_identity",
+                f"$.repository.{field}",
+                "must be 40 lowercase hexadecimal characters",
+            )
+    expected_snapshot_fingerprint = snapshot_fingerprint(
+        repository["identity"],
+        repository["object_format"],
+        repository["commit"],
+        repository["tree"],
+        repository["snapshot_mode"],
+    ).as_dict()
+    if repository["snapshot_fingerprint"] != expected_snapshot_fingerprint:
+        _issue(
+            issues,
+            "snapshot_fingerprint_mismatch",
+            "$.repository.snapshot_fingerprint",
+            "does not match the exact repository snapshot surface",
+        )
+
+    identity_digest, package_id = package_identity(
+        compilation["request_digest"]["value"],
+        repository["snapshot_fingerprint"]["value"],
+    )
+    if package_record["identity_digest"] != identity_digest.as_dict():
+        _issue(
+            issues,
+            "package_identity_digest_mismatch",
+            "$.package.identity_digest",
+            "does not match request digest and snapshot fingerprint",
+        )
+    if package_record["id"] != package_id:
+        _issue(
+            issues,
+            "package_id_mismatch",
+            "$.package.id",
+            "does not match the package identity digest",
+        )
+
+    if len(sources) != len(payloads):
+        _issue(
+            issues,
+            "source_payload_count",
+            "$.payloads",
+            "must contain exactly one payload for every source",
+        )
+    seen_source_ids: set[str] = set()
+    seen_payload_ids: set[str] = set()
+    seen_rule_ids: set[str] = set()
+    source_rule_order: list[str] = []
+    for index, source in enumerate(sources):
+        source_path = f"$.sources[{index}]"
+        selection_rule = source["selection_rule"]
+        source_rule_order.append(selection_rule)
+        rule = fixed_first_slice_rule(selection_rule)
+        if rule is None:
+            _issue(
+                issues,
+                "unsupported_source_rule",
+                f"{source_path}.selection_rule",
+                "is outside the fixed first-slice rule contract",
+            )
+        elif selection_rule in seen_rule_ids:
+            _issue(
+                issues,
+                "duplicate_source_rule",
+                f"{source_path}.selection_rule",
+                "must occur exactly once",
+            )
+        seen_rule_ids.add(selection_rule)
+
+        if not _normalized_repository_path(source["path"]):
+            _issue(
+                issues,
+                "repository_path",
+                f"{source_path}.path",
+                "must be an exact normalized repository-relative POSIX path",
+            )
+        if source["commit"] != repository["commit"]:
+            _issue(
+                issues,
+                "source_commit",
+                f"{source_path}.commit",
+                "must match the package repository commit",
+            )
+        immutable = source["immutable_source_identity"]
+        if (
+            immutable["type"] != "git_blob"
+            or immutable["object_format"] != repository["object_format"]
+            or not GIT_SHA1.fullmatch(immutable["value"])
+        ):
+            _issue(
+                issues,
+                "immutable_source_identity",
+                f"{source_path}.immutable_source_identity",
+                "must be a valid blob identity in the package object format",
+            )
+        try:
+            expected_source_id = source_identifier(
+                source["path"],
+                source["commit"],
+                immutable["value"],
+                source["selector"],
+            )
+        except (TypeError, ValueError):
+            expected_source_id = None
+        if source["id"] != expected_source_id:
+            _issue(
+                issues,
+                "source_id_mismatch",
+                f"{source_path}.id",
+                "does not match the source identity surface",
+            )
+        if source["id"] in seen_source_ids:
+            _issue(
+                issues,
+                "duplicate_source_id",
+                f"{source_path}.id",
+                "must be unique",
+            )
+        seen_source_ids.add(source["id"])
+
+        if index >= len(payloads):
+            continue
+        payload = payloads[index]
+        payload_path = f"$.payloads[{index}]"
+        payload_bytes = payload["content"].encode("utf-8")
+        expected_payload_digest = {
+            "algorithm": "sha256",
+            "value": sha256_bytes(payload_bytes),
+        }
+        if payload["digest"] != expected_payload_digest:
+            _issue(
+                issues,
+                "payload_digest_mismatch",
+                f"{payload_path}.digest",
+                "does not match the exact UTF-8 content bytes",
+            )
+        expected_payload_id = payload_identifier(expected_payload_digest["value"])
+        if payload["id"] != expected_payload_id:
+            _issue(
+                issues,
+                "payload_id_mismatch",
+                f"{payload_path}.id",
+                "does not match the payload digest",
+            )
+        if payload["id"] in seen_payload_ids:
+            _issue(
+                issues,
+                "duplicate_payload_id",
+                f"{payload_path}.id",
+                "must be unique",
+            )
+        seen_payload_ids.add(payload["id"])
+        if payload["utf8_bytes"] != len(payload_bytes):
+            _issue(
+                issues,
+                "payload_size_mismatch",
+                f"{payload_path}.utf8_bytes",
+                "must equal the exact UTF-8 content byte count",
+            )
+        if source["included_utf8_bytes"] != len(payload_bytes):
+            _issue(
+                issues,
+                "source_size_mismatch",
+                f"{source_path}.included_utf8_bytes",
+                "must equal the linked payload byte count",
+            )
+        if (
+            source["payload_ref"] != payload["id"]
+            or payload["source_ref"] != source["id"]
+        ):
+            _issue(
+                issues,
+                "source_payload_linkage",
+                source_path,
+                "source and payload references must be reciprocal and ordered",
+            )
+
+        if rule is not None:
+            fixed_source_fields = {
+                "path": rule.path,
+                "structured_object_identity": rule.structured_object_identity,
+                "selector": rule.selector_descriptor,
+                "priority_tier": rule.priority_tier,
+                "selection_rule": rule.rule_id,
+                "selection_reason": rule.selection_reason,
+                "trigger": rule.trigger,
+                "selection_chain": list(rule.selection_chain),
+                "authority_class": rule.authority_class,
+                "canonical_owner": rule.canonical_owner,
+            }
+            for field, expected in fixed_source_fields.items():
+                if source[field] != expected:
+                    _issue(
+                        issues,
+                        "fixed_source_contract_mismatch",
+                        f"{source_path}.{field}",
+                        "does not match the accepted fixed-rule projection",
+                    )
+            if source["freshness"] != fixed_first_slice_freshness(
+                rule,
+                compilation["as_of"],
+            ):
+                _issue(
+                    issues,
+                    "freshness_contract_mismatch",
+                    f"{source_path}.freshness",
+                    "does not match the fixed first-slice freshness behavior",
+                )
+            if payload["media_type"] != rule.media_type:
+                _issue(
+                    issues,
+                    "payload_media_type",
+                    f"{payload_path}.media_type",
+                    "does not match the fixed selector output media type",
+                )
+            if not _payload_matches_fixed_selector(rule, payload["content"]):
+                _issue(
+                    issues,
+                    "payload_selector_relationship",
+                    f"{payload_path}.content",
+                    "does not have the content shape required by the fixed selector",
+                )
+            if not fixed_first_slice_transformation_matches(
+                rule,
+                source["transformation"],
+                payload_bytes,
+            ):
+                _issue(
+                    issues,
+                    "transformation_contract_mismatch",
+                    f"{source_path}.transformation",
+                    "does not match the fixed selector and payload relationship",
+                )
+
+    expected_rule_order = [rule.rule_id for rule in FIRST_SLICE_RULE_CONTRACT]
+    if source_rule_order != expected_rule_order:
+        _issue(
+            issues,
+            "source_ordering",
+            "$.sources",
+            "must contain the five fixed mandatory rules once in deterministic order",
+        )
+    for rule in FIRST_SLICE_RULE_CONTRACT:
+        if rule.budget_tier != "optional_evidence" and source_rule_order.count(
+            rule.rule_id
+        ) != 1:
+            _issue(
+                issues,
+                "mandatory_source_completeness",
+                "$.sources",
+                f"must contain fixed mandatory rule {rule.rule_id} exactly once",
+            )
+
+    seen_unknown_ids: set[str] = set()
+    for index, unknown in enumerate(unknowns):
+        try:
+            expected_unknown_id = unknown_identifier(
+                unknown["field"],
+                unknown["attempted_resolution"],
+                unknown["owner"],
+                unknown["consequence"],
+                unknown["blocking"],
+            )
+        except (TypeError, ValueError):
+            expected_unknown_id = None
+            _issue(
+                issues,
+                "unknown_identity_surface",
+                f"$.unknowns[{index}]",
+                "must contain a complete nonempty unknown identity surface",
+            )
+        if unknown["id"] != expected_unknown_id:
+            _issue(
+                issues,
+                "unknown_id_mismatch",
+                f"$.unknowns[{index}].id",
+                "does not match the retained unknown identity surface",
+            )
+        if unknown["id"] in seen_unknown_ids:
+            _issue(
+                issues,
+                "duplicate_unknown_id",
+                f"$.unknowns[{index}].id",
+                "must be unique",
+            )
+        seen_unknown_ids.add(unknown["id"])
+
+    seen_omission_ids: set[str] = set()
+    capacity_omissions = 0
+    for index, omission in enumerate(omissions):
+        omission_path = f"$.omissions[{index}]"
+        try:
+            expected_omission_id = omission_identifier(
+                omission["rule"],
+                omission["boundary"],
+                omission["individual"],
+            )
+        except (TypeError, ValueError):
+            expected_omission_id = None
+            _issue(
+                issues,
+                "omission_identity_surface",
+                omission_path,
+                "must contain a complete nonempty omission identity surface",
+            )
+        if omission["id"] != expected_omission_id:
+            _issue(
+                issues,
+                "omission_id_mismatch",
+                f"$.omissions[{index}].id",
+                "does not match the omission identity surface",
+            )
+        if omission["id"] in seen_omission_ids:
+            _issue(
+                issues,
+                "duplicate_omission_id",
+                f"$.omissions[{index}].id",
+                "must be unique",
+            )
+        seen_omission_ids.add(omission["id"])
+        if omission["rule"] == BUDGET_CAPACITY_OMISSION_RULE:
+            capacity_omissions += 1
+            _validate_capacity_omission(
+                omission,
+                omission_path,
+                repository,
+                seen_source_ids,
+                seen_payload_ids,
+                issues,
+            )
+
+    if conflicts:
+        _issue(
+            issues,
+            "unsupported_conflict_input",
+            "$.conflicts",
+            "the accepted B2b first slice emits no inferred conflicts",
+        )
+
+    expected_allocation = [
+        "mandatory_control_envelope",
+        "mandatory_authoritative_sources",
+        "required_supporting_sources",
+        "optional_evidence",
+    ]
+    if (
+        budget["normative_unit"] != "utf8_bytes"
+        or budget["limit_bytes"] != 65536
+        or budget["allocation_order"] != expected_allocation
+    ):
+        _issue(
+            issues,
+            "budget_policy_projection",
+            "$.budget",
+            "must project the accepted budget policy exactly",
+        )
+    expected_control_bytes = control_envelope_bytes(package)
+    expected_payload_bytes = sum(
+        len(payload["content"].encode("utf-8")) for payload in payloads
+    )
+    expected_consumed = expected_control_bytes + expected_payload_bytes
+    expected_remaining = max(budget["limit_bytes"] - expected_consumed, 0)
+    expected_measurement = {
+        "control_envelope_bytes": expected_control_bytes,
+        "included_payload_bytes": expected_payload_bytes,
+        "consumed_bytes": expected_consumed,
+        "remaining_bytes": expected_remaining,
+    }
+    if budget["measurement"] != expected_measurement:
+        _issue(
+            issues,
+            "budget_measurement_mismatch",
+            "$.budget.measurement",
+            "does not match exact control-envelope and payload-byte arithmetic",
+        )
+    if expected_consumed > budget["limit_bytes"]:
+        expected_outcome = "budget_exceeded"
+    elif capacity_omissions:
+        expected_outcome = "within_budget_optional_sources_omitted"
+    else:
+        expected_outcome = "within_budget"
+    if budget["outcome"] != expected_outcome:
+        _issue(
+            issues,
+            "budget_outcome",
+            "$.budget.outcome",
+            "does not match measured capacity and optional omissions",
+        )
+
+    if package["consumer_contract"] != consumer_contract_value():
+        _issue(
+            issues,
+            "consumer_contract_mismatch",
+            "$.consumer_contract",
+            "must match the fixed integrity-bound first-slice contract",
+        )
+    if package["validation"] != executable_validation_value():
+        _issue(
+            issues,
+            "validation_record_mismatch",
+            "$.validation",
+            "must match the fixed executable B2b validation record",
+        )
+
+    expected_reasons: list[str] = []
+    if expected_consumed > budget["limit_bytes"]:
+        expected_reasons.append("budget_exceeded")
+    if any(conflict["blocking"] for conflict in conflicts):
+        expected_reasons.append("blocking_conflict")
+    if any(unknown["blocking"] for unknown in unknowns):
+        expected_reasons.append("blocking_unknown")
+    if any(omission["blocking"] for omission in omissions):
+        expected_reasons.append("blocking_omission")
+    expected_consumability = (
+        "non_consumable" if expected_reasons else "consumable"
+    )
+    if package_record["consumability"] != expected_consumability:
+        _issue(
+            issues,
+            "consumability_mismatch",
+            "$.package.consumability",
+            "does not match blocking records and measured budget state",
+        )
+    if package_record["non_consumable_reasons"] != expected_reasons:
+        _issue(
+            issues,
+            "consumability_reasons_mismatch",
+            "$.package.non_consumable_reasons",
+            "must be the exact stable reasons implied by package state",
+        )
+
+    expected_package_digest = package_digest(package).as_dict()
+    if package_record["digest"] != expected_package_digest:
+        _issue(
+            issues,
+            "package_digest_mismatch",
+            "$.package.digest",
+            "does not match the complete package integrity surface",
+        )
     return ValidationResult(tuple(issues))
 
 

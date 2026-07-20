@@ -10,6 +10,7 @@ from typing import Any, Mapping, Tuple, cast
 from atlas.platform.context_compilation.canonical_json import (
     MAX_SAFE_INTEGER,
     MIN_SAFE_INTEGER,
+    canonicalize,
 )
 
 
@@ -994,3 +995,39 @@ class MaterializationResult:
             "omissions": [record.as_dict() for record in self.omissions],
             "unknowns": [record.as_dict() for record in self.unknowns],
         }
+
+
+@dataclass(frozen=True)
+class CompilationResult:
+    """One complete immutable package and its executable validation evidence."""
+
+    package: Mapping[str, Any]
+    canonical_json: bytes
+    validation: ValidationResult
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.package, Mapping):
+            raise ModelValueError("compiled package must be a mapping")
+        frozen_package = cast(Mapping[str, Any], deep_freeze(self.package))
+        object.__setattr__(self, "package", frozen_package)
+        if not isinstance(self.canonical_json, bytes):
+            raise ModelValueError("canonical package serialization must be bytes")
+        if canonicalize(frozen_package) != self.canonical_json:
+            raise ModelValueError(
+                "canonical package serialization does not match the package value"
+            )
+        if not isinstance(self.validation, ValidationResult):
+            raise ModelValueError("compilation validation must be a ValidationResult")
+        if not self.validation.valid:
+            raise ModelValueError("a CompilationResult must be executably valid")
+
+    @property
+    def consumable(self) -> bool:
+        return self.package["package"]["consumability"] == "consumable"
+
+    @property
+    def non_consumable_reasons(self) -> Tuple[str, ...]:
+        return cast(
+            Tuple[str, ...],
+            self.package["package"]["non_consumable_reasons"],
+        )
