@@ -12,7 +12,7 @@ It summarizes the canonical current mission, infrastructure state, recent change
 
 ### Phase
 
-Task-Scoped Agent Context Compilation Checkpoint B2b Second Bounded Correction Complete — Final Independent Review Pending
+Task-Scoped Agent Context Compilation Checkpoint B2b Published — Next Implementation Decision Pending
 
 ---
 
@@ -26,7 +26,9 @@ A B2b — Budgeted Package Assembly and Validation candidate implementation was 
 
 The owner accepted that disposition and authorized correction of findings F-01 through F-07 only. That first bounded correction completed and was safely verified. The post-correction independent acceptance re-review then completed with the disposition `BOUNDED CORRECTION REQUIRED` because of findings R-01 and R-02.
 
-The owner accepted the latest disposition and authorized a second narrowly bounded correction for R-01 and R-02 only. That second correction has now been implemented and safely verified. Final fresh independent acceptance review is pending. B2b is not independently accepted or owner-accepted, and nothing is staged, committed, pushed, or released.
+The owner accepted the latest disposition and authorized a second narrowly bounded correction for R-01 and R-02 only. That second correction was implemented and safely verified. The final fresh independent acceptance review then completed with the disposition `ACCEPT — implementation-complete and suitable for owner acceptance`.
+
+The owner has accepted Checkpoint B2b as implementation-complete. The canonical implementation-completion commit is `acd4538a7ee074eded9973ef6a545fa3a80d1333`; that commit was pushed to `origin/main`, and B2b is published.
 
 The exact B2b code boundary is:
 
@@ -45,23 +47,27 @@ The exact B2b code boundary is:
 
 The compiler must remain a pure in-memory library over accepted B2a values. It may assemble one complete deterministic, budgeted, integrity-checked context package and report explicit consumable or non-consumable state. It must not add an Atlas command, provider adapter, file writer, database, network access, model invocation, or protected-content access.
 
-The hard kill switch requires an immediate stop for owner review if implementation needs a schema or policy change, changes accepted B1 or B2a behavior, adds a dependency or external capability, leaves the exact seven-path code boundary, cannot remain pure, requires a golden fixture, decomposes into another extended checkpoint sequence, loses a concrete next consumer, or cannot reasonably finish within this bounded pass.
+The accepted B2b release remains fixed at this bounded minimum. No post-publication expansion is authorized. Any next implementation requires a separate owner decision after evaluation of the accepted B2b release and the next-consumer direction.
 
-B2c — Golden Replay and Explanation remains unauthorized. `explanation.py` and a golden package fixture must remain absent.
+B2c — Golden Replay and Explanation remains unauthorized and is not automatically the next engineering checkpoint. No golden replay, explanation layer, `explanation.py`, or golden package fixture is authorized.
 
-A bounded school-learning capability and EO-2026-022 read-only control-surface pilot are preserved as next consumer directions after B2b acceptance. They are not part of this implementation and are not authorized by this mission update.
+A bounded school-learning capability and EO-2026-022 read-only human control-surface pilot are preserved as next-consumer directions. They are not authorized implementations.
 
 EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`. No Engineering Opportunity lifecycle, merge, retirement, or ownership change is authorized.
+
+The published release preserves four explicit architectural limitations: excerpt-only whole-source authenticity requires immutable Git source revalidation; semantic conflict discovery remains outside deterministic B2b validation; the current fixed policy has no optional-evidence rule; and truncated unknown and omission identifiers provide bounded deterministic identity with duplicate failure, not conventional strong collision resistance.
+
+No EO lifecycle, merge, retirement, schema, policy, architecture, dependency, CI, Atlas-command, protected-reference, protected-content, or AI-environment change is authorized.
 
 ---
 
 ### Mission Intent
 
-Correct and independently re-verify only the accepted B2b minimum functional release boundary while preserving all completed foundations and human authority.
+Preserve the accepted and published B2b minimum functional release boundary, all completed foundations, and human authority while evaluating the next-consumer direction.
 
 Repository Synchronization Reasoning remains responsible for deterministic internal alignment. Task authority remains external, generated task context remains non-canonical, and a compiled package does not grant permission or prove completion.
 
-Completion and safe verification of the second bounded correction do not establish B2b acceptance. Final fresh independent acceptance review and explicit owner disposition remain required.
+The final independent `ACCEPT` disposition, owner acceptance, canonical implementation-completion commit, and successful publication establish B2b as implementation-complete and published. They do not authorize another implementation checkpoint.
 
 ---
 
@@ -78,10 +84,11 @@ Completion and safe verification of the second bounded correction do not establi
 - Preserve pure deterministic B2b package compilation, its corrected fixed-policy trust boundary, independently reconstructable validation, omission identity and capacity semantics, whole-source limitation disclosure, and fail-safe hostile-input behavior.
 - Preserve fixed UTF-8 byte allocation, whole-pair optional omission below the public trust boundary, mandatory overflow, package integrity, and executable consumability validation.
 - Preserve the two promoted dated recalibration records and their accepted durable conclusions in canonical owners.
-- Preserve the hard kill switch and stop if the bounded implementation requires scope expansion.
+- Preserve the accepted B2b release boundary and require a separate owner decision for any next implementation.
 - Reserve `explanation.py` and golden replay for proposed B2c.
-- Keep B2c unauthorized and keep B2b classified as awaiting final fresh independent acceptance review until owner disposition.
-- Preserve school learning and EO-2026-022 as next consumer directions without implementing them.
+- Keep B2c unauthorized and do not treat it as the automatic next engineering checkpoint.
+- Preserve school learning and EO-2026-022 as next-consumer directions without implementing them.
+- Preserve the explicit whole-source revalidation, semantic-conflict, no-optional-evidence, and bounded truncated-identifier limitations.
 - Preserve EO-2026-013 as `reviewed` and EO-2026-022 as `captured`.
 - Preserve the downstream AI Engineering Environment Review.
 - Preserve architecture, schema, policy, dependency, CI, Atlas-command, lifecycle, protected-reference, EO-2026-022, and AI-environment exclusions.
@@ -90,7 +97,7 @@ Completion and safe verification of the second bounded correction do not establi
 
 ### Initial Milestone
 
-Checkpoint B2b — Budgeted Package Assembly and Validation has a locally verified candidate, two completed and safely verified bounded corrections, and a pending final fresh independent acceptance review.
+Checkpoint B2b — Budgeted Package Assembly and Validation is implementation-complete, owner-accepted, and published at canonical completion commit `acd4538a7ee074eded9973ef6a545fa3a80d1333`.
 
 #### Completed
 
@@ -108,10 +115,14 @@ Checkpoint B2b — Budgeted Package Assembly and Validation has a locally verifi
 - Recorded the post-correction disposition `BOUNDED CORRECTION REQUIRED` for R-01 and R-02.
 - Accepted the latest disposition and authorized a second correction for R-01 and R-02 only.
 - Implemented and safely verified the second narrowly bounded correction.
+- Completed the final fresh independent acceptance review with disposition `ACCEPT — implementation-complete and suitable for owner acceptance`.
+- Recorded owner acceptance of B2b as implementation-complete.
+- Committed the exact accepted 16-path state at `acd4538a7ee074eded9973ef6a545fa3a80d1333`.
+- Pushed the canonical implementation-completion commit to `origin/main` and published B2b.
 
 #### Still Excluded
 
-- B2b independent acceptance, owner acceptance, staging, commit, push, or release before final fresh independent acceptance review and owner disposition.
+- Any unreviewed expansion of the accepted and published B2b release.
 - B2c, golden replay, explanation rendering, or a golden package fixture.
 - Architecture, schema, policy, dependency, CI, runtime-contract, or Atlas-command changes.
 - Engineering Opportunity lifecycle changes.
@@ -478,7 +489,7 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ### Current Non-Priorities
 
-- Expanding the second B2b bounded correction beyond findings R-01 and R-02 or its exact four-path write boundary.
+- Expanding the accepted and published B2b release without a separate owner decision.
 - Treating candidate production, local verification, independent acceptance, owner acceptance, staging, commit, push, and release as the same event.
 - Beginning B2c, golden replay, or explanation work.
 - Reopening or broadening accepted B2a without a newly evidenced defect.
@@ -502,15 +513,19 @@ The owner accepted the B2b authorization review and exact implementation boundar
 
 The first independent acceptance review completed with the disposition `BOUNDED CORRECTION REQUIRED`. The owner accepted that disposition and authorized correction of findings F-01 through F-07 only. The first bounded correction completed and was safely verified.
 
-The post-correction independent acceptance re-review completed with the disposition `BOUNDED CORRECTION REQUIRED` for R-01 and R-02. The owner accepted that latest disposition and authorized a second narrowly bounded correction for those two findings only. The second correction has now been implemented and safely verified. Final fresh independent acceptance review is pending.
+The post-correction independent acceptance re-review completed with the disposition `BOUNDED CORRECTION REQUIRED` for R-01 and R-02. The owner accepted that latest disposition and authorized a second narrowly bounded correction for those two findings only. The second correction was implemented and safely verified.
+
+The final fresh independent acceptance review completed with disposition `ACCEPT — implementation-complete and suitable for owner acceptance`. The owner accepted B2b as implementation-complete. Commit `acd4538a7ee074eded9973ef6a545fa3a80d1333` is the canonical implementation-completion commit, was pushed to `origin/main`, and publishes B2b.
 
 The implementation assembles a pure deterministic context package from explicit typed request, loaded budget policy, immutable snapshot, and accepted B2a materialization values. It performs no repository, filesystem, Git, environment, clock, network, provider, randomness, logging, or model operation.
 
-Candidate production and local safe verification do not establish independent acceptance or owner acceptance. B2b is not independently accepted or owner-accepted. Nothing is staged, committed, pushed, or released.
+B2b is independently accepted, owner-accepted, implementation-complete, and published. No additional capability or implementation checkpoint is authorized by that completion.
 
-B2c remains unauthorized. School learning and EO-2026-022 remain preserved next consumer directions, not current implementation.
+B2c remains unauthorized. No golden replay or explanation layer is authorized. School learning remains a next-consumer direction, not authorized implementation. EO-2026-022 remains a read-only human control-surface pilot direction, not authorized implementation.
 
-No schema, policy, B1, B2a, dependency, CI, Atlas-command, protected-reference, protected-content, lifecycle, school, career, EO-2026-022, or AI-environment change is authorized.
+The published release retains the following limitations: excerpt-only whole-source authenticity requires immutable Git source revalidation; semantic conflict discovery remains outside deterministic B2b validation; the current fixed policy has no optional-evidence rule; and truncated unknown and omission identifiers provide bounded deterministic identity with duplicate failure, not conventional strong collision resistance.
+
+No EO lifecycle, merge, retirement, schema, policy, architecture, dependency, CI, Atlas-command, protected-reference, protected-content, school, career, EO-2026-022, or AI-environment change is authorized.
 
 EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`.
 
@@ -518,13 +533,11 @@ EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`.
 
 ### Next Milestone
 
-1. Obtain a final fresh independent acceptance review.
-2. Record the owner disposition.
-3. Only after acceptance, make a separately authorized staging, commit, and push decision.
+1. Evaluate the accepted B2b release and its real consumption evidence.
+2. Evaluate the bounded school-learning capability and EO-2026-022 read-only human control-surface pilot as next-consumer directions.
+3. Obtain a separate owner decision before any next implementation.
 
-After B2b acceptance, prioritize a bounded school-learning capability and/or EO-2026-022 read-only control-surface pilot as the next real consumer. That work requires a separate boundary and authorization.
-
-B2c may earn priority only through real consumption evidence and remains unauthorized.
+The next engineering checkpoint must not automatically be B2c. B2c may earn priority only through real consumption evidence and remains unauthorized. School learning and EO-2026-022 also remain directions rather than authorized implementations.
 
 ---
 
@@ -541,12 +554,18 @@ B2c may earn priority only through real consumption evidence and remains unautho
 - Post-correction independent disposition: `BOUNDED CORRECTION REQUIRED`.
 - Second narrowly bounded correction for R-01 and R-02 authorized: Yes.
 - Second narrowly bounded correction implemented and safely verified: Yes.
-- Final fresh independent acceptance review pending: Yes.
-- B2b independently accepted: No.
-- B2b owner-accepted: No.
+- Final fresh independent acceptance review completed: Yes.
+- Final fresh independent disposition: `ACCEPT — implementation-complete and suitable for owner acceptance`.
+- B2b independently accepted: Yes.
+- B2b owner-accepted: Yes.
 - B2b candidate and authorized correction implementation complete locally: Yes.
-- B2b staged, committed, pushed, or released: No.
+- B2b canonical implementation-completion commit: `acd4538a7ee074eded9973ef6a545fa3a80d1333`.
+- B2b completion commit pushed to `origin/main`: Yes.
+- B2b published: Yes.
 - B2c authorized: No.
+- B2c automatically selected as the next engineering checkpoint: No.
+- Golden replay authorized: No.
+- Explanation layer authorized: No.
 - Golden package fixture authorized: No.
 - Architecture, schema, or policy change authorized: No.
 - Accepted B1 or B2a behavior change authorized: No.
@@ -562,9 +581,10 @@ B2c may earn priority only through real consumption evidence and remains unautho
 - EO-2026-022 lifecycle state: Captured.
 - AI Engineering Environment Review preserved: Yes.
 - AI Engineering Environment Review execution authorized: No.
-- Final fresh independent acceptance review required before owner disposition: Yes.
-- Staging, commit, push, or branch change authorized: No.
-- Hard kill applies on any required scope expansion or loss of the bounded pure implementation: Yes.
+- Separate owner decision required before any next implementation: Yes.
+- Next implementation selected: No.
+- Further staging, commit, push, or branch change authorized by this mission: No.
+- Accepted B2b release boundary remains fixed: Yes.
 
 ## Infrastructure Snapshot
 
