@@ -57,6 +57,7 @@ def parser() -> argparse.ArgumentParser:
     record.add_argument("outcome", choices=("correct", "partial", "incorrect"))
     record.add_argument("status", choices=("unseen", "learning", "review", "solid"))
     record.add_argument("note")
+    record.add_argument("--mode", choices=("explain", "practice", "review"), default="review")
     record.add_argument("--priority", type=int, default=0)
     record.add_argument("--session-id")
 
@@ -68,8 +69,8 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
-    root = _root(args.data_root)
     try:
+        root = _root(args.data_root)
         if args.command == "init":
             ws = initialize_course(root, args.term, args.course_id, args.title)
             print(ws.course_dir)
@@ -89,6 +90,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.outcome,
                 args.status,
                 args.note,
+                mode=args.mode,
                 session_id=args.session_id,
                 next_review_priority=args.priority,
             )

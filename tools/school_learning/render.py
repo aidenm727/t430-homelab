@@ -5,14 +5,15 @@ from __future__ import annotations
 from html import escape
 from pathlib import Path
 
-from .core import Workspace, _atomic_write_bytes, iter_sessions, load_course, load_materials, load_topics
+from .core import Workspace, _atomic_write_bytes, _confined_path, _load_state
 
 
 def render_course(ws: Workspace) -> tuple[Path, Path]:
-    course = load_course(ws)
-    materials = load_materials(ws)["materials"]
-    topics = load_topics(ws)["topics"]
-    sessions = iter_sessions(ws)
+    state = _load_state(ws)
+    course = state.course
+    materials = state.materials["materials"]
+    topics = state.topics["topics"]
+    sessions = list(state.sessions)
 
     topic_rows = "".join(
         "<tr>"
@@ -84,10 +85,20 @@ code {{ white-space: nowrap; }} .meta {{ color: #555; }}
     review_lines.append("")
 
     generated = ws.course_dir / "generated"
-    html_path = generated / "course-home.html"
-    review_path = generated / "review.md"
-    _atomic_write_bytes(html_path, html.encode("utf-8"))
-    _atomic_write_bytes(review_path, "\n".join(review_lines).encode("utf-8"))
+    html_path = _confined_path(
+        ws,
+        generated / "course-home.html",
+        label="generated HTML destination",
+        regular_if_present=True,
+    )
+    review_path = _confined_path(
+        ws,
+        generated / "review.md",
+        label="generated Markdown destination",
+        regular_if_present=True,
+    )
+    _atomic_write_bytes(ws, html_path, html.encode("utf-8"))
+    _atomic_write_bytes(ws, review_path, "\n".join(review_lines).encode("utf-8"))
     return html_path, review_path
 
 
