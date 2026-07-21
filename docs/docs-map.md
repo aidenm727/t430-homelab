@@ -50,6 +50,10 @@ Repository Objects and engineering tools support these layers.
 - `docs/architecture/task-scoped-agent-context-compilation.md`
 - `docs/task-context/index.md`
 
+## Learning and Research Architecture
+
+- `docs/architecture/school-learning.md` — Bounded School Learning workflow, owner-controlled local data contract, manual approved-AI handoff, and generated local views.
+
 ## Engineering Architecture
 
 - `docs/architecture/engineering.md`
@@ -117,6 +121,7 @@ Repository Objects and engineering tools support these layers.
 
 ## Portfolio Reviews
 
+- `docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md` — Accepted dated non-canonical owner decision evidence for the exact School Learning v0.1 implementation and publication boundary.
 - `docs/reviews/aiden-platform-owner-intent-recalibration-2026-07-19.md` — Owner-authored and owner-accepted non-canonical dated evidence preserving durable platform purpose, desired agency outcomes, human ownership, near-term direction, cautions, and unresolved decisions.
 - `docs/reviews/aiden-ai-environment-baseline-v1-2026-07-20.md` — Accepted dated non-canonical evidence preserving the complete ChatGPT Project cleanup and permissions baseline, exact Codex Baseline v1 configuration and instructions, authority boundaries, verification, hashes, rollback, limitations, and deferrals.
 - `docs/reviews/aiden-platform-portfolio-recalibration-owner-decision-2026-07-20.md` — Owner-accepted non-canonical decision record preserving the bounded recalibration promotion, accepted 90-day sequence, EO-2026-013 B2b authorization and hard kill switch, next-consumer condition, rejected claims, and explicit exclusions.
@@ -199,6 +204,17 @@ This is a specialized reading path, not a new documentation layer.
 7. `docs/reviews/eo-2026-013-implementation-planning-review-2026-07-15.md`
 8. `docs/current-mission.md`
 9. `./atlas bootstrap`
+
+### School Learning
+
+1. `docs/vision.md`
+2. `docs/architecture/platform.md`
+3. `docs/architecture/capabilities.md`
+4. `docs/architecture/school-learning.md`
+5. `docs/architecture/ai-operating-model.md`
+6. `docs/architecture/knowledge-authority.md`
+7. `docs/current-mission.md`
+8. `./school --help`
 
 ### Infrastructure Work
 
