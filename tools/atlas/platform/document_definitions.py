@@ -560,6 +560,35 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/aiden-ai-environment-baseline-v1-2026-07-20.md": DocumentDefinition(
+        path="docs/reviews/aiden-ai-environment-baseline-v1-2026-07-20.md",
+        purpose="Preserves the accepted dated ChatGPT Project cleanup and permission baseline, exact Codex Baseline v1 configuration and instructions, authority boundaries, verification, hashes, rollback, limitations, and deferrals.",
+        canonical=False,
+        generated=False,
+        capability="Artificial Intelligence",
+        status="accepted",
+        tags=[
+            "artificial-intelligence",
+            "ai-environment",
+            "chatgpt-project",
+            "codex",
+            "permissions",
+            "human-reviewed",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/current-mission.md",
+            "docs/architecture/ai-operating-model.md",
+            "docs/architecture/knowledge-authority.md",
+            "docs/architecture/engineering-environment.md",
+            "docs/architecture/engineering-sessions.md",
+            "docs/standards/engineering-collaboration.md",
+            "docs/reviews/ai-operating-baseline-2026-07-14.md",
+            "docs/reviews/ai-workflow-evaluation-cycle-2026-07.md",
+        ],
+    ),
+
     "docs/reviews/ai-workflow-evaluation-cycle-2026-07.md": DocumentDefinition(
         path="docs/reviews/ai-workflow-evaluation-cycle-2026-07.md",
         purpose="Records the completed human-reviewed AI workflow evaluation cycle, including configuration checks, firsthand task evidence, validation, friction, challenger comparisons, and the final operating decision.",

@@ -47,7 +47,7 @@ EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`. No Engineering O
 
 The published release preserves four explicit architectural limitations: excerpt-only whole-source authenticity requires immutable Git source revalidation; semantic conflict discovery remains outside deterministic B2b validation; the current fixed policy has no optional-evidence rule; and truncated unknown and omission identifiers provide bounded deterministic identity with duplicate failure, not conventional strong collision resistance.
 
-No EO lifecycle, merge, retirement, schema, policy, architecture, dependency, CI, Atlas-command, protected-reference, protected-content, or AI-environment change is authorized.
+No EO lifecycle, merge, retirement, schema, policy, architecture, dependency, CI, Atlas-command, protected-reference, protected-content, or AI-environment change beyond the completed Aiden AI Environment Baseline v1 boundary is authorized.
 
 ---
 
@@ -80,8 +80,8 @@ The final independent `ACCEPT` disposition, owner acceptance, canonical implemen
 - Preserve school learning and EO-2026-022 as next-consumer directions without implementing them.
 - Preserve the explicit whole-source revalidation, semantic-conflict, no-optional-evidence, and bounded truncated-identifier limitations.
 - Preserve EO-2026-013 as `reviewed` and EO-2026-022 as `captured`.
-- Preserve the downstream AI Engineering Environment Review.
-- Preserve architecture, schema, policy, dependency, CI, Atlas-command, lifecycle, protected-reference, EO-2026-022, and AI-environment exclusions.
+- Preserve the completed ChatGPT Project cleanup and permission baseline, the applied and verified Codex Baseline v1, and their exact separated authority boundaries.
+- Preserve architecture, schema, policy, dependency, CI, Atlas-command, lifecycle, protected-reference, EO-2026-022, school, B2c, next-consumer, and AI-environment changes beyond Baseline v1 as excluded.
 
 ---
 
@@ -122,45 +122,19 @@ Checkpoint B2b — Budgeted Package Assembly and Validation is implementation-co
 
 ---
 
-## Preserved Downstream Follow-Up — AI Engineering Environment Review
+## Completed AI Engineering Environment Review — Baseline v1
 
-A subsequent bounded AI Engineering Environment Review is preserved. The actual AI working environments have not been systematically reviewed recently, but this larger review follows the EO-2026-013 architecture design and requires its own bounded owner authorization.
+The bounded AI Engineering Environment Review is complete. The ChatGPT Project cleanup and permission baseline, read-only Codex inventory, final Aiden AI Environment Baseline v1 design, exact bounded application, and verification were completed on 2026-07-20. The complete accepted evidence is preserved in `docs/reviews/aiden-ai-environment-baseline-v1-2026-07-20.md` as dated non-canonical review evidence. That record does not become live machine state or architecture.
 
-The future review includes:
+The completed ChatGPT baseline retains the exact 11-source Aiden Platform Project pack and its source-refresh policy, Default Project memory, enabled Library access, retained global memory, Candid personalization and owner-profile context, `Improve the model for everyone` Off, Work network access On, Gmail disconnected, and the GitHub plugin retained with permission `Allow read actions`. The `Publish Changes` skill is excluded from the default Aiden workflow and remains unavailable without an exact future owner-authorized publication task.
 
-- ChatGPT Project instructions.
-- ChatGPT Project source files and their freshness.
-- Project settings, memory, and Library configuration.
-- Model and reasoning workflow conventions.
-- Connectors, tools, skills, and permissions.
-- Codex CLI configuration and launch workflow.
-- Repository instructions and reusable skills.
-- Generated context delivery and refresh behavior.
-- Duplicated or conflicting instructions across repository documentation, ChatGPT Projects, Codex, continuity packets, and fresh-chat openers.
-- Other current or future assistant environments.
+Codex Baseline v1 owns exactly four machine-local user files: `~/.codex/config.toml`, `~/.codex/review.config.toml`, `~/.codex/implementation.config.toml`, and `~/.codex/AGENTS.md`. Review mode is read-only with no approval path. Implementation mode is workspace-write with user-reviewed boundary crossings. Shell network remains disabled. Startup update checks remain enabled. Profiles are convenience layers rather than security boundaries.
 
-Each surface should be classified as Current and useful, Stale, Redundant, Conflicting, Missing, Unused, Poorly owned, or Not verifiable. The review should record its authoritative source, intended consumer, owner, freshness expectation, update mechanism, and evidence for retaining, changing, consolidating, or removing it.
+The exact persistent repository boundary is `AGENTS.md`, the dated review evidence, this Current Mission update, registered Docs Map and Atlas document-definition entries, and regenerated `docs/aiden-context.md` plus `docs/infrastructure-snapshot.md`. The generated files remain non-canonical and tool-owned. Machine-local user configuration remains outside Git.
 
-The review may use multiple AI systems only through a structured pattern:
+Machine-local configuration application, repository implementation, ChatGPT-side manual permissions and Project-source synchronization, and staging/commit/push remain separate owner-controlled actions. Completion in one domain does not authorize another. No Baseline completion grants a new engineering implementation, changes EO-2026-013 or the accepted B2b release, selects B2c, selects another next consumer, changes EO-2026-022, changes school scope, or changes lifecycle state.
 
-- Atlas and the repository provide deterministic source truth.
-- Codex may collect inventory and perform later bounded repository changes.
-- ChatGPT may perform primary architectural analysis and synthesis.
-- An independent challenger model may review the same evidence package.
-- Findings must separate agreement, disagreement, unsupported speculation, immediate corrections, later opportunities, and items that should remain unchanged.
-- The owner resolves disagreements and authorizes application.
-
-Portfolio treatment remains:
-
-- EO-2026-008 — AI Engineering Excellence is the umbrella direction.
-- EO-2026-007 — AI Collaboration Intelligence covers collaboration reliability.
-- EO-2026-019 — Instruction and Context Effectiveness Evaluation covers effectiveness testing.
-- EO-2026-013 provides deterministic task context and consumer boundaries.
-- EO-2026-009 provides the longer-term shared personal AI context direction.
-- The review is a future bounded deliverable under these existing directions.
-- No new Engineering Opportunity should be created unless later evidence demonstrates a distinct recurring capability boundary.
-
-The review is not part of the first EO-2026-013 milestone. It does not authorize live configuration cleanup or changes.
+After the separately authorized Baseline repository commit and push, the owner must replace the stale Project sources currently displayed as `current-mission(3).md` and `docs-map(3).md`, or their future replacement display names, with the final committed `docs/current-mission.md` and `docs/docs-map.md` bytes. The owner identifies each source by canonical owner and content rather than assuming an unsuffixed filename, leaves unchanged architecture and other unchanged sources in place, runs a fresh Project verification chat, and preserves its exact final-commit, source-hash, mission-phase, Baseline-completion, B2c-exclusion, and next-consumer-decision result in completion evidence. Codex does not perform that manual Project update.
 
 ---
 
@@ -449,6 +423,8 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 
 ## Recently Completed
 
+- Completed and verified the Aiden Platform ChatGPT Project cleanup and permission baseline, including the exact 11-source pack and refresh policy, retained Default and global memory posture, enabled Library access, Candid personalization, training Off, Work network On, Gmail disconnected, GitHub `Allow read actions`, and default exclusion of `Publish Changes` on 2026-07-20.
+- Completed the read-only Codex environment inventory, accepted the final Aiden AI Environment Baseline v1 design, and locally applied and verified its exact four-user-file and seven-repository-path boundary on 2026-07-20.
 - Completed and owner-accepted EO-2026-013 Checkpoint B2a — Materialization and Content Identity on 2026-07-19.
 - Completed and recorded the EO-2026-013 Checkpoint B2a Structured-Object Ownership Contract-Correction Review.
 - Completed and recorded the EO-2026-013 Checkpoint B2a Authorization Review and revised materialization boundary.
@@ -492,7 +468,7 @@ The review is not part of the first EO-2026-013 milestone. It does not authorize
 - Canonical architecture changes.
 - Engineering Opportunity lifecycle changes.
 - EO-2026-022 architecture or implementation.
-- AI-environment changes.
+- AI-environment changes beyond the exact Aiden AI Environment Baseline v1 boundary.
 - Protected-object peel, traversal, content read, selection, exposure, or mutation.
 
 ---
@@ -515,7 +491,11 @@ B2c remains unauthorized. No golden replay or explanation layer is authorized. S
 
 The published release retains the following limitations: excerpt-only whole-source authenticity requires immutable Git source revalidation; semantic conflict discovery remains outside deterministic B2b validation; the current fixed policy has no optional-evidence rule; and truncated unknown and omission identifiers provide bounded deterministic identity with duplicate failure, not conventional strong collision resistance.
 
-No EO lifecycle, merge, retirement, schema, policy, architecture, dependency, CI, Atlas-command, protected-reference, protected-content, school, career, EO-2026-022, or AI-environment change is authorized.
+The Aiden AI Environment Review is complete. The ChatGPT Project cleanup and permission baseline are complete and verified, including the exact 11-source pack and refresh policy, retained memory and personalization decisions, training Off, Work network On, Gmail disconnected, GitHub `Allow read actions`, and exclusion of `Publish Changes` from the default workflow. Codex Baseline v1 has been locally applied and verified within its exact four-user-file and seven-repository-path boundary. The complete baseline is preserved as dated non-canonical evidence in `docs/reviews/aiden-ai-environment-baseline-v1-2026-07-20.md`.
+
+This records a safer AI engineering operating posture. It does not authorize any next implementation, B2c, school implementation, EO-2026-022 implementation, lifecycle change, dependency, external write, protected-content access, plugin or app installation, skill invocation, MCP server, hook, custom agent, browser, Computer Use, Node, branch/ref change, staging, commit, or push. Machine-local, repository, ChatGPT-side, and Git-publication authority remain separate.
+
+No EO lifecycle, merge, retirement, schema, policy, architecture, dependency, CI, Atlas-command, protected-reference, protected-content, school, career, EO-2026-022, or AI-environment change beyond the exact Baseline v1 boundary is authorized.
 
 EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`.
 
@@ -526,6 +506,7 @@ EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`.
 1. Evaluate the accepted B2b release and its real consumption evidence.
 2. Evaluate the bounded school-learning capability and EO-2026-022 read-only human control-surface pilot as next-consumer directions.
 3. Obtain a separate owner decision before any next implementation.
+4. Obtain separate owner acceptance and staging, commit, and push authorization for the exact seven Baseline v1 repository paths; after publication, complete the separately owner-controlled refresh of the Project sources currently displayed as `current-mission(3).md` and `docs-map(3).md`, or their future replacement display names, identifying them by canonical owners `docs/current-mission.md` and `docs/docs-map.md` and content, and run a fresh verification chat. Machine-local user configuration remains outside Git.
 
 The next engineering checkpoint must not automatically be B2c. B2c may earn priority only through real consumption evidence and remains unauthorized. School learning and EO-2026-022 also remain directions rather than authorized implementations.
 
@@ -569,8 +550,22 @@ The next engineering checkpoint must not automatically be B2c. B2c may earn prio
 - EO lifecycle, merge, retirement, or ownership change authorized: No.
 - EO-2026-013 lifecycle state: Reviewed.
 - EO-2026-022 lifecycle state: Captured.
-- AI Engineering Environment Review preserved: Yes.
-- AI Engineering Environment Review execution authorized: No.
+- AI Engineering Environment Review completed: Yes.
+- ChatGPT Project cleanup and permission baseline completed and verified: Yes.
+- ChatGPT exact 11-source Project pack and refresh policy preserved: Yes.
+- ChatGPT GitHub permission: `Allow read actions`.
+- `Publish Changes` approved for the default Aiden workflow: No.
+- Aiden AI Environment Baseline v1 design accepted: Yes.
+- Baseline v1 exact bounded application authorized: Yes.
+- Baseline v1 locally applied and verified: Yes.
+- Baseline v1 machine-local mutable paths: Four.
+- Baseline v1 repository mutable paths: Seven.
+- Baseline v1 staging, commit, and push authorized: No.
+- Post-publication Project source synchronization completed: No; separately owner-controlled after final commit and push.
+- B2c authorized or automatically selected: No.
+- School or EO-2026-022 implementation authorized: No.
+- Next implementation selected: No.
+- AI-environment changes beyond Baseline v1 authorized: No.
 - Separate owner decision required before any next implementation: Yes.
 - Next implementation selected: No.
 - Further staging, commit, push, or branch change authorized by this mission: No.
