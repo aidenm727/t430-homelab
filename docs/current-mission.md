@@ -134,7 +134,7 @@ The exact persistent repository boundary is `AGENTS.md`, the dated review eviden
 
 Machine-local configuration application, repository implementation, ChatGPT-side manual permissions and Project-source synchronization, and staging/commit/push remain separate owner-controlled actions. Completion in one domain does not authorize another. No Baseline completion grants a new engineering implementation, changes EO-2026-013 or the accepted B2b release, selects B2c, selects another next consumer, changes EO-2026-022, changes school scope, or changes lifecycle state.
 
-After the separately authorized Baseline repository commit and push, the owner must replace the stale Project sources currently displayed as `current-mission(3).md` and `docs-map(3).md`, or their future replacement display names, with the final committed `docs/current-mission.md` and `docs/docs-map.md` bytes. The owner identifies each source by canonical owner and content rather than assuming an unsuffixed filename, leaves unchanged architecture and other unchanged sources in place, runs a fresh Project verification chat, and preserves its exact final-commit, source-hash, mission-phase, Baseline-completion, B2c-exclusion, and next-consumer-decision result in completion evidence. Codex does not perform that manual Project update.
+The Aiden AI Environment Baseline v1 repository state was published at commit `460978bd1d74f47e4f26380d51a143706ecc811e` on 2026-07-21. The owner then replaced the stale ChatGPT Project copies corresponding to `docs/current-mission.md` and `docs/docs-map.md` with the provider-displayed sources `current-mission(4).md` and `docs-map(4).md`. A fresh read-only Project synchronization verification confirmed that both uploaded copies were byte-identical to their canonical files at the published commit. The verified SHA-256 values were `4f9bf262dfad2aafe668a1bd6f8b3abff3ed7e1dc31246498882e340228350ae` for `docs/current-mission.md` and `c593e27949ad1534398042412a0f6ed8ffe79234ff0856aa37ea9b4e02d8bb98` for `docs/docs-map.md`. The verification preserved the exact mission phase, Baseline v1 completion, B2c exclusion, school-learning and EO-2026-022 next-consumer-only status, and the pending next-consumer decision. Uploaded Project sources remain non-canonical context copies and do not override GitHub, canonical repository documents, Current Mission, Atlas evidence, or live verification.
 
 ---
 
@@ -423,6 +423,7 @@ After the separately authorized Baseline repository commit and push, the owner m
 
 ## Recently Completed
 
+- Published Aiden AI Environment Baseline v1 at `460978bd1d74f47e4f26380d51a143706ecc811e` and completed the owner-controlled ChatGPT Project source refresh and fresh read-only synchronization verification on 2026-07-21.
 - Completed and verified the Aiden Platform ChatGPT Project cleanup and permission baseline, including the exact 11-source pack and refresh policy, retained Default and global memory posture, enabled Library access, Candid personalization, training Off, Work network On, Gmail disconnected, GitHub `Allow read actions`, and default exclusion of `Publish Changes` on 2026-07-20.
 - Completed the read-only Codex environment inventory, accepted the final Aiden AI Environment Baseline v1 design, and locally applied and verified its exact four-user-file and seven-repository-path boundary on 2026-07-20.
 - Completed and owner-accepted EO-2026-013 Checkpoint B2a — Materialization and Content Identity on 2026-07-19.
@@ -493,6 +494,8 @@ The published release retains the following limitations: excerpt-only whole-sour
 
 The Aiden AI Environment Review is complete. The ChatGPT Project cleanup and permission baseline are complete and verified, including the exact 11-source pack and refresh policy, retained memory and personalization decisions, training Off, Work network On, Gmail disconnected, GitHub `Allow read actions`, and exclusion of `Publish Changes` from the default workflow. Codex Baseline v1 has been locally applied and verified within its exact four-user-file and seven-repository-path boundary. The complete baseline is preserved as dated non-canonical evidence in `docs/reviews/aiden-ai-environment-baseline-v1-2026-07-20.md`.
 
+The exact Baseline v1 repository state was published at `460978bd1d74f47e4f26380d51a143706ecc811e`. The owner-controlled refresh of the Project copies corresponding to `docs/current-mission.md` and `docs/docs-map.md` is complete, and a fresh read-only Project verification confirmed both copies were byte-identical to their canonical files. This completes Baseline v1 across its machine-local Codex, repository-publication, and ChatGPT Project synchronization domains without selecting or authorizing another implementation.
+
 This records a safer AI engineering operating posture. It does not authorize any next implementation, B2c, school implementation, EO-2026-022 implementation, lifecycle change, dependency, external write, protected-content access, plugin or app installation, skill invocation, MCP server, hook, custom agent, browser, Computer Use, Node, branch/ref change, staging, commit, or push. Machine-local, repository, ChatGPT-side, and Git-publication authority remain separate.
 
 No EO lifecycle, merge, retirement, schema, policy, architecture, dependency, CI, Atlas-command, protected-reference, protected-content, school, career, EO-2026-022, or AI-environment change beyond the exact Baseline v1 boundary is authorized.
@@ -506,7 +509,6 @@ EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`.
 1. Evaluate the accepted B2b release and its real consumption evidence.
 2. Evaluate the bounded school-learning capability and EO-2026-022 read-only human control-surface pilot as next-consumer directions.
 3. Obtain a separate owner decision before any next implementation.
-4. Obtain separate owner acceptance and staging, commit, and push authorization for the exact seven Baseline v1 repository paths; after publication, complete the separately owner-controlled refresh of the Project sources currently displayed as `current-mission(3).md` and `docs-map(3).md`, or their future replacement display names, identifying them by canonical owners `docs/current-mission.md` and `docs/docs-map.md` and content, and run a fresh verification chat. Machine-local user configuration remains outside Git.
 
 The next engineering checkpoint must not automatically be B2c. B2c may earn priority only through real consumption evidence and remains unauthorized. School learning and EO-2026-022 also remain directions rather than authorized implementations.
 
@@ -560,8 +562,12 @@ The next engineering checkpoint must not automatically be B2c. B2c may earn prio
 - Baseline v1 locally applied and verified: Yes.
 - Baseline v1 machine-local mutable paths: Four.
 - Baseline v1 repository mutable paths: Seven.
-- Baseline v1 staging, commit, and push authorized: No.
-- Post-publication Project source synchronization completed: No; separately owner-controlled after final commit and push.
+- Baseline v1 repository publication completed: Yes.
+- Baseline v1 publication commit: `460978bd1d74f47e4f26380d51a143706ecc811e`.
+- Post-publication Project source synchronization completed: Yes.
+- Refreshed Project source for `docs/current-mission.md`: `current-mission(4).md`, verified SHA-256 `4f9bf262dfad2aafe668a1bd6f8b3abff3ed7e1dc31246498882e340228350ae`.
+- Refreshed Project source for `docs/docs-map.md`: `docs-map(4).md`, verified SHA-256 `c593e27949ad1534398042412a0f6ed8ffe79234ff0856aa37ea9b4e02d8bb98`.
+- Fresh read-only Project synchronization verification completed: Yes.
 - B2c authorized or automatically selected: No.
 - School or EO-2026-022 implementation authorized: No.
 - Next implementation selected: No.
