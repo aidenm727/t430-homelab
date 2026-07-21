@@ -2,13 +2,21 @@
 
 ## Phase
 
-Task-Scoped Agent Context Compilation Checkpoint B2b Published — Next Implementation Decision Pending
+School Learning v0.1 — Owner-Accepted Manual Course Workspace and Study Loop
 
 ---
 
 ## Mission State
 
-The owner accepted the EO-2026-013 B2b Authorization Review and Recalibration Preservation Plan on 2026-07-20 and separately authorized the exact bounded implementation and documentation promotion recorded by `docs/reviews/aiden-platform-portfolio-recalibration-owner-decision-2026-07-20.md`.
+On 2026-07-21, the owner selected and authorized School Learning v0.1 — Manual Course Workspace and Study Loop as the next implementation checkpoint at canonical baseline `e564ca6ffb2698b456689a582cf322b37a5fe1c8`. The initial implementation was committed at `d017885bc1e86877f494ce70a3c83d193dbd9122` within the exact thirteen-path boundary recorded below.
+
+The first independent review disposition was `BOUNDED CORRECTION REQUIRED`. The owner accepted findings SL-01 through SL-04: incomplete strict validation of persisted state and cross-record references; insufficient repository, worktree, and symlink-safe path confinement; incomplete one-stream material identity and rollback guarantees; and incomplete session provenance for study mode and selected materials. The owner-authorized bounded correction was committed at `df8cd6cab2f3a16a2ae6ac864f9cb76a50424a55` and changed only `tests/test_school_learning.py`, `tools/school_learning/cli.py`, `tools/school_learning/core.py`, and `tools/school_learning/render.py`, all within the original thirteen-path boundary.
+
+The fresh independent re-review disposition is `ACCEPT — implementation-complete and suitable for owner acceptance and merge`. The owner explicitly accepted that disposition on 2026-07-21. The accepted implementation head is `df8cd6cab2f3a16a2ae6ac864f9cb76a50424a55`; the final canonical `main` merge commit does not yet exist and will be established by the separately authorized guarded merge of PR #1.
+
+School Learning v0.1 is owner-accepted and suitable for merge. Merge of PR #1 is authorized as the final publication action. Direct modification of `main`, branch deletion, deployment, and any implementation expansion remain unauthorized.
+
+The owner previously accepted the EO-2026-013 B2b Authorization Review and Recalibration Preservation Plan on 2026-07-20 and separately authorized the exact bounded implementation and documentation promotion recorded by `docs/reviews/aiden-platform-portfolio-recalibration-owner-decision-2026-07-20.md`.
 
 Checkpoint A, Checkpoint A.1, Checkpoint B1a, Checkpoint B1b1, Checkpoint B1b2, and Checkpoint B2a remain complete and owner-accepted. Their behavior is preserved.
 
@@ -37,27 +45,27 @@ The exact B2b code boundary is:
 
 The compiler must remain a pure in-memory library over accepted B2a values. It may assemble one complete deterministic, budgeted, integrity-checked context package and report explicit consumable or non-consumable state. It must not add an Atlas command, provider adapter, file writer, database, network access, model invocation, or protected-content access.
 
-The accepted B2b release remains fixed at this bounded minimum. No post-publication expansion is authorized. Any next implementation requires a separate owner decision after evaluation of the accepted B2b release and the next-consumer direction.
+The accepted B2b release remains fixed at this bounded minimum. The School Learning checkpoint consumes B2b only through a separate read-only handoff proof and does not expand or modify B2b.
 
 B2c — Golden Replay and Explanation remains unauthorized and is not automatically the next engineering checkpoint. No golden replay, explanation layer, `explanation.py`, or golden package fixture is authorized.
 
-A bounded school-learning capability and EO-2026-022 read-only human control-surface pilot are preserved as next-consumer directions. They are not authorized implementations.
+School Learning v0.1 is the owner-accepted next-consumer implementation. EO-2026-022 remains only a captured read-only human control-surface pilot direction and is not an authorized implementation.
 
 EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`. No Engineering Opportunity lifecycle, merge, retirement, or ownership change is authorized.
 
 The published release preserves four explicit architectural limitations: excerpt-only whole-source authenticity requires immutable Git source revalidation; semantic conflict discovery remains outside deterministic B2b validation; the current fixed policy has no optional-evidence rule; and truncated unknown and omission identifiers provide bounded deterministic identity with duplicate failure, not conventional strong collision resistance.
 
-No EO lifecycle, merge, retirement, schema, policy, architecture, dependency, CI, Atlas-command, protected-reference, protected-content, or AI-environment change beyond the completed Aiden AI Environment Baseline v1 boundary is authorized.
+No EO lifecycle, retirement, schema, policy, dependency, CI, Atlas-command, protected-reference, protected-content, EO-2026-022, B2c, B2b expansion, or AI-environment change is authorized. The only remaining School Learning publication authority is the guarded merge of PR #1; branch deletion is not authorized.
 
 ---
 
 ## Mission Intent
 
-Preserve the accepted and published B2b minimum functional release boundary, all completed foundations, and human authority while evaluating the next-consumer direction.
+Preserve the owner-accepted School Learning v0.1 manual course workspace and study loop through the authorized guarded merge of PR #1, then begin pilot use and evaluation without automatic capability expansion, while preserving the accepted and published B2b minimum functional release boundary, all completed foundations, and human authority.
 
 Repository Synchronization Reasoning remains responsible for deterministic internal alignment. Task authority remains external, generated task context remains non-canonical, and a compiled package does not grant permission or prove completion.
 
-The final independent `ACCEPT` disposition, owner acceptance, canonical implementation-completion commit, and successful publication establish B2b as implementation-complete and published. They do not authorize another implementation checkpoint.
+The final independent `ACCEPT` disposition, owner acceptance, canonical implementation-completion commit, and successful publication establish B2b as implementation-complete and published. The separate 2026-07-21 owner decision authorizes School Learning v0.1 without changing B2b.
 
 ---
 
@@ -74,14 +82,61 @@ The final independent `ACCEPT` disposition, owner acceptance, canonical implemen
 - Preserve pure deterministic B2b package compilation, its corrected fixed-policy trust boundary, independently reconstructable validation, omission identity and capacity semantics, whole-source limitation disclosure, and fail-safe hostile-input behavior.
 - Preserve fixed UTF-8 byte allocation, whole-pair optional omission below the public trust boundary, mandatory overflow, package integrity, and executable consumability validation.
 - Preserve the two promoted dated recalibration records and their accepted durable conclusions in canonical owners.
-- Preserve the accepted B2b release boundary and require a separate owner decision for any next implementation.
+- Preserve the accepted B2b release boundary and evaluate it only through the separate read-only School Learning consumer handoff proof.
 - Reserve `explanation.py` and golden replay for proposed B2c.
 - Keep B2c unauthorized and do not treat it as the automatic next engineering checkpoint.
-- Preserve school learning and EO-2026-022 as next-consumer directions without implementing them.
+- Preserve the accepted School Learning v0.1 exact local-only contract and prepare only its authorized guarded PR #1 merge; preserve EO-2026-022 as captured and unimplemented.
 - Preserve the explicit whole-source revalidation, semantic-conflict, no-optional-evidence, and bounded truncated-identifier limitations.
 - Preserve EO-2026-013 as `reviewed` and EO-2026-022 as `captured`.
 - Preserve the completed ChatGPT Project cleanup and permission baseline, the applied and verified Codex Baseline v1, and their exact separated authority boundaries.
-- Preserve architecture, schema, policy, dependency, CI, Atlas-command, lifecycle, protected-reference, EO-2026-022, school, B2c, next-consumer, and AI-environment changes beyond Baseline v1 as excluded.
+- Preserve schema, policy, dependency, CI, Atlas-command, lifecycle, protected-reference, EO-2026-022, B2c, B2b expansion, broader school/career scope, and AI-environment changes as excluded.
+
+---
+
+## Owner-Accepted School Learning v0.1 Checkpoint
+
+The repository owns the bounded architecture and standard-library implementation. Personal course materials, answers, learning history, and generated personal views remain outside Git under an owner-controlled local data root.
+
+The exact authorized path boundary is:
+
+### Create
+
+- `docs/architecture/school-learning.md`
+- `docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md`
+- `school`
+- `tools/school_learning/__init__.py`
+- `tools/school_learning/core.py`
+- `tools/school_learning/render.py`
+- `tools/school_learning/cli.py`
+- `tests/test_school_learning.py`
+
+### Modify
+
+- `docs/current-mission.md`
+- `docs/docs-map.md`
+- `docs/architecture/repository.md`
+- `tools/atlas/platform/document_definitions.py`
+- `docs/aiden-context.md`
+
+The executable exposes exactly five workflow commands: `init`, `add-material`, `study`, `record`, and `render`. It is local-only and standard-library-only. It copies only manually selected PDF, Markdown, and plain-text materials into the owner-controlled data root, generates a bounded study brief for manual use in an approved AI interface, records only owner-reviewed outcomes, and renders deterministic local views. It performs no provider, model, network, database, OCR, indexing, embedding, automatic ingestion, or automatic response-ingestion operation.
+
+Focused verification covers path confinement, exact JSON schemas, material identity and deliberate replacement, grounded briefs, owner-reviewed records, invalid-state rejection, atomic writes, deterministic rendering, HTML escaping, production import boundaries, and the data-root override. Verification also includes Python compilation, a synthetic five-command CLI smoke flow, the established safe broad suite, Atlas validation, missing-definition review, synchronization, and a separate read-only B2b consumer handoff proof.
+
+Final verified evidence for the accepted implementation head is:
+
+- 50 focused School Learning tests passed.
+- Python compilation passed.
+- All five CLI commands passed.
+- 321 safe broad-regression tests passed with one expected guarded skip.
+- Atlas Validate was Valid with zero errors and zero warnings.
+- Atlas Missing was complete.
+- Atlas Sync was Synchronized with zero errors and zero warnings.
+- The read-only B2b consumer handoff proof passed.
+- `git diff --check` passed.
+- Secret, privacy, scope, and unauthorized-path audits passed.
+- Course data and temporary state remained outside Git.
+
+B2b remains fixed. B2c remains unauthorized. EO-2026-022 remains `captured` and unimplemented. No additional School Learning implementation, broader school or career work, lifecycle advancement, dependency, CI, deployment, or next implementation is authorized or selected. Merge of PR #1 is authorized as the final publication action; direct `main` modification and branch deletion are not authorized. After merge, the next step is pilot use and evaluation, not automatic capability expansion.
 
 ---
 
@@ -456,6 +511,7 @@ The Aiden AI Environment Baseline v1 repository state was published at commit `4
 
 ## Current Non-Priorities
 
+- Any additional School Learning implementation unless pilot use and evaluation support a new owner decision.
 - Expanding the accepted and published B2b release without a separate owner decision.
 - Treating candidate production, local verification, independent acceptance, owner acceptance, staging, commit, push, and release as the same event.
 - Beginning B2c, golden replay, or explanation work.
@@ -466,7 +522,7 @@ The Aiden AI Environment Baseline v1 repository state was published at commit `4
 - Expanding B1b2 selection reasoning.
 - Generic discovery, semantic retrieval, embeddings, vector search, or model-selected context.
 - Dependencies, runtime configuration, CI, or reusable workflow expansion.
-- Canonical architecture changes.
+- Canonical architecture changes beyond the exact School Learning architecture and repository ownership registration.
 - Engineering Opportunity lifecycle changes.
 - EO-2026-022 architecture or implementation.
 - AI-environment changes beyond the exact Aiden AI Environment Baseline v1 boundary.
@@ -486,9 +542,13 @@ The final fresh independent acceptance review completed with disposition `ACCEPT
 
 The implementation assembles a pure deterministic context package from explicit typed request, loaded budget policy, immutable snapshot, and accepted B2a materialization values. It performs no repository, filesystem, Git, environment, clock, network, provider, randomness, logging, or model operation.
 
-B2b is independently accepted, owner-accepted, implementation-complete, and published. No additional capability or implementation checkpoint is authorized by that completion.
+B2b is independently accepted, owner-accepted, implementation-complete, and published. School Learning v0.1 was authorized and is now owner-accepted by separate owner decisions; it does not follow from or expand B2b completion.
 
-B2c remains unauthorized. No golden replay or explanation layer is authorized. School learning remains a next-consumer direction, not authorized implementation. EO-2026-022 remains a read-only human control-surface pilot direction, not authorized implementation.
+B2c remains unauthorized. No golden replay or explanation layer is authorized. School Learning v0.1 is implementation-complete and owner-accepted at accepted implementation head `df8cd6cab2f3a16a2ae6ac864f9cb76a50424a55`. EO-2026-022 remains a captured read-only human control-surface pilot direction, not authorized implementation.
+
+The School Learning initial implementation commit is `d017885bc1e86877f494ce70a3c83d193dbd9122`. The first independent review disposition was `BOUNDED CORRECTION REQUIRED`; the owner accepted findings SL-01 through SL-04 and authorized the exact four-path correction. The correction commit is `df8cd6cab2f3a16a2ae6ac864f9cb76a50424a55`. The fresh independent re-review disposition is `ACCEPT — implementation-complete and suitable for owner acceptance and merge`, and the owner explicitly accepted it on 2026-07-21.
+
+The accepted evidence records 50 focused School Learning tests passed, Python compilation passed, all five CLI commands passed, 321 safe broad-regression tests passed with one expected guarded skip, Atlas Validate Valid with zero errors and warnings, Atlas Missing complete, Atlas Sync Synchronized with zero errors and warnings, the read-only B2b consumer handoff proof passed, `git diff --check` passed, secret/privacy/scope/unauthorized-path audits passed, and course data and temporary state outside Git.
 
 The published release retains the following limitations: excerpt-only whole-source authenticity requires immutable Git source revalidation; semantic conflict discovery remains outside deterministic B2b validation; the current fixed policy has no optional-evidence rule; and truncated unknown and omission identifiers provide bounded deterministic identity with duplicate failure, not conventional strong collision resistance.
 
@@ -496,9 +556,9 @@ The Aiden AI Environment Review is complete. The ChatGPT Project cleanup and per
 
 The exact Baseline v1 repository state was published at `460978bd1d74f47e4f26380d51a143706ecc811e`. The owner-controlled refresh of the Project copies corresponding to `docs/current-mission.md` and `docs/docs-map.md` is complete, and a fresh read-only Project verification confirmed both copies were byte-identical to their canonical files. This completes Baseline v1 across its machine-local Codex, repository-publication, and ChatGPT Project synchronization domains without selecting or authorizing another implementation.
 
-This records a safer AI engineering operating posture. It does not authorize any next implementation, B2c, school implementation, EO-2026-022 implementation, lifecycle change, dependency, external write, protected-content access, plugin or app installation, skill invocation, MCP server, hook, custom agent, browser, Computer Use, Node, branch/ref change, staging, commit, or push. Machine-local, repository, ChatGPT-side, and Git-publication authority remain separate.
+This records a safer AI engineering operating posture. The separate School Learning decisions authorize the accepted exact thirteen-path implementation state and the guarded merge of PR #1 as its final publication action. They do not authorize B2c, EO-2026-022 implementation, lifecycle change, dependency, CI, deployment, protected-content access, plugin or app installation, skill invocation, MCP server, hook, custom agent, browser, Computer Use, Node, direct `main` modification, branch deletion, or any next implementation. Machine-local, repository, ChatGPT-side, and Git-publication authority remain separate.
 
-No EO lifecycle, merge, retirement, schema, policy, architecture, dependency, CI, Atlas-command, protected-reference, protected-content, school, career, EO-2026-022, or AI-environment change beyond the exact Baseline v1 boundary is authorized.
+No EO lifecycle, retirement, schema, policy, dependency, CI, Atlas-command, protected-reference, protected-content, broader school/career, EO-2026-022, B2c, B2b expansion, additional School Learning implementation, next implementation, or AI-environment change is authorized. PR #1 merge authority does not expand those boundaries.
 
 EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`.
 
@@ -506,11 +566,11 @@ EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`.
 
 ## Next Milestone
 
-1. Evaluate the accepted B2b release and its real consumption evidence.
-2. Evaluate the bounded school-learning capability and EO-2026-022 read-only human control-surface pilot as next-consumer directions.
-3. Obtain a separate owner decision before any next implementation.
+1. Complete the already-authorized connector-side PR-description update and ready-state transition for PR #1.
+2. Perform the already-authorized guarded merge of PR #1 without deleting `agent/school-learning-v01`; the resulting canonical `main` merge commit will be recorded by that publication action.
+3. Begin School Learning v0.1 pilot use and evaluation without automatically expanding capability or selecting another implementation.
 
-The next engineering checkpoint must not automatically be B2c. B2c may earn priority only through real consumption evidence and remains unauthorized. School learning and EO-2026-022 also remain directions rather than authorized implementations.
+No next implementation is selected. B2c remains unauthorized. EO-2026-022 remains captured and unimplemented.
 
 ---
 
@@ -545,9 +605,20 @@ The next engineering checkpoint must not automatically be B2c. B2c may earn prio
 - Dependency, CI, provider, database, network, or Atlas-command change authorized: No.
 - Protected-reference behavior change or protected-content access authorized: No.
 - Compiler side effects authorized: No.
-- School or career implementation authorized: No.
+- School Learning v0.1 exact thirteen-path implementation authorized: Yes.
+- School Learning v0.1 initial implementation commit: `d017885bc1e86877f494ce70a3c83d193dbd9122`.
+- School Learning v0.1 first independent review completed: Yes.
+- School Learning v0.1 first independent disposition: `BOUNDED CORRECTION REQUIRED`.
+- School Learning v0.1 accepted correction findings: SL-01 through SL-04.
+- School Learning v0.1 exact four-path correction completed: Yes.
+- School Learning v0.1 correction and accepted implementation head: `df8cd6cab2f3a16a2ae6ac864f9cb76a50424a55`.
+- School Learning v0.1 fresh independent re-review completed: Yes.
+- School Learning v0.1 final independent disposition: `ACCEPT — implementation-complete and suitable for owner acceptance and merge`.
+- School Learning v0.1 owner-accepted on 2026-07-21: Yes.
+- School Learning v0.1 suitable for merge: Yes.
+- Broader school or career implementation authorized: No.
 - EO-2026-022 architecture or implementation authorized: No.
-- School-learning capability preserved as a next consumer direction: Yes.
+- School Learning v0.1 owner-accepted as the implemented next consumer: Yes.
 - EO-2026-022 read-only pilot preserved as a next consumer direction: Yes.
 - EO lifecycle, merge, retirement, or ownership change authorized: No.
 - EO-2026-013 lifecycle state: Reviewed.
@@ -569,10 +640,14 @@ The next engineering checkpoint must not automatically be B2c. B2c may earn prio
 - Refreshed Project source for `docs/docs-map.md`: `docs-map(4).md`, verified SHA-256 `c593e27949ad1534398042412a0f6ed8ffe79234ff0856aa37ea9b4e02d8bb98`.
 - Fresh read-only Project synchronization verification completed: Yes.
 - B2c authorized or automatically selected: No.
-- School or EO-2026-022 implementation authorized: No.
+- School Learning v0.1 implementation complete and owner-accepted: Yes.
+- EO-2026-022 implementation authorized: No.
 - Next implementation selected: No.
 - AI-environment changes beyond Baseline v1 authorized: No.
-- Separate owner decision required before any next implementation: Yes.
-- Next implementation selected: No.
-- Further staging, commit, push, or branch change authorized by this mission: No.
+- Separate owner decision required before any additional School Learning, broader school/career, or next implementation: Yes.
+- School Learning implementation branch and PR #1 published: Yes.
+- Guarded merge of PR #1 authorized as the final publication action: Yes.
+- Direct `main` modification authorized: No.
+- Branch deletion authorized: No.
+- Post-merge next step: Pilot use and evaluation without automatic capability expansion.
 - Accepted B2b release boundary remains fixed: Yes.

@@ -355,6 +355,33 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/architecture/school-learning.md": DocumentDefinition(
+        path="docs/architecture/school-learning.md",
+        purpose="Defines the bounded School Learning workflow, owner-controlled local course-data contract, manual approved-AI handoff, and generated local study views.",
+        canonical=True,
+        generated=False,
+        capability="Learning and Research",
+        status="active",
+        tags=[
+            "architecture",
+            "school-learning",
+            "learning-research",
+            "knowledge-context",
+            "interaction",
+            "interaction-experience",
+            "human-agency",
+        ],
+        related=[
+            "docs/architecture/platform.md",
+            "docs/architecture/capabilities.md",
+            "docs/architecture/ai-operating-model.md",
+            "docs/architecture/knowledge-authority.md",
+            "docs/architecture/repository.md",
+            "docs/current-mission.md",
+            "docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md",
+        ],
+    ),
+
     "docs/task-context/index.md": DocumentDefinition(
         path="docs/task-context/index.md",
         purpose="Owns the identity, inventory, stewardship, loading contract, and checkpoint boundary for repository-owned task-context schemas and policies.",
@@ -586,6 +613,27 @@ DOCUMENT_DEFINITIONS = {
             "docs/standards/engineering-collaboration.md",
             "docs/reviews/ai-operating-baseline-2026-07-14.md",
             "docs/reviews/ai-workflow-evaluation-cycle-2026-07.md",
+        ],
+    ),
+
+    "docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md": DocumentDefinition(
+        path="docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md",
+        purpose="Preserves the accepted dated owner decision for the exact School Learning v0.1 implementation, verification, publication boundary, exclusions, and later acceptance gate.",
+        canonical=False,
+        generated=False,
+        capability="Learning and Research",
+        status="accepted",
+        tags=[
+            "school-learning",
+            "owner-decision",
+            "human-reviewed",
+            "implementation-authorization",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/current-mission.md",
+            "docs/architecture/school-learning.md",
         ],
     ),
 
