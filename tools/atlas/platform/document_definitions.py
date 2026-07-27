@@ -357,7 +357,7 @@ DOCUMENT_DEFINITIONS = {
 
     "docs/architecture/school-learning.md": DocumentDefinition(
         path="docs/architecture/school-learning.md",
-        purpose="Defines the bounded School Learning workflow, owner-controlled local course-data contract, manual approved-AI handoff, and generated local study views.",
+        purpose="Defines the bounded School Learning workflow, owner-controlled local course-data contract, Guided Study Handoff, manual approved-AI use, and generated local study views.",
         canonical=True,
         generated=False,
         capability="Learning and Research",
@@ -378,6 +378,7 @@ DOCUMENT_DEFINITIONS = {
             "docs/architecture/knowledge-authority.md",
             "docs/architecture/repository.md",
             "docs/current-mission.md",
+            "docs/reviews/school-learning-v0-1-pilot-evaluation-2026-07-21.md",
             "docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md",
         ],
     ),
@@ -634,6 +635,28 @@ DOCUMENT_DEFINITIONS = {
         related=[
             "docs/current-mission.md",
             "docs/architecture/school-learning.md",
+        ],
+    ),
+
+    "docs/reviews/school-learning-v0-1-pilot-evaluation-2026-07-21.md": DocumentDefinition(
+        path="docs/reviews/school-learning-v0-1-pilot-evaluation-2026-07-21.md",
+        purpose="Preserves dated School Learning v0.1 pilot evidence, the bounded v0.1.1 Guided Study Handoff decision, local verification evidence, independent and owner acceptance, preserved human authority, future decisions, and bounded publication authority.",
+        canonical=False,
+        generated=False,
+        capability="Learning and Research",
+        status="evidence",
+        tags=[
+            "school-learning",
+            "pilot-evaluation",
+            "guided-study-handoff",
+            "human-reviewed",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/current-mission.md",
+            "docs/architecture/school-learning.md",
+            "docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md",
         ],
     ),
 

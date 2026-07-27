@@ -52,7 +52,7 @@ Repository Objects and engineering tools support these layers.
 
 ## Learning and Research Architecture
 
-- `docs/architecture/school-learning.md` — Bounded School Learning workflow, owner-controlled local data contract, manual approved-AI handoff, and generated local views.
+- `docs/architecture/school-learning.md` — Bounded School Learning workflow, owner-controlled local data contract, Guided Study Handoff, and generated local views.
 
 ## Engineering Architecture
 
@@ -121,6 +121,7 @@ Repository Objects and engineering tools support these layers.
 
 ## Portfolio Reviews
 
+- `docs/reviews/school-learning-v0-1-pilot-evaluation-2026-07-21.md` — Dated non-canonical pilot evidence recording confirmed v0.1 strengths and friction, the bounded v0.1.1 Guided Study Handoff decision, local verification, independent acceptance, owner acceptance, preserved human authority, and bounded publication authority.
 - `docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md` — Accepted dated non-canonical owner decision evidence for the exact School Learning v0.1 implementation and publication boundary.
 - `docs/reviews/aiden-platform-owner-intent-recalibration-2026-07-19.md` — Owner-authored and owner-accepted non-canonical dated evidence preserving durable platform purpose, desired agency outcomes, human ownership, near-term direction, cautions, and unresolved decisions.
 - `docs/reviews/aiden-ai-environment-baseline-v1-2026-07-20.md` — Accepted dated non-canonical evidence preserving the complete ChatGPT Project cleanup and permissions baseline, exact Codex Baseline v1 configuration and instructions, authority boundaries, verification, hashes, rollback, limitations, and deferrals.

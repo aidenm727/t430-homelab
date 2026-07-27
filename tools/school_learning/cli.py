@@ -9,10 +9,10 @@ from pathlib import Path
 from .core import (
     SchoolLearningError,
     add_material,
-    build_study_brief,
     default_data_root,
     ensure_topic,
     initialize_course,
+    prepare_study_handoff,
     record_session,
     workspace,
 )
@@ -24,7 +24,9 @@ def _root(value: str | None) -> Path:
 
 
 def parser() -> argparse.ArgumentParser:
-    result = argparse.ArgumentParser(prog="school", description="School Learning v0.1 local course workspace")
+    result = argparse.ArgumentParser(
+        prog="school", description="School Learning v0.1.1 local course workspace"
+    )
     result.add_argument("--data-root", help="owner-controlled course-data root")
     commands = result.add_subparsers(dest="command", required=True)
 
@@ -81,7 +83,15 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "study":
             ws = workspace(root, args.term, args.course_id)
             ensure_topic(ws, args.topic_id, args.topic_title, args.material)
-            print(build_study_brief(ws, args.topic_id, args.mode, args.objective))
+            handoff = prepare_study_handoff(ws, args.topic_id, args.mode, args.objective)
+            print("Study handoff ready.")
+            print(f"Handoff: {handoff['root']}")
+            print(f"Attachments: {handoff['attachments']}")
+            print(f"Prompt: {handoff['prompt']}")
+            print(
+                "Attach all files under "
+                f"{handoff['attachments']} to the approved AI interface, then paste prompt.txt."
+            )
         elif args.command == "record":
             ws = workspace(root, args.term, args.course_id)
             value = record_session(
