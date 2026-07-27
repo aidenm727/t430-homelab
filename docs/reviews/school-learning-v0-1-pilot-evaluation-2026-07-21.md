@@ -7,7 +7,7 @@
 - Decision authority: Owner
 - Evaluated release: School Learning v0.1 — Manual Course Workspace and Study Loop
 - Authorized follow-up: School Learning v0.1.1 — Guided Study Handoff
-- Current checkpoint: Independently and owner accepted as implementation-complete; bounded publication authorized
+- Current checkpoint: Independently and owner accepted as implementation-complete; published
 
 This record preserves the pilot observation and the bounded product decision that followed it. Canonical product intent remains in `docs/architecture/school-learning.md`, and active checkpoint state remains in `docs/current-mission.md`.
 
@@ -99,4 +99,6 @@ Pull-request creation, unrelated paths, dependencies, architecture or product ex
 
 ## Next Gate
 
-Publish the exact accepted nine-path candidate to `origin/main`, verify the final state, and stop.
+The exact accepted nine-path state was committed at `9782eebec049b9b932cc583def499a44f1cbba2c` and pushed directly to `origin/main` on 2026-07-27. That commit is the canonical School Learning v0.1.1 implementation-completion commit and publishes Guided Study Handoff.
+
+Repository publication is complete. Stop without beginning another capability or expanding scope. The separate owner-controlled ChatGPT Project source-refresh policy remains governed by `docs/reviews/aiden-ai-environment-baseline-v1-2026-07-20.md`.

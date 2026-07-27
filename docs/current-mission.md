@@ -2,7 +2,7 @@
 
 ## Phase
 
-School Learning v0.1.1 Guided Study Handoff — Independently and Owner Accepted; Publication Authorized
+School Learning v0.1.1 Guided Study Handoff — Published
 
 ---
 
@@ -17,6 +17,8 @@ Local verification completed with 74 focused School Learning tests passing, Pyth
 The final independent acceptance review returned disposition `A. ACCEPT — implementation-complete and suitable for owner acceptance`. On 2026-07-27, the owner accepted that independent disposition and owner-accepted School Learning v0.1.1 — Guided Study Handoff as implementation-complete.
 
 The owner separately authorized the bounded publication checkpoint for this exact accepted candidate: record independent and owner acceptance, regenerate repository-owned generated context, verify the exact candidate, stage exactly the existing eight modified tracked paths and one untracked pilot-evaluation record, create the minimum coherent commit or commits, push them to `origin/main`, and verify final repository, Atlas, and published-documentation state. Pull-request creation, unrelated paths, dependencies, architecture or product expansion, branch deletion, another capability, and every other external action remain unauthorized.
+
+The exact accepted nine-path state was committed at `9782eebec049b9b932cc583def499a44f1cbba2c` and pushed directly to `origin/main` on 2026-07-27. That commit is the canonical School Learning v0.1.1 implementation-completion commit and publishes Guided Study Handoff.
 
 On 2026-07-21, the owner selected and authorized School Learning v0.1 — Manual Course Workspace and Study Loop as the next implementation checkpoint at canonical baseline `e564ca6ffb2698b456689a582cf322b37a5fe1c8`. The initial implementation was committed at `d017885bc1e86877f494ce70a3c83d193dbd9122` within the exact thirteen-path boundary recorded below.
 
@@ -68,7 +70,7 @@ The accepted B2b release remains fixed at this bounded minimum. The School Learn
 
 B2c — Golden Replay and Explanation remains unauthorized and is not automatically the next engineering checkpoint. No golden replay, explanation layer, `explanation.py`, or golden package fixture is authorized.
 
-School Learning v0.1 remains the published implemented next consumer. Its owner-controlled pilot evidence selected only the bounded v0.1.1 Guided Study Handoff follow-up now independently accepted, owner-accepted, and authorized for bounded publication. EO-2026-022 remains only a captured read-only human control-surface pilot direction and is not an authorized implementation.
+School Learning v0.1 remains the published implemented next consumer. Its owner-controlled pilot evidence selected only the bounded v0.1.1 Guided Study Handoff follow-up, now independently accepted, owner-accepted, implementation-complete, and published. EO-2026-022 remains only a captured read-only human control-surface pilot direction and is not an authorized implementation.
 
 EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`. No Engineering Opportunity lifecycle, merge, retirement, or ownership change is authorized.
 
@@ -80,7 +82,7 @@ No EO lifecycle, retirement, schema, policy, dependency, CI, Atlas-command, prot
 
 ## Mission Intent
 
-Publish the exact independently accepted and owner-accepted School Learning v0.1.1 Guided Study Handoff candidate to `origin/main`, then stop while preserving the published v0.1 and B2b boundaries, all completed foundations, provider-independent manual AI use, and human recording authority.
+Preserve the published School Learning v0.1.1 Guided Study Handoff checkpoint and stop without selecting or beginning further implementation, while retaining the published v0.1 and B2b boundaries, all completed foundations, provider-independent manual AI use, and human recording authority.
 
 Repository Synchronization Reasoning remains responsible for deterministic internal alignment. Task authority remains external, generated task context remains non-canonical, and a compiled package does not grant permission or prove completion.
 
@@ -104,8 +106,8 @@ The final independent `ACCEPT` disposition, owner acceptance, canonical implemen
 - Preserve the accepted B2b release boundary and evaluate it only through the separate read-only School Learning consumer handoff proof.
 - Reserve `explanation.py` and golden replay for proposed B2c.
 - Keep B2c unauthorized and do not treat it as the automatic next engineering checkpoint.
-- Preserve the published School Learning v0.1 exact local-only contract while publishing only the accepted v0.1.1 Guided Study Handoff package; preserve provider-independent manual AI use and owner-reviewed recording authority.
-- Complete only the bounded publication checkpoint; do not create a pull request, deploy, delete branches, begin another capability, or expand product or architecture scope.
+- Preserve the published School Learning v0.1 exact local-only contract and published v0.1.1 Guided Study Handoff package; preserve provider-independent manual AI use and owner-reviewed recording authority.
+- Stop after the completed bounded publication checkpoint; do not create a pull request, deploy, delete branches, begin another capability, or expand product or architecture scope.
 - Preserve the explicit whole-source revalidation, semantic-conflict, no-optional-evidence, and bounded truncated-identifier limitations.
 - Preserve EO-2026-013 as `reviewed` and EO-2026-022 as `captured`.
 - Preserve the completed ChatGPT Project cleanup and permission baseline, the applied and verified Codex Baseline v1, and their exact separated authority boundaries.
@@ -144,7 +146,7 @@ The implementation invokes no provider, model, network, OCR, parser, index, embe
 
 The dated pilot evaluation is non-canonical evidence. The architecture owns the durable Guided Study Handoff contract, this Current Mission owns active checkpoint state, and generated context remains derived. Larger dashboard, result-capture, topic-discovery, scheduling, provider integration, and public-application work remain future decisions.
 
-Local implementation and verification are complete. The final independent disposition is `A. ACCEPT — implementation-complete and suitable for owner acceptance`, and the owner has accepted that disposition and owner-accepted the checkpoint as implementation-complete. The exact nine-path candidate is authorized for the bounded publication checkpoint and remains uncommitted and unpublished until that checkpoint succeeds.
+Local implementation and verification are complete. The final independent disposition is `A. ACCEPT — implementation-complete and suitable for owner acceptance`, and the owner accepted that disposition and owner-accepted the checkpoint as implementation-complete. The exact nine-path candidate was committed at `9782eebec049b9b932cc583def499a44f1cbba2c`, pushed to `origin/main`, and published.
 
 ---
 
@@ -533,6 +535,7 @@ The Aiden AI Environment Baseline v1 repository state was published at commit `4
 
 ## Recently Completed
 
+- Independently accepted, owner-accepted, committed, and published School Learning v0.1.1 — Guided Study Handoff at canonical implementation-completion commit `9782eebec049b9b932cc583def499a44f1cbba2c` on 2026-07-27.
 - Published Aiden AI Environment Baseline v1 at `460978bd1d74f47e4f26380d51a143706ecc811e` and completed the owner-controlled ChatGPT Project source refresh and fresh read-only synchronization verification on 2026-07-21.
 - Completed and verified the Aiden Platform ChatGPT Project cleanup and permission baseline, including the exact 11-source pack and refresh policy, retained Default and global memory posture, enabled Library access, Candid personalization, training Off, Work network On, Gmail disconnected, GitHub `Allow read actions`, and default exclusion of `Publish Changes` on 2026-07-20.
 - Completed the read-only Codex environment inventory, accepted the final Aiden AI Environment Baseline v1 design, and locally applied and verified its exact four-user-file and seven-repository-path boundary on 2026-07-20.
@@ -611,7 +614,7 @@ The Aiden AI Environment Review is complete. The ChatGPT Project cleanup and per
 
 The exact Baseline v1 repository state was published at `460978bd1d74f47e4f26380d51a143706ecc811e`. The owner-controlled refresh of the Project copies corresponding to `docs/current-mission.md` and `docs/docs-map.md` is complete, and a fresh read-only Project verification confirmed both copies were byte-identical to their canonical files. This completes Baseline v1 across its machine-local Codex, repository-publication, and ChatGPT Project synchronization domains without selecting or authorizing another implementation.
 
-This records a safer AI engineering operating posture. The separate School Learning v0.1 decisions produced the accepted exact thirteen-path implementation state and completed its PR #1 publication on canonical `main`. The later v0.1.1 decisions authorize only the exact accepted Guided Study Handoff boundary and its bounded publication to `origin/main`. Neither decision authorizes B2c, EO-2026-022 implementation, lifecycle change, dependency, CI, deployment, protected-content access, plugin or app installation, skill invocation, MCP server, hook, custom agent, browser, Computer Use, Node, branch deletion, or further implementation. Machine-local, repository, ChatGPT-side, and Git-publication authority remain separate.
+This records a safer AI engineering operating posture. The separate School Learning v0.1 decisions produced the accepted exact thirteen-path implementation state and completed its PR #1 publication on canonical `main`. The later v0.1.1 decisions produced the exact independently accepted and owner-accepted Guided Study Handoff state and completed its bounded direct publication at `9782eebec049b9b932cc583def499a44f1cbba2c`. Neither decision authorizes B2c, EO-2026-022 implementation, lifecycle change, dependency, CI, deployment, protected-content access, plugin or app installation, skill invocation, MCP server, hook, custom agent, browser, Computer Use, Node, branch deletion, or further implementation. Machine-local, repository, ChatGPT-side, and Git-publication authority remain separate.
 
 No EO lifecycle, retirement, schema, policy, dependency, CI, Atlas-command, protected-reference, protected-content, broader school/career, EO-2026-022, B2c, B2b expansion, School Learning work beyond v0.1.1, further implementation, or AI-environment change is authorized. Completed PR #1 publication does not expand those boundaries.
 
@@ -621,9 +624,9 @@ EO-2026-013 remains `reviewed`. EO-2026-022 remains `captured`.
 
 ## Next Milestone
 
-Publish the exact independently accepted and owner-accepted School Learning v0.1.1 Guided Study Handoff candidate to `origin/main`.
+No next engineering implementation checkpoint is selected.
 
-The checkpoint is limited to the exact nine-path candidate, truthful acceptance recording, generated-context regeneration, verification, minimum coherent commit sequence, direct push to `origin/main`, and final state verification. Pull-request creation, merge operations, deployment, broader School Learning, career work, dependencies, CI, provider integration, lifecycle changes, architecture expansion, and branch deletion remain unauthorized. B2b remains fixed. B2c remains unauthorized. EO-2026-022 remains captured and unimplemented.
+The bounded v0.1.1 repository publication checkpoint is complete. The remaining post-publication synchronization is the manual owner-controlled refresh and verification of the ChatGPT Project copies corresponding to changed pack sources `docs/current-mission.md` and `docs/docs-map.md`; that provider-side action is separate from repository publication and is not performed by Codex. Pull-request creation, merge operations, deployment, broader School Learning, career work, dependencies, CI, provider integration, lifecycle changes, architecture expansion, and branch deletion remain unauthorized. B2b remains fixed. B2c remains unauthorized. EO-2026-022 remains captured and unimplemented.
 
 ---
 
@@ -681,7 +684,9 @@ The checkpoint is limited to the exact nine-path candidate, truthful acceptance 
 - School Learning v0.1.1 independent acceptance review completed: Yes.
 - School Learning v0.1.1 final independent disposition: `A. ACCEPT — implementation-complete and suitable for owner acceptance`.
 - School Learning v0.1.1 owner-accepted on 2026-07-27: Yes.
-- School Learning v0.1.1 staged, committed, pushed, merged, or published: No.
+- School Learning v0.1.1 canonical implementation-completion commit: `9782eebec049b9b932cc583def499a44f1cbba2c`.
+- School Learning v0.1.1 completion commit pushed to `origin/main`: Yes.
+- School Learning v0.1.1 published: Yes.
 - Broader school or career implementation authorized: No.
 - EO-2026-022 architecture or implementation authorized: No.
 - School Learning v0.1 owner-accepted as the implemented next consumer: Yes.
@@ -716,7 +721,8 @@ The checkpoint is limited to the exact nine-path candidate, truthful acceptance 
 - Commit and push of the exact accepted v0.1.1 candidate directly to `origin/main` authorized: Yes.
 - Pull-request creation or merge operation for v0.1.1 authorized: No.
 - Branch deletion authorized: No.
-- Active next milestone: Bounded publication of the exact accepted local v0.1.1 candidate.
+- Further engineering implementation milestone selected: No.
+- Remaining owner-controlled Project source refresh for changed `docs/current-mission.md` and `docs/docs-map.md`: Pending.
 - Pilot use is operational evaluation rather than another engineering implementation checkpoint: Yes.
 - Publication automatically authorizes capability expansion: No.
 - Accepted B2b release boundary remains fixed: Yes.
