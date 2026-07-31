@@ -17,6 +17,10 @@ def current_mission() -> Path:
     return docs_dir() / "current-mission.md"
 
 
+def current_state() -> Path:
+    return docs_dir() / "current-state.json"
+
+
 def context_file() -> Path:
     return docs_dir() / "aiden-context.md"
 

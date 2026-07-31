@@ -1,4 +1,8 @@
-from atlas.platform.engineering_state import EngineeringState, load
+from atlas.platform.active_state import ActiveStateError
+from atlas.platform.discovery import document_catalog
+from atlas.platform.engineering_state import load
+from atlas.platform.interpretation.readiness import build_readiness_projection
+from atlas.platform.reasoning.models import ReadinessProjection
 
 
 NAME = "state"
@@ -10,17 +14,8 @@ def register(subparsers):
     parser.set_defaults(func=run)
 
 
-def readiness_message(state: EngineeringState) -> str:
-    if not state.repository_clean:
-        return "Working tree has changes. Review them before starting new work."
-
-    if state.mission_phase == "Unknown":
-        return "Mission could not be loaded. Check docs/current-mission.md."
-
-    if state.next_milestone == "Unknown":
-        return "Next milestone could not be loaded. Check docs/current-mission.md."
-
-    return "Ready for engineering work."
+def readiness_message(projection: ReadinessProjection) -> str:
+    return projection.recommended_action
 
 
 def print_paths(paths: list[str]) -> None:
@@ -33,7 +28,18 @@ def print_paths(paths: list[str]) -> None:
 
 
 def run(args):
-    state = load()
+    try:
+        state = load()
+    except ActiveStateError as error:
+        print("Atlas Engineering State")
+        print("=======================")
+        print()
+        print("Canonical Active State")
+        print("----------------------")
+        print("Invalid — Atlas failed closed.")
+        print(str(error))
+        raise SystemExit(1) from error
+    projection = build_readiness_projection(document_catalog(), state)
 
     print("Atlas Engineering State")
     print("=======================")
@@ -41,17 +47,57 @@ def run(args):
     print(f"Repository: {state.repository}")
     print()
 
-    print("Mission")
-    print("-------")
-    print(f"Phase: {state.mission_phase}")
-    print(f"Next Milestone: {state.next_milestone}")
+    print("Canonical Active State")
+    print("----------------------")
+    print(f"Phase: {projection.phase}")
+    print(f"Phase Lifecycle: {projection.phase_lifecycle}")
+    print(f"Work Selection: {projection.work_selection_state}")
+    print(f"Selected Checkpoint: {projection.selected_checkpoint or 'None'}")
+    print(f"Intentional Idle: {'Yes' if projection.intentional_idle else 'No'}")
+    print(f"Effective Date: {state.active_state.freshness.effective_date.isoformat()}")
+    print(f"Decision Required: {projection.decision_required or 'None'}")
     print()
 
     print("Git")
     print("---")
     print(f"Branch: {state.branch}")
     print(f"Latest Commit: {state.latest_commit}")
-    print(f"Working Tree: {'Clean' if state.repository_clean else 'Dirty'}")
+    print(f"Working Tree: {projection.working_tree_observation}")
+    print()
+
+    print("Readiness Projection")
+    print("--------------------")
+    print(f"Repository Health: {projection.repository_health}")
+    print(f"Validation: {projection.validation_status}")
+    print(f"Synchronization: {projection.synchronization_status}")
+    print()
+
+    print("Validation Scope")
+    print("----------------")
+    print_paths(list(projection.validation_scope))
+    print()
+
+    print("Synchronization Scope")
+    print("---------------------")
+    print_paths(list(projection.synchronization_scope))
+    print()
+
+    print("External Authority")
+    print("------------------")
+    print(f"Task: {projection.task_authority}")
+    print(f"Implementation: {projection.implementation_authority}")
+    print(f"Publication: {projection.publication_authority}")
+    print("Atlas Authority Conclusion: Not established")
+    print()
+
+    print("Blockers")
+    print("--------")
+    print_paths(list(projection.blockers))
+    print()
+
+    print("Unknowns")
+    print("--------")
+    print_paths(list(projection.unknowns))
     print()
 
     print("Architecture Sources")
@@ -81,4 +127,4 @@ def run(args):
 
     print("Engineering Readiness")
     print("---------------------")
-    print(readiness_message(state))
+    print(readiness_message(projection))

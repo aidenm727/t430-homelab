@@ -1,6 +1,6 @@
+from atlas.platform.active_state import ActiveStateError
 from atlas.platform.discovery import document_catalog
 from atlas.platform.engineering_state import load
-from atlas.platform.reasoning import build_guidance
 from atlas.platform.reasoning.review import build_engineering_review
 
 
@@ -27,9 +27,19 @@ def print_list(title: str, values: list[str]) -> None:
 
 def run(args):
     catalog = document_catalog()
-    state = load()
+    try:
+        state = load()
+    except ActiveStateError as error:
+        print("Atlas Engineering Bootstrap")
+        print("===========================")
+        print()
+        print("Canonical Active State")
+        print("----------------------")
+        print("Invalid — Atlas failed closed.")
+        print(str(error))
+        raise SystemExit(1) from error
     review = build_engineering_review(catalog, state)
-    guidance = build_guidance(catalog, state)
+    readiness = review.readiness
 
     print("Atlas Engineering Bootstrap")
     print("===========================")
@@ -37,32 +47,56 @@ def run(args):
 
     print("Purpose")
     print("-------")
-    print("Use this output to establish live engineering state before entering Engineering Mode.")
+    print(
+        "Use this output to establish repository observations and separate "
+        "readiness dimensions before engineering decisions."
+    )
     print()
 
     print("Session Readiness")
     print("-----------------")
-    print(f"Health: {review.health}")
-    print(f"Validation: {review.validation_status}")
-    print(f"Synchronization: {review.synchronization_status}")
-    print(f"Working Tree: {'Clean' if review.repository_clean else 'Dirty'}")
-    print(f"Current Phase: {review.current_phase}")
+    print(f"Repository Health: {readiness.repository_health}")
+    print(f"Validation: {readiness.validation_status}")
+    print(f"Synchronization: {readiness.synchronization_status}")
+    print(f"Working Tree: {readiness.working_tree_observation}")
+    print(f"Current Phase: {readiness.phase}")
+    print(f"Phase Lifecycle: {readiness.phase_lifecycle}")
+    print(f"Work Selection: {readiness.work_selection_state}")
+    print(
+        "Selected Checkpoint: "
+        f"{readiness.selected_checkpoint or 'None'}"
+    )
+    print(f"Intentional Idle: {'Yes' if readiness.intentional_idle else 'No'}")
     print()
 
-    print("Mission")
-    print("-------")
-    print(f"Phase: {state.mission_phase}")
-    print(f"Next Milestone: {state.next_milestone}")
+    print_list("Validation Scope", list(readiness.validation_scope))
+    print()
+    print_list("Synchronization Scope", list(readiness.synchronization_scope))
+    print()
+
+    print("External Authority")
+    print("------------------")
+    print(f"Task: {readiness.task_authority}")
+    print(f"Implementation: {readiness.implementation_authority}")
+    print(f"Publication: {readiness.publication_authority}")
+    print("Atlas Authority Conclusion: Not established")
+    print()
+
+    print("Selected Work")
+    print("-------------")
+    print(f"Phase: {readiness.phase}")
+    print(f"Checkpoint: {readiness.selected_checkpoint or 'None'}")
+    print(f"Decision Required: {readiness.decision_required or 'None'}")
     print()
 
     print("Recommended Action")
     print("------------------")
-    print(review.recommended_action)
+    print(readiness.recommended_action)
     print()
 
     print("Reason")
     print("------")
-    print(review.reason)
+    print(readiness.reason)
     print()
 
     print("Milestone")
@@ -78,7 +112,9 @@ def run(args):
     print_list("Next Milestone Actions", review.milestone_next_actions)
     print()
 
-    print_list("Blockers", review.blockers)
+    print_list("Blockers", list(readiness.blockers))
+    print()
+    print_list("Unknowns", list(readiness.unknowns))
     print()
     print_list("Evidence", review.evidence)
     print()
@@ -87,8 +123,6 @@ def run(args):
         [document.path for document in review.relevant_documents],
     )
     print()
-
-    ready = not review.blockers
 
     print("Repository Understanding")
     print("------------------------")
@@ -100,32 +134,9 @@ def run(args):
     print("INSPECTED")
     print()
 
-    print("Engineering Mode")
-    print("----------------")
-    print("READY" if ready else "NOT READY")
-    print()
-
-    print("Engineering Mode Reason")
-    print("-----------------------")
-    if ready:
-        print("Repository validation, synchronization, and live engineering state support implementation.")
-    else:
-        print(review.reason)
-    print()
-
-    print("ChatGPT Guidance")
-    print("----------------")
-    if ready:
-        print("Engineering Mode has been established.")
-        print("Proceed using the active engineering capability and current engineering checkpoint.")
-    else:
-        print("Engineering Mode has not been established.")
-        print("Resolve the blockers above before proposing implementation.")
-    print()
-
     print("Next Checkpoint")
     print("---------------")
-    print(guidance.recommended_action)
+    print(readiness.recommended_action)
     print()
 
     print_list("Suggested Commands", review.suggested_commands)

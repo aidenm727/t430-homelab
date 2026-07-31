@@ -3,6 +3,7 @@ from atlas.platform.engineering_state import EngineeringState
 from atlas.platform.reasoning.guidance import build_guidance
 from atlas.platform.reasoning.intelligence import build_engineering_intelligence
 from atlas.platform.interpretation import build_engineering_interpretation
+from atlas.platform.interpretation.readiness import project_readiness
 from atlas.platform.reasoning.models import EngineeringReviewReport
 
 
@@ -14,8 +15,10 @@ def build_engineering_review(
     guidance = build_guidance(catalog, state)
 
     interpretation = build_engineering_interpretation(intelligence, guidance)
+    readiness = project_readiness(intelligence, guidance)
 
     return EngineeringReviewReport(
+        readiness=readiness,
         validation_status=intelligence.validation_status,
         synchronization_status=intelligence.synchronization_status,
         repository_clean=intelligence.repository_clean,

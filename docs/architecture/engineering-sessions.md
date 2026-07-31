@@ -21,7 +21,7 @@ Every engineering session should start from a shared, deterministic understandin
 Before implementation begins, the session should establish:
 
 - current repository state
-- current mission
+- canonical active state and its Current Mission companion
 - relevant architecture
 - Atlas validation status
 - engineering environment readiness
@@ -39,15 +39,21 @@ The repository is the canonical source of truth for engineering sessions.
 A session should prefer repository knowledge in this order:
 
 1. Architecture
-2. Current mission
-3. Infrastructure records
-4. Operations records
-5. Roadmaps
-6. Generated context
-7. Git state
-8. Current conversation
+2. Canonical active state
+3. Current Mission companion
+4. Infrastructure records
+5. Operations records
+6. Roadmaps
+7. Generated context
+8. Git state
+9. Current conversation
 
 Generated context may accelerate understanding, but it should not replace canonical documents.
+
+This knowledge order determines what sources to trust, not what actions are
+authorized. `AGENTS.md` is the primary repository-local authority-interpretation
+contract, and explicit current owner instruction remains external to repository
+state.
 
 ---
 
@@ -73,9 +79,9 @@ The current canonical startup command is:
 
     ./atlas bootstrap
 
-This command establishes live engineering state before Engineering Mode begins.
-
-Atlas Bootstrap is the authoritative mechanism for determining whether Engineering Mode may begin.
+This command establishes deterministic repository observations and the shared
+readiness projection. It does not establish task, implementation, publication,
+deployment, or external-write authority.
 
 Supporting startup commands include:
 
@@ -137,9 +143,14 @@ Choose the next responsible engineering checkpoint.
 
 This decision should be based on architecture, current mission, validation state, and observed engineering friction.
 
+Repository work selection records the decision but does not grant permission to
+act. A checkpoint may be selected only by explicit owner decision.
+
 ## 5. Implement
 
-Only begin implementation after the session has enough context to avoid assumption-driven work.
+Only begin implementation after the session has enough context to avoid
+assumption-driven work and explicit owner instruction has separately established
+bounded implementation authority.
 
 ## 6. Verify
 
@@ -155,7 +166,8 @@ Ensure the repository layers still agree after the change.
 
 ## 9. Commit and Push
 
-Commit only after verification and documentation are complete.
+Commit and push only after verification and documentation are complete and the
+owner has separately authorized the exact ref and external-write actions.
 
 ---
 
@@ -204,9 +216,10 @@ Current local and repository state.
 Examples:
 
 - Git status
-- current branch
+- current branch as a live observation
 - validation status
-- active mission
+- canonical phase and selected work
+- task, implementation, and publication authority as external/not established by Atlas
 - staged changes
 - untracked files
 
@@ -260,6 +273,8 @@ The long-term goal is for any future engineering session to begin from the same 
 
 # Engineering Principle
 
-A session is not ready for implementation until it understands the platform well enough to avoid preventable mistakes.
+A session is not ready for deliberate engineering judgment until it understands
+the platform well enough to avoid preventable mistakes. Understanding and
+repository health do not establish implementation authority.
 
 Engineering sessions should improve the platform not only through planned work, but also by revealing where the platform is not yet self-explanatory.

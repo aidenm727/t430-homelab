@@ -6,6 +6,10 @@ This document defines how the human engineer, Atlas, ChatGPT, and the repository
 
 Its purpose is to make engineering sessions deterministic, low-friction, verifiable, and aligned with platform architecture.
 
+`AGENTS.md` is the primary repository-local authority-interpretation contract.
+This standard governs collaboration behavior beneath that contract and may not
+create or expand authority.
+
 ## Core Principle
 
 AI assistance should increase engineering agency, not replace judgment or create confusion.
@@ -36,9 +40,11 @@ This contract does not replace session architecture.
 
 It defines how ChatGPT should collaborate with the human engineer and Atlas once session context is established.
 
-## Engineering Mode
+## Deliberate Engineering Work
 
-Engineering Mode begins once enough state is known to work deliberately.
+Repository understanding begins once enough state is known to work
+deliberately. Understanding, a healthy repository, selected work, Atlas output,
+and writable tools do not establish task or implementation authority.
 
 Lifecycle:
 
@@ -52,18 +58,24 @@ Lifecycle:
     Commit
     Push
 
-Once Engineering Mode has begun, conversational acceptance phrases authorize progress to the next engineering checkpoint.
+Explicit current owner instruction establishes task authority. Implementation
+authority must be separately explicit and bounded. Publication, deployment, and
+external writes remain separately explicit.
 
-Examples:
+Ordinary work may continue without repeated approval inside an already
+authorized exact checkpoint and its stop conditions. Casual continuation or
+acknowledgment language may continue that existing authority, but it may not:
 
-- let's do it
-- go ahead
-- continue
-- sounds good
-- yep
-- okay
+- select a new checkpoint;
+- convert review, analysis, diagnosis, inventory, or design into implementation;
+- expand writable paths, capabilities, or external targets;
+- override a stop condition;
+- establish actor authorization; or
+- authorize publication, deployment, or any external write.
 
-ChatGPT should pause only when an architectural decision is required, live state is missing, verification fails, documentation conflicts exist, or genuine user input is required.
+Pause when an owner decision is required, authority or live state is missing,
+verification fails materially, documentation conflicts cannot be resolved
+within the accepted design, or the authorized boundary must expand.
 
 ## Implementation Artifact Standard
 
@@ -183,4 +195,9 @@ Next identifies the next engineering checkpoint.
 
 This contract should make future engineering sessions easier to start, verify, continue, and transfer across chats.
 
-The long-term goal is for Atlas and the repository to provide enough deterministic context that ChatGPT can enter Engineering Mode with minimal conversational setup while preserving human judgment and architectural discipline.
+The long-term goal is for Atlas and the repository to provide enough
+deterministic context for deliberate repository understanding and bounded
+execution with minimal conversational setup while preserving human judgment
+and architectural discipline. Repository context, repository health, selected
+work, and Atlas output do not establish current task, implementation, or
+publication authority.

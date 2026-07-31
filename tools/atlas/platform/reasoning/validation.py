@@ -1,7 +1,15 @@
 from pathlib import Path
 
+from atlas.platform.active_state import ActiveStateError, load_active_state
 from atlas.platform.document_catalog import DocumentCatalog
 from atlas.platform.reasoning.models import ValidationFinding, ValidationReport
+
+
+VALIDATION_SCOPE = (
+    "discovered document metadata",
+    "registered generated-artifact ownership",
+    "canonical active-state structure, evidence, and authority invariants",
+)
 
 
 def repository_path_exists(path: str) -> bool:
@@ -12,6 +20,16 @@ def validate_repository(catalog: DocumentCatalog) -> ValidationReport:
     errors: list[ValidationFinding] = []
     warnings: list[ValidationFinding] = []
     recommendations: list[str] = []
+
+    try:
+        load_active_state()
+    except ActiveStateError as error:
+        errors.append(
+            ValidationFinding(
+                severity="error",
+                message=f"docs/current-state.json is invalid: {error}",
+            )
+        )
 
     for document in catalog.without_definitions():
         errors.append(

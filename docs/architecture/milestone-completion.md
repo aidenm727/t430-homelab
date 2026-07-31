@@ -86,8 +86,23 @@ Possible completion states:
 - Substantially Complete
 - Complete
 - Unknown
+- Not Applicable when canonical state records intentional idle
+- Selected when typed state selects work but does not establish completion
 
 Confidence should be reported independently of completion.
+
+## Typed Work-Selection Precedence
+
+Canonical typed state is evaluated before historical milestone phrase rules.
+
+When work selection is intentional idle, the result is `Not Applicable` with
+high confidence, the selected checkpoint is null, and no milestone rule or
+implementation action is recommended.
+
+When a checkpoint is selected, selection is reported with high confidence, but
+repository state and Atlas do not establish implementation progress,
+completion, owner acceptance, or authority. Historical phrase matching remains
+only as compatibility reasoning and must not override typed state.
 
 ## Relationship to Engineering Review
 
@@ -106,6 +121,7 @@ Milestone Completion Reasoning should not:
 - Rewrite documentation
 - Replace architectural judgment
 - Infer undocumented intent
+- Treat checkpoint selection as permission or completion
 
 Its responsibility is to evaluate completion, not determine strategy.
 

@@ -54,13 +54,16 @@ Engineering Review should consume Engineering Interpretation output.
 
 Engineering Interpretation should already contain:
 
-- Repository health
-- Synchronization status
-- Working tree readiness
-- Current mission
-- Current milestone
+- Repository health and declared validation scope
+- Synchronization status and declared synchronization scope
+- Working-tree observation
+- Current phase and lifecycle
+- Work-selection state and selected checkpoint
+- Intentional idle
 - Milestone criteria
 - Blockers
+- Unknowns
+- External authority status
 - Recommended action
 - Reason
 - Next checkpoint
@@ -73,10 +76,12 @@ Engineering Review may also display selected Engineering Intelligence fields whe
 
 Engineering Review should help the engineer answer:
 
-- Is the repository ready for engineering work?
+- What is the repository health within the declared scope?
+- What does repository health cover?
 - Are there blockers?
-- What is the current mission?
-- What is the current milestone?
+- What is the current phase?
+- Is work selected or intentionally idle?
+- What authority is not established by Atlas?
 - What criteria are satisfied or unsatisfied?
 - What is the recommended next checkpoint?
 - Why is that recommendation being made?
@@ -89,7 +94,7 @@ Engineering Review should present engineering state in this order:
 
 1. Show overall health and readiness.
 2. Show blockers before new work.
-3. Show current mission and milestone.
+3. Show current phase, work selection, and external authority status.
 4. Show satisfied and unsatisfied criteria.
 5. Show interpreted recommendation.
 6. Show supporting evidence.
@@ -112,6 +117,9 @@ An Engineering Review report should include:
 - Supporting evidence
 - Suggested next commands
 - Relevant documents
+
+The report must not collapse a healthy repository, selected work, and
+implementation permission into one readiness value.
 
 ## Recommendation Standard
 
@@ -181,6 +189,7 @@ Engineering Review should not:
 - Duplicate validation or synchronization checks
 - Become conversational memory
 - Depend on a single AI provider or interface
+- Grant or infer task, implementation, publication, deployment, or external-write authority
 
 ## Relationship to Atlas
 

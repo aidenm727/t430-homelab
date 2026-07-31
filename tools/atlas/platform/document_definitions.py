@@ -52,12 +52,26 @@ DOCUMENT_DEFINITIONS = {
             "docs/roadmaps/engineering-toolkit.md",
         ],
     ),
+    "docs/current-state.json": DocumentDefinition(
+        path="docs/current-state.json",
+        purpose="Canonical strict typed active-state record for phase, work selection, blockers, unknowns, decisions, evidence freshness, and fixed external-authority sentinels.",
+        capability="Engineering and Evolution",
+        tags=["active-state", "engineering-state", "canonical-json"],
+        related=[
+            "docs/current-mission.md",
+            "AGENTS.md",
+            "docs/architecture/repository.md",
+            "docs/architecture/atlas.md",
+            "docs/architecture/repository-synchronization.md",
+        ],
+    ),
     "docs/current-mission.md": DocumentDefinition(
         path="docs/current-mission.md",
-        purpose="Defines the current engineering phase, bounded scope, priorities, non-priorities, success criteria, and next milestone.",
+        purpose="Provides the short canonical human-readable companion to docs/current-state.json, including mission intent, compatibility headings, current concerns, owner decision, and authority boundary.",
         capability="Engineering and Evolution",
         tags=["current-mission", "engineering-state", "active-work"],
         related=[
+            "docs/current-state.json",
             "docs/vision.md",
             "docs/architecture/platform.md",
             "docs/roadmaps/platform-strategy.md",
@@ -75,10 +89,12 @@ DOCUMENT_DEFINITIONS = {
         status="generated",
         tags=["ai-context", "generated-context", "engineering"],
         related=[
+            "docs/current-state.json",
             "docs/current-mission.md",
             "docs/infrastructure-snapshot.md",
         ],
         generated_from=[
+            "docs/current-state.json",
             "docs/current-mission.md",
             "docs/infrastructure-snapshot.md",
         ],

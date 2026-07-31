@@ -21,7 +21,7 @@ Why it exists
 1. Vision
 2. Architecture
 3. Standards
-4. Current Mission
+4. Canonical Active State and Current Mission
 5. Infrastructure
 6. Operations
 7. Roadmaps
@@ -94,9 +94,16 @@ Repository Objects and engineering tools support these layers.
 
 - `docs/standards/engineering-collaboration.md`
 
+## Canonical Active State
+
+- `docs/current-state.json` — Strict typed record for current phase, work
+  selection, concerns, pending owner decision, evidence freshness, and fixed
+  external-authority sentinels.
+
 ## Current Mission
 
-- `docs/current-mission.md`
+- `docs/current-mission.md` — Short human-readable companion to canonical active
+  state. Machine-readable state wins on conflict.
 
 ## Infrastructure
 
@@ -166,7 +173,8 @@ Repository Objects and engineering tools support these layers.
 5. `docs/architecture/capabilities.md`
 6. `docs/architecture/ai.md`
 7. `docs/roadmaps/platform-strategy.md`
-8. `docs/current-mission.md`
+8. `docs/current-state.json`
+9. `docs/current-mission.md`
 
 ### AI and Knowledge Work
 
@@ -178,7 +186,8 @@ Repository Objects and engineering tools support these layers.
 6. `docs/architecture/knowledge-authority.md`
 7. `docs/knowledge-promotion.md`
 8. `docs/architecture/repository.md`
-9. `docs/current-mission.md`
+9. `docs/current-state.json`
+10. `docs/current-mission.md`
 
 ### Engineering Session
 
@@ -188,9 +197,11 @@ Repository Objects and engineering tools support these layers.
 4. `docs/architecture/atlas.md`
 5. `docs/architecture/engineering.md`
 6. `docs/standards/engineering-collaboration.md`
-7. `docs/current-mission.md`
-8. `./atlas bootstrap`
-9. Architecture relevant to the milestone
+7. `AGENTS.md`
+8. `docs/current-state.json`
+9. `docs/current-mission.md`
+10. `./atlas bootstrap`
+11. Architecture relevant to the selected checkpoint
 
 ### Task-Scoped Context and Agent Work
 
@@ -203,8 +214,9 @@ This is a specialized reading path, not a new documentation layer.
 5. `docs/architecture/engineering-sessions.md`
 6. `docs/architecture/task-scoped-agent-context-compilation.md`
 7. `docs/reviews/eo-2026-013-implementation-planning-review-2026-07-15.md`
-8. `docs/current-mission.md`
-9. `./atlas bootstrap`
+8. `docs/current-state.json`
+9. `docs/current-mission.md`
+10. `./atlas bootstrap`
 
 ### School Learning
 
@@ -214,15 +226,16 @@ This is a specialized reading path, not a new documentation layer.
 4. `docs/architecture/school-learning.md`
 5. `docs/architecture/ai-operating-model.md`
 6. `docs/architecture/knowledge-authority.md`
-7. `docs/current-mission.md`
-8. `./school --help`
+7. `docs/current-state.json`
+8. `docs/current-mission.md`
+9. `./school --help`
 
 ### Infrastructure Work
 
 1. Vision and Platform Architecture.
 2. Relevant capability architecture.
 3. Current infrastructure record.
-4. Current Mission.
+4. Canonical Active State and Current Mission.
 5. Live verification.
 
 ### Engineering Opportunity Review
@@ -230,7 +243,7 @@ This is a specialized reading path, not a new documentation layer.
 1. Engineering Opportunity architecture.
 2. Relevant assessment architecture.
 3. Objects under review.
-4. Current Mission.
+4. Canonical Active State and Current Mission.
 5. Live Atlas state.
 
 Readers should not need every internal engineering document to understand the platform.
@@ -251,6 +264,11 @@ Roadmaps describe direction.
 
 Generated context remains derived.
 
+`docs/current-state.json` owns typed active state. `docs/current-mission.md`
+provides the compatible human companion. `AGENTS.md` is the primary
+repository-local authority-interpretation contract. None of these sources
+creates current-session permission.
+
 ---
 
 ## Update Rules
@@ -261,7 +279,11 @@ Update Architecture when structural responsibilities, capability identities, sys
 
 Update Standards when a repeatable expectation changes.
 
-Update Current Mission when the active phase, milestone, scope, or non-priorities change.
+Update Canonical Active State when the effective phase, work selection,
+concerns, decision, evidence, freshness, or fixed authority invariants change.
+
+Update Current Mission alongside Canonical Active State when its human-readable
+compatibility fields or concise intent change.
 
 Update Infrastructure when deployed state changes.
 

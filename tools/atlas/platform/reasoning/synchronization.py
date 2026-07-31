@@ -1,10 +1,27 @@
+from atlas.platform.active_state import (
+    ActiveState,
+    ActiveStateError,
+    EvidenceLink,
+    StateConcern,
+    load_active_state,
+)
 from atlas.platform.document_catalog import DocumentCatalog
 from atlas.platform.mission import mission_phase, next_milestone
 from atlas.platform.repository import repo_root
 from atlas.platform.reasoning.models import SynchronizationFinding, SynchronizationReport
 
 
+SYNCHRONIZATION_SCOPE = (
+    "required canonical and generated documents",
+    "canonical active state and Current Mission compatibility fields",
+    "generated context active-state projection",
+    "registered generated-artifact ownership",
+    "selected architecture and standards predicates",
+)
+
+
 REQUIRED_DOCUMENTS = [
+    "docs/current-state.json",
     "docs/current-mission.md",
     "docs/aiden-context.md",
     "docs/infrastructure-snapshot.md",
@@ -14,6 +31,107 @@ REQUIRED_DOCUMENTS = [
     "docs/architecture/reasoning.md",
     "docs/architecture/repository-synchronization.md",
 ]
+
+
+GENERATED_CONTEXT_ACTIVE_STATE_HEADING = "## Canonical Active State"
+
+
+def _render_state_concerns(concerns: tuple[StateConcern, ...]) -> str:
+    if not concerns:
+        return "- None"
+    return "\n".join(
+        f"- `{concern.id}`: {concern.summary}" for concern in concerns
+    )
+
+
+def _render_evidence_links(evidence_links: tuple[EvidenceLink, ...]) -> str:
+    if not evidence_links:
+        return "- None"
+    return "\n".join(
+        (
+            f"- `{link.id}`: `{link.path}` at `{link.commit}` "
+            f"({link.relation})"
+        )
+        for link in evidence_links
+    )
+
+
+def render_generated_context_active_state(active_state: ActiveState) -> str:
+    """Render the exact bounded active-state projection for generated context."""
+    checkpoint = active_state.work_selection.selected_checkpoint
+    selected_checkpoint = checkpoint.name if checkpoint is not None else "None"
+    decision = active_state.decision_required
+    decision_required = (
+        f"`{decision.id}` — {decision.summary}"
+        if decision is not None
+        else "None"
+    )
+
+    return f"""{GENERATED_CONTEXT_ACTIVE_STATE_HEADING}
+
+- Schema version: {active_state.schema_version}
+- Effective date: {active_state.freshness.effective_date.isoformat()}
+- Phase: {active_state.phase.display_name}
+- Phase lifecycle: {active_state.phase.lifecycle}
+- Work selection: {active_state.work_selection.status}
+- Selected checkpoint: {selected_checkpoint}
+- Intentional idle: {"Yes" if active_state.work_selection.intentional_idle else "No"}
+- Decision required: {decision_required}
+
+### Blockers
+
+{_render_state_concerns(active_state.blockers)}
+
+### Unknowns
+
+{_render_state_concerns(active_state.unknowns)}
+
+### Evidence
+
+{_render_evidence_links(active_state.evidence_links)}
+
+### Authority
+
+- Task: {active_state.authority.task}
+- Implementation: {active_state.authority.implementation}
+- Publication: {active_state.authority.publication}
+
+Repository state and Atlas do not establish authority."""
+
+
+def _generated_context_active_state_section(
+    context: str,
+) -> tuple[str | None, str]:
+    lines = context.splitlines()
+    headings = [
+        index
+        for index, line in enumerate(lines)
+        if line == GENERATED_CONTEXT_ACTIVE_STATE_HEADING
+    ]
+
+    if len(headings) != 1:
+        return (
+            None,
+            (
+                "Expected exactly one Canonical Active State section; "
+                f"found {len(headings)}."
+            ),
+        )
+
+    start = headings[0]
+    end = next(
+        (
+            index
+            for index in range(start + 1, len(lines))
+            if lines[index].startswith("## ")
+        ),
+        len(lines),
+    )
+    section = "\n".join(lines[start:end]).rstrip("\n")
+    return section, (
+        "Compared the exact Canonical Active State section with the shared "
+        "canonical-state rendering contract."
+    )
 
 
 def finding(
@@ -69,71 +187,110 @@ def check_required_documents() -> list[SynchronizationFinding]:
 
 
 def check_current_mission() -> list[SynchronizationFinding]:
-    findings: list[SynchronizationFinding] = []
+    try:
+        active_state = load_active_state()
+    except ActiveStateError as error:
+        return [
+            finding(
+                domain="Canonical Active State",
+                severity="Error",
+                summary="Canonical active state is invalid.",
+                evidence=str(error),
+                recommended_action=(
+                    "Correct docs/current-state.json before relying on mission "
+                    "synchronization."
+                ),
+            )
+        ]
 
     phase = mission_phase()
     milestone = next_milestone()
+    expected_phase = active_state.phase.display_name
+    checkpoint = active_state.work_selection.selected_checkpoint
+    expected_milestone = (
+        checkpoint.name
+        if checkpoint is not None
+        else "Intentional idle — no engineering checkpoint is selected."
+    )
 
-    findings.append(
+    return [
         finding(
-            domain="Current Mission",
-            severity="OK" if phase != "Unknown" else "Error",
-            summary="Current mission phase is defined." if phase != "Unknown" else "Current mission phase is missing.",
-            evidence=f"Phase: {phase}",
-            recommended_action="No action required." if phase != "Unknown" else "Update docs/current-mission.md with the active phase.",
-        )
-    )
-
-    findings.append(
-        finding(
-            domain="Current Mission",
-            severity="OK" if milestone != "Unknown" else "Error",
-            summary="Next milestone is defined." if milestone != "Unknown" else "Next milestone is missing.",
-            evidence=f"Next Milestone: {milestone}",
-            recommended_action="No action required." if milestone != "Unknown" else "Update docs/current-mission.md with the next milestone.",
-        )
-    )
-
-    sync_architecture_exists = repository_file_exists("docs/architecture/repository-synchronization.md")
-    mission_text = read_repository_file("docs/current-mission.md").lower()
-    milestone_text = milestone.lower()
-
-    mission_acknowledges_sync = (
-        "repository synchronization reasoning" in mission_text
-        or "synchronization reasoning" in mission_text
-    )
-    mission_targets_engineering_review = "engineering review" in milestone_text
-
-    aligned = sync_architecture_exists and (
-        mission_acknowledges_sync or mission_targets_engineering_review
-    )
-
-    findings.append(
-        finding(
-            domain="Architecture ↔ Current Mission",
-            severity="OK" if aligned else "Warning",
-            summary="Current mission is aligned with repository reasoning architecture."
-            if aligned
-            else "Current mission may not align with repository reasoning architecture.",
+            domain="Canonical Active State",
+            severity="OK",
+            summary="Canonical active state is valid.",
             evidence=(
-                f"Synchronization architecture exists: {'Yes' if sync_architecture_exists else 'No'}; "
-                f"mission acknowledges synchronization reasoning: {'Yes' if mission_acknowledges_sync else 'No'}; "
-                f"milestone targets Engineering Review: {'Yes' if mission_targets_engineering_review else 'No'}"
+                f"Schema version: {active_state.schema_version}; "
+                f"effective date: {active_state.freshness.effective_date.isoformat()}"
             ),
-            recommended_action="No action required."
-            if aligned
-            else "Review docs/current-mission.md and repository reasoning architecture for alignment.",
-        )
-    )
-
-    return findings
+            recommended_action="No action required.",
+        ),
+        finding(
+            domain="Active State ↔ Current Mission",
+            severity="OK" if phase == expected_phase else "Error",
+            summary=(
+                "Current Mission phase agrees with canonical active state."
+                if phase == expected_phase
+                else "Current Mission phase disagrees with canonical active state."
+            ),
+            evidence=(
+                f"Canonical phase: {expected_phase}; "
+                f"Current Mission phase: {phase}"
+            ),
+            recommended_action=(
+                "No action required."
+                if phase == expected_phase
+                else (
+                    "Update the Current Mission companion; machine-readable "
+                    "state wins on conflict."
+                )
+            ),
+        ),
+        finding(
+            domain="Active State ↔ Current Mission",
+            severity="OK" if milestone == expected_milestone else "Error",
+            summary=(
+                "Current Mission next milestone agrees with canonical work selection."
+                if milestone == expected_milestone
+                else (
+                    "Current Mission next milestone disagrees with canonical "
+                    "work selection."
+                )
+            ),
+            evidence=(
+                f"Canonical selection: {expected_milestone}; "
+                f"Current Mission next milestone: {milestone}"
+            ),
+            recommended_action=(
+                "No action required."
+                if milestone == expected_milestone
+                else (
+                    "Update the Current Mission companion; machine-readable "
+                    "state wins on conflict."
+                )
+            ),
+        ),
+    ]
 
 
 def check_generated_context() -> list[SynchronizationFinding]:
-    findings: list[SynchronizationFinding] = []
     context = read_repository_file("docs/aiden-context.md")
-    phase = mission_phase()
-    milestone = next_milestone()
+    try:
+        active_state = load_active_state()
+    except ActiveStateError as error:
+        return [
+            finding(
+                domain="Generated Context",
+                severity="Error",
+                summary=(
+                    "Generated context cannot be checked against invalid "
+                    "canonical active state."
+                ),
+                evidence=str(error),
+                recommended_action=(
+                    "Correct docs/current-state.json, then regenerate AI context."
+                ),
+            )
+        ]
 
     if not context:
         return [
@@ -146,53 +303,46 @@ def check_generated_context() -> list[SynchronizationFinding]:
             )
         ]
 
-    checks = [
-        (
-            "Generated Context",
-            "## Current Mission" in context,
-            "Generated context includes current mission.",
-            "Generated context may not include current mission.",
-            "Checked docs/aiden-context.md for a Current Mission section.",
-            "Regenerate AI context.",
+    expected = render_generated_context_active_state(active_state)
+    actual, comparison_evidence = _generated_context_active_state_section(context)
+    projection_matches = actual == expected
+    generation_marker_present = "Generated:" in context
+
+    return [
+        finding(
+            domain="Generated Context",
+            severity="OK" if projection_matches else "Error",
+            summary=(
+                "Generated context exactly matches the canonical active-state projection."
+                if projection_matches
+                else (
+                    "Generated context does not exactly match the canonical "
+                    "active-state projection."
+                )
+            ),
+            evidence=comparison_evidence,
+            recommended_action=(
+                "No action required."
+                if projection_matches
+                else "Regenerate docs/aiden-context.md from canonical sources."
+            ),
         ),
-        (
-            "Generated Context",
-            "Generated:" in context,
-            "Generated context includes a generation marker.",
-            "Generated context does not include a generation marker.",
-            "Checked docs/aiden-context.md for a Generated marker.",
-            "Regenerate AI context with a generation marker.",
-        ),
-        (
-            "Generated Context",
-            phase != "Unknown" and phase in context,
-            "Generated context includes the active mission phase.",
-            "Generated context may not include the active mission phase.",
-            f"Active phase: {phase}",
-            "Regenerate AI context after confirming docs/current-mission.md.",
-        ),
-        (
-            "Generated Context",
-            milestone != "Unknown" and milestone in context,
-            "Generated context includes the active next milestone.",
-            "Generated context may not include the active next milestone.",
-            f"Active next milestone: {milestone}",
-            "Regenerate AI context after confirming docs/current-mission.md.",
+        finding(
+            domain="Generated Context",
+            severity="OK" if generation_marker_present else "Error",
+            summary=(
+                "Generated context includes a generation marker."
+                if generation_marker_present
+                else "Generated context does not include a generation marker."
+            ),
+            evidence="Checked docs/aiden-context.md for a Generated marker.",
+            recommended_action=(
+                "No action required."
+                if generation_marker_present
+                else "Regenerate AI context with a generation marker."
+            ),
         ),
     ]
-
-    for domain, passed, ok_summary, warn_summary, evidence, action in checks:
-        findings.append(
-            finding(
-                domain=domain,
-                severity="OK" if passed else "Warning",
-                summary=ok_summary if passed else warn_summary,
-                evidence=evidence,
-                recommended_action="No action required." if passed else action,
-            )
-        )
-
-    return findings
 
 
 def check_generated_artifact_metadata(catalog: DocumentCatalog) -> list[SynchronizationFinding]:

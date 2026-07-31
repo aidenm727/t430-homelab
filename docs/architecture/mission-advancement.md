@@ -26,6 +26,10 @@ Mission Advancement asks:
 
 A completed milestone is evidence for mission advancement, but it is not the only factor.
 
+Intentional idle is already a valid high-confidence work-selection state and
+does not require advancement. A selected checkpoint does not prove completion
+or acceptance.
+
 ## Inputs
 
 Mission Advancement may consume:
@@ -58,6 +62,8 @@ Mission Advancement must:
 - Explain recommendations with evidence
 - Avoid inventing new missions automatically
 - Prefer clear next actions over vague guidance
+- Preserve the separation among work selection, task authority, implementation
+  authority, and publication authority
 
 ## Non-Responsibilities
 
@@ -68,6 +74,7 @@ Mission Advancement should not:
 - Replace strategic judgment
 - Ignore repository health blockers
 - Treat milestone completion alone as sufficient evidence
+- Treat repository state, Atlas output, or conversational momentum as authority
 
 ## Future Direction
 

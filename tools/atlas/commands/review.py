@@ -1,3 +1,4 @@
+from atlas.platform.active_state import ActiveStateError
 from atlas.platform.discovery import document_catalog
 from atlas.platform.engineering_state import load
 from atlas.platform.reasoning.review import build_engineering_review
@@ -26,8 +27,19 @@ def print_list(title: str, values: list[str]) -> None:
 
 def run(args):
     catalog = document_catalog()
-    state = load()
+    try:
+        state = load()
+    except ActiveStateError as error:
+        print("Atlas Engineering Review")
+        print("========================")
+        print()
+        print("Canonical Active State")
+        print("----------------------")
+        print("Invalid — Atlas failed closed.")
+        print(str(error))
+        raise SystemExit(1) from error
     report = build_engineering_review(catalog, state)
+    readiness = report.readiness
 
     print("Atlas Engineering Review")
     print("========================")
@@ -35,15 +47,33 @@ def run(args):
 
     print("Health")
     print("------")
-    print(report.health)
+    print(readiness.repository_health)
     print()
 
     print("Status")
     print("------")
-    print(f"Validation: {report.validation_status}")
-    print(f"Synchronization: {report.synchronization_status}")
-    print(f"Working Tree: {'Clean' if report.repository_clean else 'Dirty'}")
-    print(f"Current Phase: {report.current_phase}")
+    print(f"Validation: {readiness.validation_status}")
+    print(f"Synchronization: {readiness.synchronization_status}")
+    print(f"Working Tree: {readiness.working_tree_observation}")
+    print(f"Current Phase: {readiness.phase}")
+    print(f"Phase Lifecycle: {readiness.phase_lifecycle}")
+    print(f"Work Selection: {readiness.work_selection_state}")
+    print(f"Selected Checkpoint: {readiness.selected_checkpoint or 'None'}")
+    print(f"Intentional Idle: {'Yes' if readiness.intentional_idle else 'No'}")
+    print()
+
+    print_list("Validation Scope", list(readiness.validation_scope))
+    print()
+    print_list("Synchronization Scope", list(readiness.synchronization_scope))
+    print()
+
+    print("External Authority")
+    print("------------------")
+    print(f"Task: {readiness.task_authority}")
+    print(f"Implementation: {readiness.implementation_authority}")
+    print(f"Publication: {readiness.publication_authority}")
+    print("Atlas Authority Conclusion: Not established")
+    print(f"Decision Required: {readiness.decision_required or 'None'}")
     print()
 
     print("Milestone")
@@ -59,19 +89,21 @@ def run(args):
     print_list("Next Milestone Actions", report.milestone_next_actions)
     print()
 
-    print_list("Blockers", report.blockers)
+    print_list("Blockers", list(readiness.blockers))
+    print()
+    print_list("Unknowns", list(readiness.unknowns))
     print()
     print_list("Evidence", report.evidence)
     print()
 
     print("Recommended Action")
     print("------------------")
-    print(report.recommended_action)
+    print(readiness.recommended_action)
     print()
 
     print("Reason")
     print("------")
-    print(report.reason)
+    print(readiness.reason)
     print()
 
     print_list(

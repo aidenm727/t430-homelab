@@ -1,6 +1,8 @@
+from atlas.platform.active_state import ActiveStateError
 from atlas.platform.discovery import document_catalog
 from atlas.platform.engineering_state import load
-from atlas.platform.reasoning import GuidanceReport, build_guidance
+from atlas.platform.interpretation.readiness import build_readiness_projection
+from atlas.platform.reasoning.models import ReadinessProjection
 
 
 NAME = "next"
@@ -24,14 +26,39 @@ def print_list(title: str, values: list[str]) -> None:
         print(f"- {value}")
 
 
-def print_guidance(report: GuidanceReport) -> None:
+def print_guidance(report: ReadinessProjection) -> None:
     print("Atlas Next")
     print("==========")
     print()
 
     print("Current Phase")
     print("-------------")
-    print(report.current_phase)
+    print(report.phase)
+    print()
+
+    print("Selected Work")
+    print("-------------")
+    print(f"Phase Lifecycle: {report.phase_lifecycle}")
+    print(f"Work Selection: {report.work_selection_state}")
+    print(f"Selected Checkpoint: {report.selected_checkpoint or 'None'}")
+    print(f"Intentional Idle: {'Yes' if report.intentional_idle else 'No'}")
+    print()
+
+    print("Repository Observation")
+    print("----------------------")
+    print(f"Health: {report.repository_health}")
+    print(f"Validation: {report.validation_status}")
+    print(f"Synchronization: {report.synchronization_status}")
+    print(f"Working Tree: {report.working_tree_observation}")
+    print()
+
+    print("External Authority")
+    print("------------------")
+    print(f"Task: {report.task_authority}")
+    print(f"Implementation: {report.implementation_authority}")
+    print(f"Publication: {report.publication_authority}")
+    print("Atlas Authority Conclusion: Not established")
+    print(f"Decision Required: {report.decision_required or 'None'}")
     print()
 
     print("Recommended Action")
@@ -44,19 +71,28 @@ def print_guidance(report: GuidanceReport) -> None:
     print(report.reason)
     print()
 
-    print_list("Reasoning Context", report.reasoning_context)
+    print_list("Blockers", list(report.blockers))
     print()
-    print_list(
-        "Relevant Documents",
-        [document.path for document in report.relevant_documents],
-    )
+    print_list("Unknowns", list(report.unknowns))
     print()
-    print_list("Suggested Commands", report.suggested_commands)
+    print_list("Validation Scope", list(report.validation_scope))
+    print()
+    print_list("Synchronization Scope", list(report.synchronization_scope))
 
 
 def run(args):
     catalog = document_catalog()
-    state = load()
-    report = build_guidance(catalog, state)
+    try:
+        state = load()
+    except ActiveStateError as error:
+        print("Atlas Next")
+        print("==========")
+        print()
+        print("Canonical Active State")
+        print("----------------------")
+        print("Invalid — Atlas failed closed.")
+        print(str(error))
+        raise SystemExit(1) from error
+    report = build_readiness_projection(catalog, state)
 
     print_guidance(report)

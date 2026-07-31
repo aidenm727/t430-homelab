@@ -129,6 +129,40 @@ def build_milestone_completion(
 ) -> MilestoneCompletionReport:
     milestone = state.next_milestone
 
+    if state.intentional_idle:
+        return MilestoneCompletionReport(
+            status="Not Applicable",
+            confidence="High",
+            evidence=[
+                "Canonical active state explicitly records intentional idle.",
+                "No engineering checkpoint is selected.",
+            ],
+            missing_evidence=[],
+            satisfied_criteria=[
+                "Intentional idle is represented as a valid work-selection state.",
+            ],
+            unsatisfied_criteria=[],
+            next_actions=[],
+        )
+
+    if state.selected_checkpoint is not None:
+        return MilestoneCompletionReport(
+            status="Selected",
+            confidence="High",
+            evidence=[
+                "Canonical active state selects an engineering checkpoint.",
+                f"Selected checkpoint: {state.selected_checkpoint}",
+            ],
+            missing_evidence=[],
+            satisfied_criteria=[
+                "Work selection is explicit and structurally valid.",
+            ],
+            unsatisfied_criteria=[
+                "Repository state and Atlas do not establish checkpoint completion or owner acceptance.",
+            ],
+            next_actions=[],
+        )
+
     if OPPORTUNITY_DISTINCTNESS_ANALYSIS_DESIGN_MILESTONE_TEXT in milestone:
         design_requirements = {
             "docs/architecture/engineering-opportunity-distinctness-analysis.md": {

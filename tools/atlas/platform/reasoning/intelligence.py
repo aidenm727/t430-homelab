@@ -29,8 +29,7 @@ def build_engineering_intelligence(
     if synchronization.errors:
         blockers.extend(finding.summary for finding in synchronization.errors)
 
-    if not state.repository_clean:
-        blockers.append("Working tree has uncommitted changes.")
+    blockers.extend(state.state_blockers)
 
     evidence.extend(
         [
@@ -38,7 +37,12 @@ def build_engineering_intelligence(
             f"Repository synchronization: {synchronization.status}",
             f"Working tree clean: {'Yes' if state.repository_clean else 'No'}",
             f"Current phase: {state.mission_phase}",
-            f"Next milestone: {state.next_milestone}",
+            f"Phase lifecycle: {state.phase_lifecycle}",
+            f"Work selection: {state.work_selection_status}",
+            f"Selected checkpoint: {state.selected_checkpoint or 'None'}",
+            f"Task authority: {state.task_authority}",
+            f"Implementation authority: {state.implementation_authority}",
+            f"Publication authority: {state.publication_authority}",
             f"Mission advancement: {mission_advancement.recommendation} ({mission_advancement.confidence} confidence)",
         ]
     )
@@ -62,7 +66,16 @@ def build_engineering_intelligence(
         synchronization_status=synchronization.status,
         repository_clean=state.repository_clean,
         current_phase=state.mission_phase,
+        phase_lifecycle=state.phase_lifecycle,
         next_milestone=state.next_milestone,
+        work_selection_status=state.work_selection_status,
+        selected_checkpoint=state.selected_checkpoint,
+        intentional_idle=state.intentional_idle,
+        unknowns=list(state.state_unknowns),
+        task_authority=state.task_authority,
+        implementation_authority=state.implementation_authority,
+        publication_authority=state.publication_authority,
+        decision_required=state.decision_required,
         blockers=blockers,
         evidence=evidence,
         relevant_documents=guidance.relevant_documents,

@@ -44,7 +44,8 @@ Engineering Intelligence may consume:
 - Mission Advancement Reasoning
 - Capability Maturity
 - Repository Metadata
-- Current Mission
+- Canonical Active State
+- Current Mission companion
 - Git State
 - Generated Context Freshness
 
@@ -52,17 +53,20 @@ Engineering Intelligence may consume:
 
 Engineering Intelligence should assemble a structured picture of:
 
-- Repository health
-- Synchronization status
-- Working tree readiness
-- Current mission
-- Current milestone
+- Repository health within declared validation scope
+- Synchronization status within declared synchronization scope
+- Working-tree observation
+- Current phase and lifecycle
+- Work-selection state and selected checkpoint
+- Intentional idle
 - Milestone criteria
 - Capability maturity
 - Completed or stale milestones
 - Relevant architecture
 - Evidence for downstream interpretation
 - Blockers or conflicts across reasoning outputs
+- Unknowns and pending owner decision
+- Task, implementation, and publication authority as external/not established by Atlas
 
 Engineering Intelligence should correlate reasoning outputs.
 
@@ -85,6 +89,10 @@ This separation keeps structured reasoning distinct from human-facing guidance.
 Engineering Intelligence should produce facts, criteria, confidence, evidence, and blockers.
 
 Engineering Interpretation should produce recommended actions, reasons, priorities, next checkpoints, and human-readable summaries.
+
+Neither layer grants authority. Repository health, work selection, task
+authority, implementation authority, and publication authority remain separate
+dimensions.
 
 ## Interface Consumers
 
@@ -145,7 +153,9 @@ A future engineering session should begin from a structured intelligence report 
     Is the repository healthy?
     Is the platform synchronized?
     What changed?
-    What milestone appears complete?
+    What phase and work-selection state are effective?
+    Is milestone completion applicable?
+    Which authority dimensions remain external?
     What capability should improve next?
     What context should an AI interface receive?
 

@@ -100,6 +100,11 @@ Generated context summarizes canonical sources but never replaces them.
 
 Atlas should always prefer canonical repository knowledge over generated artifacts.
 
+`docs/current-state.json` is the canonical typed active-state input.
+`docs/current-mission.md` is its human companion. Atlas must fail closed when the
+typed state is missing, invalid, oversized, unsupported, or contradictory; it
+must not silently fall back to mission prose.
+
 ---
 
 # Repository Knowledge Layer
@@ -185,6 +190,18 @@ Engineering Intelligence should not become a presentation layer.
 
 It should assemble structured facts, not decide how those facts should be shown in a CLI, chat session, dashboard, or future interface.
 
+The shared readiness picture keeps these dimensions separate:
+
+- repository health within a declared validation scope;
+- synchronization status within a declared synchronization scope;
+- working-tree observation;
+- current phase and lifecycle;
+- work-selection state and selected checkpoint;
+- intentional idle;
+- blockers and unknowns;
+- external task, implementation, and publication authority status; and
+- recommended action.
+
 ---
 
 # Engineering Interpretation Layer
@@ -217,6 +234,11 @@ It should not become an interface-specific renderer.
 
 Multiple interfaces should be able to consume the same interpretation output.
 
+Interpretation may recommend obtaining or following explicit owner authority.
+It may not infer or grant task, implementation, publication, deployment, or
+external-write authority. A selected checkpoint is not permission, and a
+healthy repository is not implementation readiness.
+
 ---
 
 # Engineering Interfaces
@@ -244,6 +266,10 @@ Examples include:
 - Future dashboards
 - Future VS Code integrations
 - Future Aiden OS engineering workflows
+
+`atlas bootstrap`, `atlas state`, `atlas review`, and `atlas next` consume the
+same readiness projection so phase, work selection, authority, blockers,
+unknowns, and recommended action cannot diverge by interface.
 
 Interfaces may format, filter, or display guidance.
 
@@ -336,6 +362,11 @@ Atlas should eventually help answer questions such as:
 - Is the repository ready to commit?
 - What is the next responsible engineering action?
 
+Intentional idle is a valid high-confidence work-selection state. In that state
+there is no selected checkpoint, milestone completion is not applicable, and
+Atlas must not recommend inventing a milestone rule or imply implementation
+readiness.
+
 Atlas should guide engineers through the engineering lifecycle:
 
 ```text
@@ -391,6 +422,10 @@ Atlas should help AI assistants determine:
 - Generated artifacts requiring synchronization
 - Repository validation status
 - Recommended engineering workflow
+
+`AGENTS.md` remains the primary repository-local authority-interpretation
+contract. Atlas output is observation and explanation under that contract, not
+authorization.
 
 The long-term objective is for Atlas to become the primary deterministic interface through which AI assistants understand the engineering platform.
 
@@ -455,6 +490,8 @@ Atlas should not:
 - Become a conversational assistant
 - Duplicate existing platform capabilities
 - Hide engineering complexity when understanding is more valuable
+- Grant or persist current-session authority
+- Treat repository health or selected work as implementation permission
 
 ---
 

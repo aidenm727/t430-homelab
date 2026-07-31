@@ -69,11 +69,13 @@ Synchronization reasons.
 Synchronization reasoning follows the repository source-of-truth hierarchy.
 
 1. Architecture defines engineering intent.
-2. Infrastructure defines current implementation.
-3. Operations define engineering history.
-4. Roadmaps define future direction.
-5. Generated context summarizes canonical records.
-6. Git history preserves repository evolution.
+2. Canonical Active State defines effective phase and selected work.
+3. Current Mission provides the human companion.
+4. Infrastructure defines documented implementation.
+5. Operations define engineering history.
+6. Roadmaps define future direction.
+7. Generated context summarizes canonical records.
+8. Git history preserves repository evolution.
 
 Generated artifacts may be checked for freshness, but they never override canonical documentation.
 
@@ -83,15 +85,20 @@ Generated artifacts may be checked for freshness, but they never override canoni
 
 Repository Synchronization should evaluate several independent synchronization domains.
 
-## Architecture ↔ Current Mission
+## Canonical Active State ↔ Current Mission
 
-Determine whether the active engineering mission reflects the platform architecture and current priorities.
+Determine whether the short Current Mission compatibility fields agree exactly
+with canonical typed state.
 
 Examples:
 
-- Mission matches current engineering phase.
-- Mission priorities remain architecture-driven.
-- Current milestone reflects documented platform direction.
+- `## Phase` matches the typed phase projection.
+- `## Next Milestone` matches the selected checkpoint or the intentional-idle
+  sentinel.
+- Machine-readable state wins when the companion disagrees.
+
+Synchronization does not attempt brittle semantic comparison of editorial
+prose. Human review owns mission wording beyond the stable compatibility fields.
 
 ---
 
@@ -186,17 +193,16 @@ The first implementation should intentionally remain small and deterministic.
 Suggested initial checks:
 
 1. Current Mission exists.
-2. Current Mission defines the active engineering phase.
-3. Current Mission identifies the next engineering milestone.
-4. Generated AI Context exists.
-5. Generated AI Context includes the current mission.
-6. Generated AI Context contains a generation date.
+2. Canonical Active State exists and passes its strict contract.
+3. Current Mission phase agrees with typed phase.
+4. Current Mission next milestone agrees with typed work selection.
+5. Generated AI Context exists.
+6. Generated AI Context includes the active-state projection and generation date.
 7. Platform, Repository, and Atlas architecture documents exist.
 8. Repository source-of-truth rules are documented.
 9. Generated artifacts are clearly identified as generated.
 10. Atlas architecture documents both the Repository Knowledge Layer and Repository Reasoning Layer.
-11. The current mission references a reasoning capability that exists architecturally.
-12. Repository architecture, current mission, and generated context remain mutually consistent.
+11. Repository architecture, typed state, Current Mission, and generated context remain mutually consistent within the declared predicates.
 
 These checks establish the foundation for more advanced synchronization reasoning.
 
@@ -213,6 +219,7 @@ Repository Synchronization Reasoning should not:
 - Replace repository validation.
 - Treat generated artifacts as canonical.
 - Hide uncertainty or ambiguity.
+- Infer task, implementation, publication, deployment, or external-write authority.
 
 Synchronization identifies drift.
 

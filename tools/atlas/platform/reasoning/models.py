@@ -81,7 +81,31 @@ class MissionAdvancementReport:
 
 
 @dataclass(frozen=True)
+class ReadinessProjection:
+    repository_health: str
+    validation_status: str
+    validation_scope: tuple[str, ...]
+    synchronization_status: str
+    synchronization_scope: tuple[str, ...]
+    working_tree_observation: str
+    phase: str
+    phase_lifecycle: str
+    work_selection_state: str
+    selected_checkpoint: str | None
+    intentional_idle: bool
+    blockers: tuple[str, ...]
+    unknowns: tuple[str, ...]
+    task_authority: str
+    implementation_authority: str
+    publication_authority: str
+    decision_required: str | None
+    recommended_action: str
+    reason: str
+
+
+@dataclass(frozen=True)
 class EngineeringReviewReport:
+    readiness: ReadinessProjection
     validation_status: str
     synchronization_status: str
     repository_clean: bool
@@ -101,11 +125,7 @@ class EngineeringReviewReport:
 
     @property
     def health(self) -> str:
-        if self.blockers:
-            return "Blocked"
-        if self.synchronization_status != "Synchronized":
-            return "Needs attention"
-        return "Ready"
+        return self.readiness.repository_health
 
 
 @dataclass(frozen=True)
@@ -122,7 +142,16 @@ class EngineeringIntelligenceReport:
     synchronization_status: str
     repository_clean: bool
     current_phase: str
+    phase_lifecycle: str
     next_milestone: str
+    work_selection_status: str
+    selected_checkpoint: str | None
+    intentional_idle: bool
+    unknowns: list[str]
+    task_authority: str
+    implementation_authority: str
+    publication_authority: str
+    decision_required: str | None
     blockers: list[str] = field(default_factory=list)
     evidence: list[str] = field(default_factory=list)
     relevant_documents: list[Document] = field(default_factory=list)
@@ -132,9 +161,11 @@ class EngineeringIntelligenceReport:
     def health(self) -> str:
         if self.blockers:
             return "Blocked"
+        if self.validation_status != "Valid":
+            return "Needs attention"
         if self.synchronization_status != "Synchronized":
             return "Needs attention"
-        return "Ready"
+        return "Healthy within declared scope"
 
 
 @dataclass(frozen=True)

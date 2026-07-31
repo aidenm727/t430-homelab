@@ -16,6 +16,7 @@ Every file and directory should have one clear responsibility.
 Vision
 Architecture
 Standards
+Canonical Active State
 Infrastructure
 Operations
 Roadmaps
@@ -55,6 +56,16 @@ Define repeatable expectations and quality bars.
 Current owner:
 
 - `docs/standards/engineering-collaboration.md`
+
+### Canonical Active State
+
+`docs/current-state.json` is the strict typed owner of effective active state:
+phase, selected work or intentional idle, blockers, unknowns, pending owner
+decision, evidence links, freshness, and fixed external-authority sentinels.
+
+`docs/current-mission.md` is its short canonical human-readable companion.
+Machine-readable state wins on conflict, and missing or invalid typed state
+fails closed.
 
 ### Infrastructure
 
@@ -137,16 +148,22 @@ The hierarchy is:
 1. Vision defines purpose and durable direction.
 2. Architecture records describe intent and structural design.
 3. Standards records describe expected engineering behavior.
-4. Current Mission defines active engineering work.
-5. Infrastructure records describe current implementation and state.
-6. Operations records describe change evidence and history.
-7. Roadmaps describe likely future direction and sequencing.
-8. Repository Objects preserve structured candidates and lifecycle state.
-9. Generated context summarizes canonical documentation and never replaces it.
-10. Git history records repository evolution.
-11. Live verification resolves current operational reality.
+4. Canonical Active State defines the effective phase and selected work.
+5. Current Mission explains that state and concise current intent for humans.
+6. Infrastructure records describe documented implementation and state.
+7. Operations records describe change evidence and history.
+8. Roadmaps describe likely future direction and sequencing.
+9. Repository Objects preserve structured candidates and lifecycle state.
+10. Generated context summarizes canonical documentation and never replaces it.
+11. Git history records repository evolution.
+12. Live verification resolves current operational reality.
 
 Conversation context may explain intent but does not replace canonical repository knowledge.
+
+Repository state selects work but grants no current task, implementation,
+publication, deployment, or external-write authority. `AGENTS.md` is the primary
+repository-local contract for interpreting those authority dimensions. Atlas,
+generated context, historical records, and roadmaps do not grant permission.
 
 ---
 
@@ -163,7 +180,9 @@ Conversation context may explain intent but does not replace canonical repositor
 - Personal course materials, answers, learning history, and generated personal views remain outside the engineering repository. The repository owns School Learning architecture and implementation, not personal school data.
 - The repeatable manual knowledge-promotion workflow belongs in `docs/knowledge-promotion.md`.
 - Strategic sequencing belongs in `docs/roadmaps/platform-strategy.md`.
-- Active work belongs in `docs/current-mission.md`.
+- Typed active phase and work selection belong in `docs/current-state.json`.
+- Concise human-readable current intent belongs in `docs/current-mission.md`.
+- Repository-local authority interpretation belongs in `AGENTS.md`.
 - Current deployment belongs in infrastructure records.
 - Repeatable behavior belongs in standards.
 - Change evidence belongs in operations.

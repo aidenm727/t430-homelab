@@ -2,6 +2,12 @@ from pathlib import Path
 from datetime import date
 import re
 
+from atlas.platform.active_state import load_active_state
+from atlas.platform.reasoning.synchronization import (
+    render_generated_context_active_state,
+)
+
+
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 
@@ -124,12 +130,9 @@ def load_recent_changes(limit=5):
 
     return changes[:limit]
 
-change_session_path = DOCS / "change-session.md"
 
-if change_session_path.exists():
-    change_session = change_session_path.read_text(encoding="utf-8")
-else:
-    change_session = "No active change session found."
+active_state = load_active_state(repository_root=ROOT)
+active_state_projection = render_generated_context_active_state(active_state)
 
 mission_path = DOCS / "current-mission.md"
 
@@ -151,9 +154,11 @@ Generated: {date.today().isoformat()}
 
 This file is an AI-readable context packet for the Aiden Platform engineering repository.
 
-It summarizes the canonical current mission, infrastructure state, recent changes, and operating rules so a human or AI collaborator can establish accurate engineering context.
+It projects canonical active state, its human companion, and the existing infrastructure summary. It is generated and non-canonical.
 
-## Current Mission
+{active_state_projection}
+
+## Current Mission Companion
 
 {mission}
 
@@ -167,29 +172,21 @@ It summarizes the canonical current mission, infrastructure state, recent change
 
 ## Authoritative Sources
 
+- docs/current-state.json
+- docs/current-mission.md
+- docs/architecture/repository.md
+- docs/architecture/atlas.md
 - docs/infrastructure.md
-- ~/homelab/docs/changes.log
+- docs/infrastructure-gamer-pve.md
+- docs/services.md
 - Git history
-- Live infrastructure state
 
-## Operational Rules
+## Use Boundary
 
-- Deploy / Configure
-- Verify functionality
-- Document immediately
-- Commit and push from the local machine
-- Never commit secrets
-
-## Known Constraints
-
-- t430-beast should remain the stable production services host
-- gamer-pve should be used for virtualization, experimentation, and heavier workloads
-- changes.log currently lives only on the server
-- GitHub documentation remains the canonical public documentation source
-
-## Active Change Session
-
-{change_session}
+- Canonical repository sources win over this generated view.
+- Live branch, worktree, infrastructure, and external-system state require fresh observation.
+- Task, implementation, publication, deployment, and external-write authority require explicit owner instruction outside repository state.
+- Never include secrets or personal School Learning data.
 
 """
 

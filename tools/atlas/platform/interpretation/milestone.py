@@ -2,6 +2,15 @@ from atlas.platform.reasoning.models import EngineeringIntelligenceReport
 
 
 def interpret_milestone(intelligence: EngineeringIntelligenceReport) -> str:
+    if intelligence.milestone_status == "Not Applicable":
+        return "Milestone completion is not applicable while intentionally idle."
+
+    if intelligence.milestone_status == "Selected":
+        return (
+            "The checkpoint is selected; repository state and Atlas do not "
+            "establish completion, acceptance, or authority."
+        )
+
     if intelligence.milestone_status == "Complete":
         return "Current milestone appears complete. Consider advancing docs/current-mission.md."
 

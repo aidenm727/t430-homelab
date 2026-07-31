@@ -22,8 +22,7 @@ def build_mission_advancement(
     if synchronization.errors:
         blockers.extend(finding.summary for finding in synchronization.errors)
 
-    if not state.repository_clean:
-        blockers.append("Working tree has uncommitted changes.")
+    blockers.extend(state.state_blockers)
 
     evidence.extend(
         [
@@ -45,6 +44,40 @@ def build_mission_advancement(
             evidence=evidence,
             blockers=blockers,
             suggested_action="Resolve blockers, then run ./atlas review again.",
+        )
+
+    if state.intentional_idle:
+        return MissionAdvancementReport(
+            recommendation="Remain intentionally idle.",
+            confidence="High",
+            should_advance=False,
+            reason=(
+                "Canonical active state explicitly records intentional idle; "
+                "Atlas does not select work."
+            ),
+            evidence=evidence,
+            blockers=[],
+            suggested_action=(
+                "Wait for explicit owner instruction to select a checkpoint and "
+                "separately establish any required authority."
+            ),
+        )
+
+    if state.selected_checkpoint is not None:
+        return MissionAdvancementReport(
+            recommendation="Do not infer mission advancement.",
+            confidence="High",
+            should_advance=False,
+            reason=(
+                "Canonical active state selects work but does not establish "
+                "completion, acceptance, or authority."
+            ),
+            evidence=evidence,
+            blockers=[],
+            suggested_action=(
+                "Follow explicit owner authority for the selected checkpoint; "
+                "obtain it when it has not been established externally."
+            ),
         )
 
     if milestone.status == "Complete" and milestone.confidence == "High":

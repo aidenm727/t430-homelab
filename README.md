@@ -1,180 +1,98 @@
-# T430 Homelab Infrastructure
+# Aiden Platform
 
-A self-hosted, production-style homelab built on Ubuntu Server using Docker, Traefik, Pi-hole, and Tailscale.
+The Aiden Platform is a personal, human-directed capability platform designed
+to increase owner agency across learning, engineering, infrastructure, and
+future life domains. Human judgment and consequential authority remain
+owner-controlled.
 
-This system implements real-world infrastructure patterns by providing secure remote access (VPN-only), centralized DNS, reverse-proxied services, and full observability with Prometheus and Grafana — all without exposing services to the public internet.
+This repository is the canonical engineering record for the platform. It owns
+durable architecture, standards, deterministic tools, implemented capability
+code, repository state, and evidence links. It does not own personal School
+Learning data or prove live infrastructure state.
 
----
+## Start Here
 
-## Summary
+- [`docs/current-state.json`](docs/current-state.json) — strict canonical typed
+  active state.
+- [`docs/current-mission.md`](docs/current-mission.md) — short human-readable
+  state companion and current intent.
+- [`docs/docs-map.md`](docs/docs-map.md) — documentation and architecture
+  navigation.
+- [`docs/vision.md`](docs/vision.md) — platform purpose, principles, and human
+  authority.
+- [`docs/architecture/platform.md`](docs/architecture/platform.md) — platform
+  structure and capability model.
 
-- Self-hosted homelab on Ubuntu Server (ThinkPad T430)
-- Docker-based services behind Traefik reverse proxy
-- Centralized DNS with Pi-hole (`.home.lab`)
-- Secure remote access via Tailscale VPN (no public exposure)
-- Monitoring stack with Prometheus, Grafana, and Uptime Kuma
-- Hosts multiple services behind a centralized reverse proxy
+Machine-readable current state wins if it disagrees with Current Mission.
+Detailed completion and publication history remains available through dated
+reviews and Git history.
 
----
+## Primary Entrypoints
 
-## Objectives
+### Atlas
 
-- Develop hands-on DevOps and infrastructure skills
-- Practice containerization and service architecture
-- Implement secure access patterns without public exposure
-- Maintain production-style documentation and operational discipline
-- Build a resume-ready infrastructure project
+Atlas is the deterministic repository engineering interface:
 
----
-
-## Architecture
-
+```text
+./atlas bootstrap
+./atlas state
+./atlas review
+./atlas next
+./atlas validate
+./atlas sync
 ```
-Client → Tailscale → Pi-hole (DNS) → Traefik → Docker Services
-                                      ↓
-                                Prometheus → Grafana
-                                      ↓
-                                   Uptime Kuma
+
+Atlas reports repository health, declared validation and synchronization scope,
+working-tree observation, current phase, selected work, blockers, unknowns, and
+recommended action. It does not grant task, implementation, publication,
+deployment, or external-write authority.
+
+### School Learning
+
+School Learning is the implemented local, owner-controlled learning workflow:
+
+```text
+./school --help
 ```
 
----
+Its architecture and privacy boundary are defined in
+[`docs/architecture/school-learning.md`](docs/architecture/school-learning.md).
+Personal course materials, learner state, answers, and generated personal views
+remain outside this engineering repository.
 
-## Screenshots
+## Repository Navigation
 
-### Grafana Dashboard
-![Grafana](./docs/images/grafana.png)
+- Platform and capability architecture: [`docs/architecture/`](docs/architecture/)
+- Engineering authority interpretation: [`AGENTS.md`](AGENTS.md)
+- Documentation map: [`docs/docs-map.md`](docs/docs-map.md)
+- Dated review evidence: [`docs/reviews/`](docs/reviews/)
+- Strategic direction: [`docs/roadmaps/`](docs/roadmaps/)
+- Deterministic tooling: [`tools/`](tools/)
+- Portable tests: [`tests/`](tests/)
 
-### Uptime Kuma Monitoring
-![Kuma](./docs/images/kuma.png)
+Generated files such as
+[`docs/aiden-context.md`](docs/aiden-context.md) and
+[`docs/infrastructure-snapshot.md`](docs/infrastructure-snapshot.md) are derived
+views, not canonical replacements.
 
-### Service Dashboard
-![Homepage](./docs/images/homepage.png)
+## Authority Boundary
 
-### Physical System
-![Physical](./docs/images/physical.jpg)
+Repository state may select work but grants no permission. Explicit current
+owner instruction establishes task authority; implementation authority must be
+bounded separately; publication, deployment, and external writes require
+separate explicit authorization. [`AGENTS.md`](AGENTS.md) is the primary
+repository-local authority-interpretation contract.
 
----
+## Infrastructure History
 
-## System Capabilities
+The original T430 homelab is one infrastructure environment within the wider
+Aiden Platform. Its canonical and historical records remain available in:
 
-- Containerized service platform using Docker
-- Reverse proxy routing with Traefik (host-based routing)
-- Centralized DNS using Pi-hole for `.home.lab` domains
-- Secure remote access via Tailscale VPN (zero public exposure)
-- ACL-based multi-user access control model
-- Full observability stack (Prometheus, Grafana, Node Exporter)
-- Service uptime monitoring with Uptime Kuma
-- Central dashboard for service discovery (Homepage)
+- [`docs/infrastructure.md`](docs/infrastructure.md)
+- [`docs/infrastructure-gamer-pve.md`](docs/infrastructure-gamer-pve.md)
+- [`docs/services.md`](docs/services.md)
+- [`docs/changes.log`](docs/changes.log)
+- [`docs/changes/`](docs/changes/)
 
----
-
-## Key Design Decisions
-
-- No public port forwarding; all access is secured through Tailscale VPN
-- Internal DNS enables clean service access via `.home.lab` domains
-- Reverse proxy centralizes routing and removes the need for direct port exposure
-- Monitoring uses internal Docker networking instead of LAN or VPN IPs for stability
-- Tailscale ACLs enforce least-privilege access for shared users
-- Services are only exposed through controlled entrypoints (Traefik on ports 80/443)
-
----
-
-## Challenges & Learning
-
-- Designed a secure access model using Tailscale ACLs instead of exposing services via port forwarding
-- Debugged service routing and DNS resolution across Docker, Pi-hole, and Traefik layers
-- Learned to use internal container networking for stable monitoring instead of relying on host/VPN IPs
-- Balanced usability (clean `.home.lab` domains) with security constraints (no public exposure)
-
----
-
-## Technologies
-
-- Docker / Docker Compose
-- Traefik (Reverse Proxy)
-- Pi-hole (DNS)
-- Tailscale (VPN + ACLs)
-- Prometheus (Metrics collection)
-- Grafana (Metrics visualization)
-- Node Exporter (Host metrics)
-- Uptime Kuma (Service monitoring)
-- Ubuntu Server 24.04 LTS
-
----
-
-## Core Services
-
-| Service     | Purpose                    | Access                       |
-|------------|--------------------------|-----------------------------|
-| Homepage   | Central dashboard         | http://dash.home.lab        |
-| Uptime Kuma| Service monitoring        | http://kuma.home.lab        |
-| Traefik    | Reverse proxy             | http://traefik.home.lab     |
-| Prometheus | Metrics collection        | http://prom.home.lab        |
-| Grafana    | Metrics visualization     | http://grafana.home.lab     |
-| Pi-hole    | DNS management            | http://pihole.home.lab/admin|
-
----
-
-## Security Model
-
-- All services are private and not exposed to the public internet
-- Access is restricted through Tailscale VPN
-- ACL-based permissions:
-  - Admin users: full access
-  - Restricted users: web services + DNS only
-- SSH access limited to authorized users only
-- Direct container ports are not exposed to shared users
-
----
-
-## Monitoring Strategy
-
-- Prometheus collects system and service metrics
-- Grafana provides visualization dashboards
-- Uptime Kuma performs service-level health checks
-- Monitoring uses internal container networking for reliability
-
----
-
-## Hardware
-
-- Lenovo ThinkPad T430
-- Intel i5-3320M (2C / 4T)
-- 8GB RAM
-- 250GB SSD
-- Ethernet connection (enp0s25)
-
----
-
-## Documentation
-
-Detailed infrastructure and operational records are maintained in:
-
-`/docs/infrastructure.md`
-
-Server-side change log:
-
-`~/homelab/docs/changes.log`
-
----
-
-## Current Status
-
-Core platform established and stable.
-
-The system provides:
-
-- Secure remote access via VPN
-- Centralized DNS and service routing
-- Containerized service deployment
-- Integrated monitoring and observability
-- Multi-user access with enforced restrictions
-
----
-
-## Next Steps
-
-- Implement internal HTTPS / TLS for all services
-- Introduce backup strategy for service data
-- Add container management tooling (e.g., Portainer)
-- Expand service offerings through Traefik routing
+These records are engineering documentation, not proof of current deployed or
+reachable state; live infrastructure requires separate observation.
