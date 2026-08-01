@@ -10,6 +10,7 @@ from atlas.commands import bootstrap, next as next_command, review, state as sta
 from atlas.platform.active_state import (
     AUTHORITY_SENTINEL,
     ActiveStateError,
+    SelectedCheckpoint,
     WorkSelection,
 )
 from atlas.platform.discovery import document_catalog
@@ -32,6 +33,10 @@ from atlas.platform.reasoning.synchronization import (
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 CHECKPOINT = "Clean Foundation F1 — Canonical State, Authority, and Orientation"
+SYNTHETIC_CHECKPOINT = "Synthetic Selected Checkpoint"
+INTENTIONAL_IDLE_MILESTONE = (
+    "Intentional idle — no engineering checkpoint is selected."
+)
 
 
 def intelligence(**overrides) -> EngineeringIntelligenceReport:
@@ -47,11 +52,11 @@ def intelligence(**overrides) -> EngineeringIntelligenceReport:
         "mission_should_advance": False,
         "synchronization_status": "Synchronized",
         "repository_clean": True,
-        "current_phase": "School Learning v0.1.1 Guided Study Handoff — Published",
+        "current_phase": "Synthetic Phase — Published",
         "phase_lifecycle": "published",
-        "next_milestone": CHECKPOINT,
+        "next_milestone": SYNTHETIC_CHECKPOINT,
         "work_selection_status": "selected",
-        "selected_checkpoint": CHECKPOINT,
+        "selected_checkpoint": SYNTHETIC_CHECKPOINT,
         "intentional_idle": False,
         "unknowns": [],
         "task_authority": AUTHORITY_SENTINEL,
@@ -69,15 +74,67 @@ def intelligence(**overrides) -> EngineeringIntelligenceReport:
 
 def guidance() -> GuidanceReport:
     return GuidanceReport(
-        current_phase="School Learning v0.1.1 Guided Study Handoff — Published",
+        current_phase="Synthetic Phase — Published",
         recommended_action=(
             "Obtain or follow explicit owner task and implementation authority "
-            f"for {CHECKPOINT}; Atlas does not establish that authority."
+            f"for {SYNTHETIC_CHECKPOINT}; Atlas does not establish that authority."
         ),
         reason=(
             "Canonical state selects the checkpoint, while authority remains "
             "external and is not established by Atlas."
         ),
+    )
+
+
+def synthetic_selected_state():
+    loaded = load()
+    checkpoint = SelectedCheckpoint(
+        id="synthetic-selected-checkpoint",
+        name=SYNTHETIC_CHECKPOINT,
+        lifecycle="selected",
+        effective_date=loaded.active_state.freshness.effective_date,
+        evidence_refs=(),
+    )
+    active_state = replace(
+        loaded.active_state,
+        work_selection=WorkSelection(
+            status="selected",
+            selected_checkpoint=checkpoint,
+        ),
+        decision_required=None,
+    )
+    return replace(
+        loaded,
+        active_state=active_state,
+        next_milestone=SYNTHETIC_CHECKPOINT,
+        work_selection_status="selected",
+        selected_checkpoint=SYNTHETIC_CHECKPOINT,
+        intentional_idle=False,
+        decision_required=None,
+        task_authority=AUTHORITY_SENTINEL,
+        implementation_authority=AUTHORITY_SENTINEL,
+        publication_authority=AUTHORITY_SENTINEL,
+    )
+
+
+def synthetic_intentional_idle_state():
+    selected = synthetic_selected_state()
+    active_state = replace(
+        selected.active_state,
+        work_selection=WorkSelection(
+            status="intentional_idle",
+            selected_checkpoint=None,
+        ),
+        decision_required=None,
+    )
+    return replace(
+        selected,
+        active_state=active_state,
+        next_milestone=INTENTIONAL_IDLE_MILESTONE,
+        work_selection_status="intentional_idle",
+        selected_checkpoint=None,
+        intentional_idle=True,
+        decision_required=None,
     )
 
 
@@ -87,7 +144,7 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
 
         self.assertEqual(projection.repository_health, "Healthy within declared scope")
         self.assertEqual(projection.work_selection_state, "selected")
-        self.assertEqual(projection.selected_checkpoint, CHECKPOINT)
+        self.assertEqual(projection.selected_checkpoint, SYNTHETIC_CHECKPOINT)
         self.assertFalse(projection.intentional_idle)
         self.assertEqual(projection.task_authority, AUTHORITY_SENTINEL)
         self.assertEqual(projection.implementation_authority, AUTHORITY_SENTINEL)
@@ -157,24 +214,7 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
         )
 
     def test_typed_idle_precedes_historical_milestone_phrase_matching(self) -> None:
-        loaded = load()
-        idle_active = replace(
-            loaded.active_state,
-            work_selection=WorkSelection(
-                status="intentional_idle",
-                selected_checkpoint=None,
-            ),
-        )
-        idle_state = replace(
-            loaded,
-            active_state=idle_active,
-            next_milestone=(
-                "Intentional idle — no engineering checkpoint is selected."
-            ),
-            work_selection_status="intentional_idle",
-            selected_checkpoint=None,
-            intentional_idle=True,
-        )
+        idle_state = synthetic_intentional_idle_state()
 
         report = build_milestone_completion(document_catalog(), idle_state)
 
@@ -187,16 +227,28 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
     def test_canonical_projection_uses_typed_state(self) -> None:
         loaded = load()
         projection = build_readiness_projection(document_catalog(), loaded)
+        selected_checkpoint = loaded.active_state.work_selection.selected_checkpoint
 
         self.assertEqual(projection.phase, loaded.active_state.phase.display_name)
-        self.assertEqual(projection.selected_checkpoint, CHECKPOINT)
+        self.assertEqual(
+            projection.selected_checkpoint,
+            selected_checkpoint.name if selected_checkpoint is not None else None,
+        )
+        self.assertEqual(
+            projection.work_selection_state,
+            loaded.active_state.work_selection.status,
+        )
+        self.assertEqual(
+            projection.intentional_idle,
+            loaded.active_state.work_selection.intentional_idle,
+        )
         self.assertEqual(projection.task_authority, AUTHORITY_SENTINEL)
 
     def test_guidance_never_treats_selected_state_as_permission(self) -> None:
-        loaded = load()
-        report = build_guidance(document_catalog(), loaded)
+        state = synthetic_selected_state()
+        report = build_guidance(document_catalog(), state)
 
-        self.assertIn("explicit owner", report.recommended_action)
+        self.assertIn("explicit bounded owner", report.recommended_action)
         self.assertIn("does not establish", report.recommended_action)
         self.assertNotIn("Proceed", report.recommended_action)
 
@@ -217,14 +269,31 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
         )
 
     def test_guidance_falls_back_to_bounded_implementation_authority(self) -> None:
-        loaded = replace(load(), decision_required=None)
-        report = build_guidance(document_catalog(), loaded)
+        state = synthetic_selected_state()
+        report = build_guidance(document_catalog(), state)
 
         self.assertIn(
             "explicit bounded owner task and implementation authority",
             report.recommended_action,
         )
         self.assertIn("does not establish", report.recommended_action)
+        self.assertEqual(state.task_authority, AUTHORITY_SENTINEL)
+        self.assertEqual(state.implementation_authority, AUTHORITY_SENTINEL)
+        self.assertEqual(state.publication_authority, AUTHORITY_SENTINEL)
+
+    def test_guidance_handles_intentional_idle_separately(self) -> None:
+        state = synthetic_intentional_idle_state()
+        report = build_guidance(document_catalog(), state)
+
+        self.assertIn("Remain intentionally idle", report.recommended_action)
+        self.assertIn("does not select or authorize work", report.reason)
+        self.assertNotIn(
+            "bounded owner task and implementation authority",
+            report.recommended_action,
+        )
+        self.assertEqual(state.task_authority, AUTHORITY_SENTINEL)
+        self.assertEqual(state.implementation_authority, AUTHORITY_SENTINEL)
+        self.assertEqual(state.publication_authority, AUTHORITY_SENTINEL)
 
     def test_mission_phase_disagreement_is_a_synchronization_error(self) -> None:
         with patch(
@@ -313,6 +382,11 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
         context = (REPOSITORY_ROOT / "docs" / "aiden-context.md").read_text(
             encoding="utf-8"
         )
+        evidence_prefix = "### Evidence\n\n- `"
+        evidence_start = context.index(evidence_prefix) + len(evidence_prefix)
+        evidence_end = context.index("`:", evidence_start)
+        evidence_id = context[evidence_start:evidence_end]
+        self.assertTrue(evidence_id)
         projection_end = context.index("\n## Current Mission Companion")
         projection = context[:projection_end]
         remainder = context[projection_end:]
@@ -354,8 +428,8 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
                 "### Unknowns\n\n- Hostile unknown drift",
             ),
             "evidence": (
-                "### Evidence\n\n- `school-learning-v0-1-1-publication`:",
-                "### Evidence\n\n- `hostile-evidence-drift`:",
+                f"### Evidence\n\n- `{evidence_id}`:",
+                f"### Evidence\n\n- `{evidence_id}-hostile-drift`:",
             ),
         }
         for field, (original, hostile) in section_drifts.items():

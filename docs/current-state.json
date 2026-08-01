@@ -1,45 +1,32 @@
 {
   "schema_version": 1,
   "phase": {
-    "id": "school-learning-v0-1-1-guided-study-handoff",
-    "name": "School Learning v0.1.1 Guided Study Handoff",
+    "id": "clean-foundation-f1",
+    "name": "Clean Foundation F1 — Canonical State, Authority, and Orientation",
     "lifecycle": "published",
-    "effective_date": "2026-07-27",
+    "effective_date": "2026-07-31",
     "evidence_refs": [
-      "school-learning-v0-1-1-publication",
-      "school-learning-v0-1-1-architecture"
+      "clean-foundation-f1-publication"
     ]
   },
   "work_selection": {
-    "status": "selected",
-    "selected_checkpoint": {
-      "id": "clean-foundation-f1",
-      "name": "Clean Foundation F1 — Canonical State, Authority, and Orientation",
-      "lifecycle": "selected",
-      "effective_date": "2026-07-29",
-      "evidence_refs": []
-    }
+    "status": "intentional_idle",
+    "selected_checkpoint": null
   },
   "blockers": [],
   "unknowns": [],
   "decision_required": {
-    "id": "clean-foundation-f1-publication-finalization",
-    "summary": "Finalize the separately authorized publication of the owner-accepted Clean Foundation F1 candidate without selecting additional work.",
+    "id": "select-future-engineering-checkpoint",
+    "summary": "Owner selection of a future engineering checkpoint before additional implementation.",
     "status": "pending",
     "evidence_refs": []
   },
   "evidence_links": [
     {
-      "id": "school-learning-v0-1-1-publication",
-      "path": "docs/current-mission.md",
+      "id": "clean-foundation-f1-publication",
+      "path": "docs/reviews/clean-foundation-f1-acceptance-and-publication-2026-07-31.md",
       "relation": "records_phase",
-      "commit": "0ffa8f5fe24d32d6bf32f1d866a882a3fea3176d"
-    },
-    {
-      "id": "school-learning-v0-1-1-architecture",
-      "path": "docs/architecture/school-learning.md",
-      "relation": "defines_phase",
-      "commit": "9782eebec049b9b932cc583def499a44f1cbba2c"
+      "commit": "7339e1676f7588e319e3cb004d56baf56a37bed6"
     }
   ],
   "freshness": {
