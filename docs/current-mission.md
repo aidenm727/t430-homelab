@@ -6,35 +6,33 @@ the two disagree.
 
 ## Phase
 
-Clean Foundation F1 — Canonical State, Authority, and Orientation — Published
+W1 — Engineering Workflow v1.1 — Published
 
 ## Active State
 
-Clean Foundation F1 remains accepted and published. W1 — Engineering Workflow
-v1.1 remains selected and has a verified uncommitted local implementation
-candidate awaiting fresh adversarial independent review. Selection and local
-verification do not make W1 implementation-complete, accepted, published, or
-operational.
+W1 — Engineering Workflow v1.1 is owner-accepted, published, and complete. Clean
+Foundation F1 remains historical published foundation evidence rather than
+active selected work. No follow-on checkpoint is selected or authorized.
 
 Canonical state effective date: 2026-08-01.
 
 ## Mission Intent
 
-Preserve the bounded W1 local candidate, its compact evidence, unchanged Atlas
-behavior, and isolated readiness fixtures while awaiting the required fresh
-adversarial independent review.
+Preserve the published Workflow v1.1 contract, unchanged Atlas behavior,
+isolated readiness fixtures, compact W1 evidence, and the historical F1
+foundation while remaining intentionally idle pending an explicit owner
+decision.
 
 ## Work Selection
 
-- Status: Selected.
-- Selected checkpoint: W1 — Engineering Workflow v1.1.
-- W1 lifecycle: Selected; verified uncommitted local candidate awaiting fresh
-  adversarial independent review.
+- Status: Intentional idle.
+- Selected checkpoint: None.
+- W1 lifecycle: Published and complete; not active selected work.
 - R1, S1, F2, F3, and all other future checkpoints: Not selected.
 
 ## Next Milestone
 
-W1 — Engineering Workflow v1.1
+Intentional idle — no engineering checkpoint is selected.
 
 ## Blockers
 
@@ -46,25 +44,26 @@ None recorded in canonical active state.
 
 ## Owner Decision Required
 
-Obtain a fresh adversarial independent review of the local W1 implementation
-candidate before owner acceptance.
+Select a future engineering checkpoint or continue intentional idle. R1 remains
+a proposed option only; it is not selected or authorized.
 
 ## Authority Boundary
 
 Repository state selects work but grants no task, implementation, publication,
 deployment, or external-write authority. Atlas observes and explains state but
-grants no authority. Task, implementation, and publication authority remain
-external and not established by repository state or Atlas. `AGENTS.md` is the
-primary repository-local authority-interpretation contract.
+grants no authority. No follow-on task, implementation, publication,
+deployment, or external-write authority is established by W1 completion,
+repository state, or Atlas. `AGENTS.md` is the primary repository-local
+authority-interpretation contract.
 
 ## Evidence and History
 
 - `docs/current-state.json` — canonical typed active state and repository-local
   evidence references.
-- `docs/reviews/clean-foundation-f1-acceptance-and-publication-2026-07-31.md`
-  at `7339e1676f7588e319e3cb004d56baf56a37bed6` — accepted F1 implementation
-  and publication evidence.
 - `docs/reviews/engineering-workflow-v1-1-evidence-2026-08-01.md` — compact W1
-  checkpoint brief and verified local implementation evidence; no immutable
-  candidate identity exists before a separately authorized commit.
+  checkpoint, acceptance, and publication evidence at the accepted candidate
+  commit `27d99c1eb0ab30f7fcd11158f4c1d856bd6913de`.
+- `docs/reviews/clean-foundation-f1-acceptance-and-publication-2026-07-31.md`
+  at `7339e1676f7588e319e3cb004d56baf56a37bed6` — historical accepted and
+  published F1 foundation evidence.
 - Git history — immutable implementation and publication identities.

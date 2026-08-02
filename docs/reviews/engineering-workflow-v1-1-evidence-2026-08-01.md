@@ -5,12 +5,12 @@
 - Evidence class: Dated, non-canonical Tier 3 implementation evidence
 - Checkpoint: W1 — Engineering Workflow v1.1
 - Base commit: `e2bfa263670ffc6970614f84bd96796c54b6edf4`
-- Lifecycle state: Verifying; local candidate awaiting independent review
-- Candidate identity: Uncommitted twelve-path working-tree candidate based on
-  `e2bfa263670ffc6970614f84bd96796c54b6edf4`
-- Independent review: Pending in a later fresh read-only session
-- Owner acceptance: Pending after required review and final verification
-- Publication/deployment authority: Not established
+- Lifecycle state: Published; W1 implementation is owner-accepted and complete
+- Accepted candidate commit: `27d99c1eb0ab30f7fcd11158f4c1d856bd6913de`
+- Independent review: `A. ACCEPT`; no blocking or non-blocking findings
+- Owner acceptance: Explicit as implementation-complete on 2026-08-01
+- Publication authority: Separately explicit and bounded on 2026-08-01
+- Deployment authority: Not established; W1 has no deployment action
 
 ## Accepted Checkpoint Brief
 
@@ -24,15 +24,17 @@
 - **Exclusions:** No Atlas functionality, generic preflight tooling, new state
   system, dependency/configuration/infrastructure change, protected content,
   R1, S1, F2, F3, external system, or unlisted path.
-- **Authority established:** Task selection and bounded local implementation
-  are explicit in the current owner instruction. Local commit, publication,
-  deployment, protected-reference access, and every external write are not
-  established.
+- **Authority established:** Task selection, bounded local implementation,
+  owner acceptance, two exact local commits, and two non-force pushes to
+  `origin/main` are explicit in separate owner instructions. Deployment,
+  protected-reference access, follow-on work, and every other external write
+  are not established.
 - **Protected boundaries:** Secrets, credentials, protected references, live
   systems/data, network access, unrelated user changes, and generator-owned
   files outside the authorized generated-context result remain untouched.
-- **Observable result:** One coherent Workflow v1.1 contract, a selected W1
-  state, isolated readiness fixtures, and a verified uncommitted candidate.
+- **Observable result:** One coherent published Workflow v1.1 contract, an
+  intentional-idle final state, isolated readiness fixtures, and a compact
+  reconstructible evidence chain.
 - **Verification:** Focused active-state/readiness tests; one final full native
   Python suite after the last mutation; Atlas validate, missing, and sync;
   generated-state and complete-diff inspection; then fresh adversarial review.
@@ -40,8 +42,8 @@
   scope, architecture conflict, unverifiable evidence/environment, recurring
   defect class after two correction attempts, a required third cycle, or loss
   of owner understanding.
-- **Next decision boundary:** After fresh adversarial independent review, the
-  owner decides whether to accept the exact W1 implementation candidate.
+- **Next decision boundary:** The owner selects a future engineering checkpoint
+  or continues intentional idle. R1 is only a proposed option.
 
 A checkpoint brief describes authority; it does not create it.
 
@@ -121,12 +123,58 @@ Anti-loop assessment: goal, tier, paths, operations, architecture, data,
 dependencies, observable result, and protected boundaries remain unchanged.
 No stop condition is active.
 
-## Review, Acceptance, and Publication
+## Review, Acceptance, Publication, and Final State
 
-- Independent findings/disposition: Pending; this implementation session does
-  not perform or claim independent review.
-- Owner acceptance/boundary: Pending.
-- Publication/deployment authority/boundary: Not established.
-- Immutable candidate/published identities: None; the candidate is uncommitted.
-- Remaining uncertainty: Fresh adversarial review and owner acceptance are
-  pending; the uncommitted candidate has no immutable identity.
+- Independent findings/disposition: `A. ACCEPT`; the fresh adversarial review
+  found no actionable blocking or non-blocking findings.
+- Owner acceptance/boundary: The owner accepted the exact unstaged twelve-path
+  candidate as implementation-complete. Acceptance alone established no
+  repository mutation, publication, deployment, or follow-on authority.
+- Accepted immutable candidate: Commit
+  `27d99c1eb0ab30f7fcd11158f4c1d856bd6913de`, message
+  `docs: establish engineering workflow v1.1`, contains exactly the reviewed
+  twelve paths based on
+  `e2bfa263670ffc6970614f84bd96796c54b6edf4`.
+- First publication result: The first authorized non-force push advanced
+  `origin/main` from the base to the accepted candidate commit. Live read-only
+  remote inspection and local tracking verification both resolved that exact
+  identity with 0/0 divergence and a clean worktree.
+- Publication authority/boundary: The owner separately authorized only the
+  exact candidate commit and push, finalization changes to this record,
+  `docs/current-state.json`, `docs/current-mission.md`, and generated
+  `docs/aiden-context.md`, one evidence/final-state commit, and its non-force
+  push to `origin/main` with required read-only verification.
+- Final lifecycle truth: W1 is the newly published completed checkpoint; work
+  selection is intentional idle with no selected checkpoint. F1 remains
+  historical published foundation evidence. R1, S1, F2, and F3 remain
+  unselected, and no follow-on authority is established.
+- Finalization identity boundary: This record does not predict its containing
+  second commit identity. Git history and the owner-facing publication report
+  own that identity and the final remote attestation.
+- Findings and uncertainty: No blocking or non-blocking findings remain. No
+  implementation uncertainty remains inside W1; future checkpoint selection
+  and Project-context synchronization remain owner-controlled decisions.
+
+## Finalization Verification Boundary
+
+- Finalization changes are confined to this record,
+  `docs/current-state.json`, `docs/current-mission.md`, and generated
+  `docs/aiden-context.md`. The accepted workflow and readiness-test behavior
+  are unchanged.
+- `docs/aiden-context.md` was regenerated only through
+  `tools/generate-context.py`; `docs/infrastructure-snapshot.md` remains
+  byte-identical to the candidate commit at Git blob
+  `5e4a189b98624c5d41777a06a7a4ff665f8b352a`.
+- Pre-record focused verification used the publication task's writable native
+  temporary directory and ran
+  `python3 -m unittest tests.test_active_state tests.test_atlas_readiness`:
+  61 tests passed in 0.734 seconds.
+- Pre-record Atlas verification reported Valid with zero errors or warnings,
+  all discovered documents defined, and Synchronized with zero errors or
+  warnings. State and next-action output agreed on W1 Published, intentional
+  idle, no selected checkpoint, no blockers or unknowns, and no follow-on
+  authority.
+- This section is the final content mutation. The required full native suite
+  and final Atlas/diff/state checks therefore run after it. Git history and the
+  owner-facing publication report preserve those execution results without a
+  prospective claim or a third repository commit.

@@ -1,38 +1,32 @@
 {
   "schema_version": 1,
   "phase": {
-    "id": "clean-foundation-f1",
-    "name": "Clean Foundation F1 — Canonical State, Authority, and Orientation",
+    "id": "engineering-workflow-v1-1",
+    "name": "W1 — Engineering Workflow v1.1",
     "lifecycle": "published",
-    "effective_date": "2026-07-31",
+    "effective_date": "2026-08-01",
     "evidence_refs": [
-      "clean-foundation-f1-publication"
+      "engineering-workflow-v1-1-publication"
     ]
   },
   "work_selection": {
-    "status": "selected",
-    "selected_checkpoint": {
-      "id": "engineering-workflow-v1-1",
-      "name": "W1 — Engineering Workflow v1.1",
-      "lifecycle": "selected",
-      "effective_date": "2026-08-01",
-      "evidence_refs": []
-    }
+    "status": "intentional_idle",
+    "selected_checkpoint": null
   },
   "blockers": [],
   "unknowns": [],
   "decision_required": {
-    "id": "review-w1-implementation-candidate",
-    "summary": "Obtain a fresh adversarial independent review of the local W1 implementation candidate before owner acceptance.",
+    "id": "select-future-engineering-checkpoint",
+    "summary": "Owner selection of a future engineering checkpoint or continued intentional idle; R1 remains a proposed option and is not selected.",
     "status": "pending",
     "evidence_refs": []
   },
   "evidence_links": [
     {
-      "id": "clean-foundation-f1-publication",
-      "path": "docs/reviews/clean-foundation-f1-acceptance-and-publication-2026-07-31.md",
+      "id": "engineering-workflow-v1-1-publication",
+      "path": "docs/reviews/engineering-workflow-v1-1-evidence-2026-08-01.md",
       "relation": "records_phase",
-      "commit": "7339e1676f7588e319e3cb004d56baf56a37bed6"
+      "commit": "27d99c1eb0ab30f7fcd11158f4c1d856bd6913de"
     }
   ],
   "freshness": {
