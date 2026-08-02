@@ -14,6 +14,10 @@ Engineering Review should make engineering guidance understandable, traceable, a
 
 It should not generate guidance independently of Engineering Interpretation.
 
+This Atlas interface is distinct from the fresh independent checkpoint review
+required by Workflow v1.1. Running `./atlas review`, reviewing one’s own work,
+or producing an implementation report does not satisfy that independent gate.
+
 ## Core Principle
 
 Engineering Review presents interpreted engineering guidance.
@@ -101,6 +105,74 @@ Engineering Review should present engineering state in this order:
 7. Show suggested commands or verification steps.
 
 If validation, synchronization, or working tree blockers exist, Engineering Review should make those blockers visible before presenting new engineering work.
+
+## Proportional Independent Checkpoint Review
+
+Independent review examines the exact final candidate and its accepted brief,
+not a superseded patch or implementation narrative. The reviewer starts fresh,
+has not implemented the candidate, inspects the complete diff and evidence, and
+does not gain implementation, acceptance, publication, or deployment authority
+from the review assignment.
+
+- **Tier 1:** Independent review is not automatic. Use it for unusual
+  uncertainty, reviewer request, sensitive public wording, or escalation.
+- **Tier 2:** One fresh independent review is required by default. An in-scope
+  material correction receives review of the affected delta without restarting
+  the full lifecycle.
+- **Tier 3:** One adversarial independent review is required. A blocking
+  correction requires final verification and a fresh final adversarial review
+  of the corrected candidate.
+
+Review should test scope, architecture, consequence classification, protected
+boundaries, negative paths, evidence truthfulness, verification coverage,
+generated synchronization, and the exact next decision. It must state
+uncertainty rather than invent missing execution or external evidence.
+
+## Finding Disposition
+
+Each finding records its affected path or contract, evidence, consequence,
+blocking status, and required action.
+
+- A blocking finding means the candidate is not ready for owner acceptance.
+  Correct it only when it remains inside the accepted checkpoint; otherwise
+  stop for owner decision or redesign.
+- A non-blocking finding is corrected, explicitly accepted as residual risk, or
+  deferred to a separately selected checkpoint. It does not silently expand
+  the current scope.
+- After correction, rerun affected focused checks and the tier-appropriate
+  final broad verification after the last mutation. Tier 2 rechecks a material
+  affected delta; Tier 3 applies the fresh-final-review rule above.
+- Preserve the finding and disposition in the compact compound evidence. Do not
+  erase a resolved blocking finding from the review chain.
+
+Owner acceptance follows required verification and finding disposition and
+applies only to the exact candidate. It does not authorize staging, commit,
+publication, deployment, migration, or another external write.
+
+## Owner-Facing Status
+
+Use this compact presentation:
+
+    Goal:
+    Lifecycle state:
+    Risk tier:
+    Authority:
+      Task:
+      Implementation:
+      Publication/deployment:
+    Changed:
+    Verification:
+    Independent review:
+    Unresolved risks:
+    Exact next decision:
+
+Allowed lifecycle descriptions are Designed, Accepted for implementation,
+Implementing, Verifying, Under independent review, Correction in progress,
+Implementation accepted, Awaiting publication, Published, and Stopped.
+
+This status is a human-readable presentation, not a new repository object or
+canonical-state system. It reports selected work and external authority as
+separate facts, never selects work, and never creates authority.
 
 ## Outputs
 

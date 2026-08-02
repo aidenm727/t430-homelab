@@ -49,14 +49,14 @@ and writable tools do not establish task or implementation authority.
 Lifecycle:
 
     Understand
+    Classify and Brief
     Design
-    Accept Decision
+    Accept Design
     Implement
     Verify
-    Document
-    Synchronize
-    Commit
-    Push
+    Review
+    Accept Candidate
+    Authorize Publication or Deployment
 
 Explicit current owner instruction establishes task authority. Implementation
 authority must be separately explicit and bounded. Publication, deployment, and
@@ -76,6 +76,187 @@ acknowledgment language may continue that existing authority, but it may not:
 Pause when an owner decision is required, authority or live state is missing,
 verification fails materially, documentation conflicts cannot be resolved
 within the accepted design, or the authorized boundary must expand.
+
+## Engineering Workflow v1.1
+
+Workflow v1.1 scales assurance by potential consequence, not by line count or
+file count. Any Tier 3 trigger makes the checkpoint Tier 3. Mixed work uses the
+highest applicable tier unless lower-consequence work can be cleanly separated
+into its own checkpoint, authority, and evidence. Unresolved consequence or
+boundary uncertainty moves work up one tier or stops for owner decision.
+
+### Tier 1 — Routine
+
+Tier 1 requires all consequences to be local, reversible, and low blast radius,
+with no canonical-state, authority, security, privacy, identity, access,
+secret, protected-reference, live-data, destructive, migration, dependency, or
+material cross-component consequence.
+
+The checkpoint brief is the design by default and may remain in the current
+owner instruction or handoff. Independent review is not automatic. Use focused
+verification and the smallest appropriate broad check; use the repository-wide
+suite only when shared behavior or test infrastructure changes. In-scope
+corrections continue. Publication and deployment remain separately explicit.
+
+### Tier 2 — Material Capability
+
+Tier 2 applies to a meaningful user workflow, persisted non-sensitive data
+behavior, public interface, operational behavior, bounded reversible runtime,
+dependency, or configuration change, or a cross-component contract, provided
+no Tier 3 trigger applies.
+
+Use a concise design decision covering affected interfaces, data, rollback,
+and material alternatives. The owner explicitly accepts that design and the
+implementation boundary. Run focused and native capability checks, then one
+final capability-wide or repository-wide native suite after the last mutation.
+One fresh independent review of the exact final candidate is required by
+default, followed by explicit owner acceptance. Publication and deployment
+remain separately explicit.
+
+### Tier 3 — High Consequence
+
+Tier 3 applies to canonical-state or authority semantics; security, privacy,
+identity, access, secrets, or protected material; destructive or irreversible
+operations; live-data migration; recovery guarantees; broad foundation or
+platform contracts; high-impact external actions; or material public identity
+or privacy consequences.
+
+Use targeted architecture and applicable risk, abuse, privacy, migration,
+rollback, or recovery analysis. Research occurs only when existing evidence is
+insufficient. Explicit design acceptance precedes tightly bounded
+implementation authority naming paths, protected operations, data boundaries,
+and stop conditions. Final verification includes focused and full appropriate
+native coverage after the last mutation and relevant adversarial or negative
+paths. One adversarial independent review is required, with a fresh final review
+after blocking corrections, followed by explicit owner acceptance and tightly
+bounded external authority.
+
+Classification checks do not select work: F1 is Tier 3; an isolated synthetic
+documentation-link correction is Tier 1; R1 is Tier 3; and S1 is Tier 2 with
+separately bounded Tier 3 sub-boundaries for credentials, private access,
+destructive storage, migration, or recovery-critical operations. R1 and S1 are
+examples only until explicitly selected and authorized.
+
+### Checkpoint Brief
+
+Use one concise Markdown block with exactly these fields:
+
+- **Why:** Owner value and the problem being solved.
+- **Risk tier:** The tier and consequence-based trigger.
+- **Exact scope:** Authorized capabilities, paths, data, and targets.
+- **Exclusions:** Excluded paths, operations, dependencies, systems, and
+  follow-on work.
+- **Authority established:** Task, implementation, local commit when
+  applicable, acceptance, publication, and deployment stated separately.
+- **Protected boundaries:** Secrets, protected references, private/live data,
+  live systems, generated ownership, and unrelated user changes.
+- **Observable result:** What a human can inspect or do afterward.
+- **Verification:** Focused checks, final broad/native check, review
+  requirement, and evidence location.
+- **Stop conditions:** Checkpoint-specific and shared anti-loop conditions.
+- **Next decision boundary:** The exact owner decision required after the
+  current lifecycle state.
+
+A brief describes authority but never creates it. Its authority field cites the
+explicit current owner boundary. Tier 1 creates no repository file by default.
+Tier 2 and Tier 3 open one ordinary dated `docs/reviews/` evidence record and
+append lifecycle facts to that record or its compound evidence rather than
+creating parallel planning reports.
+
+### Separate Authority and Acceptance Gates
+
+- Explicit owner selection establishes task authority only.
+- Design acceptance approves the design only unless implementation authority
+  is separately explicit in the same owner instruction.
+- Implementation authority names the exact capability, paths, data, targets,
+  and protected operations; it does not authorize acceptance or external
+  action.
+- Verification and independent review establish evidence and findings, not
+  owner acceptance.
+- Owner acceptance applies only to the exact verified and reviewed candidate.
+- Staging, local commits and ref changes, publication, deployment, migration,
+  destructive operations, and every external write require separately explicit
+  authority naming their exact targets and modes.
+
+Silence does not accept. A Tier 1 owner may combine outcome acceptance with a
+separately explicit publication decision, but the two facts must remain clear.
+
+### Environment and Verification Contract
+
+Before the first mutation and native verification, establish the repository and
+execution environment defined in
+`docs/architecture/engineering-sessions.md`. Record checkpoint-specific roots,
+restrictions, and commands in the brief. Do not probe unauthorized data or
+protected paths.
+
+Use focused checks before mutation when useful, after coherent increments, and
+after corrections. Final broad verification follows the last mutation at the
+tier defined above; any later mutation invalidates it as final evidence. Do not
+repeat a full suite merely because work changes hands or documentation is
+rewritten. Synthetic selected, idle, and error behavior uses isolated fixtures;
+live canonical files or data roots are limited to explicitly identified smoke
+or authorized live checks.
+
+`docs/architecture/engineering-lifecycle.md` owns correction continuation,
+verification sequencing, and anti-loop stops.
+
+### Compact Compound Evidence
+
+Tier 2 and Tier 3 preserve one compound durable bundle:
+
+1. One dated ordinary Markdown record under `docs/reviews/`.
+2. Immutable Git history for candidate and published identities and exact
+   changed paths once commits are separately authorized.
+3. A stable publication or deployment attestation when final facts occur after
+   the repository commit.
+
+The Markdown record preserves the accepted brief, preflight outcome, final
+changed paths, verification command/result anchors, independent findings and
+disposition, owner acceptance and boundary, publication/deployment authority
+and boundary, correction cycles, and stop assessment. Before commit it names
+the base and explicitly describes the candidate as uncommitted; it never
+invents a future identity or external result.
+
+Prompts, full chats, source transcripts, temporary reports, and every
+intermediate test run are not durable dependencies. Later reviewers should be
+able to reconstruct the boundary, decisions, candidate, and result from the
+compact record, Git, and any cited durable attestation.
+
+One coherent commit is the publication default. A narrow second commit is
+justified only when a canonical record must cite an identity that cannot exist
+before the first commit, owner acceptance or final external results must be
+repository-owned, or canonical state can transition only after the accepted
+candidate identity exists. Convenience, formatting, or routine documentation
+does not justify it.
+
+### Publication and Deployment Procedure
+
+For every tier:
+
+1. Confirm the exact accepted candidate, required finding disposition, and
+   final verification after its last mutation.
+2. Confirm generated files derive from authorized canonical sources and are
+   synchronized.
+3. Inspect the complete diff and changed-path list against the brief.
+4. Obtain separate authority naming exact staging paths, local ref mutation,
+   remote ref or deployment target, mode, and prohibited actions.
+5. Stage only authorized paths and verify the staged boundary.
+6. Create the minimum coherent commit or commits and record immutable identity.
+7. Perform only the exact authorized non-force push or deployment action.
+8. Verify local, tracking, remote, or deployment alignment to the degree the
+   authorized action permits.
+9. Verify a clean worktree, generated synchronization, and preservation of
+   unrelated paths.
+10. Complete the durable attestation and owner-facing status.
+
+### Atlas Boundary
+
+Workflow v1.1 adds no Atlas feature, command, schema, or simulated semantic
+judgment. Atlas continues to observe deterministic repository facts. A generic
+preflight helper is eligible only after at least two real checkpoints reproduce
+stable checks worth automating; an Atlas change additionally requires a
+recurring machine-verifiable gap that existing commands or concise preflight
+cannot address and a concrete near-term consumer.
 
 ## Implementation Artifact Standard
 
@@ -176,20 +357,17 @@ ChatGPT should not repeatedly discuss a principle without deciding whether it wi
 
 During workflow calibration sessions:
 
-- recurring issues should be integrated into this contract before continuing,
+- recurring issues should be classified against the active checkpoint and
+  integrated only when the accepted scope and implementation authority include
+  this contract,
 - improvements should be documented as engineering refinements,
 - the objective is to improve future engineering sessions rather than merely complete the current task.
 
 ## Completion Standard
 
-Implementation responses should conclude with only:
-
-    Verify
-    Next
-
-Verify contains exact checks.
-
-Next identifies the next engineering checkpoint.
+Implementation handoffs should state the exact candidate outcome, verification,
+unresolved risk, lifecycle state, and next owner decision. The compact
+owner-facing format is defined in `docs/architecture/engineering-review.md`.
 
 ## Long-Term Direction
 

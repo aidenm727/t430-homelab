@@ -90,6 +90,67 @@ Supporting startup commands include:
     ./atlas validate
     ./atlas sync
 
+## Fresh Repository Baseline
+
+Before implementation, establish a fresh local-only baseline from the repository
+root:
+
+- current date and resolved repository root;
+- active branch, `HEAD`, local branch identity, and locally observed tracking
+  identity;
+- local ahead/behind divergence when tracking evidence exists;
+- full porcelain status including staged, unstaged, and untracked paths;
+- staged and unstaged name-status and `git diff --check` results;
+- `./atlas bootstrap`, state, validation, missing-definition,
+  synchronization, review, and next-action observations as relevant; and
+- canonical active state plus its Current Mission companion.
+
+Treat remote-tracking refs as local observations. Do not fetch, contact a host,
+or mutate a ref merely to make the baseline fresh. Preserve unrelated user
+changes. A missing required source, unexpected dirty path, invalid state, or
+material Atlas contradiction fails closed before mutation unless the exact
+condition is already inside the authorized checkpoint.
+
+## Native Environment Preflight
+
+Before the first mutation and before native verification, establish and record:
+
+- exact runtime and relevant tool versions;
+- a task-specific writable temporary directory;
+- filesystem permissions for authorized targets, without probing unauthorized
+  paths;
+- exact data roots and whether each is synthetic or live;
+- network and sandbox restrictions;
+- required host dependencies, devices, services, mounts, and platform
+  assumptions; and
+- ability to start the intended focused and final broad verification commands
+  through a safe smoke, discovery, import, or existing focused check.
+
+Live or sensitive roots require exact access authority. Synthetic selected,
+idle, and error fixtures must not derive behavior from mutable canonical state.
+The repository root may serve as a live fixture only for an explicitly named
+current-repository smoke boundary.
+
+Classify preflight and verification failures truthfully:
+
+- a missing runtime/tool, unwritable temporary root, denied permission,
+  unavailable data root, sandbox restriction, or absent host dependency is an
+  **environment failure** when product behavior has not executed in the
+  accepted environment;
+- a failed assertion or observable behavior after execution begins in the
+  accepted environment is a **product failure**; and
+- an ambiguous failure remains **unresolved** until evidence distinguishes it.
+
+Environment remediation may continue only inside the accepted repository,
+dependency, and configuration boundary. Otherwise stop for owner scope
+expansion. Do not install dependencies, change configuration, probe a network,
+or access credentials merely to make preflight pass.
+
+Record the accepted native environment and checkpoint-specific verification
+command in the brief. A generic preflight helper is not the default; repeated
+stable evidence from at least two real checkpoints is required before proposing
+automation.
+
 Future Atlas work may expand bootstrap behavior with a dedicated interactive session command such as:
 
     ./atlas session
@@ -113,6 +174,8 @@ Examples:
 - active change session
 - recent changes
 - available Atlas commands
+
+Complete the fresh repository baseline and preserve any unrelated changes.
 
 ## 2. Validate
 
@@ -146,28 +209,41 @@ This decision should be based on architecture, current mission, validation state
 Repository work selection records the decision but does not grant permission to
 act. A checkpoint may be selected only by explicit owner decision.
 
-## 5. Implement
+Classify the selected work under Workflow v1.1 and record its checkpoint brief.
+
+## 5. Preflight
+
+Establish the native execution environment, data roots, permissions,
+restrictions, host assumptions, and command-start readiness before mutation.
+
+## 6. Implement
 
 Only begin implementation after the session has enough context to avoid
 assumption-driven work and explicit owner instruction has separately established
 bounded implementation authority.
 
-## 6. Verify
+## 7. Verify
 
 Run the appropriate verification commands for the change.
 
-## 7. Document
+## 8. Document
 
 Update canonical documentation, generated context, metadata, or operational records as needed.
 
-## 8. Synchronize
+## 9. Synchronize
 
 Ensure the repository layers still agree after the change.
 
-## 9. Commit and Push
+## 10. Review and Accept
 
-Commit and push only after verification and documentation are complete and the
-owner has separately authorized the exact ref and external-write actions.
+Complete the tier-required independent review, finding disposition, and owner
+acceptance for the exact final candidate.
+
+## 11. Publish or Deploy
+
+Stage, commit, push, publish, or deploy only after verification, documentation,
+required review, and owner acceptance are complete and the owner has separately
+authorized the exact paths, refs or targets, modes, and external-write actions.
 
 ---
 

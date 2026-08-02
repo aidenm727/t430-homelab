@@ -1,5 +1,6 @@
 from contextlib import redirect_stdout
 from dataclasses import replace
+from datetime import date
 from io import StringIO
 from pathlib import Path
 import tempfile
@@ -9,12 +10,17 @@ from unittest.mock import patch
 from atlas.commands import bootstrap, next as next_command, review, state as state_command
 from atlas.platform.active_state import (
     AUTHORITY_SENTINEL,
+    ActiveState,
     ActiveStateError,
+    Authority,
+    Freshness,
+    Phase,
     SelectedCheckpoint,
     WorkSelection,
 )
+from atlas.platform.document_catalog import DocumentCatalog
 from atlas.platform.discovery import document_catalog
-from atlas.platform.engineering_state import load
+from atlas.platform.engineering_state import EngineeringState, load
 from atlas.platform.interpretation.readiness import (
     build_readiness_projection,
     project_readiness,
@@ -32,7 +38,8 @@ from atlas.platform.reasoning.synchronization import (
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-CHECKPOINT = "Clean Foundation F1 — Canonical State, Authority, and Orientation"
+SYNTHETIC_DATE = date(2026, 1, 1)
+SYNTHETIC_PHASE = "Synthetic Phase"
 SYNTHETIC_CHECKPOINT = "Synthetic Selected Checkpoint"
 INTENTIONAL_IDLE_MILESTONE = (
     "Intentional idle — no engineering checkpoint is selected."
@@ -86,34 +93,69 @@ def guidance() -> GuidanceReport:
     )
 
 
-def synthetic_selected_state():
-    loaded = load()
+def synthetic_catalog() -> DocumentCatalog:
+    return DocumentCatalog(documents=[])
+
+
+def synthetic_selected_state() -> EngineeringState:
     checkpoint = SelectedCheckpoint(
         id="synthetic-selected-checkpoint",
         name=SYNTHETIC_CHECKPOINT,
         lifecycle="selected",
-        effective_date=loaded.active_state.freshness.effective_date,
+        effective_date=SYNTHETIC_DATE,
         evidence_refs=(),
     )
-    active_state = replace(
-        loaded.active_state,
+    phase = Phase(
+        id="synthetic-phase",
+        name=SYNTHETIC_PHASE,
+        lifecycle="published",
+        effective_date=SYNTHETIC_DATE,
+        evidence_refs=(),
+    )
+    active_state = ActiveState(
+        schema_version=1,
+        phase=phase,
         work_selection=WorkSelection(
             status="selected",
             selected_checkpoint=checkpoint,
         ),
+        blockers=(),
+        unknowns=(),
         decision_required=None,
+        evidence_links=(),
+        freshness=Freshness(
+            effective_date=SYNTHETIC_DATE,
+            review_after=None,
+        ),
+        authority=Authority(
+            task=AUTHORITY_SENTINEL,
+            implementation=AUTHORITY_SENTINEL,
+            publication=AUTHORITY_SENTINEL,
+        ),
     )
-    return replace(
-        loaded,
+    return EngineeringState(
+        repository="/synthetic/repository",
+        repository_clean=True,
+        branch="synthetic-branch",
+        latest_commit="0" * 40,
         active_state=active_state,
+        mission_phase=phase.display_name,
+        phase_lifecycle=phase.lifecycle,
         next_milestone=SYNTHETIC_CHECKPOINT,
         work_selection_status="selected",
         selected_checkpoint=SYNTHETIC_CHECKPOINT,
         intentional_idle=False,
+        state_blockers=(),
+        state_unknowns=(),
         decision_required=None,
         task_authority=AUTHORITY_SENTINEL,
         implementation_authority=AUTHORITY_SENTINEL,
         publication_authority=AUTHORITY_SENTINEL,
+        architecture_sources=[],
+        infrastructure_sources=[],
+        operations_sources=[],
+        roadmap_sources=[],
+        current_context_sources=[],
     )
 
 
@@ -216,7 +258,7 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
     def test_typed_idle_precedes_historical_milestone_phrase_matching(self) -> None:
         idle_state = synthetic_intentional_idle_state()
 
-        report = build_milestone_completion(document_catalog(), idle_state)
+        report = build_milestone_completion(synthetic_catalog(), idle_state)
 
         self.assertEqual(report.status, "Not Applicable")
         self.assertEqual(report.confidence, "High")
@@ -224,7 +266,7 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
         self.assertEqual(report.next_actions, [])
         self.assertNotIn("milestone rule", " ".join(report.evidence))
 
-    def test_canonical_projection_uses_typed_state(self) -> None:
+    def test_current_repository_projection_uses_typed_state_smoke(self) -> None:
         loaded = load()
         projection = build_readiness_projection(document_catalog(), loaded)
         selected_checkpoint = loaded.active_state.work_selection.selected_checkpoint
@@ -246,13 +288,15 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
 
     def test_guidance_never_treats_selected_state_as_permission(self) -> None:
         state = synthetic_selected_state()
-        report = build_guidance(document_catalog(), state)
+        report = build_guidance(synthetic_catalog(), state)
 
         self.assertIn("explicit bounded owner", report.recommended_action)
         self.assertIn("does not establish", report.recommended_action)
         self.assertNotIn("Proceed", report.recommended_action)
 
-    def test_guidance_prioritizes_pending_owner_decision(self) -> None:
+    def test_current_repository_guidance_prioritizes_pending_decision_smoke(
+        self,
+    ) -> None:
         loaded = load()
         report = build_guidance(document_catalog(), loaded)
 
@@ -270,7 +314,7 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
 
     def test_guidance_falls_back_to_bounded_implementation_authority(self) -> None:
         state = synthetic_selected_state()
-        report = build_guidance(document_catalog(), state)
+        report = build_guidance(synthetic_catalog(), state)
 
         self.assertIn(
             "explicit bounded owner task and implementation authority",
@@ -283,7 +327,7 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
 
     def test_guidance_handles_intentional_idle_separately(self) -> None:
         state = synthetic_intentional_idle_state()
-        report = build_guidance(document_catalog(), state)
+        report = build_guidance(synthetic_catalog(), state)
 
         self.assertIn("Remain intentionally idle", report.recommended_action)
         self.assertIn("does not select or authorize work", report.reason)
@@ -330,15 +374,16 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
         self.assertEqual(len(disagreement), 1)
         self.assertEqual(disagreement[0].severity, "Error")
 
-    def test_generated_context_contains_state_and_non_authority_projection(
+    def test_current_repository_context_contains_state_and_non_authority_smoke(
         self,
     ) -> None:
+        loaded = load()
         context = (REPOSITORY_ROOT / "docs" / "aiden-context.md").read_text(
             encoding="utf-8"
         )
 
         self.assertIn("## Canonical Active State", context)
-        self.assertIn(CHECKPOINT, context)
+        self.assertIn(loaded.active_state.phase.display_name, context)
         self.assertIn(
             f"- Implementation: {AUTHORITY_SENTINEL}",
             context,
@@ -445,7 +490,7 @@ class AtlasReadinessProjectionTests(unittest.TestCase):
         context = (REPOSITORY_ROOT / "docs" / "aiden-context.md").read_text(
             encoding="utf-8"
         )
-        lifecycle = "- Phase lifecycle: published"
+        lifecycle = f"- Phase lifecycle: {load().active_state.phase.lifecycle}"
         self.assertEqual(context.count(lifecycle), 1)
 
         hostile_contexts = {
@@ -480,6 +525,7 @@ class AtlasReadinessCommandTests(unittest.TestCase):
     def test_bootstrap_state_review_and_next_share_authority_conclusion(
         self,
     ) -> None:
+        loaded = load()
         outputs = [
             self.render(bootstrap),
             self.render(state_command),
@@ -488,7 +534,7 @@ class AtlasReadinessCommandTests(unittest.TestCase):
         ]
 
         for output in outputs:
-            self.assertIn(CHECKPOINT, output)
+            self.assertIn(loaded.active_state.phase.display_name, output)
             self.assertIn(
                 f"Task: {AUTHORITY_SENTINEL}",
                 output,

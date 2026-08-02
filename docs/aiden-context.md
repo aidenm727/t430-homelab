@@ -1,6 +1,6 @@
 # Aiden Context
 
-Generated: 2026-07-31
+Generated: 2026-08-01
 
 ## Purpose
 
@@ -11,13 +11,13 @@ It projects canonical active state, its human companion, and the existing infras
 ## Canonical Active State
 
 - Schema version: 1
-- Effective date: 2026-07-31
+- Effective date: 2026-08-01
 - Phase: Clean Foundation F1 — Canonical State, Authority, and Orientation — Published
 - Phase lifecycle: published
-- Work selection: intentional_idle
-- Selected checkpoint: None
-- Intentional idle: Yes
-- Decision required: `select-future-engineering-checkpoint` — Owner selection of a future engineering checkpoint before additional implementation.
+- Work selection: selected
+- Selected checkpoint: W1 — Engineering Workflow v1.1
+- Intentional idle: No
+- Decision required: `review-w1-implementation-candidate` — Obtain a fresh adversarial independent review of the local W1 implementation candidate before owner acceptance.
 
 ### Blockers
 
@@ -51,27 +51,31 @@ Clean Foundation F1 — Canonical State, Authority, and Orientation — Publishe
 
 ### Active State
 
-Clean Foundation F1 is accepted and published. Work selection is intentionally
-idle, no engineering checkpoint is selected, and no future implementation is
-implied.
+Clean Foundation F1 remains accepted and published. W1 — Engineering Workflow
+v1.1 remains selected and has a verified uncommitted local implementation
+candidate awaiting fresh adversarial independent review. Selection and local
+verification do not make W1 implementation-complete, accepted, published, or
+operational.
 
-Canonical state effective date: 2026-07-31.
+Canonical state effective date: 2026-08-01.
 
 ### Mission Intent
 
-Preserve the published F1 canonical-state, authority, Atlas-readiness, and
-repository-orientation foundation while retaining accepted School Learning and
-task-scoped context compilation behavior.
+Preserve the bounded W1 local candidate, its compact evidence, unchanged Atlas
+behavior, and isolated readiness fixtures while awaiting the required fresh
+adversarial independent review.
 
 ### Work Selection
 
-- Status: Intentional idle.
-- Selected checkpoint: None.
-- F2, F3, and all other future checkpoints: Not selected.
+- Status: Selected.
+- Selected checkpoint: W1 — Engineering Workflow v1.1.
+- W1 lifecycle: Selected; verified uncommitted local candidate awaiting fresh
+  adversarial independent review.
+- R1, S1, F2, F3, and all other future checkpoints: Not selected.
 
 ### Next Milestone
 
-Intentional idle — no engineering checkpoint is selected.
+W1 — Engineering Workflow v1.1
 
 ### Blockers
 
@@ -83,7 +87,8 @@ None recorded in canonical active state.
 
 ### Owner Decision Required
 
-Select a future engineering checkpoint before additional implementation.
+Obtain a fresh adversarial independent review of the local W1 implementation
+candidate before owner acceptance.
 
 ### Authority Boundary
 
@@ -100,6 +105,9 @@ primary repository-local authority-interpretation contract.
 - `docs/reviews/clean-foundation-f1-acceptance-and-publication-2026-07-31.md`
   at `7339e1676f7588e319e3cb004d56baf56a37bed6` — accepted F1 implementation
   and publication evidence.
+- `docs/reviews/engineering-workflow-v1-1-evidence-2026-08-01.md` — compact W1
+  checkpoint brief and verified local implementation evidence; no immutable
+  candidate identity exists before a separately authorized commit.
 - Git history — immutable implementation and publication identities.
 
 ## Infrastructure Snapshot

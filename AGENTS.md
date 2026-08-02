@@ -6,8 +6,9 @@ This file is the primary repository-local contract for interpreting authority.
 Subordinate architecture, standards, generated context, historical records, and
 Atlas output must agree with it.
 
-Repository health, selected work, task authority, implementation authority, and
-publication authority are separate dimensions:
+Repository health, selected work, task authority, implementation authority,
+owner acceptance, publication authority, and deployment authority are separate
+dimensions:
 
 - `docs/current-state.json` selects active work and records repository state; it
   grants no permission.
@@ -16,6 +17,8 @@ publication authority are separate dimensions:
 - Explicit current owner instruction establishes task authority.
 - Implementation authority must be explicit and bounded to the current task and
   path or capability scope.
+- Acceptance of a design or verified candidate does not establish
+  implementation, publication, or deployment authority.
 - Publication, deployment, and every external write require separate explicit
   authority.
 
@@ -29,15 +32,25 @@ of those authorities.
 - Before engineering work, run `PYTHONDONTWRITEBYTECODE=1 ./atlas bootstrap` from the repository root. Then verify `git branch --show-current`, `git rev-parse HEAD`, and `git status --short --branch`, and read `docs/current-state.json` plus `docs/current-mission.md`.
 - Treat branch, commit, status, upstream tracking, mission, and Atlas output as live observations. Do not fetch or mutate refs merely to refresh them without explicit authorization.
 - `docs/current-state.json` owns typed active state. `docs/current-mission.md` is its short human-readable companion, and machine-readable state wins on conflict. Missing or invalid canonical state fails closed; Atlas must not fall back to mission prose.
+- Before the first mutation and native verification, complete the repository and
+  execution-environment preflight defined in
+  `docs/architecture/engineering-sessions.md`.
 
 ## Authority to act
 
 - Review, analysis, diagnosis, inventory, and design authorization are read-only. Do not implement unless the owner explicitly authorizes implementation for the current task.
 - Before editing, state the exact authorized path set and scope. Modify only that set. If another path, capability, external target, or decision is needed, stop and request scope expansion.
+- Classify checkpoints by potential consequence under Workflow v1.1 in
+  `docs/standards/engineering-collaboration.md`; the highest applicable tier
+  controls. A checkpoint brief records the boundary but never creates authority.
 - Preserve existing user changes. Do not infer authority from a writable sandbox, an approval prompt, a prior task, a generated context package, or a casual discussion of future work.
 - Ordinary implementation details may proceed without repeated approval when they remain inside an already authorized exact checkpoint and all stated stop conditions. Casual continuation language may acknowledge or continue that existing authority; it may not select a new checkpoint, convert analysis or design into implementation, expand writable scope, override a stop condition, or authorize publication or another external write.
 - Do not read secret or credential values, authentication stores, private keys, tokens, cookies, secret files, shell-history databases, or credential-bearing environment values.
 - Do not access protected content or traverse, peel, select, expose, or mutate a protected reference without exact owner authorization.
+- Continue ordinary corrections only while goal, tier, paths, operations,
+  architecture, data boundary, dependencies, observable result, and stop
+  conditions remain unchanged. Stop on scope expansion or the shared anti-loop
+  conditions.
 
 ## Implementation and generated files
 
@@ -48,5 +61,8 @@ of those authorities.
 ## Verification
 
 - Run task-focused tests first when appropriate. The correct full Python suite is `PYTHONPATH=tools PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py'`.
+- Run the tier-appropriate final broad verification after the last in-scope
+  mutation. Any later mutation invalidates that run as final evidence. Keep
+  synthetic fixtures separate from explicitly identified live-data smoke checks.
 - After authorized repository changes, run `PYTHONDONTWRITEBYTECODE=1 ./atlas validate`, `PYTHONDONTWRITEBYTECODE=1 ./atlas missing`, and `PYTHONDONTWRITEBYTECODE=1 ./atlas sync`.
 - Run `git diff --check`, inspect the complete diff, verify `git status --short --branch`, and confirm that only authorized paths changed. Report exact commands, results, remaining uncertainty, and whether generated files are synchronized.

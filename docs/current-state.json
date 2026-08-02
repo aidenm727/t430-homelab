@@ -10,14 +10,20 @@
     ]
   },
   "work_selection": {
-    "status": "intentional_idle",
-    "selected_checkpoint": null
+    "status": "selected",
+    "selected_checkpoint": {
+      "id": "engineering-workflow-v1-1",
+      "name": "W1 — Engineering Workflow v1.1",
+      "lifecycle": "selected",
+      "effective_date": "2026-08-01",
+      "evidence_refs": []
+    }
   },
   "blockers": [],
   "unknowns": [],
   "decision_required": {
-    "id": "select-future-engineering-checkpoint",
-    "summary": "Owner selection of a future engineering checkpoint before additional implementation.",
+    "id": "review-w1-implementation-candidate",
+    "summary": "Obtain a fresh adversarial independent review of the local W1 implementation candidate before owner acceptance.",
     "status": "pending",
     "evidence_refs": []
   },
@@ -30,7 +36,7 @@
     }
   ],
   "freshness": {
-    "effective_date": "2026-07-31",
+    "effective_date": "2026-08-01",
     "review_after": null
   },
   "authority": {
