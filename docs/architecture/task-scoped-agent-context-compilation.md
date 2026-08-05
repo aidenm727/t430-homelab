@@ -6,7 +6,23 @@ Task-Scoped Agent Context Compilation defines how the repository can produce bou
 
 The capability turns an authorized declaration, an immutable repository snapshot, versioned selection and budget policies, and an explicit freshness reference into a reproducible generated package. The package is suitable for replaceable consumers while remaining subordinate to its canonical sources.
 
-This document owns the architecture of that compilation contract. It does not implement the capability.
+This document owns the architecture of that compilation contract. The bounded
+library capability is implemented in repository snapshot, selector, selection,
+materialization, validation, digest, and compiler modules with native tests.
+The architecture remains the canonical contract; implementation does not imply
+a general public CLI, autonomous authority, or production-service status.
+
+## Implementation Status
+
+The original architecture checkpoint predated executable implementation. The
+repository now contains the bounded library under
+`tools/atlas/platform/context_compilation/`, deterministic selection under
+`tools/atlas/platform/reasoning/context_selection.py`, and focused snapshot,
+selector, selection, materialization, compilation, and validation tests.
+
+The informative package later in this document remains a truthful historical
+manual example for its pinned commit. It is not relabeled as compiler output.
+No general `atlas context` command or production runtime is claimed.
 
 ## Core Principle
 
@@ -531,7 +547,11 @@ Context Package Compilation should consume the plan and immutable inputs, materi
 
 Engineering Intelligence or future interfaces may present package status and selection explanations. They must not reconstruct different source selection. Any future `atlas context` command remains a thin interface over these reusable layers.
 
-This milestone adds no Atlas command, compiler, validator, discovery behavior, reasoning rule, or execution capability.
+The architecture milestone itself added no Atlas command or execution
+capability. Later bounded checkpoints implemented the library compiler,
+validator, immutable snapshot, selectors, and context-selection reasoning.
+There is still no general public Atlas context command, and compilation grants
+no execution authority.
 
 ## Boundary with Related Engineering Opportunities
 
@@ -1340,9 +1360,9 @@ consumer_contract:
   live_revalidation_required: []
 ```
 
-## Initial Operating Boundary
+## Historical Initial Boundary and Current Boundary
 
-The first engineering checkpoint is architecture only. It defines:
+The first engineering checkpoint was architecture only. It defined:
 
 - the logical package schema;
 - task-authority separation;
@@ -1356,9 +1376,10 @@ The first engineering checkpoint is architecture only. It defines:
 - consumer obligations and prohibitions; and
 - one manually assembled bounded example.
 
-It does not authorize or provide:
+That initial checkpoint did not authorize or provide a compiler or validator.
+Later bounded checkpoints implemented those library layers without changing
+the following continuing exclusions:
 
-- a compiler or validator;
 - an Atlas command;
 - retrieval, embeddings, or a vector database;
 - model-driven selection or summarization;
@@ -1373,7 +1394,9 @@ Clean committed repository snapshots are the only initially supported reproducib
 
 ## Future Direction
 
-After human architecture review, a separate checkpoint may define an implementation plan for repository-owned selection-policy and budget-policy artifacts, typed context-selection reasoning output, compiler boundaries, validators, and thin interfaces.
+Future checkpoints may add a justified thin interface, expand registered policy
+coverage, or integrate another explicit consumer. Those changes require their
+own architecture and authority; the implemented library does not imply them.
 
 Later work may consider captured dirty snapshots, additional deterministic selectors, signed or attestable packages, live-observation adapters, sensitivity-aware external evidence, multi-hop relationship policies, and provider adapters that report advisory token estimates.
 

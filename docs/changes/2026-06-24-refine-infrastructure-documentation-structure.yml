@@ -4,23 +4,18 @@ change_type: documentation
 status: verified
 
 intent:
-  - Reduce infrastructure.md overlap by separating high-level homelab overview from gamer-pve Proxmox workload details
-
+  - Reduce overlap by separating the platform overview, virtualization evidence, and service capabilities
 
 summary:
-  - Moved gamer-pve host and workload details into docs/infrastructure-gamer-pve.md
-  - Moved detailed service documentation from infrastructure.md into docs/services.md
-  - Identified duplication between Service Inventory and detailed service documentation sections
-  - Created infrastructure-gamer-pve.md as the target document for Proxmox host and workload details
-  - Identified infrastructure.md overlap between t430-beast overview and gamer-pve workload details
-
+  - Moved virtualization-host patterns and workload evidence into docs/infrastructure-virtualization.md
+  - Moved service capability documentation into docs/services.md
+  - Removed duplicated inventory and operational detail from the platform infrastructure owner
+  - Preserved role separation and dated historical meaning under public-safe names
 
 verification:
-  - Verified infrastructure.md now points to dedicated service and gamer-pve documentation
-
+  - Verified the platform infrastructure owner linked to the dedicated virtualization and service documents
 
 documentation_outputs:
-  - Updated infrastructure.md, docs/services.md, and docs/infrastructure-gamer-pve.md
-
+  - Updated docs/infrastructure.md, docs/services.md, and docs/infrastructure-virtualization.md
 
 source_session: docs/change-session.md

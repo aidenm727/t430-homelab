@@ -1,0 +1,24 @@
+date: 2026-06-24
+title: Deploy Immich on virtualization host
+change_type: service
+status: verified
+
+intent:
+  - Deploy Immich as the first application workload on the virtualization host using the dedicated workload pool
+
+summary:
+  - Created an isolated Debian-class system container on the workload pool
+  - Installed Docker Engine and Docker Compose inside the guest
+  - Deployed the Immich application stack with a randomized database credential
+  - Generalized guest identity, resource size, storage path, endpoint, port, address, and configuration location in the public record
+
+verification:
+  - Verified the application returned the expected local health response
+  - Verified application components reported healthy state
+  - Verified the container runtime and compose tooling were available
+  - Verified the guest was running at the time of the dated change
+
+documentation_outputs:
+  - Added sanitized Immich evidence to the virtualization and service-capability records
+
+source_session: docs/change-session.md

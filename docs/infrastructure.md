@@ -1,826 +1,131 @@
-# T430 Homelab Infrastructure Record
+# Public-Safe Infrastructure Record
 
-**Last Updated:** 2026-06-23
-**Current Phase:** Platform Foundation Established (Monitoring, DNS, HTTPS, and Backups)
-
----
-
-# 1. Purpose
-
-This document is the canonical infrastructure record for the T430 homelab.
-
-It describes:
-
-* Current deployed infrastructure
-* Service inventory
-* Network architecture
-* Access model
-* Backup strategy
-* Security controls
-* Operational procedures
-* Future roadmap
-
-Chronological history is maintained separately in:
-
-```text
-~/homelab/docs/changes.log
-```
-
----
-
-# 2. System Overview
-
-| Item              | Value                     |
-| ----------------- | ------------------------- |
-| Hostname          | `t430-beast`              |
-| Hardware          | Lenovo ThinkPad T430      |
-| Operating System  | Ubuntu Server 24.04.4 LTS |
-| Primary Interface | `enp0s25`                 |
-| Remote Access     | Tailscale                 |
-| DNS Domain        | `home.lab`                |
-| Deployment Method | Docker Compose            |
-
-## Hardware
-
-* Lenovo ThinkPad T430
-* Intel i5-3320M
-* 2 Cores / 4 Threads
-* 8 GB RAM
-* 250 GB Samsung 840 Pro SSD
-* UEFI Boot
-* VT-x Enabled
-* VT-d Enabled
-* Secure Boot Disabled
-
-## Infrastructure Nodes
-
-### t430-beast
-
-Primary production homelab host.
-
-Responsibilities:
-- Docker service hosting
-- Monitoring
-- DNS
-- Reverse proxy
-- Backups
-- Operational tooling
-
-### gamer-pve
-
-Secondary infrastructure host.
-
-Responsibilities:
-- Proxmox virtualization
-- LXC workloads
-- VM workloads
-- Immich
-- Future AI experimentation
-
-Detailed host documentation:
-
-docs/infrastructure-gamer-pve.md
-
-## Maintenance Notes
-
-System successfully rebooted into kernel 6.8.0-117-generic after scheduled maintenance.
-
-All containerized services recovered automatically and were verified operational after reboot.
-
----
-
-# 3. Service Inventory
-
-| Service           | Purpose                 | Access                          |
-| ----------------- | ----------------------- | ------------------------------- |
-| Homepage          | Service dashboard       | `https://dash.home.lab`         |
-| Uptime Kuma       | Uptime monitoring       | `https://kuma.home.lab`         |
-| Grafana           | Metrics visualization   | `https://grafana.home.lab`      |
-| Prometheus        | Metrics collection      | `https://prom.home.lab`         |
-| Pi-hole           | DNS management          | `https://pihole.home.lab/admin` |
-| Traefik Dashboard | Reverse proxy dashboard | `https://traefik.home.lab`      |
-| Vaultwarden       | Password Manager        | `https://vault.home.lab         |
-
----
-
-# 4. Directory Layout
-
-## Root Directory
-
-```text
-~/homelab
-```
-
-## Primary Directories
-
-```text
-~/homelab/docs
-~/homelab/services
-~/homelab/backups
-```
-
-## Service Directories
-
-```text
-~/homelab/services/traefik
-~/homelab/services/uptime-kuma
-~/homelab/services/homepage
-~/homelab/services/pihole
-~/homelab/services/monitoring
-```
-
-## Documentation
-
-```text
-~/homelab/docs/changes.log
-```
-
----
-
-# 5. Architecture
-
-## High-Level Flow
-
-```text
-Client Device
-    │
-    ▼
- Tailscale
-    │
-    ▼
-  Pi-hole
-    │
-    ▼
-  Traefik
-    │
-    ▼
- Docker Services
-```
-
-## Design Principles
-
-* Services are accessed through DNS names rather than IP addresses.
-* Shared web services are routed through Traefik.
-* Tailscale provides secure remote access.
-* Pi-hole provides internal DNS resolution.
-* Docker Compose manages deployments.
-* Infrastructure changes are documented immediately after verification.
-
----
-
-# 6. Network and Access Model
-
-## Physical Network
-
-* Wired Ethernet only
-* Wi-Fi disabled
-* DHCP provided by home router
-
-## Firewall
-
-UFW is enabled.
-
-### Current Policy
-
-```text
-Default Incoming: Deny
-Default Outgoing: Allow
-Allowed Service: OpenSSH
-```
-
-### Note
-
-Docker publishes ports using its own iptables rules.
-
-Any future hardening should verify both:
-
-* UFW configuration
-* Docker port exposure
-
-## Published Host Ports
-
-| Port      | Purpose       |
-| --------- | ------------- |
-| `53/tcp`  | Pi-hole DNS   |
-| `53/udp`  | Pi-hole DNS   |
-| `80/tcp`  | Traefik HTTP  |
-| `443/tcp` | Traefik HTTPS |
-
-Uptime Kuma host port `3001` has been removed.
-
----
-
-# 7. DNS
-
-## Pi-hole
-
-Pi-hole provides internal DNS resolution for homelab services.
-
-### Location
-
-```text
-~/homelab/services/pihole
-```
-
-### Persistent Data
-
-```text
-~/homelab/services/pihole/etc-pihole
-~/homelab/services/pihole/etc-dnsmasq.d
-```
-
-## DNS Records
-
-```text
-dash.home.lab
-grafana.home.lab
-kuma.home.lab
-pihole.home.lab
-prom.home.lab
-traefik.home.lab
-vault.home.lab
-```
-
-All service records resolve to the homelab server through Pi-hole.
-
-## Tailscale Integration
-
-* MagicDNS enabled
-* Pi-hole used as DNS resolver
-* `home.lab` configured as a search domain
-* Cross-device DNS resolution verified
-
----
-
-# 8. Tailscale
-
-Tailscale provides secure remote access without public port forwarding.
-
-## Access Groups
-
-| Group         | Purpose                    |
-| ------------- | -------------------------- |
-| `group:admin` | Full administrative access |
-| `group:web`   | Restricted web access      |
-
-Restricted users should only access approved services through:
-
-```text
-80/tcp
-443/tcp
-```
-
-SSH access remains restricted.
-
-# 9. Ansible Automation
-
-## Control Node
-
-Ansible is managed from a WSL Ubuntu 22.04 environment on the administrator's laptop.
-
-Control Node:
-
-* WSL Ubuntu 22.04
-* Ansible Core 2.17
-* Transport: SSH over Tailscale
-* Authentication: SSH key-based
-
-Managed Node:
-
-* t430-beast
-
-## Inventory
-
-Production inventory is maintained on the control node and currently contains:
-
-* t430-beast
-
-## Verification
-
-Connectivity has been verified using:
-
-ansible -m ping
-
-Result:
-
-* Successful Ansible communication
-* SSH key authentication confirmed
-
-## Baseline Playbooks
-
-Current playbooks:
-
-* facts.yml
-
-  * Collects host facts and system information
-
-* health-check.yml
-
-  * Verifies Docker service status
-  * Reports running containers
-  * Reports root filesystem utilization
-  * Reports memory utilization
-  * Displays operational health summary
-
-* backup-health.yml
-
-  * Verifies homelab-restic-backup.timer is active
-  * Runs the backup freshness validation script
-  * Reports backup health summary
-  * Read-only validation playbook
-
-* service-health.yml
-
-  * Verifies expected core service containers are running
-  * Reports missing services
-  * Fails if required containers are absent
-  * Read-only validation playbook
+**Evidence window:** 2026-06-23 through 2026-06-24
+**Continuity claim:** None; current reality requires fresh authorized observation
 
 ## Purpose
 
-Ansible will be used to gradually transition the homelab from manually managed infrastructure to reproducible, documented Infrastructure-as-Code workflows.
+This document is the canonical public owner for infrastructure roles, trust
+boundaries, operating patterns, and sanitized dated evidence. It deliberately
+does not contain addresses, real host or private DNS identities, exact inventory,
+endpoints, ports, container IDs, device or storage paths, management paths,
+backup destinations, credential references, or executable recovery steps.
 
-Added docker-health.yml Ansible playbook for Docker platform validation.
+Exact operational facts belong in a future private operations repository only
+when a real artifact requires version control. Secret values belong only in a
+secret manager or protected operational storage and never in Git.
 
-The playbook checks:
-- Docker service active state
-- Full container status list
-- Unhealthy containers
-- Restarting containers
-
-The playbook is read-only and fails intentionally if unhealthy or restarting containers are detected.
-
-
----
-
-# 10. Docker Platform
-
-Docker is installed from the official Docker repository.
-
-## Components
-
-* Docker Engine
-* Docker Compose Plugin
-* Docker Buildx
-* Containerd
-
-## Configuration
-
-* Docker enabled at boot
-* Non-root Docker access configured
-* JSON log rotation enabled
-
-### Log Rotation
+## Role Topology
 
 ```text
-Max Size: 10 MB
-Max Files: 3
+Owner devices
+    │
+    ├── private access boundary
+    │
+    ▼
+Core-services environment
+    ├── network and name-resolution capabilities
+    ├── ingress and certificate boundary
+    ├── observability capabilities
+    ├── selected owner services
+    └── backup coordination
+             │
+             ├── encrypted off-host/off-site protection pattern
+             │
+             └── bounded restore evidence
+
+Virtualization environment
+    ├── isolated VM/LXC workloads
+    ├── application experiments
+    └── migration and future compute capacity
 ```
 
-## Networks
+Role aliases describe architectural responsibility, not reachable systems.
 
-| Network      | Purpose                     |
-| ------------ | --------------------------- |
-| `proxy`      | Shared Traefik network      |
-| `monitoring` | Internal monitoring network |
+## Capability Classes
 
----
+| Class | Public pattern | Representative technology |
+| --- | --- | --- |
+| Private access | Administrative paths are restricted to owner-controlled private access | Tailscale-class overlay access |
+| Network services | Local name resolution and policy remain separate from public ingress | Pi-hole-class DNS filtering |
+| Ingress | One reverse-proxy boundary terminates internal HTTPS and routes approved services | Traefik-class reverse proxy |
+| Observability | Metrics, logs, health checks, dashboards, and alerts are separate capabilities | Prometheus/Grafana/Loki-class stack |
+| Owner services | Selected personal services run behind the same trust and evidence boundaries | Password-management and media-workflow classes |
+| Backup and recovery | Local snapshots, encrypted independent copies, verification, and bounded restore tests are distinct controls | Content-addressed backup tooling |
 
-# 11. Reverse Proxy and HTTPS
+Representative technologies explain engineering choices; the table is not a
+complete live inventory or route list.
 
-## Traefik
+## Trust Boundaries
 
-Traefik v3.6.1 serves as the reverse proxy for all routed services.
+- The human owner remains the authority for goals, access, changes, acceptance,
+  and recovery decisions.
+- Public documentation cannot establish current reachability or health.
+- Private access reduces exposure but does not replace service authentication,
+  patching, least privilege, or backup.
+- Ingress, observability, application data, and backup each have distinct data
+  and failure boundaries.
+- Generated repository context is a public release and derives only from this
+  sanitized record, the virtualization record, and the service-capability
+  record.
 
-### Location
+## Dated Operational Evidence
+
+The June 2026 source records documented the following bounded outcomes:
+
+- a resource-constrained core-services environment recovered its containerized
+  workloads after a planned restart and received explicit service checks;
+- local DNS, private access, internal HTTPS, metrics, logs, dashboards, health
+  checks, and alert delivery were individually verified;
+- backup snapshots could be listed, a bounded full restore was completed, and a
+  later encrypted off-site retrieval was verified;
+- a separate virtualization environment received local workload capacity,
+  private remote administration, node monitoring, and an initial application
+  workload.
+
+These are historical observations from 2026-06-23 and 2026-06-24. They do not
+prove that any system is currently online, reachable, protected, or restorable.
+
+## Backup and Recovery Pattern
 
 ```text
-~/homelab/services/traefik
+Application-owned data
+    ├── portable export when supported
+    ├── local versioned snapshot
+    ├── encrypted off-host copy
+    └── encrypted off-site copy
+             │
+             └── dated integrity and restore evidence
 ```
 
-### Features
-
-* Docker provider enabled
-* File provider enabled
-* Host-based routing
-* HTTP and HTTPS entrypoints
-* Internal health endpoint enabled
-* Shared proxy network
-
-## Entrypoints
-
-| Entrypoint  | Port | Purpose |
-| ----------- | ---- | ------- |
-| `web`       | 80   | HTTP    |
-| `websecure` | 443  | HTTPS   |
-
----
-
-## Internal PKI
-
-An internal Public Key Infrastructure (PKI) is used for trusted HTTPS.
-
-### Root CA
-
-```text
-Aiden Homelab Root CA
-```
-
-### Wildcard Certificate
-
-```text
-*.home.lab
-home.lab
-```
-
-### Certificate Storage
-
-```text
-~/homelab/services/traefik/certs/ca
-~/homelab/services/traefik/certs/live
-~/homelab/services/traefik/dynamic/tls.yml
-```
-
-### Security Requirements
-
-* Never commit private keys
-* Never commit certificate secrets
-* Never commit backup passwords
-* Root CA certificate may be installed on trusted devices
-
-### Trusted Device Status
-
-The Root CA has been successfully installed and validated on trusted client systems.
-
----
-
-# 12. Routed Services
-
-| Service     | HTTP                           | HTTPS                           | Backend            |
-| ----------- | ------------------------------ | ------------------------------- | ------------------ |
-| Homepage    | `http://dash.home.lab`         | `https://dash.home.lab`         | `homepage:3000`    |
-| Uptime Kuma | `http://kuma.home.lab`         | `https://kuma.home.lab`         | `uptime-kuma:3001` |
-| Grafana     | `http://grafana.home.lab`      | `https://grafana.home.lab`      | `grafana:3000`     |
-| Prometheus  | `http://prom.home.lab`         | `https://prom.home.lab`         | `prometheus:9090`  |
-| Pi-hole     | `http://pihole.home.lab/admin` | `https://pihole.home.lab/admin` | `pihole:80`        |
-| Traefik     | `http://traefik.home.lab`      | `https://traefik.home.lab`      | `api@internal`     |
-| Vaultwarden | `http://vault.home.lab`        | `http://vault.home.lab          | `vaultwarden:80`   |
-
-## HTTPS Status
-
-All routed services are operational over HTTPS using the internal wildcard certificate.
-
-HTTP remains available during the transition period.
-
-Future decision:
-
-* Keep dual-stack HTTP/HTTPS
-* Or force HTTP → HTTPS redirects
-
----
-
-# 13. Service Details
-
-Detailed service documentation is maintained in:
-
-docs/services.md
-
-The quick service inventory remains in Section 3.
-
----
-
-# 14. Backup System
-
-Restic is used for encrypted homelab backups.
-
-## Repository
-
-```text
-~/homelab/backups/restic-repo
-```
-
-## Password File
-
-```text
-~/homelab/backups/restic-password
-```
-
-Permissions:
-
-```text
-600
-```
-
-## Protected Paths
-
-```text
-~/homelab/services
-~/homelab/docs
-```
-
-## Current State
-
-* Proxmox virtualization host
-* Dedicated NVMe workload storage
-* Immich photo management platform
-
-## Restore Test
-
-A full restore test was successfully completed.
-
-Restore target:
-
-```text
-~/homelab/restore-test
-```
-
-Validated:
-
-```text
-~/homelab/docs
-~/homelab/services
-```
-
-## Current Limitations
-
-* Local repository only
-* No scheduling
-* No retention policy
-* No off-device copy
-
-## Planned Improvements
-
-* Systemd timer
-* Retention policy
-* Backup monitoring
-* External backup storage
-
-### Automation
-
-Backups are executed automatically through systemd.
-
-Service:
-- homelab-restic-backup.service
-
-Timer:
-- homelab-restic-backup.timer
-
-Schedule:
-- Daily at 03:00 local server time
-
-Retention:
-- 7 daily snapshots
-- 4 weekly snapshots
-- 6 monthly snapshots
-
-The timer uses Persistent=true so missed backups run automatically after the system comes back online.
-
-### Backup Health Monitoring
-
-Successful backups update:
-
-~/homelab/backups/last-successful-backup.txt
-
-A validation script checks backup freshness:
-
-~/homelab/scripts/check-backup-freshness.sh
-
-The script returns success when the most recent backup is less than 25 hours old and failure otherwise.
-
-### Backup Monitoring
-
-Backup status is exposed through a dedicated health endpoint.
-
-Service:
-- health-endpoint (nginx)
-
-Purpose:
-- Serves backup status files from ~/homelab/health
-
-URL:
-- https://health.home.lab/backup.txt
-
-Monitoring:
-- Uptime Kuma monitor: Backup Health
-- Internal target: http://health-endpoint/backup.txt
-
-This provides automated monitoring of the backup subsystem.
-
-### Off-Site Backup
-
-Backblaze B2 is configured as an off-site Restic backup target.
-
-Bucket:
-- t430-homelab-backups
-
-Repository:
-- b2:t430-homelab-backups:restic
-
-Credentials:
-- Stored on the server at ~/homelab/secrets/backblaze-b2.env
-- File permissions: 600
-- Directory permissions: 700
-- Credentials must never be committed
-
-Status:
-- B2 repository initialized
-- Clean backup uploaded successfully
-- Snapshot listing verified
-- Restore from B2 verified
-
-Automation:
-
-Service:
-- homelab-restic-backup-b2.service
-
-Timer:
-- homelab-restic-backup-b2.timer
-
-Schedule:
-- Daily at 04:00 local server time
-
-Retention:
-- 7 daily snapshots
-- 4 weekly snapshots
-- 6 monthly snapshots
-
-The timer uses Persistent=true so missed off-site backups run automatically after the system comes back online.
-
-### Alerting
-
-Uptime Kuma supports Discord notifications through a dedicated Discord webhook.
-
-Current configuration:
-
-- Discord notification channel: homelab-alerts
-- Notification integration: Discord Alerts
-- Initial monitor attached: Backup Health
-
-Status:
-
-- Webhook connectivity verified
-- Uptime Kuma notification delivery verified
-- End-to-end Discord alert path verified
-- Controlled failure/recovery alert test completed successfully using the Backup Health monitor and health-endpoint container.
-
-
-Critical monitors using Discord Alerts:
-
-- Backup Health
-- Grafana
-- Homepage
-- Pi-hole
-- Prometheus
-- Traefik
----
-
-# 15. Operational Procedures
-
-## Standard Change Workflow
-
-```text
-Deploy / Configure
-       ↓
-Verify Functionality
-       ↓
-Document Immediately
-```
-
-## Required Documentation
-
-### Server
-
-Append:
-
-```text
-~/homelab/docs/changes.log
-```
-
-### GitHub
-
-Update:
-
-```text
-docs/infrastructure.md
-```
-
-### Version Control
-
-Commit and push using a professional commit message.
-
-## Repository
-
-```text
-https://github.com/aidenm727/t430-homelab
-```
-
-Canonical documentation is maintained in GitHub.
-
-Ansible control node initialized on laptop WSL Ubuntu environment.
-
-Connectivity:
-- Control node: WSL Ubuntu 22.04 on personal laptop
-- Managed node: t430-beast
-- Transport: SSH over Tailscale
-- Authentication: SSH key-based
-- Verified: ansible ping successful
-
----
-
-# 16. Security Notes
-
-## Strengths
-
-* No public port forwarding
-* Tailscale-secured access
-* ACL separation
-* UFW enabled
-* Internal trusted HTTPS
-* Reverse proxy architecture
-* Encrypted backups
-* Restore-tested backups
-
-## Critical Rules
-
-Never commit:
-
-* Passwords
-* API keys
-* Tokens
-* `.env` files
-* Certificate private keys
-* Restic password files
-
-The Root CA private key must remain offline and protected.
-
----
-
-# 17. Current State Summary
-
-The homelab currently provides:
-
-* Ubuntu Server host
-* Docker Compose platform
-* Internal DNS
-* Reverse proxy routing
-* Trusted HTTPS
-* Internal PKI
-* Secure remote access
-* Service dashboard
-* Uptime monitoring
-* Metrics collection
-* Metrics visualization
-* Encrypted backups
-* Verified restores
-* Operational documentation
-
----
-
-# 18. Known Gaps and Next Phase
-
-Immediate Priority
-
-Expand Infrastructure Automation with Ansible
-
-Recommended Next Task
-
-Create operational health-check playbooks for:
-- Docker platform
-- Container health
-- Backup validation
-- Service status verification
-
-## Near-Term Improvements
-
-* Systemd backup timer
-* Retention policy
-* Backup monitoring
-* HTTP → HTTPS decision
-* External backup storage
-* Remove obsolete Compose version fields
-* Reboot into updated kernel
-
-## Future Platform Additions
-
-* Ansible
-* Centralized logging
-* Alerting
-* Vaultwarden
-* Paperless-ngx
-* Jellyfin
-* Additional storage
-* Infrastructure automation
-
----
-
-# 19. Long-Term Goal
-
-Continue evolving the T430 into a production-style homelab platform focused on:
-
-* Clear documentation
-* Secure access
-* Trusted HTTPS
-* Reliable backups
-* Restore validation
-* Intentional service deployment
-* Scalable operational practices
+Primary capacity, snapshots, independent backup, off-site protection, and
+restore proof are different controls. Public evidence may record objectives,
+method class, date, and redacted outcome. Provider identity, repository or
+bucket names, key and configuration locations, exact commands, and destinations
+remain private.
+
+## Operations and Change Discipline
+
+Repository change records preserve what was attempted, why, the date, and a
+public-safe verification outcome. Live operations require separate authority
+and fresh evidence. A change should progress from experiment to supported
+capability only after its ownership, data boundary, observation, backup,
+rollback, and recovery expectations are understandable.
+
+## Known Limits
+
+- The dated restore evidence is not a current recovery guarantee.
+- Exact live inventory is intentionally absent from this public repository.
+- The virtualization environment's primary storage is not an independent
+  failure domain.
+- Local-AI operation and a dedicated storage environment remain future work.
+- A private operations repository remains conditional on an exact artifact
+  needing durable restricted ownership.
+
+## Canonical Links
+
+- [Virtualization record](infrastructure-virtualization.md)
+- [Service capability record](services.md)
+- [Compute architecture](architecture/compute.md)
+- [Repository public/private boundary](architecture/repository.md)
+- [Dated generalized change records](changes/)

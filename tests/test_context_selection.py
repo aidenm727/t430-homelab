@@ -26,6 +26,7 @@ from atlas.platform.context_compilation.models import (
     DigestRecord,
     ImmutableBlob,
     RepositoryIdentityEvidence,
+    RepositoryRequestIdentity,
     RepositorySnapshot,
 )
 from atlas.platform.context_compilation.snapshot import BlobLookupError
@@ -39,6 +40,7 @@ from atlas.platform.reasoning import context_selection as selection_module
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
+FUTURE_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
 HISTORICAL_COMMIT = "79eef80af3d5969ece7eb9fe7f802be35575f450"
 HISTORICAL_TREE = "3d2853517e64209cffde91766a62e9f70ceb2e47"
 ORIGIN = "https://github.com/aidenm727/t430-homelab.git"
@@ -259,6 +261,21 @@ class SelectionModelTests(SelectionFixture, unittest.TestCase):
 
 
 class BoundedSelectionTests(SelectionFixture, unittest.TestCase):
+    def test_future_identity_is_rejected_before_the_github_rename(self) -> None:
+        self.request = dataclasses.replace(
+            self.request,
+            repository=RepositoryRequestIdentity(
+                FUTURE_REPOSITORY_IDENTITY,
+                HISTORICAL_COMMIT,
+            ),
+        )
+        with self.assertRaisesRegex(
+            SelectionContractError,
+            "repository identities do not match",
+        ):
+            self.build()
+        self.assertEqual(self.read_paths, [])
+
     def test_exact_five_rule_success_plan(self) -> None:
         plan = self.build()
         self.assertEqual(tuple(item.rule_id for item in plan.selected), EXPECTED_ORDER)

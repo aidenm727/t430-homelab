@@ -33,7 +33,7 @@ def architecture_documents() -> list[str]:
 def infrastructure_documents() -> list[str]:
     names = [
         "infrastructure.md",
-        "infrastructure-gamer-pve.md",
+        "infrastructure-virtualization.md",
         "services.md",
         "infrastructure-snapshot.md",
     ]
@@ -75,6 +75,18 @@ def standards_documents() -> list[str]:
     return markdown_files(docs_dir() / "standards")
 
 
+def portfolio_evidence_documents() -> list[str]:
+    names = [
+        "repository-identity-r1-evidence-2026-08-02.md",
+    ]
+
+    return [
+        relative(docs_dir() / "reviews" / name)
+        for name in names
+        if (docs_dir() / "reviews" / name).exists()
+    ]
+
+
 def current_context_documents() -> list[str]:
     names = [
         "current-mission.md",
@@ -96,6 +108,7 @@ def document_layers() -> list[DocumentLayer]:
         DocumentLayer("Infrastructure", infrastructure_documents()),
         DocumentLayer("Operations", operations_documents()),
         DocumentLayer("Roadmaps", roadmap_documents()),
+        DocumentLayer("Portfolio Evidence", portfolio_evidence_documents()),
         DocumentLayer("Current Context", current_context_documents()),
     ]
 

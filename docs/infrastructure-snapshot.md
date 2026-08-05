@@ -1,77 +1,277 @@
 # Infrastructure Snapshot
 
-> Generated context artifact.
-> Do not edit directly; update canonical infrastructure records instead.
+> Generated public context artifact.
+> Do not edit directly; update the registered canonical infrastructure sources.
 
-## Production Host
+This snapshot contains role-based patterns and dated, non-continuous evidence.
+It contains no live-state guarantee or exact private operations record.
 
-t430-beast
+## Infrastructure
 
-* Role: Production services host
-* OS: Ubuntu Server 24.04.4 LTS
-* LAN IP: 10.0.0.136
+Source: `docs/infrastructure.md`
 
-Responsibilities:
+**Evidence window:** 2026-06-23 through 2026-06-24
+**Continuity claim:** None; current reality requires fresh authorized observation
 
-* Pi-hole
-* Traefik
-* Homepage
-* Grafana
-* Prometheus
-* Loki
-* Alloy
-* Uptime Kuma
-* Vaultwarden
-* Backup infrastructure
+### Purpose
 
-## Virtualization Host
+This document is the canonical public owner for infrastructure roles, trust
+boundaries, operating patterns, and sanitized dated evidence. It deliberately
+does not contain addresses, real host or private DNS identities, exact inventory,
+endpoints, ports, container IDs, device or storage paths, management paths,
+backup destinations, credential references, or executable recovery steps.
 
-gamer-pve
+Exact operational facts belong in a future private operations repository only
+when a real artifact requires version control. Secret values belong only in a
+secret manager or protected operational storage and never in Git.
 
-* Role: Proxmox virtualization host
-* OS: Proxmox VE 9
-* LAN IP: 10.0.0.178
-* Tailscale IP: 100.80.182.80
+### Role Topology
 
-Hardware:
+```text
+Owner devices
+    │
+    ├── private access boundary
+    │
+    ▼
+Core-services environment
+    ├── network and name-resolution capabilities
+    ├── ingress and certificate boundary
+    ├── observability capabilities
+    ├── selected owner services
+    └── backup coordination
+             │
+             ├── encrypted off-host/off-site protection pattern
+             │
+             └── bounded restore evidence
 
-* Ryzen 5 2600
-* 16 GB DDR4
-* RTX 4060-class GPU
+Virtualization environment
+    ├── isolated VM/LXC workloads
+    ├── application experiments
+    └── migration and future compute capacity
+```
 
-Storage:
+Role aliases describe architectural responsibility, not reachable systems.
 
-* 500 GB SSD (Proxmox OS)
-* 1 TB NVMe SSD
-* 2 TB SATA SSD
+### Capability Classes
 
-Purpose:
+| Class | Public pattern | Representative technology |
+| --- | --- | --- |
+| Private access | Administrative paths are restricted to owner-controlled private access | Tailscale-class overlay access |
+| Network services | Local name resolution and policy remain separate from public ingress | Pi-hole-class DNS filtering |
+| Ingress | One reverse-proxy boundary terminates internal HTTPS and routes approved services | Traefik-class reverse proxy |
+| Observability | Metrics, logs, health checks, dashboards, and alerts are separate capabilities | Prometheus/Grafana/Loki-class stack |
+| Owner services | Selected personal services run behind the same trust and evidence boundaries | Password-management and media-workflow classes |
+| Backup and recovery | Local snapshots, encrypted independent copies, verification, and bounded restore tests are distinct controls | Content-addressed backup tooling |
 
-* VM hosting
-* LXC hosting
-* Immich
-* AI experimentation
-* Future workloads
+Representative technologies explain engineering choices; the table is not a
+complete live inventory or route list.
 
-## Active Workloads
+### Trust Boundaries
 
-### LXC 200 - Immich
+- The human owner remains the authority for goals, access, changes, acceptance,
+  and recovery decisions.
+- Public documentation cannot establish current reachability or health.
+- Private access reduces exposure but does not replace service authentication,
+  patching, least privilege, or backup.
+- Ingress, observability, application data, and backup each have distinct data
+  and failure boundaries.
+- Generated repository context is a public release and derives only from this
+  sanitized record, the virtualization record, and the service-capability
+  record.
 
-* Debian 12
-* Docker Engine
-* Docker Compose
-* 128 GB root disk
-* LAN IP: 10.0.0.132
+### Dated Operational Evidence
 
-## Active Services
+The June 2026 source records documented the following bounded outcomes:
 
-* Pi-hole
-* Traefik
-* Homepage
-* Uptime Kuma
-* Grafana
-* Prometheus
-* Loki
-* Alloy
-* Vaultwarden
-* Immich
+- a resource-constrained core-services environment recovered its containerized
+  workloads after a planned restart and received explicit service checks;
+- local DNS, private access, internal HTTPS, metrics, logs, dashboards, health
+  checks, and alert delivery were individually verified;
+- backup snapshots could be listed, a bounded full restore was completed, and a
+  later encrypted off-site retrieval was verified;
+- a separate virtualization environment received local workload capacity,
+  private remote administration, node monitoring, and an initial application
+  workload.
+
+These are historical observations from 2026-06-23 and 2026-06-24. They do not
+prove that any system is currently online, reachable, protected, or restorable.
+
+### Backup and Recovery Pattern
+
+```text
+Application-owned data
+    ├── portable export when supported
+    ├── local versioned snapshot
+    ├── encrypted off-host copy
+    └── encrypted off-site copy
+             │
+             └── dated integrity and restore evidence
+```
+
+Primary capacity, snapshots, independent backup, off-site protection, and
+restore proof are different controls. Public evidence may record objectives,
+method class, date, and redacted outcome. Provider identity, repository or
+bucket names, key and configuration locations, exact commands, and destinations
+remain private.
+
+### Operations and Change Discipline
+
+Repository change records preserve what was attempted, why, the date, and a
+public-safe verification outcome. Live operations require separate authority
+and fresh evidence. A change should progress from experiment to supported
+capability only after its ownership, data boundary, observation, backup,
+rollback, and recovery expectations are understandable.
+
+### Known Limits
+
+- The dated restore evidence is not a current recovery guarantee.
+- Exact live inventory is intentionally absent from this public repository.
+- The virtualization environment's primary storage is not an independent
+  failure domain.
+- Local-AI operation and a dedicated storage environment remain future work.
+- A private operations repository remains conditional on an exact artifact
+  needing durable restricted ownership.
+
+### Canonical Links
+
+- [Virtualization record](infrastructure-virtualization.md)
+- [Service capability record](services.md)
+- [Compute architecture](architecture/compute.md)
+- [Repository public/private boundary](architecture/repository.md)
+- [Dated generalized change records](changes/)
+
+## Infrastructure Virtualization
+
+Source: `docs/infrastructure-virtualization.md`
+
+**Evidence window:** 2026-06-23 through 2026-06-24
+**Continuity claim:** None; current reality requires fresh authorized observation
+
+### Purpose
+
+This document preserves the engineering value of the platform's virtualization
+history without publishing a real host identity, address, private DNS, exact
+hardware inventory, endpoint, port, guest ID, device or storage path, or
+management procedure.
+
+### Role
+
+The virtualization environment is the flexible compute boundary for isolated
+VM and LXC workloads, application experiments, migration work, and potential
+future resource-intensive capability. It is distinct from the lower-change
+core-services environment.
+
+The documented implementation used Proxmox VE on repurposed workstation-class
+hardware. That technology choice is historical and representative; no current
+version, health, capacity, or availability is claimed.
+
+### Storage and Failure Boundaries
+
+The June 23 change record documents that existing local solid-state capacity
+was reassigned into a workload-oriented virtualization pool only after an
+existing archive copy was checked on separate media. The public record retains
+that preservation decision while omitting device, volume, pool, size, vendor,
+mount, and archive-location identities.
+
+Local workload capacity improves placement and rollback options but remains in
+the virtualization host's failure domain. It is not an independent backup or a
+demonstrated migration target.
+
+### Dated Workload Evidence
+
+On 2026-06-24, the records documented:
+
+- a Debian-class system container used as an isolated application boundary;
+- an Immich media-workflow stack deployed with Docker Compose as the first
+  application workload on the new pool;
+- application and component health checks returning expected results;
+- node metrics added to the existing observability model; and
+- private overlay administration verified without making management public.
+
+This is sanitized historical evidence. It is not a complete workload inventory,
+proof of present operation, proof of protected data, or proof of recoverability.
+
+### Migration Reasoning
+
+- Keep application data ownership explicit and prefer portable exports.
+- Separate guest configuration, application state, attachments, and backup
+  ownership.
+- Treat hypervisor-local snapshots as rollback, not independent protection.
+- Verify restore on a clean target before describing a workload as dependable.
+- Avoid making a service depend on the original host identity, storage device,
+  private route, or hypervisor-specific path.
+- Record exact deployment and recovery artifacts privately only when they need
+  durable version control.
+
+### Future Compute
+
+A reversible local-AI experiment may later use this role, but no GPU identity,
+driver readiness, passthrough, model fit, privacy behavior, benchmark, or
+operational result is claimed here. Knowledge and School Learning workflows
+must remain functional without local inference.
+
+### Public Boundary
+
+The public record owns role separation, representative technology, dated
+outcomes, storage/recovery reasoning, and migration principles. Exact inventory,
+addressing, private DNS, guests, configuration, backup destinations, recovery
+steps, incidents, and live evidence belong to future private operations
+ownership if and when such artifacts exist.
+
+See [the platform infrastructure record](infrastructure.md), [service
+capabilities](services.md), and [compute architecture](architecture/compute.md).
+
+## Services
+
+Source: `docs/services.md`
+
+**Evidence window:** 2026-06-23 through 2026-06-24
+**Continuity claim:** None; this is not a live service catalog
+
+### Purpose
+
+This record describes service capability classes, trust boundaries,
+representative technologies, and dated verification without publishing a
+complete inventory, endpoint, route, port, container identity, data or config
+path, private DNS name, or management procedure.
+
+### Capability Matrix
+
+| Capability | Engineering role | Representative technology | Dated public evidence |
+| --- | --- | --- | --- |
+| Owner start page and health view | Gives the owner a concise operational entry point without becoming the source of truth | Homepage- and Uptime-Kuma-class tools | Page rendering and health-check behavior were verified in the June 2026 record |
+| Metrics and dashboards | Separates measurement, storage, presentation, and alerting | Prometheus- and Grafana-class tools | Host and virtualization-node metrics plus dashboard queries were checked on 2026-06-24 |
+| Central logs | Supports bounded diagnosis without treating logs as canonical state | Loki- and Alloy-class tools | Log ingestion and query behavior were recorded as verified in June 2026 |
+| Local network policy | Provides owner-controlled name resolution and filtering | Pi-hole-class DNS tooling | Local resolution behavior was checked during the evidence window |
+| Private ingress | Routes explicitly approved internal services behind an HTTPS boundary | Traefik-class proxy and private overlay access | Private routing and certificate behavior were checked during the evidence window |
+| Owner data service | Demonstrates an isolated application workflow | Immich with Docker Compose | Initial component health and application response were checked on 2026-06-24 |
+| Encrypted backup | Separates backup creation, independent copies, verification, and restore | Content-addressed encrypted backup tooling | Snapshot listing, bounded restore, and later off-site retrieval were recorded as successful |
+
+The technology names are representative examples from dated records. This
+matrix is intentionally not an exhaustive current inventory.
+
+### Service Boundaries
+
+- Public documentation describes why a capability exists and how trust is
+  separated; it does not describe how to reach or administer it.
+- Service authentication remains independent from private network access.
+- Dashboards and alerts are observations, not authoritative proof of state.
+- Application data, configuration, logs, and backup each have separate
+  retention and recovery concerns.
+- Secret values and credential references never belong in Git.
+- Current health, version, exposure, and inventory require fresh authorized
+  observation.
+
+### Evidence Interpretation
+
+The historical records show that the owner built and checked a small network,
+observability, ingress, application, and recovery stack under constrained
+hardware. They do not establish continuous availability, production scale,
+production-grade model serving, current patch level, or current recovery time.
+
+Executable runbooks, exact destinations, inventory, incident records, and
+private live evidence are candidates for a future private operations repository
+only when durable restricted version control becomes necessary.
+
+See [the public infrastructure owner](infrastructure.md) and [virtualization
+record](infrastructure-virtualization.md).

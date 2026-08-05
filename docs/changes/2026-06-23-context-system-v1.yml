@@ -4,11 +4,13 @@ change_type: documentation
 status: completed
 
 hosts:
-  - t430-beast
-  - gamer-pve
+  - core-services environment
+  - virtualization environment
 
 summary: >
-  Created the first version of the homelab documentation and AI context system.
+  Created the first version of the infrastructure documentation and generated
+  AI context system. R1 later generalized its active public inputs while
+  preserving this date and historical meaning.
 
 files_created:
   - docs/current-mission.md
@@ -18,14 +20,12 @@ files_created:
   - tools/homelab-change.py
 
 files_generated:
-  - aiden-context.md
+  - docs/aiden-context.md
 
 verification:
-  - generate-context.py successfully builds aiden-context.md
-  - current-mission.md exists
-  - infrastructure-snapshot.md exists
-  - change-session.md exists
+  - The registered generator produced the AI context document
+  - Canonical mission, infrastructure snapshot, and change-session owners existed
 
 follow_up:
-  - Teach generate-context.py to read structured change records
-  - Validate workflow during future infrastructure changes
+  - Read structured change records through the generator
+  - Validate the workflow during later infrastructure changes

@@ -97,6 +97,7 @@ DOCUMENT_DEFINITIONS = {
             "docs/current-state.json",
             "docs/current-mission.md",
             "docs/infrastructure-snapshot.md",
+            "docs/changes",
         ],
         managed_by="tools/generate-context.py",
     ),
@@ -110,12 +111,12 @@ DOCUMENT_DEFINITIONS = {
         tags=["infrastructure", "generated-context"],
         related=[
             "docs/infrastructure.md",
-            "docs/infrastructure-gamer-pve.md",
+            "docs/infrastructure-virtualization.md",
             "docs/services.md",
         ],
         generated_from=[
             "docs/infrastructure.md",
-            "docs/infrastructure-gamer-pve.md",
+            "docs/infrastructure-virtualization.md",
             "docs/services.md",
         ],
         managed_by="tools/generate-context.py",
@@ -281,7 +282,7 @@ DOCUMENT_DEFINITIONS = {
         related=[
             "docs/architecture/platform.md",
             "docs/infrastructure.md",
-            "docs/infrastructure-gamer-pve.md",
+            "docs/infrastructure-virtualization.md",
         ],
     ),
     "docs/architecture/ai.md": DocumentDefinition(
@@ -445,20 +446,20 @@ DOCUMENT_DEFINITIONS = {
 
     "docs/infrastructure.md": DocumentDefinition(
         path="docs/infrastructure.md",
-        purpose="Canonical infrastructure record for deployed homelab hosts, services, networking, access, backups, and operations.",
+        purpose="Canonical public-safe record for infrastructure roles, trust boundaries, capability classes, and dated non-continuous operational evidence.",
         capability="Infrastructure",
-        tags=["infrastructure", "t430-beast", "services", "backups", "networking"],
+        tags=["infrastructure", "public-safe", "services", "backups", "trust-boundaries"],
         related=[
-            "docs/infrastructure-gamer-pve.md",
+            "docs/infrastructure-virtualization.md",
             "docs/services.md",
             "docs/infrastructure-snapshot.md",
         ],
     ),
-    "docs/infrastructure-gamer-pve.md": DocumentDefinition(
-        path="docs/infrastructure-gamer-pve.md",
-        purpose="Infrastructure record for the gamer-pve Proxmox virtualization host and its workloads.",
+    "docs/infrastructure-virtualization.md": DocumentDefinition(
+        path="docs/infrastructure-virtualization.md",
+        purpose="Public-safe virtualization record for role boundaries, migration reasoning, representative technologies, and dated non-continuous evidence.",
         capability="Compute",
-        tags=["infrastructure", "proxmox", "compute", "gamer-pve", "immich"],
+        tags=["infrastructure", "virtualization", "compute", "public-safe", "migration"],
         related=[
             "docs/infrastructure.md",
             "docs/architecture/compute.md",
@@ -468,11 +469,32 @@ DOCUMENT_DEFINITIONS = {
 
     "docs/services.md": DocumentDefinition(
         path="docs/services.md",
-        purpose="Describes the deployed homelab services and their operational details.",
+        purpose="Describes public-safe service capability classes, representative technologies, trust boundaries, and dated non-continuous evidence.",
         capability="Personal Services",
         related=[
             "docs/infrastructure.md",
             "docs/infrastructure-snapshot.md",
+        ],
+    ),
+
+    "docs/reviews/repository-identity-r1-evidence-2026-08-02.md": DocumentDefinition(
+        path="docs/reviews/repository-identity-r1-evidence-2026-08-02.md",
+        purpose="Preserves the compact Tier 3 R1 checkpoint boundary, local privacy cleanup, verification, lifecycle truth, and pending independent review without claiming GitHub action.",
+        canonical=False,
+        generated=False,
+        capability="Engineering and Evolution",
+        status="active",
+        tags=[
+            "repository-identity",
+            "public-private-boundary",
+            "privacy",
+            "checkpoint-evidence",
+        ],
+        related=[
+            "docs/current-state.json",
+            "docs/current-mission.md",
+            "docs/architecture/repository.md",
+            "README.md",
         ],
     ),
 

@@ -48,7 +48,8 @@ _SELECTION_POLICY_VERSION = "1.0.1"
 _SELECTION_POLICY_DIGEST = (
     "69577722ea4eb6f479424f3bf324866cc2992d5df82b3224e5f20571ef081938"
 )
-_REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
+# R1 remains pre-rename: materialization accepts only the current live identity.
+_CURRENT_REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
 _SNAPSHOT_MODE = "clean_committed"
 _OBJECT_FORMAT = "sha1"
 _OPPORTUNITY_PATH = (
@@ -300,10 +301,10 @@ def _validate_input_contract(
         _contract_failure("request selection policy does not match the plan")
 
     if (
-        request.repository.identity != _REPOSITORY_IDENTITY
-        or snapshot.repository.requested_identity != _REPOSITORY_IDENTITY
-        or snapshot.repository.normalized_identity != _REPOSITORY_IDENTITY
-        or selection_plan.repository_identity != _REPOSITORY_IDENTITY
+        request.repository.identity != _CURRENT_REPOSITORY_IDENTITY
+        or snapshot.repository.requested_identity != _CURRENT_REPOSITORY_IDENTITY
+        or snapshot.repository.normalized_identity != _CURRENT_REPOSITORY_IDENTITY
+        or selection_plan.repository_identity != _CURRENT_REPOSITORY_IDENTITY
     ):
         _contract_failure("repository identities do not match")
     if (

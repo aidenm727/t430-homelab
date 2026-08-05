@@ -1,0 +1,20 @@
+date: 2026-06-24
+title: Add virtualization-host node monitoring
+change_type: infrastructure
+status: verified
+
+intent:
+  - Bring the virtualization host into the existing Prometheus monitoring model
+
+summary:
+  - Confirmed the virtualization host did not yet expose the expected node metrics
+  - Added a node-exporter-class metric source and registered it with the existing monitoring capability
+  - Generalized the public record to omit real host, address, port, and target configuration
+
+verification:
+  - Verified the monitoring system scraped the virtualization-host metric source
+
+documentation_outputs:
+  - Updated the public-safe observability evidence
+
+source_session: docs/change-session.md

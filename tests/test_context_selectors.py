@@ -27,6 +27,23 @@ from atlas.platform.context_compilation.models import ModelValueError, deep_free
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = "de97f3d87cc7a90e404c3cf4ea313e6f12e5410a"
+R1_BASELINE = "d8a0f0d319c80b9c63258b737b20c6eb538ee289"
+HISTORICAL_B1A_BOUNDARY = frozenset(
+    {
+        "docs/task-context/index.md",
+        "tests/test_context_snapshot.py",
+        "tools/atlas/platform/context_compilation/__init__.py",
+        "tools/atlas/platform/context_compilation/digests.py",
+        "tools/atlas/platform/context_compilation/models.py",
+        "tools/atlas/platform/context_compilation/snapshot.py",
+    }
+)
+R1_AUTHORIZED_SNAPSHOT_EXPANSION = {
+    "tests/test_context_snapshot.py": "356e4bca6bad45bc0f44b4f5a56a1d0f950db6aa",
+    "tools/atlas/platform/context_compilation/snapshot.py": (
+        "70787fc2a7e8710a7fecacb3665dcef4578b9b79"
+    ),
+}
 REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
 HISTORICAL_COMMIT = "79eef80af3d5969ece7eb9fe7f802be35575f450"
 HISTORICAL_TREE = "3d2853517e64209cffde91766a62e9f70ceb2e47"
@@ -758,6 +775,17 @@ ChatGPT assists with architecture, planning, explanation, documentation, and imp
 
 
 class SelectorCapabilityBoundaryTests(unittest.TestCase):
+    def _assert_b1a_r1_candidate(
+        self,
+        changes: dict[str, str],
+        blobs: dict[str, str],
+    ) -> None:
+        expected_changes = {
+            path: "M" for path in R1_AUTHORIZED_SNAPSHOT_EXPANSION
+        }
+        self.assertEqual(changes, expected_changes)
+        self.assertEqual(blobs, R1_AUTHORIZED_SNAPSHOT_EXPANSION)
+
     def test_selector_module_imports_no_forbidden_capability(self) -> None:
         path = ROOT / "tools/atlas/platform/context_compilation/selectors.py"
         tree = ast.parse(path.read_text(encoding="utf-8"))
@@ -818,17 +846,77 @@ class SelectorCapabilityBoundaryTests(unittest.TestCase):
 
         self.assertEqual(mutable_assignments, [])
 
-    def test_b1a_snapshot_boundary_files_match_the_authorization_baseline(self) -> None:
-        result = fixture_git(
+    def test_b1a_snapshot_boundary_records_the_authorized_r1_expansion(self) -> None:
+        paths = tuple(sorted(HISTORICAL_B1A_BOUNDARY))
+        authorized_paths = tuple(sorted(R1_AUTHORIZED_SNAPSHOT_EXPANSION))
+        self.assertLessEqual(
+            set(R1_AUTHORIZED_SNAPSHOT_EXPANSION),
+            HISTORICAL_B1A_BOUNDARY,
+        )
+
+        # The accepted B1a snapshot implementation stayed fixed through the R1
+        # base even while later checkpoints evolved the four shared B1a files.
+        historical = fixture_git(
             None,
             "diff",
             "--name-only",
             BASELINE,
+            R1_BASELINE,
             "--",
-            "tools/atlas/platform/context_compilation/snapshot.py",
-            "tests/test_context_snapshot.py",
+            *authorized_paths,
         )
-        self.assertEqual(result.stdout, b"")
+        self.assertEqual(historical.stdout, b"")
+
+        # R1 separately authorized changes to exactly two paths inside the
+        # complete historical six-path boundary.
+        expanded = fixture_git(
+            None,
+            "diff",
+            "--name-status",
+            "--no-renames",
+            "-z",
+            R1_BASELINE,
+            "--",
+            *paths,
+        )
+        fields = expanded.stdout.rstrip(b"\0").split(b"\0")
+        self.assertEqual(len(fields) % 2, 0)
+        changes = {
+            fields[index + 1].decode("utf-8"): fields[index].decode("ascii")
+            for index in range(0, len(fields), 2)
+        }
+
+        actual_blobs = {
+            path: fixture_git(None, "hash-object", path)
+            .stdout.decode("ascii")
+            .strip()
+            for path in authorized_paths
+        }
+        self._assert_b1a_r1_candidate(changes, actual_blobs)
+
+    def test_b1a_r1_boundary_rejects_every_unauthorized_delta(self) -> None:
+        expected_changes = {
+            path: "M" for path in R1_AUTHORIZED_SNAPSHOT_EXPANSION
+        }
+        expected_blobs = dict(R1_AUTHORIZED_SNAPSHOT_EXPANSION)
+
+        unchanged_paths = HISTORICAL_B1A_BOUNDARY - set(expected_changes)
+        for path in unchanged_paths:
+            with self.subTest(case="additional-boundary-path", path=path):
+                changes = {**expected_changes, path: "M"}
+                with self.assertRaises(AssertionError):
+                    self._assert_b1a_r1_candidate(changes, expected_blobs)
+
+        for path in R1_AUTHORIZED_SNAPSHOT_EXPANSION:
+            with self.subTest(case="authorized-path-deleted", path=path):
+                changes = {**expected_changes, path: "D"}
+                with self.assertRaises(AssertionError):
+                    self._assert_b1a_r1_candidate(changes, expected_blobs)
+
+            with self.subTest(case="authorized-content-rewritten", path=path):
+                blobs = {**expected_blobs, path: "0" * 40}
+                with self.assertRaises(AssertionError):
+                    self._assert_b1a_r1_candidate(expected_changes, blobs)
 
     def test_b2c_explanation_path_remains_absent(self) -> None:
         self.assertFalse(

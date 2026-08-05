@@ -2,93 +2,66 @@
 
 ## Purpose
 
-This document defines how compute resources are organized across the Aiden Platform.
-
-Compute means the places where workloads run: physical hosts, VMs, LXCs, containers, AI workloads, and future orchestration systems.
+This document defines the public-safe compute roles of the Aiden Platform.
+Compute includes physical hosts, virtual machines, system containers,
+application containers, and future AI workloads. Exact host identities,
+addressing, inventory, device paths, and management procedures are private
+operational facts.
 
 ## Core Principle
 
-Workloads should run where they best fit the platform architecture, not simply wherever they are easiest to install.
+Place workloads by stability, isolation, resource, recovery, and migration
+needs rather than by installation convenience. Public documentation describes
+roles and constraints, not reachability.
 
 ## Compute Roles
 
-## 1. Core Host
+### Core-Services Environment
 
-Stable production services.
+A resource-constrained, steady-state environment may host foundational network,
+ingress, observability, backup-coordination, and selected owner services. Dated
+evidence belongs in [the infrastructure record](../infrastructure.md); current
+operation requires fresh observation.
 
-Current implementation:
+### Virtualization Environment
 
-- t430-beast
+A more flexible environment may host VMs, LXCs, isolated application stacks,
+and resource-intensive experiments. Local primary capacity does not substitute
+for independent backup. See the [public-safe virtualization
+record](../infrastructure-virtualization.md).
 
-Responsibilities:
+### Storage Environment
 
-- DNS
-- Reverse proxy
-- Monitoring
-- Backups
-- Core Docker services
-- Operational tooling
+Durable shared storage remains a future role until capacity, multi-host access,
+recovery time, integrity, or maintenance evidence justifies it. Applications
+should preserve portable exports and ordinary storage interfaces so no one
+device, hypervisor, NAS brand, or provider becomes irreplaceable.
 
-## 2. Virtualization Host
+### AI Compute
 
-Flexible workloads, experiments, and heavier services.
+Current AI use relies on explicit, owner-approved provider or runtime handoffs.
+Local inference remains exploratory until dated evidence verifies hardware fit,
+isolation, privacy, performance, maintenance, and reversibility. Knowledge and
+School Learning workflows must not depend on a local model being available.
 
-Current implementation:
+## Trust and Placement Rules
 
-- gamer-pve
+- Human authority remains outside compute placement.
+- Stable services and disposable experiments use different failure and change
+  boundaries.
+- Personal or sensitive data enters a workload only after its access, logging,
+  backup, export, and deletion boundaries are explicit.
+- Primary capacity, rollback snapshots, off-host backup, and off-site protection
+  are distinct controls.
+- A workload moves from experiment to supported service only after dated
+  verification and recovery evidence.
+- Public records use role aliases and time-bounded outcomes; exact operations
+  belong privately when durable ownership is required.
 
-Responsibilities:
+## Open Decisions
 
-- LXC workloads
-- VM workloads
-- Immich
-- Future AI experimentation
-- Resource-intensive services
-
-## 3. Storage Host
-
-Durable data home, not general app sprawl.
-
-Current implementation:
-
-- Future NAS
-
-Responsibilities:
-
-- Photos
-- Documents
-- Archives
-- Media
-- Backups
-- Shared storage
-
-## 4. AI Compute
-
-Model inference, AI tools, and future orchestration.
-
-Current implementation:
-
-- ChatGPT Project workflow
-- Future local AI workloads on gamer-pve or dedicated hardware
-
-Responsibilities:
-
-- Local models
-- AI-assisted documentation
-- Context generation
-- Personal agents
-- Future Aiden OS services
-
-## Workload Placement Rules
-
-## Promotion Path
-
-Experiment → Stable workload → Documented platform service
-
-## Current Open Questions
-
-- Which workloads should stay permanently on t430-beast?
-- Which workloads should move to gamer-pve?
-- What should eventually depend on the future NAS?
-- Where should local AI inference live?
-- How should experimental services become production services?
+- Which future workload first demonstrates the need for a private operations
+  repository?
+- What measured recovery or capacity evidence justifies dedicated storage?
+- Which isolation boundary is appropriate for a reversible local-AI experiment?
+- Which experiments merit promotion into supported owner capabilities?

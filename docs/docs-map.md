@@ -108,9 +108,15 @@ Repository Objects and engineering tools support these layers.
 ## Infrastructure
 
 - `docs/infrastructure.md`
-- `docs/infrastructure-gamer-pve.md`
+- `docs/infrastructure-virtualization.md`
 - `docs/services.md`
 - `docs/infrastructure-snapshot.md`
+
+These public owners contain role-based patterns and dated, non-continuous
+evidence. Exact inventory, addressing, private DNS, configuration, destinations,
+recovery procedures, and live evidence belong to a future private operations
+record only when those artifacts need version control. Secret values never
+belong in Git.
 
 ## Operations
 
@@ -128,6 +134,12 @@ Repository Objects and engineering tools support these layers.
 
 ## Portfolio Reviews
 
+- `docs/reviews/repository-identity-r1-evidence-2026-08-02.md` — Compact
+  Tier 3 record for the accepted uncommitted R1 boundary, exact candidate
+  inventory, independent disposition C, correction cycle 1, privacy and
+  generated-ownership evidence, and local verification; fresh adversarial
+  re-review, owner acceptance, and all GitHub/publication actions remain
+  pending.
 - `docs/reviews/engineering-workflow-v1-1-evidence-2026-08-01.md` — Compact dated W1 checkpoint brief and local implementation evidence preserving the Tier 3 scope, preflight, verification, pending independent review and owner acceptance, and withheld publication/deployment authority.
 - `docs/reviews/school-learning-v0-1-pilot-evaluation-2026-07-21.md` — Dated non-canonical pilot evidence recording confirmed v0.1 strengths and friction, the bounded v0.1.1 Guided Study Handoff decision, local verification, independent acceptance, owner acceptance, preserved human authority, and bounded publication authority.
 - `docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md` — Accepted dated non-canonical owner decision evidence for the exact School Learning v0.1 implementation and publication boundary.

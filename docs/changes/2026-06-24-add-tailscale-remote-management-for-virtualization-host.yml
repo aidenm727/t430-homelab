@@ -1,0 +1,23 @@
+date: 2026-06-24
+title: Add Tailscale remote management for virtualization host
+change_type: infrastructure
+status: verified
+
+intent:
+  - Enable direct private administration of the virtualization host without depending on the core-services environment as a jump boundary
+
+summary:
+  - Installed and authenticated Tailscale on the virtualization host
+  - Corrected an unsupported package-repository configuration encountered during installation
+  - Replaced the earlier jump-host-only path with direct owner-controlled overlay access
+  - Omitted private address, DNS, endpoint, route, and command detail from the public record
+
+verification:
+  - Verified private access to the virtualization management surface
+  - Verified the overlay service was running
+  - Verified package metadata refresh completed without the earlier repository error
+
+documentation_outputs:
+  - Updated the public-safe private-access and virtualization records
+
+source_session: docs/change-session.md

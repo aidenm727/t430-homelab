@@ -3,22 +3,21 @@ title: Add NVMe Proxmox Storage Pool
 change_type: documentation
 status: verified
 
+intent:
+  - Expand local workload capacity on the virtualization host while preserving existing archive data
+
 summary:
-  - Added Proxmox storage target nvme-lvm for VM disks and LXC root disks
-  - Created volume group nvme-vg
-  - Created LVM physical volume on /dev/nvme0n1
-  - Repurposed the 1 TB SPCC NVMe SSD for Proxmox workloads
-  - Designated the 2 TB WD Blue SA510 SSD as the canonical Preservation archive drive
-  - Verified Preservation archive exists on both the 1 TB NVMe and 2 TB SSD before modifying storage
+  - Repurposed an NVMe device as a Proxmox-managed workload storage pool
+  - Kept the system disk, workload pool, and preservation media as distinct roles
+  - Verified an existing archive copy on separate media before changing storage ownership
+  - Omitted device, volume, pool, size, vendor, mount, and archive-location identities from the public record
 
 verification:
-  - Verified nvme-lvm appears in the Proxmox web UI
-  - Verified storage availability using pvesm status
-  - Verified volume group creation using vgs
-  - Verified PV creation using pvs
-  - Verified archive readability from the 2 TB SSD using read-only mount
+  - Verified the workload pool was available to the hypervisor
+  - Verified the new physical and logical storage layers were present
+  - Verified the preservation copy was readable before repurposing the source device
 
 documentation_outputs:
-  - Updated docs/infrastructure.md with gamer-pve NVMe storage and archive drive roles
+  - Updated the public-safe virtualization storage and migration record
 
 source_session: docs/change-session.md

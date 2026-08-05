@@ -21,7 +21,10 @@ from atlas.platform.context_compilation.models import (
 
 SNAPSHOT_MODE = "clean_committed"
 
-_REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
+# Pre-rename R1 boundary: the live repository still uses this identity. The
+# accepted future identity must not become compiler truth before an authorized
+# GitHub rename and post-rename verification.
+_CURRENT_REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
 _ACCEPTED_ORIGIN_URLS = frozenset(
     (
         "git@github.com:aidenm727/t430-homelab.git",
@@ -387,7 +390,7 @@ def _within_clean_boundary(
 def _repository_identity(
     boundary: _RepositoryBoundary, requested_identity: str
 ) -> RepositoryIdentityEvidence:
-    if requested_identity != _REPOSITORY_IDENTITY:
+    if requested_identity != _CURRENT_REPOSITORY_IDENTITY:
         raise RepositoryIdentityError("requested repository identity is unsupported")
     result = _run_git(
         boundary.target,
@@ -427,7 +430,7 @@ def _repository_identity(
     return RepositoryIdentityEvidence(
         requested_identity=requested_identity,
         origin_urls=tuple(ordered_urls),
-        normalized_identity=_REPOSITORY_IDENTITY,
+        normalized_identity=_CURRENT_REPOSITORY_IDENTITY,
     )
 
 

@@ -8,6 +8,14 @@ It preserves vision, architecture, standards, infrastructure, operations, roadma
 
 Every file and directory should have one clear responsibility.
 
+## Repository Identity
+
+The live repository remains `aidenm727/t430-homelab` during the local R1
+candidate. `aiden-platform` is the accepted future slug, not a completed rename
+or current clone target. Final canonical identity, redirect, metadata, settings,
+and external-link claims require later GitHub observation and separately
+authorized writes.
+
 ---
 
 ## Repository Layers
@@ -69,12 +77,15 @@ fails closed.
 
 ### Infrastructure
 
-Describes current deployed state.
+Describes public-safe infrastructure patterns and dated operational evidence.
 
 - `docs/infrastructure.md`
-- `docs/infrastructure-gamer-pve.md`
+- `docs/infrastructure-virtualization.md`
 - `docs/services.md`
 - `docs/infrastructure-snapshot.md` as a generated summary
+
+These documents do not own exact live state or prove continuous availability.
+Live systems and fresh observation own current operational reality.
 
 ### Operations
 
@@ -135,6 +146,38 @@ Generated artifacts must declare their sources, managing tool, and generated sta
 
 ---
 
+## Public and Private Ownership
+
+The public repository owns vision, architecture, standards, code, tests,
+public state, sanitized infrastructure patterns, and dated public evidence.
+
+A future private operations repository may be created only when exact
+deployment configuration, inventory, addressing, private DNS, backup
+destinations, recovery procedures, incidents, or private live evidence require
+durable version control. It does not exist merely because public prose was
+generalized.
+
+Secret values, private keys, tokens, and recovery keys belong only in a secret
+manager or protected operational storage and never in either Git repository.
+Current live reality belongs to live systems and fresh observation. GitHub
+metadata and settings belong to GitHub and require authorized observation.
+
+Public infrastructure records follow these rules:
+
+1. Use role aliases rather than real host or network identities.
+2. Describe capabilities and trust boundaries rather than reachability.
+3. Date operational evidence and make its non-continuous nature explicit.
+4. Include hardware only when it explains an engineering constraint, using a
+   class or range where possible.
+5. Publish backup and recovery patterns or redacted outcomes, never
+   destinations, key locations, or executable recovery detail.
+6. Exclude credential values and references, internal endpoints, private DNS,
+   exact inventory, ports, container IDs, storage paths, and management paths.
+7. Treat generated documents and images as public releases.
+8. Keep one canonical owner for each public fact and link to it.
+
+---
+
 ## Source of Truth Hierarchy
 
 GitHub is the canonical documentation source.
@@ -183,7 +226,8 @@ generated context, historical records, and roadmaps do not grant permission.
 - Typed active phase and work selection belong in `docs/current-state.json`.
 - Concise human-readable current intent belongs in `docs/current-mission.md`.
 - Repository-local authority interpretation belongs in `AGENTS.md`.
-- Current deployment belongs in infrastructure records.
+- Public-safe infrastructure patterns and dated evidence belong in
+  infrastructure records; live systems own current reality.
 - Repeatable behavior belongs in standards.
 - Change evidence belongs in operations.
 - Candidate work belongs in roadmaps or Repository Objects.
@@ -215,7 +259,8 @@ Human judgment decides whether a document should exist.
 - Durable purpose belongs in Vision.
 - Durable design belongs in Architecture.
 - Repeatable expectations belong in Standards.
-- Current implementation belongs in Infrastructure.
+- Public-safe implementation patterns and dated operational evidence belong in
+  Infrastructure.
 - Change evidence belongs in Operations.
 - Future sequencing belongs in Roadmaps.
 - Structured lifecycle entities belong in registered Repository Object locations.

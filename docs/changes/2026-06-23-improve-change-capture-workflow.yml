@@ -4,21 +4,17 @@ change_type: documentation
 status: verified
 
 intent:
-  - Improve structured change records after testing the workflow during the gamer-pve NVMe storage deployment
-
+  - Improve structured change records after using the workflow during the virtualization-host storage change
 
 summary:
   - Added intent extraction to YAML change records
-  - Updated CLI usage text to include intent command
-  - Added intent command to homelab-change.py
-
+  - Updated CLI usage text to include the intent command
+  - Added the intent command to the change-capture helper
 
 verification:
-  - Verified intent command appends entries under the Intent section
-
+  - Verified the intent command appended entries under the Intent section
 
 documentation_outputs:
-  - Updated YAML generation to include Intent section
-
+  - Updated YAML generation to include the Intent section
 
 source_session: docs/change-session.md

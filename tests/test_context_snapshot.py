@@ -40,6 +40,7 @@ from atlas.platform.context_compilation.snapshot import (
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
+FUTURE_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
 HISTORICAL_COMMIT = "79eef80af3d5969ece7eb9fe7f802be35575f450"
 HISTORICAL_TREE = "3d2853517e64209cffde91766a62e9f70ceb2e47"
 PROTECTED_REF = "refs/heads/wip/distinctness-foundation-calibration"
@@ -347,6 +348,10 @@ class ContextSnapshotTests(unittest.TestCase):
     def test_repository_identity_disagreement_is_rejected(self) -> None:
         with self.assertRaises(RepositoryIdentityError):
             self._resolve(repository_identity="github.com/other/repository")
+
+    def test_future_identity_is_rejected_before_the_github_rename(self) -> None:
+        with self.assertRaises(RepositoryIdentityError):
+            self._resolve(repository_identity=FUTURE_REPOSITORY_IDENTITY)
 
     def test_revision_syntax_boundaries_are_rejected(self) -> None:
         invalid = (

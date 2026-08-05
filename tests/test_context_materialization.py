@@ -50,6 +50,7 @@ from atlas.platform.reasoning import build_bounded_selection_plan
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
+FUTURE_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
 HISTORICAL_COMMIT = "79eef80af3d5969ece7eb9fe7f802be35575f450"
 HISTORICAL_TREE = "3d2853517e64209cffde91766a62e9f70ceb2e47"
 ORIGIN = "https://github.com/aidenm727/t430-homelab.git"
@@ -456,6 +457,21 @@ class MaterializationPortableTests(PortableFixture, unittest.TestCase):
             "materialize_selection_plan",
         ):
             self.assertIn(name, context_exports.__all__)
+
+    def test_future_identity_is_rejected_before_the_github_rename(self) -> None:
+        self.request = dataclasses.replace(
+            self.request,
+            repository=RepositoryRequestIdentity(
+                FUTURE_REPOSITORY_IDENTITY,
+                HISTORICAL_COMMIT,
+            ),
+        )
+        with self.assertRaisesRegex(
+            MaterializationContractError,
+            "repository identities do not match",
+        ):
+            self.materialize()
+        self.assertEqual(self.read_paths, [])
 
     def test_records_are_frozen_deeply_immutable_and_hide_payload_bytes(self) -> None:
         result = self.materialize()

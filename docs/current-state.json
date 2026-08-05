@@ -10,14 +10,20 @@
     ]
   },
   "work_selection": {
-    "status": "intentional_idle",
-    "selected_checkpoint": null
+    "status": "selected",
+    "selected_checkpoint": {
+      "id": "repository-identity-r1",
+      "name": "R1 — Repository Identity and Public/Private Boundary",
+      "lifecycle": "selected",
+      "effective_date": "2026-08-02",
+      "evidence_refs": []
+    }
   },
   "blockers": [],
   "unknowns": [],
   "decision_required": {
-    "id": "select-future-engineering-checkpoint",
-    "summary": "Owner selection of a future engineering checkpoint or continued intentional idle; R1 remains a proposed option and is not selected.",
+    "id": "review-r1-local-candidate",
+    "summary": "Fresh adversarial independent review of the exact verified uncommitted R1 candidate; owner acceptance and any GitHub or publication action remain pending.",
     "status": "pending",
     "evidence_refs": []
   },
@@ -30,7 +36,7 @@
     }
   ],
   "freshness": {
-    "effective_date": "2026-08-01",
+    "effective_date": "2026-08-02",
     "review_after": null
   },
   "authority": {

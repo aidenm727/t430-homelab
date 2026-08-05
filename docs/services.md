@@ -1,168 +1,52 @@
-# Homelab Services Record
+# Public-Safe Service Capability Record
 
-## Homepage
+**Evidence window:** 2026-06-23 through 2026-06-24
+**Continuity claim:** None; this is not a live service catalog
 
-### Purpose
+## Purpose
 
-Central dashboard for homelab services.
+This record describes service capability classes, trust boundaries,
+representative technologies, and dated verification without publishing a
+complete inventory, endpoint, route, port, container identity, data or config
+path, private DNS name, or management procedure.
 
-### Location
+## Capability Matrix
 
-```text
-~/homelab/services/homepage
-```
+| Capability | Engineering role | Representative technology | Dated public evidence |
+| --- | --- | --- | --- |
+| Owner start page and health view | Gives the owner a concise operational entry point without becoming the source of truth | Homepage- and Uptime-Kuma-class tools | Page rendering and health-check behavior were verified in the June 2026 record |
+| Metrics and dashboards | Separates measurement, storage, presentation, and alerting | Prometheus- and Grafana-class tools | Host and virtualization-node metrics plus dashboard queries were checked on 2026-06-24 |
+| Central logs | Supports bounded diagnosis without treating logs as canonical state | Loki- and Alloy-class tools | Log ingestion and query behavior were recorded as verified in June 2026 |
+| Local network policy | Provides owner-controlled name resolution and filtering | Pi-hole-class DNS tooling | Local resolution behavior was checked during the evidence window |
+| Private ingress | Routes explicitly approved internal services behind an HTTPS boundary | Traefik-class proxy and private overlay access | Private routing and certificate behavior were checked during the evidence window |
+| Owner data service | Demonstrates an isolated application workflow | Immich with Docker Compose | Initial component health and application response were checked on 2026-06-24 |
+| Encrypted backup | Separates backup creation, independent copies, verification, and restore | Content-addressed encrypted backup tooling | Snapshot listing, bounded restore, and later off-site retrieval were recorded as successful |
 
-### Access
+The technology names are representative examples from dated records. This
+matrix is intentionally not an exhaustive current inventory.
 
-```text
-https://dash.home.lab
-```
+## Service Boundaries
 
-### Notes
+- Public documentation describes why a capability exists and how trust is
+  separated; it does not describe how to reach or administer it.
+- Service authentication remains independent from private network access.
+- Dashboards and alerts are observations, not authoritative proof of state.
+- Application data, configuration, logs, and backup each have separate
+  retention and recovery concerns.
+- Secret values and credential references never belong in Git.
+- Current health, version, exposure, and inventory require fresh authorized
+  observation.
 
-* Routed through Traefik
-* Connected to `proxy`
-* Dashboard links use HTTPS
+## Evidence Interpretation
 
----
+The historical records show that the owner built and checked a small network,
+observability, ingress, application, and recovery stack under constrained
+hardware. They do not establish continuous availability, production scale,
+production-grade model serving, current patch level, or current recovery time.
 
-## Uptime Kuma
+Executable runbooks, exact destinations, inventory, incident records, and
+private live evidence are candidates for a future private operations repository
+only when durable restricted version control becomes necessary.
 
-### Purpose
-
-Uptime monitoring and health verification.
-
-### Location
-
-```text
-~/homelab/services/uptime-kuma
-```
-
-### Access
-
-```text
-https://kuma.home.lab
-```
-
-### Persistent Data
-
-```text
-~/homelab/services/uptime-kuma/data
-```
-
-### Notes
-
-* No direct host port exposure
-* Routed through Traefik
-* Uses Docker-network targets where possible
-
----
-
-## Monitoring Stack
-
-### Components
-
-| Component     | Purpose               |
-| ------------- | --------------------- |
-| Node Exporter | Host metrics          |
-| Prometheus    | Metrics collection    |
-| Grafana       | Metrics visualization |
-
-### Grafana
-
-Access:
-
-```text
-https://grafana.home.lab
-```
-
-Persistent Data:
-
-```text
-~/homelab/services/monitoring/grafana/data
-```
-
-### Prometheus
-
-Access:
-
-```text
-https://prom.home.lab
-```
-
-Configuration:
-
-```text
-~/homelab/services/monitoring/prometheus/prometheus.yml
-```
-
-Storage:
-
-```text
-Docker volume: prometheus_data
-```
-
-Logging Stack
-
-Components:
-- Grafana Loki
-- Grafana Alloy
-
-Purpose:
-- Centralized Docker container log aggregation
-- Historical log retention
-- Grafana-based log exploration and filtering
-
-Verified Log Sources:
-- Homepage
-- Pi-hole
-- Uptime Kuma
-
-Capabilities:
-- Container log search
-- Log filtering
-- Error investigation
-- Centralized troubleshooting
-
----
-
-## Pi-hole
-
-### Purpose
-
-Internal DNS and DNS management.
-
-### Access
-
-```text
-https://pihole.home.lab/admin
-```
-
-### Notes
-
-* Publishes DNS on port 53
-* Routed through Traefik
-* Attached to proxy network
-* Local host uses Pi-hole DNS
-
-## Vaultwarden
-
-Purpose:
-- Self-hosted Bitwarden-compatible password manager
-
-Location:
-~/homelab/services/vaultwarden
-
-Access:
-https://vault.home.lab
-
-Persistent Data:
-~/homelab/services/vaultwarden/data
-
-Notes:
-- Routed through Traefik
-- HTTPS enabled
-- Public registrations disabled
-- Protected by existing backup system
-
----
+See [the public infrastructure owner](infrastructure.md) and [virtualization
+record](infrastructure-virtualization.md).

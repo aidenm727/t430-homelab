@@ -1,13 +1,13 @@
 2026-06-23 19:54:53 - Add NVMe Proxmox Storage Pool
 2026-06-23 20:28:46 - Improve change capture workflow
 2026-06-23 20:55:58 - Add change type support
-2026-06-24 09:42:11 - Deploy Immich on gamer-pve
-2026-06-24 09:46:02 - Add Tailscale remote management for gamer-pve
-2026-06-24 10:12:30 - Deploy Immich on gamer-pve
+2026-06-24 09:42:11 - Deploy Immich on virtualization host
+2026-06-24 09:46:02 - Add Tailscale remote management for virtualization host
+2026-06-24 10:12:30 - Deploy Immich on virtualization host
 2026-06-24 10:58:12 - Refine infrastructure documentation structure
 2026-06-24 11:34:35 - Improve generated AI context formatting
 2026-06-24 13:19:19 - Generate infrastructure snapshot from context tool
 2026-06-24 16:46:52 - Add recent changes to generated AI context
 2026-06-24 16:51:46 - Improve recent changes ordering
-2026-06-24 18:50:01 - Add gamer-pve node monitoring
+2026-06-24 18:50:01 - Add virtualization-host node monitoring
 2026-06-26 12:07:14 - Prototype Aiden engineering toolkit
