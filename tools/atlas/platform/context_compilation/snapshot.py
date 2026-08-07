@@ -21,11 +21,18 @@ from atlas.platform.context_compilation.models import (
 
 SNAPSHOT_MODE = "clean_committed"
 
-# Pre-rename R1 boundary: the live repository still uses this identity. The
-# accepted future identity must not become compiler truth before an authorized
-# GitHub rename and post-rename verification.
-_CURRENT_REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
-_ACCEPTED_ORIGIN_URLS = frozenset(
+# Post-rename R1 boundary: requests use the canonical current identity. The
+# prior slug remains accepted only as an explicit legacy origin locator.
+_CANONICAL_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
+_CURRENT_ORIGIN_LOCATORS = frozenset(
+    (
+        "git@github.com:aidenm727/aiden-platform.git",
+        "ssh://git@github.com/aidenm727/aiden-platform.git",
+        "https://github.com/aidenm727/aiden-platform.git",
+        "https://github.com/aidenm727/aiden-platform",
+    )
+)
+_LEGACY_ORIGIN_LOCATORS = frozenset(
     (
         "git@github.com:aidenm727/t430-homelab.git",
         "ssh://git@github.com/aidenm727/t430-homelab.git",
@@ -33,6 +40,7 @@ _ACCEPTED_ORIGIN_URLS = frozenset(
         "https://github.com/aidenm727/t430-homelab",
     )
 )
+_SUPPORTED_ORIGIN_LOCATORS = _CURRENT_ORIGIN_LOCATORS | _LEGACY_ORIGIN_LOCATORS
 _SHA1_PATTERN = re.compile(r"[0-9a-f]{40}\Z")
 _FORBIDDEN_GIT_ENVIRONMENT = frozenset(
     (
@@ -390,7 +398,7 @@ def _within_clean_boundary(
 def _repository_identity(
     boundary: _RepositoryBoundary, requested_identity: str
 ) -> RepositoryIdentityEvidence:
-    if requested_identity != _CURRENT_REPOSITORY_IDENTITY:
+    if requested_identity != _CANONICAL_REPOSITORY_IDENTITY:
         raise RepositoryIdentityError("requested repository identity is unsupported")
     result = _run_git(
         boundary.target,
@@ -422,7 +430,7 @@ def _repository_identity(
             raise RepositoryIdentityError("origin URL is unsupported") from error
         if not url:
             raise RepositoryIdentityError("origin URL is empty")
-        if url not in _ACCEPTED_ORIGIN_URLS:
+        if url not in _SUPPORTED_ORIGIN_LOCATORS:
             raise RepositoryIdentityError("origin URL is unsupported")
         if url not in seen:
             seen.add(url)
@@ -430,7 +438,7 @@ def _repository_identity(
     return RepositoryIdentityEvidence(
         requested_identity=requested_identity,
         origin_urls=tuple(ordered_urls),
-        normalized_identity=_CURRENT_REPOSITORY_IDENTITY,
+        normalized_identity=_CANONICAL_REPOSITORY_IDENTITY,
     )
 
 

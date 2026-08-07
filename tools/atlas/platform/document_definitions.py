@@ -479,7 +479,7 @@ DOCUMENT_DEFINITIONS = {
 
     "docs/reviews/repository-identity-r1-evidence-2026-08-02.md": DocumentDefinition(
         path="docs/reviews/repository-identity-r1-evidence-2026-08-02.md",
-        purpose="Preserves the compact Tier 3 R1 checkpoint boundary, local privacy cleanup, verification, lifecycle truth, and pending independent review without claiming GitHub action.",
+        purpose="Preserves the compact Tier 3 R1 boundary, privacy and public-surface work, rename and post-rename identity chronology, verification and review, owner acceptance, stopped publication evidence, lifecycle correction, and remaining publication boundary.",
         canonical=False,
         generated=False,
         capability="Engineering and Evolution",

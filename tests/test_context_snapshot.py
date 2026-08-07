@@ -39,13 +39,19 @@ from atlas.platform.context_compilation.snapshot import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
-FUTURE_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
+CANONICAL_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
+OLD_CANONICAL_REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
 HISTORICAL_COMMIT = "79eef80af3d5969ece7eb9fe7f802be35575f450"
 HISTORICAL_TREE = "3d2853517e64209cffde91766a62e9f70ceb2e47"
 PROTECTED_REF = "refs/heads/wip/distinctness-foundation-calibration"
 PROTECTED_OBJECT = "fcbc5957b89fe65a4313a3c23eb814e02a014698"
-ACCEPTED_ORIGINS = (
+CURRENT_ORIGINS = (
+    "git@github.com:aidenm727/aiden-platform.git",
+    "ssh://git@github.com/aidenm727/aiden-platform.git",
+    "https://github.com/aidenm727/aiden-platform.git",
+    "https://github.com/aidenm727/aiden-platform",
+)
+LEGACY_ORIGINS = (
     "git@github.com:aidenm727/t430-homelab.git",
     "ssh://git@github.com/aidenm727/t430-homelab.git",
     "https://github.com/aidenm727/t430-homelab.git",
@@ -102,7 +108,7 @@ class ContextSnapshotTests(unittest.TestCase):
             "remote",
             "set-url",
             "origin",
-            ACCEPTED_ORIGINS[2],
+            CURRENT_ORIGINS[2],
         )
         fixture_git(
             self.repository,
@@ -141,7 +147,7 @@ class ContextSnapshotTests(unittest.TestCase):
 
     def _resolve(self, **changes: object) -> RepositorySnapshot:
         arguments: dict[str, object] = {
-            "repository_identity": REPOSITORY_IDENTITY,
+            "repository_identity": CANONICAL_REPOSITORY_IDENTITY,
             "requested_revision": HISTORICAL_COMMIT,
             "expected_tree": HISTORICAL_TREE,
             "protected_references": self._protected(),
@@ -248,7 +254,7 @@ class ContextSnapshotTests(unittest.TestCase):
 
     def test_repeatable_snapshot_fingerprint_and_exact_surface(self) -> None:
         surface = snapshot_fingerprint_surface(
-            REPOSITORY_IDENTITY,
+            CANONICAL_REPOSITORY_IDENTITY,
             "sha1",
             HISTORICAL_COMMIT,
             HISTORICAL_TREE,
@@ -257,7 +263,7 @@ class ContextSnapshotTests(unittest.TestCase):
         self.assertEqual(
             surface,
             {
-                "repository_identity": REPOSITORY_IDENTITY,
+                "repository_identity": CANONICAL_REPOSITORY_IDENTITY,
                 "object_format": "sha1",
                 "commit": HISTORICAL_COMMIT,
                 "tree": HISTORICAL_TREE,
@@ -269,35 +275,51 @@ class ContextSnapshotTests(unittest.TestCase):
         self.assertEqual(calculated.value, independent)
         self.assertEqual(
             independent,
-            "14053ce1b4ce71c90c18316bed3928a85a67be6d48fd1bc330ffd8a00464fed8",
+            "0c97cda6c0684fe846186766b75c760dade350eae294a1a7b84a73abe6ad2a14",
         )
         self.assertEqual(self._resolve().fingerprint, calculated)
         self.assertEqual(self._resolve().fingerprint, calculated)
 
-    def test_all_accepted_origin_forms(self) -> None:
-        for origin in ACCEPTED_ORIGINS:
+    def test_all_current_origin_forms(self) -> None:
+        for origin in CURRENT_ORIGINS:
             with self.subTest(origin=origin):
                 fixture_git(self.repository, "remote", "set-url", "origin", origin)
                 snapshot = self._resolve()
                 self.assertEqual(snapshot.repository.origin_urls, (origin,))
                 self.assertEqual(
-                    snapshot.repository.normalized_identity, REPOSITORY_IDENTITY
+                    snapshot.repository.normalized_identity,
+                    CANONICAL_REPOSITORY_IDENTITY,
+                )
+
+    def test_all_legacy_origin_forms_normalize_to_current_identity(self) -> None:
+        for origin in LEGACY_ORIGINS:
+            with self.subTest(origin=origin):
+                fixture_git(self.repository, "remote", "set-url", "origin", origin)
+                snapshot = self._resolve()
+                self.assertEqual(
+                    snapshot.repository.requested_identity,
+                    CANONICAL_REPOSITORY_IDENTITY,
+                )
+                self.assertEqual(snapshot.repository.origin_urls, (origin,))
+                self.assertEqual(
+                    snapshot.repository.normalized_identity,
+                    CANONICAL_REPOSITORY_IDENTITY,
                 )
 
     def test_duplicate_accepted_origins_are_deterministic(self) -> None:
         fixture_git(
-            self.repository, "config", "--add", "remote.origin.url", ACCEPTED_ORIGINS[0]
+            self.repository, "config", "--add", "remote.origin.url", LEGACY_ORIGINS[0]
         )
         fixture_git(
-            self.repository, "config", "--add", "remote.origin.url", ACCEPTED_ORIGINS[2]
+            self.repository, "config", "--add", "remote.origin.url", CURRENT_ORIGINS[2]
         )
         fixture_git(
-            self.repository, "config", "--add", "remote.origin.url", ACCEPTED_ORIGINS[1]
+            self.repository, "config", "--add", "remote.origin.url", CURRENT_ORIGINS[1]
         )
         snapshot = self._resolve()
         self.assertEqual(
             snapshot.repository.origin_urls,
-            (ACCEPTED_ORIGINS[2], ACCEPTED_ORIGINS[0], ACCEPTED_ORIGINS[1]),
+            (CURRENT_ORIGINS[2], LEGACY_ORIGINS[0], CURRENT_ORIGINS[1]),
         )
 
     def test_absent_origin_is_rejected(self) -> None:
@@ -329,15 +351,15 @@ class ContextSnapshotTests(unittest.TestCase):
 
     def test_unsupported_origin_boundaries_are_rejected(self) -> None:
         invalid = (
-            "https://gitlab.com/aidenm727/t430-homelab.git",
-            "https://github.com/other/t430-homelab.git",
+            "https://gitlab.com/aidenm727/aiden-platform.git",
+            "https://github.com/other/aiden-platform.git",
             "https://github.com/aidenm727/other.git",
-            "https://github.com/aidenm727/t430-homelab.git/extra",
-            "https://github.com/aidenm727/t430-homelab.git?x=1",
-            "https://github.com/aidenm727/t430-homelab.git#x",
-            "https://user@github.com/aidenm727/t430-homelab.git",
-            "https://github.com:443/aidenm727/t430-homelab.git",
-            "ssh://other@github.com/aidenm727/t430-homelab.git",
+            "https://github.com/aidenm727/aiden-platform.git/extra",
+            "https://github.com/aidenm727/aiden-platform.git?x=1",
+            "https://github.com/aidenm727/aiden-platform.git#x",
+            "https://user@github.com/aidenm727/aiden-platform.git",
+            "https://github.com:443/aidenm727/aiden-platform.git",
+            "ssh://other@github.com/aidenm727/aiden-platform.git",
         )
         for origin in invalid:
             with self.subTest(origin=origin):
@@ -349,9 +371,9 @@ class ContextSnapshotTests(unittest.TestCase):
         with self.assertRaises(RepositoryIdentityError):
             self._resolve(repository_identity="github.com/other/repository")
 
-    def test_future_identity_is_rejected_before_the_github_rename(self) -> None:
+    def test_old_canonical_identity_is_rejected_as_current_request(self) -> None:
         with self.assertRaises(RepositoryIdentityError):
-            self._resolve(repository_identity=FUTURE_REPOSITORY_IDENTITY)
+            self._resolve(repository_identity=OLD_CANONICAL_REPOSITORY_IDENTITY)
 
     def test_revision_syntax_boundaries_are_rejected(self) -> None:
         invalid = (
@@ -441,7 +463,7 @@ class ContextSnapshotTests(unittest.TestCase):
         with self.assertRaises(RepositoryStateError):
             resolve_snapshot(
                 bare,
-                repository_identity=REPOSITORY_IDENTITY,
+                repository_identity=CANONICAL_REPOSITORY_IDENTITY,
                 requested_revision=HISTORICAL_COMMIT,
                 expected_tree=HISTORICAL_TREE,
                 protected_references=self._protected(),
@@ -463,12 +485,12 @@ class ContextSnapshotTests(unittest.TestCase):
             "remote",
             "add",
             "origin",
-            ACCEPTED_ORIGINS[2],
+            CURRENT_ORIGINS[2],
         )
         with self.assertRaises(ObjectFormatError):
             resolve_snapshot(
                 sha256_repository,
-                repository_identity=REPOSITORY_IDENTITY,
+                repository_identity=CANONICAL_REPOSITORY_IDENTITY,
                 requested_revision="0" * 40,
                 expected_tree="0" * 40,
                 protected_references=[],
@@ -973,7 +995,9 @@ class ContextSnapshotTests(unittest.TestCase):
             PROTECTED_REF, PROTECTED_OBJECT, PROTECTED_OBJECT, False, "forbidden", True, False
         )
         repository = RepositoryIdentityEvidence(
-            REPOSITORY_IDENTITY, list(ACCEPTED_ORIGINS[:1]), REPOSITORY_IDENTITY  # type: ignore[arg-type]
+            CANONICAL_REPOSITORY_IDENTITY,
+            list(CURRENT_ORIGINS[:1]),  # type: ignore[arg-type]
+            CANONICAL_REPOSITORY_IDENTITY,
         )
         copied = RepositorySnapshot(
             repository,
@@ -1004,7 +1028,7 @@ class ContextSnapshotTests(unittest.TestCase):
             with self.subTest(target=target), self.assertRaises(SnapshotEnvironmentError):
                 resolve_snapshot(
                     target,
-                    repository_identity=REPOSITORY_IDENTITY,
+                    repository_identity=CANONICAL_REPOSITORY_IDENTITY,
                     requested_revision=HISTORICAL_COMMIT,
                     expected_tree=HISTORICAL_TREE,
                     protected_references=self._protected(),

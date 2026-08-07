@@ -1,6 +1,6 @@
 # Aiden Context
 
-Generated: 2026-08-02 (canonical-state effective date; deterministic)
+Generated: 2026-08-06 (canonical-state effective date; deterministic)
 
 ## Purpose
 
@@ -12,13 +12,13 @@ generated and non-canonical.
 ## Canonical Active State
 
 - Schema version: 1
-- Effective date: 2026-08-02
+- Effective date: 2026-08-06
 - Phase: W1 — Engineering Workflow v1.1 — Published
 - Phase lifecycle: published
-- Work selection: selected
-- Selected checkpoint: R1 — Repository Identity and Public/Private Boundary
-- Intentional idle: No
-- Decision required: `review-r1-local-candidate` — Fresh adversarial independent review of the exact verified uncommitted R1 candidate; owner acceptance and any GitHub or publication action remain pending.
+- Work selection: intentional_idle
+- Selected checkpoint: None
+- Intentional idle: Yes
+- Decision required: `select-future-work` — Owner selection of future work; no checkpoint or later capability is preselected.
 
 ### Blockers
 
@@ -55,30 +55,32 @@ W1 — Engineering Workflow v1.1 — Published
 W1 — Engineering Workflow v1.1 is owner-accepted, published, and complete. Clean
 Foundation F1 remains historical published foundation evidence rather than
 active selected work. R1 — Repository Identity and Public/Private Boundary is
-the one selected checkpoint and is being implemented as a bounded local,
-uncommitted candidate. It is not accepted, committed, published, renamed,
-deployed, or operational.
+owner-accepted, published, and complete. No implementation checkpoint is
+selected, and repository work selection is intentionally idle. R1 completion
+does not claim deployment or an operational runtime state.
 
-Canonical state effective date: 2026-08-02.
+Canonical state effective date: 2026-08-06.
 
 ### Mission Intent
 
-Prepare the accepted public-safe R1 repository candidate under the current
-repository identity while preserving the published Workflow v1.1 contract,
-human authority, generated ownership, and local old-slug compatibility.
+Preserve `github.com/aidenm727/aiden-platform` as the canonical compiler
+identity while retaining the former slug only as explicit legacy origin
+locator compatibility. Keep the published Workflow v1.1 and completed R1
+contracts, human authority, deterministic provenance, generated ownership, and
+all public/private boundaries stable while the owner chooses future work.
 
 ### Work Selection
 
-- Status: Selected.
-- Selected checkpoint: R1 — Repository Identity and Public/Private Boundary.
+- Status: Intentional idle.
+- Selected checkpoint: None.
 - W1 lifecycle: Published and complete; not active selected work.
-- R1 lifecycle: Selected for bounded local implementation; no later lifecycle
-  state is claimed.
+- R1 lifecycle: Owner-accepted, published, and complete; not active selected
+  work.
 - S1, F2, F3, and all other future checkpoints: Not selected.
 
 ### Next Milestone
 
-R1 — Repository Identity and Public/Private Boundary
+Intentional idle — no engineering checkpoint is selected.
 
 ### Blockers
 
@@ -90,20 +92,17 @@ None recorded in canonical active state.
 
 ### Owner Decision Required
 
-Review the exact local R1 candidate. Owner acceptance, GitHub preflight,
-repository rename, publication, metadata changes, and every external write
-remain separate later decisions.
+Owner selection of future work. No checkpoint, capability, S1, F2, F3, or other
+follow-on work is preselected.
 
 ### Authority Boundary
 
 Repository state selects work but grants no task, implementation, publication,
 deployment, or external-write authority. Atlas observes and explains state but
-grants no authority. The current owner instruction separately establishes only
-the bounded local R1 implementation authority recorded in its evidence. No
-acceptance, staging, commit, ref/remote mutation, publication, deployment,
-GitHub action, or other external-write authority is established by repository
-state or Atlas. `AGENTS.md` is the primary repository-local
-authority-interpretation contract.
+grants no authority. Any task, implementation, staging, commit, ref or remote
+mutation, publication, deployment, GitHub action, or other external write
+requires explicit owner authority outside repository state and Atlas.
+`AGENTS.md` is the primary repository-local authority-interpretation contract.
 
 ### Evidence and History
 
@@ -115,9 +114,10 @@ authority-interpretation contract.
 - `docs/reviews/clean-foundation-f1-acceptance-and-publication-2026-07-31.md`
   at `7339e1676f7588e319e3cb004d56baf56a37bed6` — historical accepted and
   published F1 foundation evidence.
-- `docs/reviews/repository-identity-r1-evidence-2026-08-02.md` — compact
-  uncommitted R1 checkpoint, boundary, preflight, scan, and verification
-  evidence; independent review and owner acceptance remain pending.
+- `docs/reviews/repository-identity-r1-evidence-2026-08-02.md` — compact R1
+  chronology through owner acceptance, first publication, the verified rename,
+  post-rename identity finalization, and the published-and-complete lifecycle
+  transition.
 - Git history — immutable implementation and publication identities.
 
 ## Infrastructure Snapshot

@@ -2,12 +2,21 @@
 
 **Opened:** 2026-08-02
 **Final correction cycle 2:** 2026-08-04
+**First publication:** 2026-08-05 at
+`d9f763b0c2c7517ed93cfe89f322b01a4bce26d7`
+**Rename checkpoint:** 2026-08-06
+**Post-rename finalization candidate:** 2026-08-06
 **Risk tier:** Tier 3
 **Base:** `d8a0f0d319c80b9c63258b737b20c6eb538ee289`
-**Candidate:** Final corrected, unstaged, and uncommitted local candidate; one
-fresh adversarial review and owner acceptance pending
+**Current base:** `d9f763b0c2c7517ed93cfe89f322b01a4bce26d7`
+**Candidate:** The owner-authorized publication-lifecycle correction is
+unstaged and uncommitted; its exact new bytes require fresh review before any
+renewed acceptance or publication authority
 
-## Accepted Checkpoint Brief
+## Accepted Pre-Rename Checkpoint Brief
+
+This brief preserves the boundary accepted before first publication and the
+rename; its prospective-identity wording is dated historical evidence.
 
 - **Why:** Present delivered engineering capability clearly while removing
   unnecessary public operational intelligence and preparing a truthful future
@@ -508,15 +517,138 @@ comparison, Atlas checks, and two independent V2 computations. Their exact
 results form the stable correction-cycle-2 attestation; recording them here
 afterward would violate the no-post-suite-mutation rule.
 
-## Lifecycle and Pending Work
+## Pre-Rename Lifecycle Boundary
 
-W1 remains published. R1 alone remains selected, unstaged, uncommitted,
-unaccepted, unpublished, unrenamed, undeployed, and non-operational. Final
-correction cycle 2 is complete only when its post-last-mutation verification
-and stable attestation pass. One final fresh adversarial review and owner
-acceptance remain pending.
+At the close of correction cycle 2, W1 remained published and R1 alone remained
+selected, unstaged, uncommitted, unaccepted, unpublished, unrenamed, undeployed,
+and non-operational. Its final verification, fresh review, and owner acceptance
+were then pending.
 
-GitHub preflight, stable repository identity observation, rename, settings and
-metadata changes, publication, controlled external-reference updates, and
-social-preview creation, review, and upload are pending. No external authority
-or action is established by this record. S1, F2, and F3 remain unselected.
+That historical boundary was superseded by the separately authorized first
+publication and rename checkpoints recorded below. No authority was created by
+this record, repository state, or Atlas. S1, F2, and F3 remained unselected.
+
+## First Publication and Rename Chronology
+
+The accepted pre-rename 45-path candidate was identified by
+`AIDEN-R1-CANDIDATE-FINGERPRINT-V2` value
+`sha256:e76f06293a9dfc8dcc9b291c2d0bca55d57f6fcce769a0c9a0566368ef3510bd`.
+It was committed and first published exactly once on 2026-08-05 as
+`d9f763b0c2c7517ed93cfe89f322b01a4bce26d7`, with parent
+`d8a0f0d319c80b9c63258b737b20c6eb538ee289`.
+
+On 2026-08-06, separately authorized owner actions renamed stable GitHub
+repository ID `1161282866` from `aidenm727/t430-homelab` to
+`aidenm727/aiden-platform`. GitHub `main`, local `HEAD`, local `main`, and the
+locally observed `origin/main` remained at the first-publication commit. The
+repository remained public, non-archived, and on default branch `main`.
+
+The approved description was set exactly to: “Personal engineering platform
+for trustworthy AI-assisted workflows, deterministic developer tooling, and
+resilient self-hosted infrastructure.” The complete approved topic set was
+`applied-ai`, `ai-engineering`, `developer-tools`, `platform-engineering`,
+`devops`, `self-hosted`, `homelab`, and `human-in-the-loop`; the homepage
+remained blank.
+
+Old-slug repository, pull-request, commit, tree, blob, and branch-archive URLs
+were verified as ordinary redirects to the renamed repository. Raw README
+content under the old raw-content slug returned direct HTTP 200 without a
+redirect, so raw-content compatibility is classified separately rather than
+inferred from ordinary redirects. The owner profile continued to pin the same
+stable repository under `aiden-platform` without a profile write. Read-only
+post-rename evidence also verified ChatGPT Codex Connector access to stable
+repository ID `1161282866`, full name `aidenm727/aiden-platform`, default branch
+`main`, and the public non-archived repository.
+
+Old-slug non-reuse was verified: the old API endpoint resolved to stable ID
+`1161282866`, the public owner inventory contained `aiden-platform`, no distinct
+repository named `t430-homelab` existed, representative web URLs redirected,
+and raw-content compatibility remained direct. After every GitHub gate passed,
+the local `origin` was updated exactly once from
+`git@github.com:aidenm727/t430-homelab.git` to
+`git@github.com:aidenm727/aiden-platform.git`; no distinct push URL was added
+and no fetch occurred.
+
+Exact external writes were the owner-performed rename, description write,
+initial topic replacement, and separately authorized corrective topic
+replacement. The only local non-repository-file write was the one authorized
+`.git/config` origin-URL update. No social preview, profile pin, homepage,
+external-reference, checkout-directory, private-repository, infrastructure,
+deployment, S1, F2, or F3 action occurred.
+
+## Post-Rename Identity Finalization Candidate
+
+The current owner instruction and its two authorization records establish only
+bounded local implementation and verification authority. The supplemental
+authorization adds the expected foundation-values fixture solely for
+deterministic values derived from the authorized request-fixture identity
+change. It does not authorize any other path or external action.
+
+The candidate makes `github.com/aidenm727/aiden-platform` the only accepted
+requested and normalized compiler identity. Current transport forms normalize
+to it. Explicit former-slug transport forms remain supported only as legacy raw
+origin locators and also normalize to the current identity. Evidence preserves
+requested canonical identity, ordered observed raw origin locators, and
+normalized identity as distinct provenance fields; none grants authority.
+
+On 2026-08-06, local post-rename finalization verification pass A completed.
+The focused affected set passed 280 tests with one skip in 47.710 seconds. The
+complete native suite passed 429 tests with one skip in 55.031 seconds. Atlas
+bootstrap, validate, missing, sync, review, state, and next all exited zero;
+Atlas reported Healthy within declared scope, Valid with zero errors and
+warnings, and Synchronized with zero errors and warnings.
+
+The pass-A boundary contained exactly 17 modified tracked paths, with zero
+staged or untracked paths and no path outside the 19-path authorization ceiling.
+The 18-test public-surface/privacy module passed; a redacted high-confidence
+secret-pattern scan returned zero findings; all 17 candidate paths were UTF-8
+text with zero trailing-whitespace findings; all 34 README relative links
+resolved; and the stale-identity scan matched exactly the 12 classified legacy,
+compatibility-test, dated-history, and filename/path-history owners. Two
+consecutive registered generator runs produced identical Aiden Context and
+infrastructure-snapshot hashes.
+
+An initial isolated-test layout was rejected because `/dev/null` was read-only;
+the corrected read/write device bind passed without a repository correction. A
+separate copied-tree generator attempt could not verify immutable Git evidence
+without repository object data, so reproducibility was established by repeated
+registered generation, generated-ownership tests, exact hashes, and Atlas sync.
+These are local finalization-verification results, not final publication. Pass B
+must match after this last content mutation.
+
+The exact V1 finalization candidate with fingerprint
+`sha256:60ea91d27fe05103828190632328c56573f00ff9681e1d0666b065f99def9c45`
+received fresh adversarial review disposition
+`B. ACCEPT WITH NON-BLOCKING NOTES — implementation-complete and suitable for
+owner acceptance`, followed by exact owner acceptance on 2026-08-06. The owner
+accepted as non-blocking the earlier regeneration of two ignored `.pyc` files
+during implementation verification. That process-hygiene event remained
+outside ordinary Git status and the tracked candidate fingerprint; this
+checkpoint does not delete, restore, reconstruct, or otherwise modify those
+files.
+
+The separately authorized final-publication attempt then stopped before any
+mutation because the public-surface lifecycle test still enforced the earlier
+selected, pre-publication state. The active-state implementation already
+supported the required intentional-idle structure, so only the stale lifecycle
+assertions and matching repository-owned publication state required correction.
+
+## Publication Lifecycle Correction
+
+The corrected repository-owned lifecycle keeps W1 as historical published
+phase evidence and records R1 as owner-accepted, published, and complete. Work
+selection is intentionally idle with no selected checkpoint. S1, F2, F3, and
+all later work remain unselected, and the next repository-owned decision is
+owner selection of future work without preselection.
+
+Task, implementation, and publication authority sentinels remain external and
+unchanged. Repository state and Atlas grant no authority. No social-preview,
+profile, external-reference, private-operations, infrastructure, deployment,
+S1, F2, F3, or other later-capability completion is claimed.
+
+This corrected candidate is unstaged and uncommitted and does not invent a
+final commit SHA. Because its bytes differ from the previously reviewed and
+accepted fingerprint, fresh adversarial review, renewed owner acceptance, and
+separately renewed publication authority are required before any staging,
+commit, push, or final publication. The correction candidate is not itself a
+publication.

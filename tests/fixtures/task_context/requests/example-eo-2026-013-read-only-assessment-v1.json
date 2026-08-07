@@ -1,7 +1,7 @@
 {
   "schema_version": "aiden.task-context.compilation-request/v1",
   "repository_request": {
-    "identity": "github.com/aidenm727/t430-homelab",
+    "identity": "github.com/aidenm727/aiden-platform",
     "requested_revision": "79eef80af3d5969ece7eb9fe7f802be35575f450"
   },
   "task": {

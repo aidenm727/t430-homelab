@@ -565,11 +565,33 @@ no execution authority.
 
 The preserved AI Engineering Environment Review remains downstream and outside this milestone. It requires separate owner authorization and does not become part of context compilation merely because future consumers include ChatGPT Project or Codex.
 
+## Repository Identity Boundary
+
+The implemented compiler accepts only
+`github.com/aidenm727/aiden-platform` as the requested and normalized current
+repository identity. Supported SCP-style SSH, `ssh://`, and HTTPS origin forms
+for the current slug normalize to that identity. The same transport forms for
+the former `aidenm727/t430-homelab` slug are explicit legacy origin locators:
+they also normalize to the current identity, but the old canonical identity is
+not accepted as a current request.
+
+`RepositoryIdentityEvidence` keeps the requested canonical identity, ordered raw
+origin locator evidence, and normalized current identity distinct. Those values
+prove repository scope and provenance only. Stable GitHub repository ID
+`1161282866` is separately observed external evidence, not a compiler permission
+source, and neither identity evidence nor GitHub identity grants authority.
+
 ## Bounded Informative Example
 
 The following complete YAML package is informative, generated/non-canonical in classification, illustrative, and non-executable. It demonstrates a narrow read-only EO-2026-013 architecture-assessment task against commit `79eef80af3d5969ece7eb9fe7f802be35575f450`.
 
-It was manually assembled to demonstrate this contract. It was not produced by an implemented compiler, and no package validator executed. Its integrity values are reproducible applications of the digest surfaces defined above, but its `illustrative_not_validated` state makes it non-consumable.
+It was manually assembled before the repository rename to demonstrate this
+contract. Its old requested identity and dependent digests are preserved as
+dated historical example values and would be rejected by the current compiler.
+It was not produced by an implemented compiler, and no package validator
+executed. Its integrity values are reproducible applications of the digest
+surfaces defined above, but its `illustrative_not_validated` state makes it
+non-consumable.
 
 ```yaml
 schema_version: aiden.task-context/v1

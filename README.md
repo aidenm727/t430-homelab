@@ -110,8 +110,11 @@ real problem
 
 Verification counts are dated outcomes, not permanent claims about the current
 suite. For example, W1 recorded 406 passing tests and one skip on 2026-08-02;
-the linked evidence and Git history own that historical result. The current R1
-record is an uncommitted local candidate awaiting independent review.
+the linked evidence and Git history own that historical result. On 2026-08-06,
+local post-rename finalization verification passed 429 tests with one skip. The
+exact candidate then received fresh adversarial review and owner acceptance.
+R1 is recorded as published and complete; the local lifecycle-correction bytes
+remain unstaged and uncommitted and do not claim a new publication commit.
 
 ## Inspect or Run
 
@@ -125,9 +128,11 @@ PYTHONPATH=tools PYTHONDONTWRITEBYTECODE=1 \
 ```
 
 `./atlas bootstrap` inspects repository state; it does not authorize work.
-School Learning keeps personal data outside Git. A final clone command for the
-accepted future slug is intentionally deferred until an actual GitHub rename is
-separately authorized and verified.
+School Learning keeps personal data outside Git. The canonical public clone is:
+
+```bash
+git clone https://github.com/aidenm727/aiden-platform.git
+```
 
 ## Public and Private Boundary
 
@@ -145,11 +150,15 @@ The canonical boundary and trigger for any future private repository are in
 
 ## Current and Future
 
-The [canonical state](docs/current-state.json) currently keeps W1 as the
-published phase and selects only the bounded local R1 checkpoint. The live
-repository is still `aidenm727/t430-homelab`; the accepted future slug is
-`aiden-platform`. No rename, redirect, GitHub metadata change, or final new-slug
-clone target is claimed.
+The [canonical state](docs/current-state.json) keeps W1 as the published phase,
+records R1 as owner-accepted, published, and complete, and intentionally
+selects no implementation checkpoint. S1, F2, F3, and all other future work
+remain unselected; the next decision is owner selection of future work. The
+live GitHub repository is `aidenm727/aiden-platform`; the verified rename,
+approved description and topics, redirect behavior, profile pin, connector,
+and local origin update are recorded in the dated R1 evidence. This local
+lifecycle-correction candidate remains unstaged and uncommitted and records no
+prospective publication commit.
 
 Aiden Platform began as a ThinkPad T430 homelab and grew into a broader personal
 engineering platform. Current delivered capability centers on School Learning,

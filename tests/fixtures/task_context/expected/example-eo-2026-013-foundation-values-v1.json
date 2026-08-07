@@ -99,23 +99,23 @@
   "request_digest": {
     "algorithm": "sha256",
     "canonicalization": "rfc8785-jcs",
-    "value": "4839411214fa20cde0b842a72ad9baf5d525c494fca3c931cd58d63364c8c01b"
+    "value": "36560429be1945259ff91a7753ff41fe6ca50665aafba3ff547d3c08ed2de078"
   },
   "package_identity_helper": {
     "foundation_only": true,
     "snapshot_fingerprint_kind": "synthetic_test_vector_not_resolved_repository_state",
     "synthetic_snapshot_fingerprint": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
     "surface": {
-      "request_digest": "4839411214fa20cde0b842a72ad9baf5d525c494fca3c931cd58d63364c8c01b",
+      "request_digest": "36560429be1945259ff91a7753ff41fe6ca50665aafba3ff547d3c08ed2de078",
       "snapshot_fingerprint": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
     },
-    "canonical_utf8": "{\"request_digest\":\"4839411214fa20cde0b842a72ad9baf5d525c494fca3c931cd58d63364c8c01b\",\"snapshot_fingerprint\":\"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\"}",
+    "canonical_utf8": "{\"request_digest\":\"36560429be1945259ff91a7753ff41fe6ca50665aafba3ff547d3c08ed2de078\",\"snapshot_fingerprint\":\"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\"}",
     "identity_digest": {
       "algorithm": "sha256",
       "canonicalization": "rfc8785-jcs",
-      "value": "711062df74645329c3078b575b8ddfc737a41e3b3a0a9aeaca3ea9bafcb85678"
+      "value": "5fd87412024f54b1ead67b203f304b37d2ae399eba357c8eb27df04fad44f3e7"
     },
-    "package_id": "tcp-711062df74645329c3078b57"
+    "package_id": "tcp-5fd87412024f54b1ead67b20"
   },
   "compiler_identity_input": {
     "identity": "aiden.context-compilation",

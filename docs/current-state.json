@@ -10,20 +10,14 @@
     ]
   },
   "work_selection": {
-    "status": "selected",
-    "selected_checkpoint": {
-      "id": "repository-identity-r1",
-      "name": "R1 — Repository Identity and Public/Private Boundary",
-      "lifecycle": "selected",
-      "effective_date": "2026-08-02",
-      "evidence_refs": []
-    }
+    "status": "intentional_idle",
+    "selected_checkpoint": null
   },
   "blockers": [],
   "unknowns": [],
   "decision_required": {
-    "id": "review-r1-local-candidate",
-    "summary": "Fresh adversarial independent review of the exact verified uncommitted R1 candidate; owner acceptance and any GitHub or publication action remain pending.",
+    "id": "select-future-work",
+    "summary": "Owner selection of future work; no checkpoint or later capability is preselected.",
     "status": "pending",
     "evidence_refs": []
   },
@@ -36,7 +30,7 @@
     }
   ],
   "freshness": {
-    "effective_date": "2026-08-02",
+    "effective_date": "2026-08-06",
     "review_after": null
   },
   "authority": {

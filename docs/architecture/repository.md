@@ -10,11 +10,23 @@ Every file and directory should have one clear responsibility.
 
 ## Repository Identity
 
-The live repository remains `aidenm727/t430-homelab` during the local R1
-candidate. `aiden-platform` is the accepted future slug, not a completed rename
-or current clone target. Final canonical identity, redirect, metadata, settings,
-and external-link claims require later GitHub observation and separately
-authorized writes.
+The current canonical compiler identity is
+`github.com/aidenm727/aiden-platform`, and the canonical public repository and
+clone target are `aidenm727/aiden-platform` and
+`https://github.com/aidenm727/aiden-platform.git`.
+
+Supported current-origin locator forms are SCP-style SSH, `ssh://`, and HTTPS
+with or without `.git`. The equivalent `aidenm727/t430-homelab` forms are
+explicit legacy origin locators only: they normalize to the current canonical
+identity and are not accepted as a requested current identity. This narrow
+compatibility preserves deterministic use of older local origin configuration;
+it does not make the former slug canonical again.
+
+GitHub repository ID `1161282866` is a stable externally observed fact across
+the rename. It is not a compiler input or permission source. Requested identity,
+raw observed origin locators, and normalized identity establish scope and
+provenance; they grant no task, implementation, publication, deployment, or
+external-write authority.
 
 ---
 

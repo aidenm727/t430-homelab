@@ -19,8 +19,8 @@ from atlas.platform.document_definitions import definition_for
 
 ROOT = Path(__file__).resolve().parents[1]
 SELF = "tests/test_public_surface.py"
-CURRENT_SLUG = "t430-homelab"
-FUTURE_SLUG = "aiden-platform"
+LEGACY_SLUG = "t430-homelab"
+CURRENT_SLUG = "aiden-platform"
 
 EXPECTED_REMOVALS = (
     "docs/aiden-context-spec.md",
@@ -40,7 +40,6 @@ EXPECTED_REMOVALS = (
 
 OLD_IDENTITY_ALLOWLIST = frozenset(
     {
-        "README.md",
         "docs/architecture/repository.md",
         "docs/architecture/task-scoped-agent-context-compilation.md",
         "docs/reviews/ai-workflow-evaluation-cycle-2026-07.md",
@@ -48,14 +47,11 @@ OLD_IDENTITY_ALLOWLIST = frozenset(
         "docs/reviews/engineering-workflow-v1-1-evidence-2026-08-01.md",
         "docs/reviews/eo-2026-013-b1a-authorization-review-2026-07-16.md",
         "docs/reviews/repository-identity-r1-evidence-2026-08-02.md",
-        "tests/fixtures/task_context/requests/example-eo-2026-013-read-only-assessment-v1.json",
         "tests/test_context_materialization.py",
         "tests/test_context_selection.py",
         "tests/test_context_selectors.py",
         "tests/test_context_snapshot.py",
-        "tools/atlas/platform/context_compilation/materialization.py",
         "tools/atlas/platform/context_compilation/snapshot.py",
-        "tools/atlas/platform/reasoning/context_selection.py",
     }
 )
 
@@ -65,10 +61,10 @@ HISTORICAL_HOST_DISPOSITIONS = {
         396: 1,
     },
     "docs/reviews/repository-identity-r1-evidence-2026-08-02.md": {
-        106: 1,
-        108: 1,
-        110: 1,
-        113: 1,
+        115: 1,
+        117: 1,
+        119: 1,
+        122: 1,
     },
 }
 HISTORICAL_INTERNAL_URL_DISPOSITIONS: dict[str, dict[int, int]] = {}
@@ -369,16 +365,16 @@ class PublicSurfaceTests(unittest.TestCase):
                 findings[path] = lines
         self.assertEqual(findings, {})
 
-    def test_old_repository_identity_is_confined_to_truthful_allowlist(self) -> None:
+    def test_legacy_repository_identity_is_confined_to_truthful_allowlist(self) -> None:
         matches = set()
         findings = {}
-        pattern = re.compile(re.escape(CURRENT_SLUG))
+        pattern = re.compile(re.escape(LEGACY_SLUG))
         for path, text in self.text.items():
             literal_matches = pattern_literal_matches(text, pattern)
             if path == SELF:
                 lines = self_disposition_mismatch_lines(
                     text,
-                    "current_identity",
+                    "legacy_identity",
                     literal_matches,
                 )
                 if lines:
@@ -387,19 +383,17 @@ class PublicSurfaceTests(unittest.TestCase):
                 matches.add(path)
         self.assertEqual(findings, {})
         self.assertEqual(matches, OLD_IDENTITY_ALLOWLIST)
-        self.assertIn("README.md", matches)
         self.assertIn(
             "tools/atlas/platform/context_compilation/snapshot.py",
             matches,
         )
 
-    def test_future_identity_is_planned_without_a_final_clone_claim(self) -> None:
+    def test_current_identity_has_the_canonical_clone_claim(self) -> None:
         readme = self.text["README.md"]
-        self.assertIn(FUTURE_SLUG, readme)
-        self.assertIn("accepted future slug", readme)
-        self.assertNotRegex(
+        self.assertIn(CURRENT_SLUG, readme)
+        self.assertRegex(
             readme,
-            r"git\s+clone\s+\S*github\.com[:/]aidenm727/aiden-platform",
+            r"git\s+clone\s+https://github\.com/aidenm727/aiden-platform\.git",
         )
 
     def test_old_host_names_are_historical_only(self) -> None:
@@ -616,17 +610,18 @@ class PublicSurfaceTests(unittest.TestCase):
         state = json.loads(self.text["docs/current-state.json"])
         self.assertEqual(state["phase"]["id"], "engineering-workflow-v1-1")
         self.assertEqual(state["phase"]["lifecycle"], "published")
-        self.assertEqual(state["work_selection"]["status"], "selected")
-        checkpoint = state["work_selection"]["selected_checkpoint"]
-        self.assertEqual(checkpoint["id"], "repository-identity-r1")
-        self.assertEqual(checkpoint["lifecycle"], "selected")
+        self.assertEqual(state["work_selection"]["status"], "intentional_idle")
+        self.assertIsNone(state["work_selection"]["selected_checkpoint"])
         self.assertEqual(state["blockers"], [])
         self.assertEqual(state["unknowns"], [])
+        self.assertEqual(set(state["authority"].values()), {"external-not-established-by-repository-or-atlas"})
         mission = self.text["docs/current-mission.md"]
+        self.assertRegex(mission, r"R1 — Repository Identity and Public/Private Boundary is\s+owner-accepted, published, and complete\.")
         self.assertIn("S1, F2, F3", mission)
         self.assertIn("Not selected", mission)
-        self.assertIn("independent review", mission)
-        self.assertIn("not accepted, committed, published, renamed", mission)
+        self.assertIn("Status: Intentional idle", mission)
+        self.assertIn("owner selection of future work", mission.casefold())
+        self.assertNotRegex(mission.casefold(), r"fresh adversarial review|pending")
 
     def test_renamed_documents_and_evidence_are_registered(self) -> None:
         infrastructure = infrastructure_documents()
@@ -693,91 +688,91 @@ SELF_PRIVACY_DISPOSITIONS = {
     (
         "ip_literal",
         "<module>",
-        99,
+        95,
         "b0d56c1d28390f7e4ece0ae355b30ebe8c8618788c2d769736a939a7e0bb4dd4",
     ): 1,
     (
         "ip_literal",
         "<module>",
-        100,
+        96,
         "4b2228c26597aecab7d5894eb1ec83d915bc2e1a75d758b3b53471ce6aa2c91c",
     ): 1,
     (
         "ip_literal",
         "<module>",
-        101,
+        97,
         "b6da1098e40c579e98e90db3586dbc51897b22b28133a30c45aa6f31a5f0b88e",
     ): 1,
     (
         "ip_literal",
         "<module>",
-        102,
+        98,
         "4fb0798e0eb02d5310d95142b51ddadf3d03fcd929382309589f573c0f923264",
     ): 1,
     (
         "ip_literal",
         "<module>",
-        103,
+        99,
         "5da4236dba69f926f858153f06d49edc73f54ce8cd226d7239d1948e663610e0",
     ): 1,
     (
         "ip_literal",
         "test_internal_url_classifier_uses_exact_boundaries",
-        455,
+        449,
         "25ecb11bfd4a7ea50ba30b45ce32bdb1d3c083445643f00a75d3e039a1f39133",
     ): 1,
     (
         "ip_literal",
         "test_internal_url_classifier_uses_exact_boundaries",
-        456,
+        450,
         "0622464c1cff74f0dc58479d1b5329cb5edc290e50377b38b42c36d528853b3d",
     ): 1,
     (
         "ip_literal",
         "test_internal_url_classifier_uses_exact_boundaries",
-        464,
+        458,
         "9fee1dbd126b61ad5eb62f3d8f5e212f23c9b2e198dc972306821b4b2b9df745",
     ): 1,
     (
         "ip_literal",
         "test_historical_disposition_cannot_hide_an_added_internal_url",
-        477,
+        471,
         "99e68e6fb6f98ae9bbcea0fb5d7c831c326653011c5092cfe5daf4357f555984",
     ): 1,
     (
         "ip_literal",
         "test_self_disposition_cannot_hide_a_new_match_in_the_same_test",
-        486,
+        480,
         "99e68e6fb6f98ae9bbcea0fb5d7c831c326653011c5092cfe5daf4357f555984",
     ): 1,
     (
         "internal_url",
         "test_internal_url_classifier_uses_exact_boundaries",
-        463,
+        457,
         "3973e8f72e6b3292d4e95be96157a236e5c9b7444a4987892cf1253ca1c970eb",
     ): 1,
     (
         "internal_url",
         "test_internal_url_classifier_uses_exact_boundaries",
-        464,
+        458,
         "e02f7a62bd538cff9e53b3bec05f5f740f1c3fd639751346c476f871fe13f97e",
     ): 1,
     (
         "internal_url",
         "test_internal_url_classifier_uses_exact_boundaries",
-        465,
+        459,
         "f9d411589dde0d9963506dcf7ae3ab6108c10cf5b7bf1ed96a764e89504d46fc",
     ): 1,
     (
         "internal_url",
         "test_historical_disposition_cannot_hide_an_added_internal_url",
-        472,
+        466,
         "746095370fe2a67aaaa7f2414f15f9abf9312655094bf9166a3cbd76150be34a",
     ): 1,
     (
         "internal_url",
         "test_historical_disposition_cannot_hide_an_added_internal_url",
-        477,
+        471,
         "f1243b397a9d95c04fcc3ff96cdd383f067d1999e6773c198ffa0ebcfc8fd5df",
     ): 1,
     (
@@ -807,23 +802,23 @@ SELF_PRIVACY_DISPOSITIONS = {
     (
         "historical_host",
         "<module>",
-        108,
+        104,
         "28417f2fb39f8b22a594692ee92a59b717cc74570eefcf1d117be17937933163",
     ): 1,
     (
         "historical_host",
         "<module>",
-        108,
+        104,
         "49b3511f5ae71e18fb91cdd08fba6916608c5ea654f59e478bc433c93b5056cf",
     ): 1,
     (
         "historical_host",
         "test_renamed_documents_and_evidence_are_registered",
-        634,
+        629,
         "28417f2fb39f8b22a594692ee92a59b717cc74570eefcf1d117be17937933163",
     ): 1,
     (
-        "current_identity",
+        "legacy_identity",
         "<module>",
         22,
         "25255e764a9dd3bac6f2a542ba33fff8d97ef7030a82e3a0c033d6abe43c28cb",

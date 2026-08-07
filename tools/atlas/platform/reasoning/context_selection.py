@@ -43,8 +43,7 @@ _REQUEST_SCHEMA = "aiden.task-context.compilation-request/v1"
 _POLICY_ID = "example.read-only-architecture-assessment"
 _POLICY_VERSION = "1.0.1"
 _POLICY_DIGEST = "69577722ea4eb6f479424f3bf324866cc2992d5df82b3224e5f20571ef081938"
-# R1 remains pre-rename: selection accepts only the current live identity.
-_CURRENT_REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
+_CANONICAL_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
 _TASK_TYPE = "architecture_assessment"
 _TASK_PROFILE = "eo-architecture-assessment"
 _OPPORTUNITY_PATH = (
@@ -215,9 +214,9 @@ def _validate_request_and_snapshot(
     if request.schema_version != _REQUEST_SCHEMA:
         _fail("request schema is unsupported")
     if (
-        request.repository.identity != _CURRENT_REPOSITORY_IDENTITY
-        or snapshot.repository.requested_identity != _CURRENT_REPOSITORY_IDENTITY
-        or snapshot.repository.normalized_identity != _CURRENT_REPOSITORY_IDENTITY
+        request.repository.identity != _CANONICAL_REPOSITORY_IDENTITY
+        or snapshot.repository.requested_identity != _CANONICAL_REPOSITORY_IDENTITY
+        or snapshot.repository.normalized_identity != _CANONICAL_REPOSITORY_IDENTITY
     ):
         _fail("request and snapshot repository identities do not match")
     if (

@@ -39,17 +39,17 @@ HISTORICAL_B1A_BOUNDARY = frozenset(
     }
 )
 R1_AUTHORIZED_SNAPSHOT_EXPANSION = {
-    "tests/test_context_snapshot.py": "356e4bca6bad45bc0f44b4f5a56a1d0f950db6aa",
+    "tests/test_context_snapshot.py": "9ce466c42c6e44af6d2f7f64c880154c68a5f051",
     "tools/atlas/platform/context_compilation/snapshot.py": (
-        "70787fc2a7e8710a7fecacb3665dcef4578b9b79"
+        "29166f47ba02b129518a0311c4c5f46a64f8664f"
     ),
 }
-REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
+CANONICAL_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
 HISTORICAL_COMMIT = "79eef80af3d5969ece7eb9fe7f802be35575f450"
 HISTORICAL_TREE = "3d2853517e64209cffde91766a62e9f70ceb2e47"
 PROTECTED_REF = "refs/heads/wip/distinctness-foundation-calibration"
 PROTECTED_OBJECT = "fcbc5957b89fe65a4313a3c23eb814e02a014698"
-ORIGIN = "https://github.com/aidenm727/t430-homelab.git"
+LEGACY_ORIGIN = "https://github.com/aidenm727/t430-homelab.git"
 
 
 def fixture_git(
@@ -588,11 +588,11 @@ class HistoricalSelectorIntegrationTests(unittest.TestCase):
             str(ROOT),
             str(cls.repository),
         )
-        fixture_git(cls.repository, "remote", "set-url", "origin", ORIGIN)
+        fixture_git(cls.repository, "remote", "set-url", "origin", LEGACY_ORIGIN)
         fixture_git(cls.repository, "update-ref", PROTECTED_REF, PROTECTED_OBJECT)
         snapshot = resolve_snapshot(
             cls.repository,
-            repository_identity=REPOSITORY_IDENTITY,
+            repository_identity=CANONICAL_REPOSITORY_IDENTITY,
             requested_revision=HISTORICAL_COMMIT,
             expected_tree=HISTORICAL_TREE,
             protected_references=(

@@ -49,11 +49,11 @@ from atlas.platform.reasoning import build_bounded_selection_plan
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
-FUTURE_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
+CANONICAL_REPOSITORY_IDENTITY = "github.com/aidenm727/aiden-platform"
+OLD_CANONICAL_REPOSITORY_IDENTITY = "github.com/aidenm727/t430-homelab"
 HISTORICAL_COMMIT = "79eef80af3d5969ece7eb9fe7f802be35575f450"
 HISTORICAL_TREE = "3d2853517e64209cffde91766a62e9f70ceb2e47"
-ORIGIN = "https://github.com/aidenm727/t430-homelab.git"
+LEGACY_ORIGIN = "https://github.com/aidenm727/t430-homelab.git"
 SELECTION_DIGEST = (
     "69577722ea4eb6f479424f3bf324866cc2992d5df82b3224e5f20571ef081938"
 )
@@ -146,9 +146,9 @@ def fixture_git(
 
 def historical_snapshot() -> RepositorySnapshot:
     repository = RepositoryIdentityEvidence(
-        requested_identity=REPOSITORY_IDENTITY,
-        origin_urls=(ORIGIN,),
-        normalized_identity=REPOSITORY_IDENTITY,
+        requested_identity=CANONICAL_REPOSITORY_IDENTITY,
+        origin_urls=(LEGACY_ORIGIN,),
+        normalized_identity=CANONICAL_REPOSITORY_IDENTITY,
     )
     return RepositorySnapshot(
         repository=repository,
@@ -158,7 +158,7 @@ def historical_snapshot() -> RepositorySnapshot:
         tree=HISTORICAL_TREE,
         snapshot_mode="clean_committed",
         fingerprint=snapshot_fingerprint(
-            REPOSITORY_IDENTITY,
+            CANONICAL_REPOSITORY_IDENTITY,
             "sha1",
             HISTORICAL_COMMIT,
             HISTORICAL_TREE,
@@ -172,7 +172,7 @@ def portable_request() -> CompilationRequest:
     return CompilationRequest(
         schema_version="aiden.task-context.compilation-request/v1",
         repository=RepositoryRequestIdentity(
-            REPOSITORY_IDENTITY,
+            CANONICAL_REPOSITORY_IDENTITY,
             HISTORICAL_COMMIT,
         ),
         task={
@@ -326,7 +326,7 @@ def portable_plan(
             "rfc8785-jcs",
             SELECTION_DIGEST,
         ),
-        repository_identity=REPOSITORY_IDENTITY,
+        repository_identity=CANONICAL_REPOSITORY_IDENTITY,
         requested_revision=HISTORICAL_COMMIT,
         commit=HISTORICAL_COMMIT,
         tree=HISTORICAL_TREE,
@@ -458,11 +458,11 @@ class MaterializationPortableTests(PortableFixture, unittest.TestCase):
         ):
             self.assertIn(name, context_exports.__all__)
 
-    def test_future_identity_is_rejected_before_the_github_rename(self) -> None:
+    def test_old_canonical_identity_is_rejected_as_current_request(self) -> None:
         self.request = dataclasses.replace(
             self.request,
             repository=RepositoryRequestIdentity(
-                FUTURE_REPOSITORY_IDENTITY,
+                OLD_CANONICAL_REPOSITORY_IDENTITY,
                 HISTORICAL_COMMIT,
             ),
         )
@@ -959,7 +959,7 @@ class GuardedHistoricalMaterializationTests(unittest.TestCase):
             "remote",
             "set-url",
             "origin",
-            ORIGIN,
+            LEGACY_ORIGIN,
         )
         self.assertEqual(
             fixture_git(
