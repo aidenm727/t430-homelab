@@ -135,11 +135,10 @@ belong in Git.
 ## Portfolio Reviews
 
 - `docs/reviews/repository-identity-r1-evidence-2026-08-02.md` — Compact
-  Tier 3 record for the accepted uncommitted R1 boundary, exact candidate
-  inventory, independent disposition C, correction cycle 1, privacy and
-  generated-ownership evidence, and local verification; fresh adversarial
-  re-review, owner acceptance, and all GitHub/publication actions remain
-  pending.
+  Tier 3 record preserving the original R1 boundary, first publication and
+  verified rename, post-rename identity finalization, lifecycle-correction
+  cycles, fresh review and renewed owner acceptance, and final R1 publication
+  at immutable commit `483f1111257c9b1608c100cb88c8304a17d85314`.
 - `docs/reviews/engineering-workflow-v1-1-evidence-2026-08-01.md` — Compact dated W1 checkpoint brief and local implementation evidence preserving the Tier 3 scope, preflight, verification, pending independent review and owner acceptance, and withheld publication/deployment authority.
 - `docs/reviews/school-learning-v0-1-pilot-evaluation-2026-07-21.md` — Dated non-canonical pilot evidence recording confirmed v0.1 strengths and friction, the bounded v0.1.1 Guided Study Handoff decision, local verification, independent acceptance, owner acceptance, preserved human authority, and bounded publication authority.
 - `docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md` — Accepted dated non-canonical owner decision evidence for the exact School Learning v0.1 implementation and publication boundary.

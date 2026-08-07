@@ -8,10 +8,10 @@
 **Post-rename finalization candidate:** 2026-08-06
 **Risk tier:** Tier 3
 **Base:** `d8a0f0d319c80b9c63258b737b20c6eb538ee289`
-**Current base:** `d9f763b0c2c7517ed93cfe89f322b01a4bce26d7`
-**Candidate:** The owner-authorized publication-lifecycle correction is
-unstaged and uncommitted; its exact new bytes require fresh review before any
-renewed acceptance or publication authority
+**Final publication parent:** `d9f763b0c2c7517ed93cfe89f322b01a4bce26d7`
+**Final publication outcome:** The accepted R1 lifecycle correction was
+published on 2026-08-07 as immutable commit
+`483f1111257c9b1608c100cb88c8304a17d85314`
 
 ## Accepted Pre-Rename Checkpoint Brief
 
@@ -652,3 +652,48 @@ accepted fingerprint, fresh adversarial review, renewed owner acceptance, and
 separately renewed publication authority are required before any staging,
 commit, push, or final publication. The correction candidate is not itself a
 publication.
+
+## Final R1 Publication
+
+The final R1 publication outcome occurred on 2026-08-07. The accepted
+publication-lifecycle correction was published as immutable commit
+`483f1111257c9b1608c100cb88c8304a17d85314`, with tree
+`2233414650ee0e59679189b21e600fa6a0b0f15b` and sole parent
+`d9f763b0c2c7517ed93cfe89f322b01a4bce26d7`. Its accepted pre-publication
+candidate fingerprint was
+`sha256:53361e8109a02ef27d768cfa1890ded91a74d577797f57dd93938b1332706d44`.
+
+The exact 18-path publication boundary was:
+
+- `README.md`
+- `docs/aiden-context.md`
+- `docs/architecture/repository.md`
+- `docs/architecture/task-scoped-agent-context-compilation.md`
+- `docs/current-mission.md`
+- `docs/current-state.json`
+- `docs/reviews/repository-identity-r1-evidence-2026-08-02.md`
+- `tests/fixtures/task_context/expected/example-eo-2026-013-foundation-values-v1.json`
+- `tests/fixtures/task_context/requests/example-eo-2026-013-read-only-assessment-v1.json`
+- `tests/test_context_materialization.py`
+- `tests/test_context_selection.py`
+- `tests/test_context_selectors.py`
+- `tests/test_context_snapshot.py`
+- `tests/test_public_surface.py`
+- `tools/atlas/platform/context_compilation/materialization.py`
+- `tools/atlas/platform/context_compilation/snapshot.py`
+- `tools/atlas/platform/document_definitions.py`
+- `tools/atlas/platform/reasoning/context_selection.py`
+
+Focused verification passed 280 tests with one skip. Complete native
+verification passed 429 tests with one skip. Public-surface verification passed
+18 tests. Registered generation reproduced the exact generated outputs, and
+Atlas bootstrap, validate, missing, and synchronization verification passed.
+
+Publication comprised exactly one authorized commit and one authorized
+non-force push. At completion of the publication action, local `HEAD`, local
+`main`, the locally observed `origin/main`, and live GitHub `main` were aligned
+to the publication commit, and the worktree was clean. This is a point-in-time
+completion fact, not a claim about the repository's perpetual current state.
+
+No deployment, Project synchronization, future-work selection, S1, F2, or F3
+action occurred.

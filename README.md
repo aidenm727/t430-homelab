@@ -113,8 +113,9 @@ suite. For example, W1 recorded 406 passing tests and one skip on 2026-08-02;
 the linked evidence and Git history own that historical result. On 2026-08-06,
 local post-rename finalization verification passed 429 tests with one skip. The
 exact candidate then received fresh adversarial review and owner acceptance.
-R1 is recorded as published and complete; the local lifecycle-correction bytes
-remain unstaged and uncommitted and do not claim a new publication commit.
+R1 is recorded as published and complete; the accepted lifecycle correction
+was published on 2026-08-07 as immutable R1 publication commit
+`483f1111257c9b1608c100cb88c8304a17d85314`.
 
 ## Inspect or Run
 
@@ -156,9 +157,9 @@ selects no implementation checkpoint. S1, F2, F3, and all other future work
 remain unselected; the next decision is owner selection of future work. The
 live GitHub repository is `aidenm727/aiden-platform`; the verified rename,
 approved description and topics, redirect behavior, profile pin, connector,
-and local origin update are recorded in the dated R1 evidence. This local
-lifecycle-correction candidate remains unstaged and uncommitted and records no
-prospective publication commit.
+and local origin update are recorded in the dated R1 evidence. The accepted
+lifecycle correction was published on 2026-08-07 as immutable R1 publication
+commit `483f1111257c9b1608c100cb88c8304a17d85314`.
 
 Aiden Platform began as a ThinkPad T430 homelab and grew into a broader personal
 engineering platform. Current delivered capability centers on School Learning,

@@ -683,6 +683,71 @@ class PublicSurfaceTests(unittest.TestCase):
         )
         self.assertIn(expected, self.text["docs/aiden-context.md"])
 
+    def test_active_r1_truth_is_separate_from_historical_candidate_chronology(
+        self,
+    ) -> None:
+        evidence_path = (
+            "docs/reviews/repository-identity-r1-evidence-2026-08-02.md"
+        )
+        docs_map_match = re.search(
+            rf"(?ms)^- `{re.escape(evidence_path)}` — (?P<entry>.*?)"
+            r"(?=^- `docs/reviews/|\Z)",
+            self.text["docs/docs-map.md"],
+        )
+        self.assertIsNotNone(docs_map_match)
+        assert docs_map_match is not None
+
+        evidence_definition = definition_for(evidence_path)
+        self.assertIsNotNone(evidence_definition)
+        assert evidence_definition is not None
+
+        evidence = self.text[evidence_path]
+        final_heading = "## Final R1 Publication"
+        self.assertEqual(evidence.count(final_heading), 1)
+        before_final, found_final_heading, final_publication_body = (
+            evidence.partition(final_heading)
+        )
+        self.assertEqual(found_final_heading, final_heading)
+
+        chronology_boundary = re.search(r"(?m)^## ", before_final)
+        self.assertIsNotNone(chronology_boundary)
+        assert chronology_boundary is not None
+        active_header_summary = before_final[: chronology_boundary.start()]
+        historical_chronology = before_final[chronology_boundary.start() :]
+        final_publication = found_final_heading + final_publication_body
+
+        active_surfaces = {
+            "README active prose": self.text["README.md"],
+            "R1 docs-map entry": docs_map_match.group("entry"),
+            "R1 document-definition purpose": evidence_definition.purpose,
+            "R1 evidence active header/summary": active_header_summary,
+            "R1 evidence final publication": final_publication,
+        }
+        stale_active_marker_patterns = (
+            r"\bunstaged\b",
+            r"\buncommitted\b",
+            r"\bprospective publication commit\b",
+            r"\bremaining publication boundary\b",
+            r"(?:publication|review|owner acceptance)[^.\n]*"
+            r"\bremain(?:s)? pending\b",
+            r"\bpending (?:review|owner acceptance|acceptance|publication)\b",
+        )
+        for surface, text in active_surfaces.items():
+            for marker in stale_active_marker_patterns:
+                with self.subTest(surface=surface, marker=marker):
+                    self.assertNotRegex(text.casefold(), marker)
+
+        self.assertIn("unstaged and uncommitted", historical_chronology.casefold())
+        publication_commit = "483f1111257c9b1608c100cb88c8304a17d85314"
+        self.assertRegex(
+            final_publication,
+            rf"(?s)\bimmutable commit\s+`{publication_commit}`",
+        )
+        self.assertRegex(
+            final_publication.casefold(),
+            r"\bpublication outcome (?:occurred|was completed)\b",
+        )
+
 
 SELF_PRIVACY_DISPOSITIONS = {
     (
