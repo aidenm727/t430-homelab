@@ -13,24 +13,26 @@ W1 — Engineering Workflow v1.1 — Published
 W1 — Engineering Workflow v1.1 is owner-accepted, published, and complete. Clean
 Foundation F1 remains historical published foundation evidence rather than
 active selected work. R1 — Repository Identity and Public/Private Boundary is
+owner-accepted, published, and complete. G14 Storage Orientation Snapshot is
 owner-accepted, published, and complete. No implementation checkpoint is
-selected, and repository work selection is intentionally idle. R1 completion
-does not claim deployment or an operational runtime state.
+selected, and repository work selection is intentionally idle. G14 completion
+does not claim live collection, deployment, or an operational runtime state.
 
-Canonical state effective date: 2026-08-06.
+Canonical state effective date: 2026-08-08.
 
 ## Mission Intent
 
-Preserve `github.com/aidenm727/aiden-platform` as the canonical compiler
-identity while retaining the former slug only as explicit legacy origin
-locator compatibility. Keep the published Workflow v1.1 and completed R1
-contracts, human authority, deterministic provenance, generated ownership, and
-all public/private boundaries stable while the owner chooses future work.
+Preserve the published Workflow v1.1, completed R1, and completed metadata-only
+G14 storage-orientation foundation, human authority, generated ownership, and
+all public/private boundaries while the owner chooses future work. No live
+collection, deployment, or operational-runtime claim is established.
 
 ## Work Selection
 
 - Status: Intentional idle.
 - Selected checkpoint: None.
+- G14 lifecycle: Owner-accepted, published, and complete; not active selected
+  work. Deployment, live collection, and operational runtime are not claimed.
 - W1 lifecycle: Published and complete; not active selected work.
 - R1 lifecycle: Owner-accepted, published, and complete; not active selected
   work.
@@ -76,4 +78,7 @@ requires explicit owner authority outside repository state and Atlas.
   chronology through owner acceptance, first publication, the verified rename,
   post-rename identity finalization, and the published-and-complete lifecycle
   transition.
+- `docs/reviews/g14-storage-orientation-snapshot-implementation-evidence-2026-08-08.md`
+  — compact Tier 3 G14 implementation, review, acceptance, verification,
+  residual-limitation, and publication-boundary evidence.
 - Git history — immutable implementation and publication identities.

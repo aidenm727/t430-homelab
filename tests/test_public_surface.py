@@ -606,12 +606,14 @@ class PublicSurfaceTests(unittest.TestCase):
                 missing.append(target)
         self.assertEqual(missing, [])
 
-    def test_active_state_and_mission_preserve_r1_lifecycle_truth(self) -> None:
+    def test_active_state_preserves_completed_g14_lifecycle_truth(self) -> None:
         state = json.loads(self.text["docs/current-state.json"])
         self.assertEqual(state["phase"]["id"], "engineering-workflow-v1-1")
         self.assertEqual(state["phase"]["lifecycle"], "published")
         self.assertEqual(state["work_selection"]["status"], "intentional_idle")
         self.assertIsNone(state["work_selection"]["selected_checkpoint"])
+        self.assertEqual(state["decision_required"]["id"], "select-future-work")
+        self.assertEqual(state["decision_required"]["status"], "pending")
         self.assertEqual(state["blockers"], [])
         self.assertEqual(state["unknowns"], [])
         self.assertEqual(set(state["authority"].values()), {"external-not-established-by-repository-or-atlas"})
@@ -620,8 +622,8 @@ class PublicSurfaceTests(unittest.TestCase):
         self.assertIn("S1, F2, F3", mission)
         self.assertIn("Not selected", mission)
         self.assertIn("Status: Intentional idle", mission)
-        self.assertIn("owner selection of future work", mission.casefold())
-        self.assertNotRegex(mission.casefold(), r"fresh adversarial review|pending")
+        self.assertRegex(mission, r"G14 Storage Orientation Snapshot is\s+owner-accepted, published, and complete\.")
+        self.assertNotRegex(mission.casefold(), r"fresh independent tier 3 adversarial|owner acceptance also remains pending")
 
     def test_renamed_documents_and_evidence_are_registered(self) -> None:
         infrastructure = infrastructure_documents()
@@ -635,6 +637,11 @@ class PublicSurfaceTests(unittest.TestCase):
         self.assertIsNotNone(
             definition_for(
                 "docs/reviews/repository-identity-r1-evidence-2026-08-02.md"
+            )
+        )
+        self.assertIsNotNone(
+            definition_for(
+                "docs/reviews/g14-storage-orientation-snapshot-implementation-evidence-2026-08-08.md"
             )
         )
 
@@ -879,7 +886,7 @@ SELF_PRIVACY_DISPOSITIONS = {
     (
         "historical_host",
         "test_renamed_documents_and_evidence_are_registered",
-        629,
+        631,
         "28417f2fb39f8b22a594692ee92a59b717cc74570eefcf1d117be17937933163",
     ): 1,
     (

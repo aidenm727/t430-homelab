@@ -134,6 +134,7 @@ belong in Git.
 
 ## Portfolio Reviews
 
+- `docs/reviews/g14-storage-orientation-snapshot-implementation-evidence-2026-08-08.md` — Compact Tier 3 G14 metadata-only collection, analysis/reporting, sanitization, correction, residual-limitation, final verification, adversarial/privacy review, owner-acceptance, and publication-boundary evidence; no live collection, deployment, or operational runtime is claimed.
 - `docs/reviews/repository-identity-r1-evidence-2026-08-02.md` — Compact
   Tier 3 record preserving the original R1 boundary, first publication and
   verified rename, post-rename identity finalization, lifecycle-correction

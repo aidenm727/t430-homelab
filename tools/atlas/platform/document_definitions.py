@@ -498,6 +498,27 @@ DOCUMENT_DEFINITIONS = {
         ],
     ),
 
+    "docs/reviews/g14-storage-orientation-snapshot-implementation-evidence-2026-08-08.md": DocumentDefinition(
+        path="docs/reviews/g14-storage-orientation-snapshot-implementation-evidence-2026-08-08.md",
+        purpose="Preserves compact Tier 3 implementation, correction, residual-limitation, final verification, adversarial/privacy review, owner-acceptance, and publication-boundary evidence for G14 metadata-only storage orientation without claiming live collection, deployment, or operational runtime.",
+        canonical=False,
+        generated=False,
+        capability="Personal Organization",
+        status="evidence",
+        tags=[
+            "storage-orientation",
+            "metadata-only",
+            "privacy",
+            "checkpoint-evidence",
+        ],
+        related=[
+            "docs/current-state.json",
+            "docs/current-mission.md",
+            "docs/architecture/knowledge-authority.md",
+            "docs/standards/engineering-collaboration.md",
+        ],
+    ),
+
     "docs/change-session.md": DocumentDefinition(
         path="docs/change-session.md",
         purpose="Tracks the currently active engineering change session before it is finalized into permanent change records.",
