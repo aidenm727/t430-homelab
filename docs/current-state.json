@@ -16,8 +16,8 @@
   "blockers": [],
   "unknowns": [],
   "decision_required": {
-    "id": "select-future-work",
-    "summary": "Owner selection of future work; no checkpoint or later capability is preselected.",
+    "id": "decide-sl2-a-publication",
+    "summary": "Owner decision on whether to authorize staging, local commit, and publication of the accepted SL2-A candidate.",
     "status": "pending",
     "evidence_refs": []
   },
@@ -30,7 +30,7 @@
     }
   ],
   "freshness": {
-    "effective_date": "2026-08-08",
+    "effective_date": "2026-08-27",
     "review_after": null
   },
   "authority": {

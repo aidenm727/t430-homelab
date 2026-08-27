@@ -1,4 +1,4 @@
-"""Owner-controlled local course workspace for School Learning v0.1."""
+"""Owner-controlled local semester and course workspace for School Learning."""
 
 from __future__ import annotations
 
@@ -16,23 +16,131 @@ from typing import Any, Callable, Iterable
 COURSE_SCHEMA = "aiden.school.course/v0.1"
 MATERIALS_SCHEMA = "aiden.school.materials/v0.1"
 TOPICS_SCHEMA = "aiden.school.topics/v0.1"
+SEMESTER_SCHEMA = "aiden.school.semester/v0.2"
+COURSE_CORE_SCHEMA = "aiden.school.course-core/v0.2"
+MATERIALS_V02_SCHEMA = "aiden.school.materials/v0.2"
 SESSION_SCHEMA = "aiden.school.session/v0.1"
 STUDY_HANDOFF_SCHEMA = "aiden.school.study-handoff/v0.1.1"
-SUPPORTED_SUFFIXES = {".pdf": "pdf", ".md": "markdown", ".txt": "text"}
+COURSE_HANDOFF_SCHEMA = "aiden.school.course-handoff/v0.2"
+SUPPORTED_SUFFIXES = {
+    ".pdf": "pdf",
+    ".md": "markdown",
+    ".txt": "text",
+    ".pptx": "powerpoint",
+    ".rmd": "r-markdown",
+    ".png": "png",
+    ".jpg": "jpeg",
+    ".jpeg": "jpeg",
+    ".webp": "webp",
+}
 STUDY_MODES = ("explain", "practice", "review")
 TOPIC_STATUSES = ("unseen", "learning", "review", "solid")
 OUTCOMES = ("correct", "partial", "incorrect")
+CAPABILITY_TAGS = (
+    "exam-mastery",
+    "prerequisite-repair",
+    "creative-applied-work",
+    "project-based",
+    "team-based",
+    "tool-skill",
+    "reading-listening",
+    "attendance-sensitive",
+    "equipment-logistics",
+    "ai-policy-sensitive",
+)
+MATERIAL_KINDS = (
+    "unspecified",
+    "lecture",
+    "reading",
+    "listening-reference",
+    "assignment-specification",
+    "syllabus",
+    "announcement",
+    "lab-field-guide",
+    "technical-reference",
+    "other",
+)
+MATERIAL_LIFECYCLES = ("upcoming", "current", "reference", "completed", "superseded")
+ASSESSMENT_TYPES = (
+    "quiz",
+    "exam",
+    "problem-set",
+    "programming-assignment",
+    "homework",
+    "practice-sheet",
+    "creative-assignment",
+    "project",
+    "sprint",
+    "field-lab-activity",
+    "other",
+)
+ASSESSMENT_STATUSES = (
+    "upcoming",
+    "available",
+    "in-progress",
+    "submitted",
+    "graded",
+    "reviewed",
+)
+CLAIM_STATUSES = ("confirmed", "provisional", "conflicted", "superseded")
 _COMPONENT = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 _TIMESTAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _DIGEST = re.compile(r"^[0-9a-f]{64}$")
+_ASSESSMENT_TYPE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+_ASSESSMENT_TYPE_MAX_LENGTH = 64
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 _REQUIRED_DIRECTORIES = ("materials", "sessions", "generated")
+_SEMESTER_METADATA_DIRECTORY = ".school-learning"
+
+
+class _Unset:
+    pass
+
+
+_UNSET = _Unset()
 
 _COURSE_KEYS = frozenset({"schema_version", "course_id", "term", "title", "created_at"})
 _MATERIALS_KEYS = frozenset({"schema_version", "materials"})
 _MATERIAL_KEYS = frozenset(
     {"id", "title", "type", "source_name", "stored_path", "sha256", "bytes", "added_at"}
 )
+_MATERIAL_V02_KEYS = _MATERIAL_KEYS | frozenset(
+    {"kind", "status", "relevant_date", "topic_ids", "assessment_ids", "provenance"}
+)
+_PROVENANCE_KEYS = frozenset({"source", "observed_at", "status"})
+_CLAIM_KEYS = frozenset({"id", "field", "value", "source", "observed_at", "status"})
+_SEMESTER_KEYS = frozenset({"schema_version", "term", "title", "course_ids", "created_at"})
+_COURSE_CORE_KEYS = frozenset(
+    {
+        "schema_version",
+        "course_id",
+        "term",
+        "capability_tags",
+        "sources",
+        "metadata",
+        "assessments",
+        "policies",
+        "created_at",
+        "updated_at",
+    }
+)
+_SOURCE_KEYS = frozenset({"id", "title", "reference", "status"})
+_ASSESSMENT_KEYS = frozenset(
+    {
+        "id",
+        "title",
+        "type",
+        "status",
+        "weight",
+        "points",
+        "xp",
+        "material_ids",
+        "topic_ids",
+        "claims",
+    }
+)
+_POLICY_KEYS = frozenset({"id", "title", "category", "status", "claims"})
 _TOPICS_KEYS = frozenset({"schema_version", "topics"})
 _TOPIC_KEYS = frozenset(
     {
@@ -76,6 +184,20 @@ _HANDOFF_KEYS = frozenset(
     }
 )
 _HANDOFF_MATERIAL_KEYS = frozenset({"id", "attachment_filename", "sha256", "bytes"})
+_COURSE_HANDOFF_KEYS = frozenset(
+    {
+        "schema_version",
+        "course_id",
+        "term",
+        "attachment_filenames",
+        "context_attachment",
+        "material_ids",
+        "materials",
+    }
+)
+_COURSE_HANDOFF_CONTEXT_KEYS = frozenset(
+    {"role", "attachment_filename", "sha256", "bytes"}
+)
 
 
 class SchoolLearningError(ValueError):
@@ -91,11 +213,19 @@ class Workspace:
 
 
 @dataclass(frozen=True)
+class SemesterWorkspace:
+    data_root: Path
+    term: str
+    term_dir: Path
+
+
+@dataclass(frozen=True)
 class _State:
     course: dict[str, Any]
     materials: dict[str, Any]
     topics: dict[str, Any]
     sessions: tuple[dict[str, Any], ...]
+    core: dict[str, Any] | None = None
 
 
 def utc_now() -> str:
@@ -131,10 +261,41 @@ def _timestamp(value: object, label: str) -> str:
     return value
 
 
+def _date(value: object, label: str, *, optional: bool = False) -> str | None:
+    if value is None and optional:
+        return None
+    if not isinstance(value, str) or not _DATE.fullmatch(value):
+        raise SchoolLearningError(f"{label} must be a canonical YYYY-MM-DD date")
+    try:
+        parsed = datetime.strptime(value, "%Y-%m-%d")
+    except ValueError as error:
+        raise SchoolLearningError(f"{label} must be a valid date") from error
+    if parsed.strftime("%Y-%m-%d") != value:
+        raise SchoolLearningError(f"{label} must be a canonical date")
+    return value
+
+
+def _observed_at(value: object, label: str) -> str:
+    if isinstance(value, str) and _DATE.fullmatch(value):
+        return _date(value, label) or ""  # pragma: no cover - non-optional contract
+    return _timestamp(value, label)
+
+
 def _nonempty_string(value: object, label: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise SchoolLearningError(f"{label} must be nonempty")
     return value
+
+
+def _normalize_assessment_type(value: object, label: str = "assessment type") -> str:
+    text = _nonempty_string(value, label).strip().lower()
+    normalized = re.sub(r"\s+", "-", text)
+    if len(normalized) > _ASSESSMENT_TYPE_MAX_LENGTH or not _ASSESSMENT_TYPE.fullmatch(normalized):
+        raise SchoolLearningError(
+            f"{label} must be at most {_ASSESSMENT_TYPE_MAX_LENGTH} lowercase letters, "
+            "digits, or single hyphen-separated words"
+        )
+    return normalized
 
 
 def _priority(value: object, label: str = "next review priority") -> int:
@@ -193,6 +354,35 @@ def workspace(data_root: Path | str, term: str, course_id: str) -> Workspace:
     return Workspace(root, safe_term, safe_course, course_dir)
 
 
+def semester_workspace(data_root: Path | str, term: str) -> SemesterWorkspace:
+    root = _resolved_data_root(data_root)
+    safe_term = _component(term, "term")
+    return SemesterWorkspace(root, safe_term, root / safe_term)
+
+
+def _semester_metadata_dir(sw: SemesterWorkspace) -> Path:
+    return _semester_dir(sw) / _SEMESTER_METADATA_DIRECTORY
+
+
+def _semester_state_path(sw: SemesterWorkspace) -> Path:
+    return _semester_metadata_dir(sw) / "semester.json"
+
+
+def _semester_generated_dir(sw: SemesterWorkspace) -> Path:
+    return _semester_metadata_dir(sw) / "generated"
+
+
+def _semester_dir(sw: SemesterWorkspace) -> Path:
+    if not isinstance(sw, SemesterWorkspace):
+        raise SchoolLearningError("semester workspace is invalid")
+    root = _resolved_data_root(sw.data_root)
+    safe_term = _component(sw.term, "term")
+    expected = root / safe_term
+    if sw.data_root != root or sw.term_dir != expected:
+        raise SchoolLearningError("semester identity or path is inconsistent")
+    return expected
+
+
 def _workspace_dir(ws: Workspace) -> Path:
     if not isinstance(ws, Workspace):
         raise SchoolLearningError("workspace is invalid")
@@ -210,6 +400,129 @@ def _lexical_absolute(path: Path | str) -> Path:
         return Path(os.path.abspath(os.fspath(path)))
     except (OSError, TypeError, ValueError) as error:
         raise SchoolLearningError("filesystem path is invalid") from error
+
+
+def _term_confined_path(
+    sw: SemesterWorkspace,
+    path: Path | str,
+    *,
+    label: str,
+    must_exist: bool = False,
+    require_file: bool = False,
+    require_directory: bool = False,
+    regular_if_present: bool = False,
+) -> Path:
+    base = _semester_dir(sw)
+    candidate = _lexical_absolute(path)
+    try:
+        if base.is_symlink():
+            raise SchoolLearningError("semester workspace must not be a symlink")
+        if base.exists() and not base.is_dir():
+            raise SchoolLearningError("semester workspace must be a real directory")
+    except SchoolLearningError:
+        raise
+    except OSError as error:
+        raise SchoolLearningError("semester workspace cannot be safely inspected") from error
+    try:
+        relative = candidate.relative_to(base)
+    except ValueError as error:
+        raise SchoolLearningError(f"{label} must remain inside the semester workspace") from error
+    current = base
+    try:
+        for part in relative.parts:
+            current = current / part
+            if current.is_symlink():
+                raise SchoolLearningError(f"{label} must not use symlinks")
+            if current != candidate and current.exists() and not current.is_dir():
+                raise SchoolLearningError(f"{label} has a non-directory parent")
+        resolved = candidate.resolve(strict=False)
+        resolved.relative_to(base.resolve(strict=False))
+        exists = candidate.exists()
+        if must_exist and not exists:
+            raise SchoolLearningError(f"missing {label}")
+        if exists and (require_file or regular_if_present):
+            if not stat.S_ISREG(os.lstat(candidate).st_mode):
+                raise SchoolLearningError(f"{label} must be a regular file")
+        if exists and require_directory and not candidate.is_dir():
+            raise SchoolLearningError(f"{label} must be a directory")
+    except SchoolLearningError:
+        raise
+    except (OSError, RuntimeError, ValueError) as error:
+        raise SchoolLearningError(f"{label} cannot be safely inspected") from error
+    return candidate
+
+
+def _atomic_term_bytes(sw: SemesterWorkspace, path: Path, content: bytes) -> None:
+    destination = _term_confined_path(sw, path, label="semester write target", regular_if_present=True)
+    parent = _term_confined_path(
+        sw,
+        destination.parent,
+        label="semester write parent",
+        must_exist=True,
+        require_directory=True,
+    )
+    try:
+        fd, name = tempfile.mkstemp(prefix=f".{destination.name}.", dir=parent)
+        temporary = Path(name)
+        with os.fdopen(fd, "wb") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        _term_confined_path(sw, temporary, label="semester temporary file", must_exist=True, require_file=True)
+        _term_confined_path(
+            sw, destination, label="semester write target", regular_if_present=True
+        )
+        os.replace(temporary, destination)
+    except SchoolLearningError:
+        raise
+    except (OSError, TypeError, ValueError) as error:
+        raise SchoolLearningError("atomic semester write failed") from error
+    finally:
+        if "temporary" in locals():
+            try:
+                if temporary.exists() or temporary.is_symlink():
+                    _term_confined_path(
+                        sw,
+                        temporary,
+                        label="semester temporary file",
+                        regular_if_present=True,
+                    ).unlink(missing_ok=True)
+            except OSError as error:
+                raise SchoolLearningError("semester temporary file could not be removed") from error
+
+
+def _atomic_term_json(sw: SemesterWorkspace, path: Path, value: dict[str, Any]) -> None:
+    try:
+        content = json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    except (TypeError, ValueError) as error:
+        raise SchoolLearningError("semester state cannot be encoded as JSON") from error
+    _atomic_term_bytes(sw, path, content.encode("utf-8"))
+
+
+def _read_term_json(sw: SemesterWorkspace, path: Path, label: str) -> dict[str, Any]:
+    content = _read_term_bytes(sw, path, label)
+    try:
+        value = json.loads(content.decode("utf-8"))
+    except (UnicodeError, json.JSONDecodeError) as error:
+        raise SchoolLearningError(f"invalid JSON state: {Path(path).name}") from error
+    if not isinstance(value, dict):
+        raise SchoolLearningError(f"{label} must contain a JSON object")
+    return value
+
+
+def _read_term_bytes(sw: SemesterWorkspace, path: Path, label: str) -> bytes:
+    safe = _term_confined_path(sw, path, label=label, must_exist=True, require_file=True)
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        fd = os.open(safe, flags)
+        with os.fdopen(fd, "rb") as handle:
+            if not stat.S_ISREG(os.fstat(handle.fileno()).st_mode):
+                raise SchoolLearningError(f"{label} must be a regular file")
+            return handle.read()
+    except SchoolLearningError:
+        raise
+    except OSError as error:
+        raise SchoolLearningError(f"{label} could not be read safely") from error
 
 
 def _confined_path(
@@ -272,16 +585,24 @@ def _validate_layout(ws: Workspace) -> None:
         )
 
 
-def _safe_create_directory(path: Path, label: str) -> None:
+def _safe_create_directory(
+    path: Path,
+    label: str,
+    created: list[Path] | None = None,
+) -> bool:
     try:
         if path.is_symlink():
             raise SchoolLearningError(f"{label} must not be a symlink")
         path.mkdir()
+        if created is not None:
+            created.append(path)
         if path.is_symlink() or not path.is_dir():
             raise SchoolLearningError(f"{label} could not be created safely")
+        return True
     except FileExistsError:
         if path.is_symlink() or not path.is_dir():
             raise SchoolLearningError(f"{label} must be a real directory")
+        return False
     except SchoolLearningError:
         raise
     except OSError as error:
@@ -307,6 +628,43 @@ def _safe_create_directory_chain(path: Path, label: str) -> None:
         if directory.parent.is_symlink() or not directory.parent.is_dir():
             raise SchoolLearningError(f"{label} must have real directory parents")
         _safe_create_directory(directory, label)
+
+
+def _safe_create_directory_chain_tracking(
+    path: Path, label: str, created: list[Path]
+) -> None:
+    missing: list[Path] = []
+    current = path
+    try:
+        while not current.exists():
+            if current.is_symlink():
+                raise SchoolLearningError(f"{label} must not use symlinks")
+            missing.append(current)
+            current = current.parent
+        if current.is_symlink() or not current.is_dir():
+            raise SchoolLearningError(f"{label} must have a real directory parent")
+    except SchoolLearningError:
+        raise
+    except OSError as error:
+        raise SchoolLearningError(f"{label} cannot be safely inspected") from error
+    for directory in reversed(missing):
+        if directory.parent.is_symlink() or not directory.parent.is_dir():
+            raise SchoolLearningError(f"{label} must have real directory parents")
+        _safe_create_directory(directory, label, created)
+
+
+def _rollback_created_directories(created: list[Path], label: str) -> list[str]:
+    errors: list[str] = []
+    for directory in reversed(created):
+        try:
+            if not directory.exists() and not directory.is_symlink():
+                continue
+            if directory.is_symlink() or not directory.is_dir():
+                raise SchoolLearningError(f"{label} created path is not a real directory")
+            directory.rmdir()
+        except (OSError, SchoolLearningError) as error:
+            errors.append(f"{directory}: {error}")
+    return errors
 
 
 def _create_temp_file(ws: Workspace, parent: Path, prefix: str) -> tuple[int, Path]:
@@ -405,6 +763,23 @@ def _remove_real_tree(ws: Workspace, path: Path, label: str) -> None:
 
 def _safe_remove_tree(ws: Workspace, path: Path, label: str) -> None:
     _remove_real_tree(ws, path, label)
+
+
+def _restore_empty_course_workspace(ws: Workspace, label: str) -> None:
+    root = _inspect_real_tree(ws, ws.course_dir, label)
+    try:
+        entries = sorted(root.iterdir(), key=lambda item: item.name, reverse=True)
+    except OSError as error:
+        raise SchoolLearningError(f"{label} cannot be inspected safely") from error
+    for entry in entries:
+        try:
+            mode = os.lstat(entry).st_mode
+        except OSError as error:
+            raise SchoolLearningError(f"{label} cannot be inspected safely") from error
+        if stat.S_ISDIR(mode):
+            _safe_remove_tree(ws, entry, label)
+        else:
+            _safe_unlink(ws, entry, label)
 
 
 def _create_temp_directory(ws: Workspace, parent: Path, prefix: str) -> Path:
@@ -978,8 +1353,88 @@ def _validate_course(value: object, ws: Workspace) -> dict[str, Any]:
     return record
 
 
-def _validate_material(value: object) -> dict[str, Any]:
-    record = _exact_object(value, _MATERIAL_KEYS, "material record")
+def _validate_provenance(value: object, label: str, *, optional: bool = False) -> dict[str, Any] | None:
+    if value is None and optional:
+        return None
+    record = _exact_object(value, _PROVENANCE_KEYS, label)
+    _nonempty_string(record["source"], f"{label} source")
+    _observed_at(record["observed_at"], f"{label} observed date")
+    if record["status"] not in CLAIM_STATUSES:
+        raise SchoolLearningError(f"{label} status is invalid")
+    return record
+
+
+def _validate_claim(value: object, label: str) -> dict[str, Any]:
+    record = _exact_object(value, _CLAIM_KEYS, label)
+    _component(record["id"], f"{label} id")
+    _component(record["field"], f"{label} field")
+    _nonempty_string(record["value"], f"{label} value")
+    _nonempty_string(record["source"], f"{label} source")
+    _observed_at(record["observed_at"], f"{label} observed date")
+    if record["status"] not in CLAIM_STATUSES:
+        raise SchoolLearningError(f"{label} status is invalid")
+    return record
+
+
+def _validate_claim_set_invariant(claims: list[dict[str, Any]], label: str) -> None:
+    fields = sorted({item["field"] for item in claims})
+    for field in fields:
+        active = [
+            item for item in claims if item["field"] == field and item["status"] != "superseded"
+        ]
+        values = {item["value"] for item in active}
+        if len(values) > 1 and any(item["status"] != "conflicted" for item in active):
+            raise SchoolLearningError(
+                f"{label} field {field} has differing active values that are not all conflicted"
+            )
+        if len(values) <= 1 and any(item["status"] == "conflicted" for item in active):
+            raise SchoolLearningError(
+                f"{label} field {field} has conflicted claims without an active disagreement"
+            )
+
+
+def _normalize_claim_sets(claims: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    for field in sorted({item["field"] for item in claims}):
+        active = [
+            item for item in claims if item["field"] == field and item["status"] != "superseded"
+        ]
+        if len({item["value"] for item in active}) > 1:
+            for item in active:
+                item["status"] = "conflicted"
+        else:
+            for item in active:
+                if item["status"] == "conflicted":
+                    item["status"] = "provisional"
+    claims.sort(key=lambda item: item["id"])
+    _validate_claim_set_invariant(claims, "claims")
+    return claims
+
+
+def _aggregate_claim_status(claims: list[dict[str, Any]]) -> str:
+    _validate_claim_set_invariant(claims, "policy claims")
+    active_statuses = {item["status"] for item in claims if item["status"] != "superseded"}
+    for status in ("conflicted", "confirmed", "provisional"):
+        if status in active_statuses:
+            return status
+    return "superseded"
+
+
+def _validate_claims(value: object, label: str) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        raise SchoolLearningError(f"{label} must be a list")
+    records = [_validate_claim(item, f"{label} entry") for item in value]
+    ids = [item["id"] for item in records]
+    if len(set(ids)) != len(ids):
+        raise SchoolLearningError(f"{label} identifiers must be unique")
+    if ids != sorted(ids):
+        raise SchoolLearningError(f"{label} must be sorted by identifier")
+    _validate_claim_set_invariant(records, label)
+    return records
+
+
+def _validate_material(value: object, schema: str = MATERIALS_SCHEMA) -> dict[str, Any]:
+    keys = _MATERIAL_V02_KEYS if schema == MATERIALS_V02_SCHEMA else _MATERIAL_KEYS
+    record = _exact_object(value, keys, "material record")
     material_id = _component(record["id"], "material id")
     _nonempty_string(record["title"], "material title")
     source_name = _nonempty_string(record["source_name"], "material source name")
@@ -1004,22 +1459,132 @@ def _validate_material(value: object) -> dict[str, Any]:
     if type(record["bytes"]) is not int or record["bytes"] < 0:
         raise SchoolLearningError("material byte count is invalid")
     _timestamp(record["added_at"], "material timestamp")
+    if schema == MATERIALS_V02_SCHEMA:
+        if record["kind"] not in MATERIAL_KINDS:
+            raise SchoolLearningError("material kind is invalid")
+        if record["status"] not in MATERIAL_LIFECYCLES:
+            raise SchoolLearningError("material lifecycle is invalid")
+        _date(record["relevant_date"], "material relevant date", optional=True)
+        _identifier_list(record["topic_ids"], "material topic ids")
+        _identifier_list(record["assessment_ids"], "material assessment ids")
+        _validate_provenance(record["provenance"], "material provenance", optional=True)
     return record
 
 
 def _validate_materials(value: object) -> dict[str, Any]:
     manifest = _exact_object(value, _MATERIALS_KEYS, "materials manifest")
-    if manifest["schema_version"] != MATERIALS_SCHEMA:
+    if manifest["schema_version"] not in {MATERIALS_SCHEMA, MATERIALS_V02_SCHEMA}:
         raise SchoolLearningError("unsupported materials schema")
     if not isinstance(manifest["materials"], list):
         raise SchoolLearningError("materials must be a list")
     seen: set[str] = set()
     for value_record in manifest["materials"]:
-        record = _validate_material(value_record)
+        record = _validate_material(value_record, manifest["schema_version"])
         if record["id"] in seen:
             raise SchoolLearningError("material identifiers must be unique")
         seen.add(record["id"])
     return manifest
+
+
+def _validate_semester(value: object, sw: SemesterWorkspace) -> dict[str, Any]:
+    record = _exact_object(value, _SEMESTER_KEYS, "semester record")
+    if record["schema_version"] != SEMESTER_SCHEMA:
+        raise SchoolLearningError("unsupported semester schema")
+    if _component(record["term"], "semester term") != sw.term:
+        raise SchoolLearningError("semester term does not match its workspace")
+    _nonempty_string(record["title"], "semester title")
+    course_ids = _identifier_list(record["course_ids"], "semester course ids")
+    if course_ids != sorted(course_ids):
+        raise SchoolLearningError("semester course ids must be sorted")
+    _timestamp(record["created_at"], "semester creation timestamp")
+    return record
+
+
+def _validate_source(value: object) -> dict[str, Any]:
+    record = _exact_object(value, _SOURCE_KEYS, "course source descriptor")
+    _component(record["id"], "course source id")
+    _nonempty_string(record["title"], "course source title")
+    _nonempty_string(record["reference"], "course source reference")
+    if record["status"] not in CLAIM_STATUSES:
+        raise SchoolLearningError("course source status is invalid")
+    return record
+
+
+def _optional_measure(value: object, label: str) -> str | None:
+    if value is None:
+        return None
+    return _nonempty_string(value, label).strip()
+
+
+def _validate_assessment(value: object) -> dict[str, Any]:
+    record = _exact_object(value, _ASSESSMENT_KEYS, "assessment record")
+    _component(record["id"], "assessment id")
+    _nonempty_string(record["title"], "assessment title")
+    if _normalize_assessment_type(record["type"]) != record["type"]:
+        raise SchoolLearningError("assessment type must use its deterministic normalized form")
+    if record["status"] not in ASSESSMENT_STATUSES:
+        raise SchoolLearningError("assessment status is invalid")
+    _optional_measure(record["weight"], "assessment weight")
+    _optional_measure(record["points"], "assessment points")
+    _optional_measure(record["xp"], "assessment XP")
+    _identifier_list(record["material_ids"], "assessment material ids")
+    _identifier_list(record["topic_ids"], "assessment topic ids")
+    _validate_claims(record["claims"], "assessment claims")
+    return record
+
+
+def _validate_policy(value: object) -> dict[str, Any]:
+    record = _exact_object(value, _POLICY_KEYS, "policy record")
+    _component(record["id"], "policy id")
+    _nonempty_string(record["title"], "policy title")
+    _component(record["category"], "policy category")
+    if record["status"] not in CLAIM_STATUSES:
+        raise SchoolLearningError("policy status is invalid")
+    claims = _validate_claims(record["claims"], "policy claims")
+    if not claims:
+        raise SchoolLearningError("policy must preserve at least one sourced rule claim")
+    if record["status"] != _aggregate_claim_status(claims):
+        raise SchoolLearningError("policy status does not match its active claim set")
+    return record
+
+
+def _validate_course_core(value: object, ws: Workspace) -> dict[str, Any]:
+    record = _exact_object(value, _COURSE_CORE_KEYS, "course core record")
+    if record["schema_version"] != COURSE_CORE_SCHEMA:
+        raise SchoolLearningError("unsupported course core schema")
+    if _component(record["course_id"], "course core id") != ws.course_id:
+        raise SchoolLearningError("course core id does not match its workspace")
+    if _component(record["term"], "course core term") != ws.term:
+        raise SchoolLearningError("course core term does not match its workspace")
+    tags = _identifier_list(record["capability_tags"], "course capability tags")
+    if tags != sorted(tags) or any(tag not in CAPABILITY_TAGS for tag in tags):
+        raise SchoolLearningError("course capability tags are invalid or unsorted")
+    if not isinstance(record["sources"], list):
+        raise SchoolLearningError("course sources must be a list")
+    sources = [_validate_source(item) for item in record["sources"]]
+    source_ids = [item["id"] for item in sources]
+    if len(set(source_ids)) != len(source_ids) or source_ids != sorted(source_ids):
+        raise SchoolLearningError("course sources must have unique sorted identifiers")
+    if not isinstance(record["metadata"], dict):
+        raise SchoolLearningError("course metadata must be an object")
+    for key, item in record["metadata"].items():
+        _component(key, "course metadata key")
+        _nonempty_string(item, f"course metadata {key}")
+    if not isinstance(record["assessments"], list):
+        raise SchoolLearningError("course assessments must be a list")
+    assessments = [_validate_assessment(item) for item in record["assessments"]]
+    assessment_ids = [item["id"] for item in assessments]
+    if len(set(assessment_ids)) != len(assessment_ids) or assessment_ids != sorted(assessment_ids):
+        raise SchoolLearningError("assessments must have unique sorted identifiers")
+    if not isinstance(record["policies"], list):
+        raise SchoolLearningError("course policies must be a list")
+    policies = [_validate_policy(item) for item in record["policies"]]
+    policy_ids = [item["id"] for item in policies]
+    if len(set(policy_ids)) != len(policy_ids) or policy_ids != sorted(policy_ids):
+        raise SchoolLearningError("policies must have unique sorted identifiers")
+    _timestamp(record["created_at"], "course core creation timestamp")
+    _timestamp(record["updated_at"], "course core update timestamp")
+    return record
 
 
 def _identifier_list(value: object, label: str) -> list[str]:
@@ -1146,6 +1711,65 @@ def _validate_study_handoff_manifest(value: object) -> dict[str, Any]:
     return manifest
 
 
+def _validate_course_handoff_manifest(value: object) -> dict[str, Any]:
+    manifest = _exact_object(value, _COURSE_HANDOFF_KEYS, "course handoff manifest")
+    if manifest["schema_version"] != COURSE_HANDOFF_SCHEMA:
+        raise SchoolLearningError("unsupported course handoff schema")
+    _component(manifest["course_id"], "course handoff course id")
+    _component(manifest["term"], "course handoff term")
+    filenames = [
+        _attachment_filename(item, "course handoff attachment filename")
+        for item in manifest["attachment_filenames"]
+    ] if isinstance(manifest["attachment_filenames"], list) else []
+    if not isinstance(manifest["attachment_filenames"], list):
+        raise SchoolLearningError("course handoff attachment filenames must be a list")
+    if len(set(filenames)) != len(filenames):
+        raise SchoolLearningError("course handoff attachment filenames must be unique")
+    context = _exact_object(
+        manifest["context_attachment"],
+        _COURSE_HANDOFF_CONTEXT_KEYS,
+        "course handoff context attachment",
+    )
+    if context["role"] != "course-context":
+        raise SchoolLearningError("course handoff context attachment role is invalid")
+    if _attachment_filename(
+        context["attachment_filename"], "course handoff context attachment filename"
+    ) != "course-context.md":
+        raise SchoolLearningError("course handoff context attachment filename is invalid")
+    if not isinstance(context["sha256"], str) or not _DIGEST.fullmatch(context["sha256"]):
+        raise SchoolLearningError("course handoff context attachment digest is invalid")
+    if type(context["bytes"]) is not int or context["bytes"] < 0:
+        raise SchoolLearningError("course handoff context attachment byte count is invalid")
+    material_ids = _identifier_list(manifest["material_ids"], "course handoff material ids")
+    if material_ids != sorted(material_ids):
+        raise SchoolLearningError("course handoff material ids must be sorted")
+    if not isinstance(manifest["materials"], list):
+        raise SchoolLearningError("course handoff materials must be a list")
+    records: list[dict[str, Any]] = []
+    for item in manifest["materials"]:
+        record = _exact_object(item, _HANDOFF_MATERIAL_KEYS, "course handoff material record")
+        material_id = _component(record["id"], "course handoff material id")
+        filename = _attachment_filename(
+            record["attachment_filename"], "course handoff material filename"
+        )
+        suffix = Path(filename).suffix.lower()
+        if suffix not in SUPPORTED_SUFFIXES or filename != f"material-{material_id}{suffix}":
+            raise SchoolLearningError("course handoff material filename is invalid")
+        if not isinstance(record["sha256"], str) or not _DIGEST.fullmatch(record["sha256"]):
+            raise SchoolLearningError("course handoff material digest is invalid")
+        if type(record["bytes"]) is not int or record["bytes"] < 0:
+            raise SchoolLearningError("course handoff material byte count is invalid")
+        records.append(record)
+    if [item["id"] for item in records] != material_ids:
+        raise SchoolLearningError("course handoff materials do not match sorted material ids")
+    expected_filenames = [context["attachment_filename"]] + [
+        item["attachment_filename"] for item in records
+    ]
+    if filenames != expected_filenames:
+        raise SchoolLearningError("course handoff attachment filenames do not match materials")
+    return manifest
+
+
 def _material_path(ws: Workspace, record: dict[str, Any]) -> Path:
     path = ws.course_dir / record["stored_path"]
     return _confined_path(
@@ -1264,6 +1888,46 @@ def _validate_references(
             )
 
 
+def _validate_v02_references(
+    materials: dict[str, Any], topics: dict[str, Any], core: dict[str, Any] | None
+) -> None:
+    if materials["schema_version"] == MATERIALS_V02_SCHEMA and core is None:
+        raise SchoolLearningError("v0.2 materials require registered course core state")
+    if core is None:
+        return
+    material_ids = {item["id"] for item in materials["materials"]}
+    topic_ids = {item["id"] for item in topics["topics"]}
+    assessment_ids = {item["id"] for item in core["assessments"]}
+    for material in materials["materials"]:
+        if materials["schema_version"] != MATERIALS_V02_SCHEMA:
+            continue
+        unknown_topics = set(material["topic_ids"]) - topic_ids
+        unknown_assessments = set(material["assessment_ids"]) - assessment_ids
+        if unknown_topics:
+            raise SchoolLearningError(
+                f"material {material['id']} references unknown topics: "
+                + ", ".join(sorted(unknown_topics))
+            )
+        if unknown_assessments:
+            raise SchoolLearningError(
+                f"material {material['id']} references unknown assessments: "
+                + ", ".join(sorted(unknown_assessments))
+            )
+    for assessment in core["assessments"]:
+        unknown_materials = set(assessment["material_ids"]) - material_ids
+        unknown_topics = set(assessment["topic_ids"]) - topic_ids
+        if unknown_materials:
+            raise SchoolLearningError(
+                f"assessment {assessment['id']} references unknown materials: "
+                + ", ".join(sorted(unknown_materials))
+            )
+        if unknown_topics:
+            raise SchoolLearningError(
+                f"assessment {assessment['id']} references unknown topics: "
+                + ", ".join(sorted(unknown_topics))
+            )
+
+
 def _load_state(ws: Workspace, *, skip_material_id: str | None = None) -> _State:
     _validate_layout(ws)
     course = _validate_course(_read_json(ws, ws.course_dir / "course.json", "course state file"), ws)
@@ -1272,7 +1936,12 @@ def _load_state(ws: Workspace, *, skip_material_id: str | None = None) -> _State
     )
     topics = _validate_topics(_read_json(ws, ws.course_dir / "topics.json", "topics state file"))
     sessions = _read_sessions(ws)
+    core_path = ws.course_dir / "course-core.json"
+    core = None
+    if core_path.exists() or core_path.is_symlink():
+        core = _validate_course_core(_read_json(ws, core_path, "course core state file"), ws)
     _validate_references(materials, topics, sessions)
+    _validate_v02_references(materials, topics, core)
     for record in materials["materials"]:
         path = _material_path(ws, record)
         if record["id"] != skip_material_id:
@@ -1284,7 +1953,7 @@ def _load_state(ws: Workspace, *, skip_material_id: str | None = None) -> _State
                 label=f"stored material {record['id']}",
                 regular_if_present=True,
             )
-    return _State(course, materials, topics, sessions)
+    return _State(course, materials, topics, sessions, core)
 
 
 def initialize_course(
@@ -1300,7 +1969,8 @@ def initialize_course(
     ws = workspace(data_root, term, course_id)
     root = _resolved_data_root(ws.data_root)
     try:
-        if ws.course_dir.exists():
+        course_dir_preexisting = ws.course_dir.exists() or ws.course_dir.is_symlink()
+        if course_dir_preexisting:
             if ws.course_dir.is_symlink() or not ws.course_dir.is_dir():
                 raise SchoolLearningError("course workspace must be a real directory")
             if any(ws.course_dir.iterdir()):
@@ -1310,45 +1980,79 @@ def initialize_course(
     except OSError as error:
         raise SchoolLearningError("course workspace cannot be inspected") from error
 
-    _resolved_data_root(root)
-    _safe_create_directory_chain(root, "data root")
-    _resolved_data_root(root)
-    _safe_create_directory(root / ws.term, "term directory")
-    _resolved_data_root(root)
-    _safe_create_directory(ws.course_dir, "course workspace")
-    for name in _REQUIRED_DIRECTORIES:
-        _confined_path(
-            ws,
-            ws.course_dir,
-            label="course workspace",
-            must_exist=True,
-            require_directory=True,
+    created_directories: list[Path] = []
+    created_files: list[Path] = []
+    try:
+        _resolved_data_root(root)
+        _safe_create_directory_chain_tracking(root, "data root", created_directories)
+        _resolved_data_root(root)
+        term_dir = root / ws.term
+        if not term_dir.exists():
+            _safe_create_directory(term_dir, "term directory", created_directories)
+        elif term_dir.is_symlink() or not term_dir.is_dir():
+            raise SchoolLearningError("term directory must be a real directory")
+        _resolved_data_root(root)
+        if not course_dir_preexisting:
+            if not _safe_create_directory(
+                ws.course_dir, "course workspace", created_directories
+            ):
+                course_dir_preexisting = True
+                if any(ws.course_dir.iterdir()):
+                    raise SchoolLearningError("course workspace appeared nonempty during initialization")
+        for name in _REQUIRED_DIRECTORIES:
+            _confined_path(
+                ws,
+                ws.course_dir,
+                label="course workspace",
+                must_exist=True,
+                require_directory=True,
+            )
+            directory = ws.course_dir / name
+            _safe_create_directory(directory, f"{name} directory", created_directories)
+        _validate_layout(ws)
+        initial_files = (
+            (
+                ws.course_dir / "course.json",
+                {
+                    "schema_version": COURSE_SCHEMA,
+                    "course_id": ws.course_id,
+                    "term": ws.term,
+                    "title": safe_title,
+                    "created_at": timestamp,
+                },
+            ),
+            (
+                ws.course_dir / "materials.json",
+                {"schema_version": MATERIALS_SCHEMA, "materials": []},
+            ),
+            (
+                ws.course_dir / "topics.json",
+                {"schema_version": TOPICS_SCHEMA, "topics": []},
+            ),
         )
-        _safe_create_directory(ws.course_dir / name, f"{name} directory")
-    _validate_layout(ws)
-    _atomic_write_json(
-        ws,
-        ws.course_dir / "course.json",
-        {
-            "schema_version": COURSE_SCHEMA,
-            "course_id": ws.course_id,
-            "term": ws.term,
-            "title": safe_title,
-            "created_at": timestamp,
-        },
-    )
-    _atomic_write_json(
-        ws,
-        ws.course_dir / "materials.json",
-        {"schema_version": MATERIALS_SCHEMA, "materials": []},
-    )
-    _atomic_write_json(
-        ws,
-        ws.course_dir / "topics.json",
-        {"schema_version": TOPICS_SCHEMA, "topics": []},
-    )
-    _load_state(ws)
-    return ws
+        for path, value in initial_files:
+            created_files.append(path)
+            _atomic_write_json(ws, path, value)
+        _load_state(ws)
+        return ws
+    except Exception as error:
+        rollback_errors: list[str] = []
+        if ws.course_dir.exists() and not ws.course_dir.is_symlink():
+            for path in reversed(created_files):
+                try:
+                    if path.exists() or path.is_symlink():
+                        _safe_unlink(ws, path, "failed course initialization", missing_ok=True)
+                except SchoolLearningError as rollback_error:
+                    rollback_errors.append(str(rollback_error))
+        rollback_errors.extend(
+            _rollback_created_directories(created_directories, "failed course initialization")
+        )
+        if rollback_errors:
+            raise SchoolLearningError(
+                "course initialization failed and rollback was incomplete: "
+                + "; ".join(rollback_errors)
+            ) from error
+        raise _as_school_error("course initialization failed", error) from error
 
 
 def load_course(ws: Workspace) -> dict[str, Any]:
@@ -1361,6 +2065,529 @@ def load_materials(ws: Workspace) -> dict[str, Any]:
 
 def load_topics(ws: Workspace) -> dict[str, Any]:
     return _load_state(ws).topics
+
+
+def initialize_semester(
+    data_root: Path | str,
+    term: str,
+    title: str,
+    *,
+    created_at: str | None = None,
+) -> SemesterWorkspace:
+    safe_title = _nonempty_string(title, "semester title").strip()
+    timestamp = _timestamp(
+        created_at if created_at is not None else utc_now(), "semester creation timestamp"
+    )
+    sw = semester_workspace(data_root, term)
+    metadata = _semester_metadata_dir(sw)
+    state_path = _semester_state_path(sw)
+    generated = _semester_generated_dir(sw)
+    try:
+        for path, label in ((sw.data_root, "data root"), (sw.term_dir, "term directory")):
+            if path.exists() or path.is_symlink():
+                if path.is_symlink() or not path.is_dir():
+                    raise SchoolLearningError(f"{label} must be a real directory")
+        metadata_present = metadata.exists() or metadata.is_symlink()
+        if metadata_present and (metadata.is_symlink() or not metadata.is_dir()):
+            raise SchoolLearningError("semester metadata namespace must be a real directory")
+    except SchoolLearningError:
+        raise
+    except OSError as error:
+        raise SchoolLearningError("semester metadata namespace cannot be safely inspected") from error
+    if metadata_present:
+        existing = load_semester(sw)
+        if existing["title"] != safe_title:
+            raise SchoolLearningError("semester already exists with a different title")
+        return sw
+    state = {
+        "schema_version": SEMESTER_SCHEMA,
+        "term": sw.term,
+        "title": safe_title,
+        "course_ids": [],
+        "created_at": timestamp,
+    }
+    _validate_semester(state, sw)
+    created_directories: list[Path] = []
+    state_attempted = False
+    try:
+        _safe_create_directory_chain_tracking(sw.data_root, "data root", created_directories)
+        if not sw.term_dir.exists():
+            _safe_create_directory(sw.term_dir, "term directory", created_directories)
+        if not _safe_create_directory(
+            metadata, "semester metadata namespace", created_directories
+        ):
+            raise SchoolLearningError("semester metadata namespace appeared during initialization")
+        if not _safe_create_directory(
+            generated, "semester generated directory", created_directories
+        ):
+            raise SchoolLearningError("semester generated directory appeared during initialization")
+        state_attempted = True
+        _atomic_term_json(sw, state_path, state)
+        load_semester(sw)
+        return sw
+    except Exception as error:
+        rollback_errors: list[str] = []
+        if state_attempted and (state_path.exists() or state_path.is_symlink()):
+            try:
+                safe_state = _term_confined_path(
+                    sw,
+                    state_path,
+                    label="failed semester state",
+                    regular_if_present=True,
+                )
+                safe_state.unlink(missing_ok=True)
+            except (OSError, SchoolLearningError) as rollback_error:
+                rollback_errors.append(str(rollback_error))
+        rollback_errors.extend(
+            _rollback_created_directories(created_directories, "failed semester initialization")
+        )
+        if rollback_errors:
+            raise SchoolLearningError(
+                "semester initialization failed and rollback was incomplete: "
+                + "; ".join(rollback_errors)
+            ) from error
+        raise _as_school_error("semester initialization failed", error) from error
+
+
+def load_semester(sw: SemesterWorkspace) -> dict[str, Any]:
+    _term_confined_path(
+        sw, sw.term_dir, label="semester workspace", must_exist=True, require_directory=True
+    )
+    _term_confined_path(
+        sw,
+        _semester_metadata_dir(sw),
+        label="semester metadata namespace",
+        must_exist=True,
+        require_directory=True,
+    )
+    _term_confined_path(
+        sw,
+        _semester_generated_dir(sw),
+        label="semester generated directory",
+        must_exist=True,
+        require_directory=True,
+    )
+    record = _validate_semester(
+        _read_term_json(sw, _semester_state_path(sw), "semester state file"), sw
+    )
+    for course_id in record["course_ids"]:
+        state = _load_state(workspace(sw.data_root, sw.term, course_id))
+        if state.core is None:
+            raise SchoolLearningError(f"semester course {course_id} lacks v0.2 course core state")
+    return record
+
+
+def load_course_core(ws: Workspace) -> dict[str, Any]:
+    state = _load_state(ws)
+    if state.core is None:
+        raise SchoolLearningError("course is readable as v0.1 but is not registered for v0.2")
+    return state.core
+
+
+def _migrated_materials(manifest: dict[str, Any]) -> dict[str, Any]:
+    if manifest["schema_version"] == MATERIALS_V02_SCHEMA:
+        return manifest
+    migrated = {
+        "schema_version": MATERIALS_V02_SCHEMA,
+        "materials": [
+            {
+                **item,
+                "kind": "unspecified",
+                "status": "reference",
+                "relevant_date": None,
+                "topic_ids": [],
+                "assessment_ids": [],
+                "provenance": None,
+            }
+            for item in manifest["materials"]
+        ],
+    }
+    return _validate_materials(migrated)
+
+
+def register_course(
+    sw: SemesterWorkspace,
+    course_id: str,
+    title: str,
+    *,
+    capability_tags: Iterable[str] = (),
+    sources: Iterable[dict[str, Any]] = (),
+    metadata: dict[str, str] | None = None,
+    recorded_at: str | None = None,
+) -> Workspace:
+    semester = load_semester(sw)
+    semester_path = _semester_state_path(sw)
+    old_semester = _read_term_bytes(sw, semester_path, "semester state file")
+    safe_id = _component(course_id, "course id")
+    safe_title = _nonempty_string(title, "course title").strip()
+    timestamp = _timestamp(
+        recorded_at if recorded_at is not None else utc_now(), "course registration timestamp"
+    )
+    tags = sorted(set(_component(item, "course capability tag") for item in capability_tags))
+    if any(item not in CAPABILITY_TAGS for item in tags):
+        raise SchoolLearningError("course capability tag is unsupported")
+    try:
+        source_records = sorted((dict(item) for item in sources), key=lambda item: item.get("id", ""))
+    except (TypeError, ValueError) as error:
+        raise SchoolLearningError("course sources must be descriptor objects") from error
+    for item in source_records:
+        _validate_source(item)
+    source_ids = [item["id"] for item in source_records]
+    if len(set(source_ids)) != len(source_ids):
+        raise SchoolLearningError("course source identifiers must be unique")
+    try:
+        metadata_record = {} if metadata is None else dict(metadata)
+    except (TypeError, ValueError) as error:
+        raise SchoolLearningError("course metadata must be a string mapping") from error
+    for key, item in metadata_record.items():
+        _component(key, "course metadata key")
+        _nonempty_string(item, f"course metadata {key}")
+
+    ws = workspace(sw.data_root, sw.term, safe_id)
+    try:
+        course_existed = ws.course_dir.exists() or ws.course_dir.is_symlink()
+        if course_existed and (ws.course_dir.is_symlink() or not ws.course_dir.is_dir()):
+            raise SchoolLearningError("course workspace must be a real directory")
+        course_was_empty = course_existed and not any(ws.course_dir.iterdir())
+    except SchoolLearningError:
+        raise
+    except OSError as error:
+        raise SchoolLearningError("course workspace cannot be inspected") from error
+
+    state: _State | None = None
+    if course_existed and not course_was_empty:
+        state = _load_state(ws)
+        if state.course["title"] != safe_title:
+            raise SchoolLearningError("registered course title disagrees with existing course identity")
+
+    core_path = ws.course_dir / "course-core.json"
+    materials_path = ws.course_dir / "materials.json"
+    old_core: bytes | None = None
+    old_materials: bytes | None = None
+    core_attempted = False
+    materials_attempted = False
+    semester_attempted = False
+    initialization_attempted = False
+    try:
+        if state is None:
+            initialization_attempted = True
+            ws = initialize_course(sw.data_root, sw.term, safe_id, safe_title, created_at=timestamp)
+            state = _load_state(ws)
+
+        existing_core = state.core
+        core = {
+            "schema_version": COURSE_CORE_SCHEMA,
+            "course_id": safe_id,
+            "term": sw.term,
+            "capability_tags": tags,
+            "sources": source_records,
+            "metadata": metadata_record,
+            "assessments": [] if existing_core is None else existing_core["assessments"],
+            "policies": [] if existing_core is None else existing_core["policies"],
+            "created_at": timestamp if existing_core is None else existing_core["created_at"],
+            "updated_at": timestamp,
+        }
+        _validate_course_core(core, ws)
+        migrated = _migrated_materials(state.materials)
+        _validate_v02_references(migrated, state.topics, core)
+        old_core = (
+            _read_regular_bytes(ws, core_path, "course core state file")
+            if existing_core is not None
+            else None
+        )
+        old_materials = _read_regular_bytes(ws, materials_path, "materials state file")
+        core_attempted = True
+        _atomic_write_json(ws, core_path, core)
+        if state.materials["schema_version"] != MATERIALS_V02_SCHEMA:
+            materials_attempted = True
+            _atomic_write_json(ws, materials_path, migrated)
+        _load_state(ws)
+        if safe_id not in semester["course_ids"]:
+            semester["course_ids"].append(safe_id)
+            semester["course_ids"].sort()
+            _validate_semester(semester, sw)
+            semester_attempted = True
+            _atomic_term_json(sw, semester_path, semester)
+        load_semester(sw)
+        return ws
+    except Exception as error:
+        rollback_errors: list[str] = []
+        if semester_attempted:
+            try:
+                _atomic_term_bytes(sw, semester_path, old_semester)
+            except SchoolLearningError as rollback_error:
+                rollback_errors.append(str(rollback_error))
+        if materials_attempted and old_materials is not None:
+            try:
+                _atomic_write_bytes(ws, materials_path, old_materials)
+            except SchoolLearningError as rollback_error:
+                rollback_errors.append(str(rollback_error))
+        if core_attempted:
+            try:
+                if old_core is None:
+                    _safe_unlink(ws, core_path, "failed course registration", missing_ok=True)
+                else:
+                    _atomic_write_bytes(ws, core_path, old_core)
+            except SchoolLearningError as rollback_error:
+                rollback_errors.append(str(rollback_error))
+        if not course_existed and (ws.course_dir.exists() or ws.course_dir.is_symlink()):
+            try:
+                _safe_remove_tree(ws, ws.course_dir, "failed new course registration")
+            except SchoolLearningError as rollback_error:
+                rollback_errors.append(str(rollback_error))
+        elif course_was_empty and initialization_attempted:
+            try:
+                _restore_empty_course_workspace(ws, "failed empty-workspace course registration")
+            except SchoolLearningError as rollback_error:
+                rollback_errors.append(str(rollback_error))
+        if rollback_errors:
+            raise SchoolLearningError(
+                "course registration failed and rollback was incomplete: "
+                + "; ".join(rollback_errors)
+            ) from error
+        raise _as_school_error("course registration failed", error) from error
+
+
+def intake_material(
+    ws: Workspace,
+    source: Path | str,
+    material_id: str,
+    title: str,
+    *,
+    kind: object = _UNSET,
+    status: object = _UNSET,
+    relevant_date: object = _UNSET,
+    topic_ids: object = _UNSET,
+    assessment_ids: object = _UNSET,
+    source_descriptor: object = _UNSET,
+    provenance_status: str = "provisional",
+    observed_at: str | None = None,
+    added_at: str | None = None,
+    replace: bool = False,
+) -> dict[str, Any]:
+    state = _load_state(ws)
+    if state.core is None or state.materials["schema_version"] != MATERIALS_V02_SCHEMA:
+        raise SchoolLearningError("intake requires deliberate v0.2 semester/course registration")
+    timestamp = added_at if added_at is not None else utc_now()
+    existing = next(
+        (item for item in state.materials["materials"] if item["id"] == material_id), None
+    )
+    provenance: object = _UNSET
+    if (source_descriptor is _UNSET or source_descriptor is None) and observed_at is not None:
+        raise SchoolLearningError("material provenance observed date requires a source descriptor")
+    if source_descriptor is None:
+        provenance = None
+    elif source_descriptor is not _UNSET:
+        provenance = {
+            "source": _nonempty_string(source_descriptor, "material source descriptor").strip(),
+            "observed_at": observed_at if observed_at is not None else timestamp,
+            "status": provenance_status,
+        }
+        _validate_provenance(provenance, "material provenance")
+    resolved_kind = "unspecified" if kind is _UNSET and existing is None else kind
+    resolved_status = "current" if status is _UNSET and existing is None else status
+    return add_material(
+        ws,
+        source,
+        material_id,
+        title,
+        added_at=timestamp,
+        replace=replace,
+        kind=resolved_kind,
+        status=resolved_status,
+        relevant_date=relevant_date,
+        topic_ids=topic_ids,
+        assessment_ids=assessment_ids,
+        provenance=provenance,
+    )
+
+
+def _new_claim(
+    field: str,
+    value: str,
+    source: str,
+    observed_at: str,
+    status: str,
+) -> dict[str, Any]:
+    safe_field = _component(field, "claim field")
+    safe_value = _nonempty_string(value, "claim value").strip()
+    safe_source = _nonempty_string(source, "claim source").strip()
+    safe_observed = _observed_at(observed_at, "claim observed date")
+    if status not in CLAIM_STATUSES:
+        raise SchoolLearningError("claim status is invalid")
+    identity = json.dumps(
+        [safe_field, safe_value, safe_source, safe_observed],
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    claim = {
+        "id": "claim-" + hashlib.sha256(identity).hexdigest()[:20],
+        "field": safe_field,
+        "value": safe_value,
+        "source": safe_source,
+        "observed_at": safe_observed,
+        "status": status,
+    }
+    return _validate_claim(claim, "claim")
+
+
+def _append_claim_preserving_conflict(
+    claims: list[dict[str, Any]], claim: dict[str, Any]
+) -> list[dict[str, Any]]:
+    existing = next((item for item in claims if item["id"] == claim["id"]), None)
+    if existing is not None:
+        if {key: existing[key] for key in _CLAIM_KEYS - {"status"}} != {
+            key: claim[key] for key in _CLAIM_KEYS - {"status"}
+        }:
+            raise SchoolLearningError("claim identifier collision")
+        existing["status"] = claim["status"]
+    else:
+        claims.append(claim)
+    _normalize_claim_sets(claims)
+    _validate_claims(claims, "claims")
+    return claims
+
+
+def _write_course_core(ws: Workspace, core: dict[str, Any]) -> dict[str, Any]:
+    state = _load_state(ws)
+    if state.core is None:
+        raise SchoolLearningError("v0.2 course core state is required")
+    _validate_course_core(core, ws)
+    _validate_v02_references(state.materials, state.topics, core)
+    path = ws.course_dir / "course-core.json"
+    previous = _read_regular_bytes(ws, path, "course core state file")
+    attempted = False
+    try:
+        attempted = True
+        _atomic_write_json(ws, path, core)
+        validated = _load_state(ws).core
+        if validated is None:  # pragma: no cover - guarded by strict load
+            raise SchoolLearningError("course core write did not persist")
+        return validated
+    except Exception as error:
+        if attempted:
+            try:
+                _atomic_write_bytes(ws, path, previous)
+            except SchoolLearningError as rollback_error:
+                raise SchoolLearningError(
+                    f"course core update failed and rollback was incomplete: {rollback_error}"
+                ) from error
+        raise _as_school_error("course core update failed", error) from error
+
+
+def upsert_assessment(
+    ws: Workspace,
+    assessment_id: str,
+    title: str,
+    assessment_type: object = _UNSET,
+    status: object = _UNSET,
+    *,
+    weight: object = _UNSET,
+    points: object = _UNSET,
+    xp: object = _UNSET,
+    material_ids: object = _UNSET,
+    topic_ids: object = _UNSET,
+    claim_field: str | None = None,
+    claim_value: str | None = None,
+    claim_source: str | None = None,
+    claim_observed_at: str | None = None,
+    claim_status: str = "provisional",
+    recorded_at: str | None = None,
+) -> dict[str, Any]:
+    core = json.loads(json.dumps(load_course_core(ws)))
+    safe_id = _component(assessment_id, "assessment id")
+    existing = next((item for item in core["assessments"] if item["id"] == safe_id), None)
+    claims = [] if existing is None else existing["claims"]
+    claim_values = (claim_field, claim_value, claim_source, claim_observed_at)
+    if any(item is not None for item in claim_values):
+        if claim_field is None or claim_value is None or claim_source is None:
+            raise SchoolLearningError("assessment claim requires field, value, and source")
+        observed = claim_observed_at if claim_observed_at is not None else utc_now()
+        _append_claim_preserving_conflict(
+            claims, _new_claim(claim_field, claim_value, claim_source, observed, claim_status)
+        )
+    if existing is None and (assessment_type is _UNSET or status is _UNSET):
+        raise SchoolLearningError("new assessment requires type and status")
+
+    def resolved_optional(field: str, supplied: object) -> object:
+        if supplied is not _UNSET:
+            return supplied
+        return None if existing is None else existing[field]
+
+    def resolved_ids(field: str, supplied: object) -> list[str]:
+        if supplied is _UNSET:
+            return [] if existing is None else list(existing[field])
+        return _normalize_material_ids(supplied)  # type: ignore[arg-type]
+
+    resolved_type = (
+        existing["type"]
+        if assessment_type is _UNSET and existing is not None
+        else _normalize_assessment_type(assessment_type)
+    )
+    resolved_status = existing["status"] if status is _UNSET and existing is not None else status
+    record = {
+        "id": safe_id,
+        "title": _nonempty_string(title, "assessment title").strip(),
+        "type": resolved_type,
+        "status": resolved_status,
+        "weight": resolved_optional("weight", weight),
+        "points": resolved_optional("points", points),
+        "xp": resolved_optional("xp", xp),
+        "material_ids": resolved_ids("material_ids", material_ids),
+        "topic_ids": resolved_ids("topic_ids", topic_ids),
+        "claims": claims,
+    }
+    _validate_assessment(record)
+    if existing is None:
+        core["assessments"].append(record)
+    else:
+        core["assessments"][core["assessments"].index(existing)] = record
+    core["assessments"].sort(key=lambda item: item["id"])
+    core["updated_at"] = _timestamp(
+        recorded_at if recorded_at is not None else utc_now(), "assessment update timestamp"
+    )
+    written = _write_course_core(ws, core)
+    return next(item for item in written["assessments"] if item["id"] == safe_id)
+
+
+def upsert_policy(
+    ws: Workspace,
+    policy_id: str,
+    title: str,
+    category: str,
+    rule: str,
+    source: str,
+    *,
+    status: str = "provisional",
+    observed_at: str | None = None,
+    recorded_at: str | None = None,
+) -> dict[str, Any]:
+    core = json.loads(json.dumps(load_course_core(ws)))
+    safe_id = _component(policy_id, "policy id")
+    existing = next((item for item in core["policies"] if item["id"] == safe_id), None)
+    claims = [] if existing is None else existing["claims"]
+    observed = observed_at if observed_at is not None else utc_now()
+    claim = _new_claim("rule", rule, source, observed, status)
+    _append_claim_preserving_conflict(claims, claim)
+    record_status = _aggregate_claim_status(claims)
+    record = {
+        "id": safe_id,
+        "title": _nonempty_string(title, "policy title").strip(),
+        "category": _component(category, "policy category"),
+        "status": record_status,
+        "claims": claims,
+    }
+    _validate_policy(record)
+    if existing is None:
+        core["policies"].append(record)
+    else:
+        core["policies"][core["policies"].index(existing)] = record
+    core["policies"].sort(key=lambda item: item["id"])
+    core["updated_at"] = _timestamp(
+        recorded_at if recorded_at is not None else utc_now(), "policy update timestamp"
+    )
+    written = _write_course_core(ws, core)
+    return next(item for item in written["policies"] if item["id"] == safe_id)
 
 
 def _copy_source_to_temp(ws: Workspace, source: Path, destination_parent: Path) -> tuple[Path, str, int]:
@@ -1438,6 +2665,12 @@ def add_material(
     *,
     added_at: str | None = None,
     replace: bool = False,
+    kind: object = _UNSET,
+    status: object = _UNSET,
+    relevant_date: object = _UNSET,
+    topic_ids: object = _UNSET,
+    assessment_ids: object = _UNSET,
+    provenance: object = _UNSET,
 ) -> dict[str, Any]:
     safe_id = _component(material_id, "material_id")
     safe_title = _nonempty_string(title, "material title").strip()
@@ -1445,7 +2678,7 @@ def add_material(
     source_path = _lexical_absolute(Path(source).expanduser())
     suffix = source_path.suffix.lower()
     if suffix not in SUPPORTED_SUFFIXES:
-        raise SchoolLearningError("supported material formats are PDF, Markdown, and text")
+        raise SchoolLearningError("material extension is unsupported")
     state = _load_state(ws, skip_material_id=safe_id)
     manifest = state.materials
     records = manifest["materials"]
@@ -1460,26 +2693,55 @@ def add_material(
         label="material destination",
         regular_if_present=True,
     )
-    temporary, digest, size = _copy_source_to_temp(ws, source_path, destination.parent)
     old_path = _material_path(ws, existing) if existing is not None else None
-    changed = existing is None or not _stored_matches(ws, existing, digest, size, destination)
     record = {
         "id": safe_id,
         "title": safe_title,
         "type": SUPPORTED_SUFFIXES[suffix],
         "source_name": source_path.name,
         "stored_path": stored_relative.as_posix(),
-        "sha256": digest,
-        "bytes": size,
+        "sha256": "0" * 64,
+        "bytes": 0,
         "added_at": timestamp,
     }
-    _validate_material(record)
+    if kind is None:
+        kind = _UNSET
+    if status is None:
+        status = _UNSET
+    rich_metadata_supplied = any(
+        item is not _UNSET
+        for item in (kind, status, relevant_date, topic_ids, assessment_ids, provenance)
+    )
+    if manifest["schema_version"] == MATERIALS_V02_SCHEMA:
+        def resolved_metadata(field: str, supplied: object, default: object) -> object:
+            if supplied is not _UNSET:
+                return supplied
+            return default if existing is None else existing[field]
+
+        def resolved_metadata_ids(field: str, supplied: object) -> list[str]:
+            if supplied is _UNSET:
+                return [] if existing is None else list(existing[field])
+            return _normalize_material_ids(supplied)  # type: ignore[arg-type]
+
+        metadata = {
+            "kind": resolved_metadata("kind", kind, "unspecified"),
+            "status": resolved_metadata("status", status, "reference"),
+            "relevant_date": resolved_metadata("relevant_date", relevant_date, None),
+            "topic_ids": resolved_metadata_ids("topic_ids", topic_ids),
+            "assessment_ids": resolved_metadata_ids("assessment_ids", assessment_ids),
+            "provenance": resolved_metadata("provenance", provenance, None),
+        }
+        record.update(metadata)
+    elif rich_metadata_supplied:
+        raise SchoolLearningError("rich material metadata requires deliberate v0.2 course registration")
+    _validate_material(record, manifest["schema_version"])
     if existing is None:
         records.append(record)
     else:
         records[records.index(existing)] = record
     records.sort(key=lambda item: item["id"])
     _validate_materials(manifest)
+    _validate_v02_references(manifest, state.topics, state.core)
 
     manifest_path = _confined_path(
         ws,
@@ -1489,11 +2751,19 @@ def add_material(
         require_file=True,
     )
     old_manifest = _read_regular_bytes(ws, manifest_path, "materials state file")
+    temporary: Path | None = None
     backup: Path | None = None
     old_moved = False
     new_installed = False
     manifest_attempted = False
     try:
+        temporary, digest, size = _copy_source_to_temp(ws, source_path, destination.parent)
+        record["sha256"] = digest
+        record["bytes"] = size
+        _validate_material(record, manifest["schema_version"])
+        changed = existing is None or not _stored_matches(
+            ws, existing, digest, size, destination
+        )
         if changed:
             if old_path is not None and old_path != destination and destination.exists():
                 raise SchoolLearningError("replacement destination already exists")
@@ -1536,7 +2806,7 @@ def add_material(
             ) from error
         raise _as_school_error("material replacement failed", error) from error
     finally:
-        if temporary.exists() or temporary.is_symlink():
+        if temporary is not None and (temporary.exists() or temporary.is_symlink()):
             _safe_unlink(ws, temporary, "material temporary file", missing_ok=True)
         if backup is not None and (backup.exists() or backup.is_symlink()):
             _safe_unlink(ws, backup, "material backup", missing_ok=True)
@@ -1948,6 +3218,99 @@ def _validate_staged_handoff(
             )
 
 
+def _course_context_bytes(state: _State) -> bytes:
+    if state.core is None:
+        raise SchoolLearningError("course context requires v0.2 course core state")
+    payload = {
+        "course": state.course,
+        "profile": {
+            "capability_tags": state.core["capability_tags"],
+            "sources": state.core["sources"],
+            "metadata": state.core["metadata"],
+        },
+        "materials": state.materials["materials"],
+        "assessments": state.core["assessments"],
+        "policies": state.core["policies"],
+        "topics": state.topics["topics"],
+    }
+    encoded = json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False)
+    return (
+        "# Course Context\n\n"
+        "Durable local state follows as strict JSON. Conflicting claims are intentionally preserved.\n\n"
+        "```json\n"
+        + encoded
+        + "\n```\n"
+    ).encode("utf-8")
+
+
+def _course_prompt_bytes(course: dict[str, Any]) -> bytes:
+    return (
+        f"Use course-context.md and the exact selected attachments to assist with "
+        f"{course['title']} ({course['course_id']}, {course['term']}).\n\n"
+        "Treat stored claims as claims with their recorded provenance and status. Preserve conflicts; "
+        "do not choose a silent winner. Do not invent missing course facts, dates, deadlines, policies, "
+        "permission, grades, readiness, or learner mastery. Clearly separate general knowledge from "
+        "course-grounded statements. If evidence is insufficient, say so. This package stays manual: "
+        "do not assume your response updates local state.\n"
+    ).encode("utf-8")
+
+
+def _validate_staged_course_handoff(
+    ws: Workspace,
+    staging: Path,
+    manifest: dict[str, Any],
+    expected_files: dict[str, bytes],
+    selected: list[dict[str, Any]],
+) -> None:
+    root = _inspect_real_tree(ws, staging, "course handoff staging directory")
+    try:
+        names = {path.name for path in root.iterdir()}
+    except OSError as error:
+        raise SchoolLearningError("course handoff staging directory cannot be read") from error
+    if names != {"START-HERE.md", "prompt.txt", "manifest.json", "attachments"}:
+        raise SchoolLearningError("course handoff package structure is invalid")
+    attachments = _confined_path(
+        ws, root / "attachments", label="course handoff attachments", must_exist=True,
+        require_directory=True,
+    )
+    try:
+        filenames = sorted(path.name for path in attachments.iterdir())
+    except OSError as error:
+        raise SchoolLearningError("course handoff attachments cannot be read") from error
+    if filenames != sorted(manifest["attachment_filenames"]):
+        raise SchoolLearningError("course handoff attachments do not match the manifest")
+    for relative, expected in expected_files.items():
+        if _read_regular_bytes(ws, root / relative, f"course handoff file {relative}") != expected:
+            raise SchoolLearningError(f"course handoff file {relative} is not deterministic")
+    encoded = _read_json(ws, root / "manifest.json", "course handoff manifest")
+    _validate_course_handoff_manifest(encoded)
+    if encoded != manifest:
+        raise SchoolLearningError("course handoff manifest changed during preparation")
+    selected_by_id = {item["id"]: item for item in selected}
+    if set(selected_by_id) != set(manifest["material_ids"]):
+        raise SchoolLearningError("course handoff materials do not exactly match the selection")
+    context_entry = manifest["context_attachment"]
+    context_path = attachments / context_entry["attachment_filename"]
+    if _hash_confined_file(ws, context_path, "course context attachment") != (
+        context_entry["sha256"],
+        context_entry["bytes"],
+    ):
+        raise SchoolLearningError("course context attachment has the wrong identity")
+    for entry in manifest["materials"]:
+        record = selected_by_id.get(entry["id"])
+        if record is None:
+            raise SchoolLearningError("course handoff contains an unselected material")
+        attachment = attachments / entry["attachment_filename"]
+        source = _material_path(ws, record)
+        expected_identity = (entry["sha256"], entry["bytes"])
+        if _hash_confined_file(ws, source, "selected course handoff material") != expected_identity:
+            raise SchoolLearningError(f"selected material {entry['id']} changed before publication")
+        if _hash_confined_file(ws, attachment, "course handoff attachment") != expected_identity:
+            raise SchoolLearningError(f"course handoff attachment {entry['id']} changed")
+        if not _files_are_identical(ws, source, attachment):
+            raise SchoolLearningError(f"course handoff attachment {entry['id']} is not byte-identical")
+
+
 def prepare_study_handoff(
     ws: Workspace,
     topic_id: str,
@@ -2056,6 +3419,111 @@ def prepare_study_handoff(
         "attachments": destination / "attachments",
         "prompt": destination / "prompt.txt",
         "study_brief": legacy_brief,
+    }
+
+
+def prepare_course_handoff(
+    ws: Workspace, material_ids: Iterable[str] = ()
+) -> dict[str, Path]:
+    state = _load_state(ws)
+    if state.core is None:
+        raise SchoolLearningError("course handoff requires v0.2 course registration")
+    selected_ids = _normalize_material_ids(material_ids)
+    by_id = {item["id"]: item for item in state.materials["materials"]}
+    unknown = set(selected_ids) - set(by_id)
+    if unknown:
+        raise SchoolLearningError(
+            "course handoff references unknown materials: " + ", ".join(sorted(unknown))
+        )
+    selected = [by_id[item] for item in selected_ids]
+    entries = [
+        {
+            "id": item["id"],
+            "attachment_filename": (
+                f"material-{item['id']}{Path(item['stored_path']).suffix.lower()}"
+            ),
+            "sha256": item["sha256"],
+            "bytes": item["bytes"],
+        }
+        for item in selected
+    ]
+    context = _course_context_bytes(state)
+    context_entry = {
+        "role": "course-context",
+        "attachment_filename": "course-context.md",
+        "sha256": hashlib.sha256(context).hexdigest(),
+        "bytes": len(context),
+    }
+    manifest = {
+        "schema_version": COURSE_HANDOFF_SCHEMA,
+        "course_id": ws.course_id,
+        "term": ws.term,
+        "attachment_filenames": [context_entry["attachment_filename"]]
+        + [item["attachment_filename"] for item in entries],
+        "context_attachment": context_entry,
+        "material_ids": selected_ids,
+        "materials": entries,
+    }
+    _validate_course_handoff_manifest(manifest)
+    prompt = _course_prompt_bytes(state.course)
+    start = (
+        "# Start Here\n\n"
+        "1. Open `attachments/`.\n"
+        "2. Attach every file in that directory, including the required distinguished "
+        "`course-context.md`, to the approved AI interface.\n"
+        "3. Paste the complete contents of `prompt.txt` as the opening message.\n"
+        "4. Do not substitute similarly named files from elsewhere in the course workspace.\n"
+        "5. Review the AI result yourself. It does not update local state automatically.\n"
+    ).encode("utf-8")
+    manifest_bytes = (
+        json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    ).encode("utf-8")
+    generated = _confined_path(
+        ws,
+        ws.course_dir / "generated",
+        label="generated directory",
+        must_exist=True,
+        require_directory=True,
+    )
+    destination = generated / "course-handoff"
+    staging = _create_temp_directory(ws, generated, ".course-handoff.staging.")
+    try:
+        attachments = staging / "attachments"
+        _safe_create_directory(attachments, "course handoff attachments directory")
+        expected = {
+            "START-HERE.md": start,
+            "prompt.txt": prompt,
+            "attachments/course-context.md": context,
+            "manifest.json": manifest_bytes,
+        }
+        _atomic_write_bytes(ws, staging / "START-HERE.md", start)
+        _atomic_write_bytes(ws, staging / "prompt.txt", prompt)
+        _atomic_write_bytes(ws, attachments / "course-context.md", context)
+        _atomic_write_bytes(ws, staging / "manifest.json", manifest_bytes)
+        for record, entry in zip(selected, entries, strict=True):
+            _copy_verified_material_attachment(
+                ws, record, attachments / entry["attachment_filename"]
+            )
+        _validate_staged_course_handoff(ws, staging, manifest, expected, selected)
+        _publish_directory(
+            ws,
+            staging,
+            destination,
+            lambda: _validate_staged_course_handoff(ws, staging, manifest, expected, selected),
+        )
+    except Exception as error:
+        causal = error if isinstance(error, SchoolLearningError) else SchoolLearningError(
+            "course handoff preparation failed"
+        )
+        _recover_remove_tree(ws, staging, "failed course handoff staging directory", causal)
+        if causal is error:
+            raise
+        raise causal from error
+    return {
+        "root": destination,
+        "attachments": destination / "attachments",
+        "prompt": destination / "prompt.txt",
+        "context": destination / "attachments" / "course-context.md",
     }
 
 

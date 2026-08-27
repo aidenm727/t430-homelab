@@ -606,24 +606,33 @@ class PublicSurfaceTests(unittest.TestCase):
                 missing.append(target)
         self.assertEqual(missing, [])
 
-    def test_active_state_preserves_completed_g14_lifecycle_truth(self) -> None:
+    def test_active_state_preserves_accepted_sl2a_publication_boundary(self) -> None:
         state = json.loads(self.text["docs/current-state.json"])
         self.assertEqual(state["phase"]["id"], "engineering-workflow-v1-1")
         self.assertEqual(state["phase"]["lifecycle"], "published")
         self.assertEqual(state["work_selection"]["status"], "intentional_idle")
         self.assertIsNone(state["work_selection"]["selected_checkpoint"])
-        self.assertEqual(state["decision_required"]["id"], "select-future-work")
+        self.assertEqual(state["decision_required"]["id"], "decide-sl2-a-publication")
         self.assertEqual(state["decision_required"]["status"], "pending")
         self.assertEqual(state["blockers"], [])
         self.assertEqual(state["unknowns"], [])
-        self.assertEqual(set(state["authority"].values()), {"external-not-established-by-repository-or-atlas"})
+        self.assertEqual(
+            state["authority"],
+            {
+                "task": "external-not-established-by-repository-or-atlas",
+                "implementation": "external-not-established-by-repository-or-atlas",
+                "publication": "external-not-established-by-repository-or-atlas",
+            },
+        )
+        self.assertEqual(state["freshness"]["effective_date"], "2026-08-27")
         mission = self.text["docs/current-mission.md"]
-        self.assertRegex(mission, r"R1 — Repository Identity and Public/Private Boundary is\s+owner-accepted, published, and complete\.")
-        self.assertIn("S1, F2, F3", mission)
-        self.assertIn("Not selected", mission)
+        self.assertRegex(mission, r"SL2-A — School Learning v0\.2 Semester\s+Core & Intake is owner-accepted\.")
+        self.assertNotRegex(mission, r"(?s)SL2-A.{0,100}owner-accepted,\s+published")
+        self.assertIn("whether to separately authorize staging, local commit, and", mission)
+        self.assertIn("S1, F2, F3, SL2-B", mission)
+        self.assertIn("Not\n  selected", mission)
         self.assertIn("Status: Intentional idle", mission)
-        self.assertRegex(mission, r"G14 Storage Orientation Snapshot is\s+owner-accepted, published, and complete\.")
-        self.assertNotRegex(mission.casefold(), r"fresh independent tier 3 adversarial|owner acceptance also remains pending")
+        self.assertIsNotNone(definition_for("docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md"))
 
     def test_renamed_documents_and_evidence_are_registered(self) -> None:
         infrastructure = infrastructure_documents()
@@ -886,7 +895,7 @@ SELF_PRIVACY_DISPOSITIONS = {
     (
         "historical_host",
         "test_renamed_documents_and_evidence_are_registered",
-        631,
+        640,
         "28417f2fb39f8b22a594692ee92a59b717cc74570eefcf1d117be17937933163",
     ): 1,
     (

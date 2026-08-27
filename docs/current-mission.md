@@ -14,18 +14,22 @@ W1 — Engineering Workflow v1.1 is owner-accepted, published, and complete. Cle
 Foundation F1 remains historical published foundation evidence rather than
 active selected work. R1 — Repository Identity and Public/Private Boundary is
 owner-accepted, published, and complete. G14 Storage Orientation Snapshot is
-owner-accepted, published, and complete. No implementation checkpoint is
-selected, and repository work selection is intentionally idle. G14 completion
-does not claim live collection, deployment, or an operational runtime state.
+owner-accepted, published, and complete. SL2-A — School Learning v0.2 Semester
+Core & Intake is owner-accepted. The exact accepted SL2-A candidate passed its
+final local implementation verification, and its fresh independent review
+returned ACCEPT with no blocking or non-blocking material findings. SL2-A
+publication is not yet established. No implementation checkpoint is selected,
+and repository work selection is intentionally idle.
 
-Canonical state effective date: 2026-08-08.
+Canonical state effective date: 2026-08-27.
 
 ## Mission Intent
 
-Preserve the published Workflow v1.1, completed R1, and completed metadata-only
-G14 storage-orientation foundation, human authority, generated ownership, and
-all public/private boundaries while the owner chooses future work. No live
-collection, deployment, or operational-runtime claim is established.
+Preserve published W1, completed R1 and G14, the owner-accepted SL2-A candidate,
+human authority, generated ownership, and all public/private boundaries while
+SL2-A publication remains separately gated. Canonical state establishes no
+staging, commit, push, publication, deployment, live-data migration, external
+integration, live collection, or operational-runtime claim.
 
 ## Work Selection
 
@@ -36,7 +40,10 @@ collection, deployment, or operational-runtime claim is established.
 - W1 lifecycle: Published and complete; not active selected work.
 - R1 lifecycle: Owner-accepted, published, and complete; not active selected
   work.
-- S1, F2, F3, and all other future checkpoints: Not selected.
+- SL2-A lifecycle: Owner-accepted; publication not yet established; not active
+  selected work.
+- S1, F2, F3, SL2-B, and all other future implementation checkpoints: Not
+  selected.
 
 ## Next Milestone
 
@@ -52,8 +59,9 @@ None recorded in canonical active state.
 
 ## Owner Decision Required
 
-Owner selection of future work. No checkpoint, capability, S1, F2, F3, or other
-follow-on work is preselected.
+Owner decision on whether to separately authorize staging, local commit, and
+publication of the accepted SL2-A candidate. Publication authority is not
+established by canonical state. No implementation checkpoint is selected.
 
 ## Authority Boundary
 
@@ -81,4 +89,8 @@ requires explicit owner authority outside repository state and Atlas.
 - `docs/reviews/g14-storage-orientation-snapshot-implementation-evidence-2026-08-08.md`
   — compact Tier 3 G14 implementation, review, acceptance, verification,
   residual-limitation, and publication-boundary evidence.
+- `docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md`
+  — dated non-canonical compound SL2-A implementation, correction/review,
+  candidate acceptance, and local repository-finalization evidence; no
+  immutable SL2-A publication identity is claimed.
 - Git history — immutable implementation and publication identities.

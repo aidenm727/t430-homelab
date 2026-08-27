@@ -374,7 +374,7 @@ DOCUMENT_DEFINITIONS = {
 
     "docs/architecture/school-learning.md": DocumentDefinition(
         path="docs/architecture/school-learning.md",
-        purpose="Defines the bounded School Learning workflow, owner-controlled local course-data contract, Guided Study Handoff, manual approved-AI use, and generated local study views.",
+        purpose="Defines the semester-aware School Learning architecture, owner-controlled external state, explicit opaque intake, assessment/policy provenance and conflicts, generated views, and manual portable AI handoffs.",
         canonical=True,
         generated=False,
         capability="Learning and Research",
@@ -397,6 +397,7 @@ DOCUMENT_DEFINITIONS = {
             "docs/current-mission.md",
             "docs/reviews/school-learning-v0-1-pilot-evaluation-2026-07-21.md",
             "docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md",
+            "docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md",
         ],
     ),
 
@@ -716,6 +717,27 @@ DOCUMENT_DEFINITIONS = {
             "docs/current-mission.md",
             "docs/architecture/school-learning.md",
             "docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md",
+        ],
+    ),
+
+    "docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md": DocumentDefinition(
+        path="docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md",
+        purpose="Preserves the Tier-2 compound evidence for the exact uncommitted SL2-A semester core and intake candidate, its authorized boundary, preflight, implementation, verification, and pending review and acceptance gates.",
+        canonical=False,
+        generated=False,
+        capability="Learning and Research",
+        status="evidence",
+        tags=[
+            "school-learning",
+            "semester-core",
+            "material-intake",
+            "tier-2",
+            "dated-evidence",
+            "non-canonical",
+        ],
+        related=[
+            "docs/architecture/school-learning.md",
+            "docs/reviews/school-learning-v0-1-pilot-evaluation-2026-07-21.md",
         ],
     ),
 

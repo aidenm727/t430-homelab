@@ -1,35 +1,56 @@
-"""Public boundary for School Learning v0.1."""
+"""Public boundary for School Learning."""
 
 from .core import (
     SchoolLearningError,
+    SemesterWorkspace,
     Workspace,
     add_material,
     build_study_brief,
     default_data_root,
     ensure_topic,
     initialize_course,
+    initialize_semester,
+    intake_material,
     iter_sessions,
     load_course,
+    load_course_core,
     load_materials,
+    load_semester,
     load_topics,
+    prepare_course_handoff,
     record_session,
+    register_course,
+    semester_workspace,
+    upsert_assessment,
+    upsert_policy,
     workspace,
 )
-from .render import render_course
+from .render import render_course, render_semester
 
 __all__ = (
     "SchoolLearningError",
+    "SemesterWorkspace",
     "Workspace",
     "add_material",
     "build_study_brief",
     "default_data_root",
     "ensure_topic",
     "initialize_course",
+    "initialize_semester",
+    "intake_material",
     "iter_sessions",
     "load_course",
+    "load_course_core",
     "load_materials",
+    "load_semester",
     "load_topics",
+    "prepare_course_handoff",
     "record_session",
+    "register_course",
     "render_course",
+    "render_semester",
+    "semester_workspace",
+    "upsert_assessment",
+    "upsert_policy",
     "workspace",
 )
