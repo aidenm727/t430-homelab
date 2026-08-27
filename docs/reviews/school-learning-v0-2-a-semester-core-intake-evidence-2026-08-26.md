@@ -11,18 +11,23 @@
   does not cross a Tier-3 live-data, credential, security/access,
   canonical-authority, destructive-storage, or external-action boundary.
 - **Base:** `2888548f182a08aed40b0d3aed1528a5e0dbbfd3`.
-- **Candidate identity:** **UNCOMMITTED**. A publication identity does not yet
-  exist and must not be guessed, predicted, or synthesized.
+- **Published candidate identity:**
+  `faf99fdadae8e9ce035c8ee4f6dfb1aae1d4cf95`, with parent
+  `2888548f182a08aed40b0d3aed1528a5e0dbbfd3`.
 - **Authority:** The owner's 2026-08-26 checkpoint instruction authorized the
   exact local implementation and synthetic verification boundary below. On
   2026-08-27, the owner explicitly accepted the exact verified and independently
   reviewed SL2-A candidate, then separately authorized local repository
   finalization and local verification. Staging, commit/ref mutation,
   publication/push, deployment, external integration, and every other external
-  write remain **NOT authorized**.
-- **Next decision boundary:** Fresh Tier-3 independent read-only review of the
-  exact locally finalized uncommitted candidate, followed by owner acceptance
-  of that finalization and a separate publication-authority decision.
+  write were **NOT authorized at that checkpoint**. After finalization review,
+  the owner separately accepted the repository-finalization candidate with its
+  noted non-blocking finding and authorized exact staging, local commits, two
+  normal pushes to `origin/main`, and post-publication canonical lifecycle
+  synchronization. Deployment and every unrelated external action remain
+  unauthorized.
+- **Next decision boundary:** Generic owner selection of future work. No later
+  checkpoint is preselected.
 
 ## Exact Authorized Path Boundary
 
@@ -300,6 +305,35 @@ The latest native local verification supporting the accepted candidate remains:
   exact locally finalized uncommitted candidate, then owner finalization
   acceptance and a separate decision on staging, local commit, and publication.
 
+## Tier-3 Finalization Review, Owner Acceptance, and Publication
+
+- Fresh Tier-3 independent review of the exact repository-finalization
+  candidate returned **ACCEPT WITH NON-BLOCKING FINDINGS**.
+- No blocking finalization finding was identified. The sole accepted
+  non-blocking finding was that the public-surface lifecycle regression guard
+  was weaker than ideal and could more strongly reject false future publication
+  semantics.
+- On 2026-08-27, the owner explicitly accepted the repository-finalization
+  candidate with that noted non-blocking finding.
+- The owner then explicitly authorized exact staging, local commits, normal
+  pushes to `origin/main`, and post-publication canonical lifecycle
+  synchronization. Deployment and every unrelated external action remained
+  unauthorized.
+- The exact accepted candidate was committed as
+  `faf99fdadae8e9ce035c8ee4f6dfb1aae1d4cf95`, whose parent is
+  `2888548f182a08aed40b0d3aed1528a5e0dbbfd3`.
+- The normal push of that candidate commit succeeded. A fresh read-only remote
+  observation confirmed `refs/heads/main` at
+  `faf99fdadae8e9ce035c8ee4f6dfb1aae1d4cf95` before lifecycle
+  synchronization began.
+- SL2-A therefore became owner-accepted and published. Its substantive
+  publication does not depend on the later lifecycle-synchronization commit.
+- Post-publication lifecycle synchronization returns work selection to
+  intentional idle with no selected checkpoint and a pending generic
+  `select-future-work` owner decision.
+- No deployment, live-data migration, Canvas/Calendar/email integration, or
+  operational-runtime state is established.
+
 ## Accepted Implementation SHA-256 Freeze
 
 The accepted substantive implementation boundary was hashed before repository
@@ -392,8 +426,8 @@ evidence.
   and AI-policy routing are not implemented.
 - No OCR, content parsing/classification, embeddings, vector/graph store,
   provider/model call, automatic AI-response ingestion, LMS/Canvas, Calendar,
-  email, schedule recommendation, notification, publication, or deployment is
-  included.
+  email, schedule recommendation, notification, live-data migration, external
+  integration, or deployment is included.
 - Semester Home derives only from stored course state and knows nothing about
   available time, work/life constraints, or external calendars.
 - The checkpoint proves migration and behavior only on synthetic `/var/tmp`
@@ -417,12 +451,17 @@ evidence.
   exact verified and reviewed SL2-A candidate.
 - Repository-finalization authority: **explicitly established** for local
   finalization and local verification.
-- Finalization independent review: **pending**.
-- Finalization owner acceptance: **pending**.
-- Staging authority: **NOT established**.
-- Commit authority: **NOT established**.
-- Publication/push authority: **NOT established**.
+- Finalization independent review: **ACCEPT WITH NON-BLOCKING FINDINGS**; no
+  blocking findings, with one accepted non-blocking public-surface regression-
+  guard weakness.
+- Finalization owner acceptance: **explicitly established on 2026-08-27** with
+  the noted non-blocking finding.
+- Bounded staging, local-commit, normal-push, and post-publication lifecycle-
+  synchronization authority: **explicitly established** for the exact
+  publication checkpoint.
 - Deployment authority: **NOT established**.
-- Candidate publication identity: **does not yet exist and must not be
-  guessed**.
-- Candidate state: **UNCOMMITTED**.
+- Accepted candidate publication identity:
+  `faf99fdadae8e9ce035c8ee4f6dfb1aae1d4cf95`.
+- Candidate state: **OWNER-ACCEPTED, PUBLISHED, AND COMPLETE**.
+- Post-publication work selection: **intentional idle** with no selected
+  checkpoint and generic future-work selection pending.

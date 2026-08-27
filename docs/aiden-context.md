@@ -18,7 +18,7 @@ generated and non-canonical.
 - Work selection: intentional_idle
 - Selected checkpoint: None
 - Intentional idle: Yes
-- Decision required: `decide-sl2-a-publication` — Owner decision on whether to authorize staging, local commit, and publication of the accepted SL2-A candidate.
+- Decision required: `select-future-work` — Owner selection of future work; no checkpoint or later capability is preselected.
 
 ### Blockers
 
@@ -57,21 +57,20 @@ Foundation F1 remains historical published foundation evidence rather than
 active selected work. R1 — Repository Identity and Public/Private Boundary is
 owner-accepted, published, and complete. G14 Storage Orientation Snapshot is
 owner-accepted, published, and complete. SL2-A — School Learning v0.2 Semester
-Core & Intake is owner-accepted. The exact accepted SL2-A candidate passed its
-final local implementation verification, and its fresh independent review
-returned ACCEPT with no blocking or non-blocking material findings. SL2-A
-publication is not yet established. No implementation checkpoint is selected,
-and repository work selection is intentionally idle.
+Core & Intake is owner-accepted, published, and complete. Its substantive
+publication identity is `faf99fdadae8e9ce035c8ee4f6dfb1aae1d4cf95`, and the
+normal publication push was verified on `origin/main` before this lifecycle
+synchronization. No implementation checkpoint is selected, and repository work
+selection is intentionally idle.
 
 Canonical state effective date: 2026-08-27.
 
 ### Mission Intent
 
-Preserve published W1, completed R1 and G14, the owner-accepted SL2-A candidate,
-human authority, generated ownership, and all public/private boundaries while
-SL2-A publication remains separately gated. Canonical state establishes no
-staging, commit, push, publication, deployment, live-data migration, external
-integration, live collection, or operational-runtime claim.
+Preserve published W1, completed R1, G14, and SL2-A, human authority, generated
+ownership, and all public/private boundaries while the owner selects future
+work. No deployment, live-data migration, Canvas/Calendar/email integration, or
+operational-runtime state is established.
 
 ### Work Selection
 
@@ -82,8 +81,8 @@ integration, live collection, or operational-runtime claim.
 - W1 lifecycle: Published and complete; not active selected work.
 - R1 lifecycle: Owner-accepted, published, and complete; not active selected
   work.
-- SL2-A lifecycle: Owner-accepted; publication not yet established; not active
-  selected work.
+- SL2-A lifecycle: Owner-accepted, published, and complete; not active selected
+  work.
 - S1, F2, F3, SL2-B, and all other future implementation checkpoints: Not
   selected.
 
@@ -101,9 +100,9 @@ None recorded in canonical active state.
 
 ### Owner Decision Required
 
-Owner decision on whether to separately authorize staging, local commit, and
-publication of the accepted SL2-A candidate. Publication authority is not
-established by canonical state. No implementation checkpoint is selected.
+Owner selection of future work; no checkpoint or later capability is
+preselected. S1, F2, F3, SL2-B, and all other future implementation checkpoints
+remain unselected.
 
 ### Authority Boundary
 
@@ -133,8 +132,8 @@ requires explicit owner authority outside repository state and Atlas.
   residual-limitation, and publication-boundary evidence.
 - `docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md`
   — dated non-canonical compound SL2-A implementation, correction/review,
-  candidate acceptance, and local repository-finalization evidence; no
-  immutable SL2-A publication identity is claimed.
+  candidate acceptance, repository-finalization, publication, and
+  post-publication lifecycle-synchronization evidence.
 - Git history — immutable implementation and publication identities.
 
 ## Infrastructure Snapshot

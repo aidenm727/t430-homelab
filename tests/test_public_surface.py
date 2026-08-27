@@ -606,16 +606,22 @@ class PublicSurfaceTests(unittest.TestCase):
                 missing.append(target)
         self.assertEqual(missing, [])
 
-    def test_active_state_preserves_accepted_sl2a_publication_boundary(self) -> None:
+    def test_active_state_preserves_published_sl2a_and_intentional_idle(self) -> None:
         state = json.loads(self.text["docs/current-state.json"])
         self.assertEqual(state["phase"]["id"], "engineering-workflow-v1-1")
         self.assertEqual(state["phase"]["lifecycle"], "published")
         self.assertEqual(state["work_selection"]["status"], "intentional_idle")
         self.assertIsNone(state["work_selection"]["selected_checkpoint"])
-        self.assertEqual(state["decision_required"]["id"], "decide-sl2-a-publication")
+        self.assertEqual(state["decision_required"]["id"], "select-future-work")
+        self.assertEqual(
+            state["decision_required"]["summary"],
+            "Owner selection of future work; no checkpoint or later capability is preselected.",
+        )
         self.assertEqual(state["decision_required"]["status"], "pending")
+        self.assertEqual(state["decision_required"]["evidence_refs"], [])
         self.assertEqual(state["blockers"], [])
         self.assertEqual(state["unknowns"], [])
+        self.assertEqual(state["freshness"]["effective_date"], "2026-08-27")
         self.assertEqual(
             state["authority"],
             {
@@ -624,15 +630,33 @@ class PublicSurfaceTests(unittest.TestCase):
                 "publication": "external-not-established-by-repository-or-atlas",
             },
         )
-        self.assertEqual(state["freshness"]["effective_date"], "2026-08-27")
         mission = self.text["docs/current-mission.md"]
-        self.assertRegex(mission, r"SL2-A — School Learning v0\.2 Semester\s+Core & Intake is owner-accepted\.")
-        self.assertNotRegex(mission, r"(?s)SL2-A.{0,100}owner-accepted,\s+published")
-        self.assertIn("whether to separately authorize staging, local commit, and", mission)
+        self.assertRegex(
+            mission,
+            r"SL2-A — School Learning v0\.2 Semester\s+Core & Intake is owner-accepted, published, and complete\.",
+        )
+        self.assertIn(
+            "SL2-A lifecycle: Owner-accepted, published, and complete; not active selected\n  work.",
+            mission,
+        )
+        self.assertNotIn("SL2-A lifecycle: Selected", mission)
+        self.assertNotIn("SL2-A is selected implementation work", mission)
+        self.assertIn(
+            "Owner selection of future work; no checkpoint or later capability is\npreselected.",
+            mission,
+        )
         self.assertIn("S1, F2, F3, SL2-B", mission)
-        self.assertIn("Not\n  selected", mission)
+        self.assertIn("remain unselected", mission)
         self.assertIn("Status: Intentional idle", mission)
-        self.assertIsNotNone(definition_for("docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md"))
+        self.assertIn(
+            "No deployment, live-data migration, Canvas/Calendar/email integration, or\noperational-runtime state is established.",
+            mission,
+        )
+        self.assertIsNotNone(
+            definition_for(
+                "docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md"
+            )
+        )
 
     def test_renamed_documents_and_evidence_are_registered(self) -> None:
         infrastructure = infrastructure_documents()
@@ -895,7 +919,7 @@ SELF_PRIVACY_DISPOSITIONS = {
     (
         "historical_host",
         "test_renamed_documents_and_evidence_are_registered",
-        640,
+        664,
         "28417f2fb39f8b22a594692ee92a59b717cc74570eefcf1d117be17937933163",
     ): 1,
     (

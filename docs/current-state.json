@@ -16,8 +16,8 @@
   "blockers": [],
   "unknowns": [],
   "decision_required": {
-    "id": "decide-sl2-a-publication",
-    "summary": "Owner decision on whether to authorize staging, local commit, and publication of the accepted SL2-A candidate.",
+    "id": "select-future-work",
+    "summary": "Owner selection of future work; no checkpoint or later capability is preselected.",
     "status": "pending",
     "evidence_refs": []
   },
