@@ -11,7 +11,10 @@ from unittest import mock
 from tools.school_learning import (
     SchoolLearningError,
     add_material,
+    append_source_observation,
+    apply_update,
     build_study_brief,
+    course_context_sha256,
     ensure_topic,
     initialize_course,
     initialize_semester,
@@ -21,15 +24,20 @@ from tools.school_learning import (
     load_course_core,
     load_materials,
     load_semester,
+    load_source_observations,
     load_topics,
     prepare_course_handoff,
     record_session,
     register_course,
     render_course,
+    render_plan,
     render_semester,
+    review_update,
+    reviewed_update_digest,
     semester_workspace,
     upsert_assessment,
     upsert_policy,
+    upsert_source,
     workspace,
 )
 from tools.school_learning import core
@@ -1059,6 +1067,62 @@ class SemesterCoreTests(ExternalTemporaryTestCase):
         values.update(kwargs)
         return intake_material(self.ws, **values)
 
+    def candidate(self, operations, **changes):
+        value = {
+            "schema_version": core.REVIEWED_UPDATE_SCHEMA,
+            "term": self.ws.term,
+            "course_id": self.ws.course_id,
+            "base_context_sha256": course_context_sha256(self.ws),
+            "operations": operations,
+        }
+        value.update(changes)
+        return value
+
+    def write_candidate(self, value, name="reviewed-update.json"):
+        path = self.root / name
+        path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+        return path
+
+    def assessment_operation(self, **changes):
+        value = {
+            "kind": "assessment-upsert",
+            "id": "ps-2",
+            "title": "Problem Set 2",
+            "type": "problem-set",
+            "status": "upcoming",
+            "weight": None,
+            "points": "100",
+            "xp": None,
+            "material_ids": [],
+            "topic_ids": [],
+            "claims": [
+                {
+                    "field": "due-at",
+                    "value": "2026-08-30",
+                    "source": "syllabus",
+                    "observed_at": "2026-08-29",
+                    "status": "confirmed",
+                }
+            ],
+            "recorded_at": "2026-08-29T12:00:00Z",
+        }
+        value.update(changes)
+        return value
+
+    def source_observation_operation(self, **changes):
+        value = {
+            "kind": "source-observation",
+            "id": "reviewed-observation",
+            "source_id": "syllabus",
+            "observed_at": "2026-08-29",
+            "scope": "full",
+            "outcome": "changed",
+            "material_ids": [],
+            "note": "Synthetic reviewed observation.",
+        }
+        value.update(changes)
+        return value
+
     def test_semester_initialization_is_strict_and_course_identity_is_consistent(self):
         semester = load_semester(self.sw)
         self.assertEqual(semester["schema_version"], core.SEMESTER_SCHEMA)
@@ -1738,6 +1802,1840 @@ class SemesterCoreTests(ExternalTemporaryTestCase):
             list((self.ws.course_dir).glob(".course-core.json.*")), []
         )
 
+    def test_source_observations_are_optional_append_only_and_fail_closed(self):
+        observations_path = self.ws.course_dir / "source-observations.json"
+        self.assertFalse(observations_path.exists())
+        self.assertEqual(
+            load_source_observations(self.ws),
+            {"schema_version": core.SOURCE_OBSERVATIONS_SCHEMA, "observations": []},
+        )
+        material = self.intake()
+        learner_before = (self.ws.course_dir / "topics.json").read_bytes()
+        observation = append_source_observation(
+            self.ws,
+            "syllabus",
+            "partial",
+            "changed",
+            material_ids=[material["id"]],
+            note="Assessment details changed.",
+            observed_at="2026-08-29",
+            observation_id="syllabus-2026-08-29",
+        )
+        self.assertEqual(observation["source_id"], "syllabus")
+        self.assertEqual((self.ws.course_dir / "topics.json").read_bytes(), learner_before)
+        self.assertEqual(load_source_observations(self.ws)["observations"], [observation])
+
+        invalid = (
+            ("unknown source", {"source_id": "canvas"}),
+            ("unknown material", {"material_ids": ["outside-course"]}),
+            ("scope", {"scope": "complete"}),
+            ("outcome", {"outcome": "fresh"}),
+            ("date", {"observed_at": "Aug 29"}),
+            ("duplicate", {"observation_id": observation["id"]}),
+        )
+        for label, changes in invalid:
+            values = {
+                "source_id": "syllabus",
+                "scope": "full",
+                "outcome": "no-relevant-change",
+                "material_ids": [],
+                "observed_at": "2026-08-30",
+                "observation_id": f"invalid-{label.replace(' ', '-')}",
+            }
+            values.update(changes)
+            before = complete_snapshot(self.ws.course_dir)
+            with self.subTest(label=label), self.assertRaises(SchoolLearningError):
+                append_source_observation(self.ws, **values)
+            self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+        malformed = json.loads(observations_path.read_text())
+        malformed["unexpected"] = "closed"
+        observations_path.write_text(json.dumps(malformed), encoding="utf-8")
+        before_malformed = complete_snapshot(self.ws.course_dir)
+        with self.assertRaises(SchoolLearningError):
+            upsert_source(
+                self.ws,
+                "announcement",
+                "Announcements",
+                "local announcements",
+                recorded_at="2026-08-30T12:00:00Z",
+            )
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before_malformed)
+
+    def test_source_upsert_preserves_unrelated_profile_state_and_sorted_uniqueness(self):
+        upsert_assessment(
+            self.ws,
+            "quiz-1",
+            "Quiz 1",
+            "quiz",
+            "upcoming",
+            recorded_at="2026-08-28T10:00:00Z",
+        )
+        before = load_course_core(self.ws)
+        added = upsert_source(
+            self.ws,
+            "announcements",
+            "Announcements",
+            "local announcements",
+            status="confirmed",
+            recorded_at="2026-08-29T10:00:00Z",
+        )
+        after = load_course_core(self.ws)
+        self.assertEqual(added["id"], "announcements")
+        self.assertEqual([item["id"] for item in after["sources"]], ["announcements", "syllabus"])
+        for field in ("capability_tags", "metadata", "assessments", "policies", "created_at"):
+            self.assertEqual(after[field], before[field])
+        updated = upsert_source(
+            self.ws,
+            "announcements",
+            "Course Announcements",
+            "local announcement archive",
+            status="provisional",
+            recorded_at="2026-08-30T10:00:00Z",
+        )
+        self.assertEqual(updated["title"], "Course Announcements")
+        self.assertEqual(
+            [item["id"] for item in load_course_core(self.ws)["sources"]],
+            ["announcements", "syllabus"],
+        )
+        snapshot = complete_snapshot(self.ws.course_dir)
+        with self.assertRaises(SchoolLearningError):
+            upsert_source(self.ws, "bad/source", "Bad", "reference")
+        self.assertEqual(complete_snapshot(self.ws.course_dir), snapshot)
+
+    def test_reviewed_candidate_preview_is_exact_bounded_and_has_zero_mutation(self):
+        material = self.intake()
+        second_material = self.intake(
+            material_id="lecture-03", name="lecture-03.pptx"
+        )
+        operation = self.assessment_operation(
+            material_ids=[material["id"]],
+            claims=[
+                {
+                    "field": "due-at",
+                    "value": "2026-08-30T23:59:00-04:00",
+                    "source": "syllabus",
+                    "observed_at": "2026-08-29",
+                    "status": "confirmed",
+                },
+                {
+                    "field": "submission-format",
+                    "value": "Submit in the format named by the assignment.",
+                    "source": "assignment specification",
+                    "observed_at": "2026-08-29",
+                    "status": "provisional",
+                },
+            ],
+        )
+        candidate = self.candidate([operation])
+        path = self.write_candidate(candidate)
+        before = complete_snapshot(self.sw.term_dir)
+        reviewed = review_update(self.root, path)
+        self.assertEqual(complete_snapshot(self.sw.term_dir), before)
+        self.assertEqual(reviewed["digest"], reviewed_update_digest(candidate))
+        self.assertIn("Durable state diff", reviewed["preview"])
+        self.assertIn("assessment-upsert ps-2", reviewed["preview"])
+        compact = self.write_candidate(candidate, "candidate-compact.json")
+        compact.write_text(json.dumps(candidate, separators=(",", ":")), encoding="utf-8")
+        self.assertEqual(review_update(self.root, compact)["digest"], reviewed["digest"])
+
+        invalid_candidates = []
+        extra_root = json.loads(json.dumps(candidate))
+        extra_root["path"] = "/tmp/arbitrary"
+        invalid_candidates.append(("exact root", extra_root))
+        unsupported = self.candidate([{"kind": "shell", "command": "touch /tmp/no"}])
+        invalid_candidates.append(("unsupported operation", unsupported))
+        arbitrary = json.loads(json.dumps(candidate))
+        arbitrary["operations"][0]["output_path"] = "/tmp/no"
+        invalid_candidates.append(("arbitrary operation key", arbitrary))
+        invalid_date = json.loads(json.dumps(candidate))
+        invalid_date["operations"][0]["claims"][0]["value"] = "next Sunday"
+        invalid_candidates.append(("planner date", invalid_date))
+        legacy_due = json.loads(json.dumps(candidate))
+        legacy_due["operations"][0]["claims"][0]["field"] = "due"
+        legacy_due["operations"][0]["claims"][0]["value"] = "2026-08-30"
+        invalid_candidates.append(("legacy due field", legacy_due))
+        missing_seconds = json.loads(json.dumps(candidate))
+        missing_seconds["operations"][0]["claims"][0]["value"] = "2026-08-30T23:59Z"
+        invalid_candidates.append(("planner timestamp without seconds", missing_seconds))
+        observation = {
+            "kind": "source-observation",
+            "id": "reviewed-observation",
+            "source_id": "syllabus",
+            "observed_at": "2026-08-29",
+            "scope": "full",
+            "outcome": "changed",
+            "material_ids": [second_material["id"], material["id"]],
+            "note": "Synthetic reviewed observation.",
+        }
+        invalid_candidates.append(
+            ("unsorted observation relationships", self.candidate([observation]))
+        )
+        duplicate_observation = json.loads(json.dumps(observation))
+        duplicate_observation["material_ids"] = [material["id"], material["id"]]
+        invalid_candidates.append(
+            ("duplicate observation relationships", self.candidate([duplicate_observation]))
+        )
+        unknown_material = json.loads(json.dumps(candidate))
+        unknown_material["operations"][0]["material_ids"] = ["another-course-material"]
+        invalid_candidates.append(("unknown material", unknown_material))
+        wrong_term = json.loads(json.dumps(candidate))
+        wrong_term["term"] = "2027-spring"
+        invalid_candidates.append(("wrong term", wrong_term))
+        wrong_course = json.loads(json.dumps(candidate))
+        wrong_course["course_id"] = "outside-course"
+        invalid_candidates.append(("wrong course", wrong_course))
+        for index, (label, invalid) in enumerate(invalid_candidates):
+            invalid_path = self.write_candidate(invalid, f"invalid-candidate-{index}.json")
+            durable_before = complete_snapshot(self.ws.course_dir)
+            with self.subTest(label=label), self.assertRaises(SchoolLearningError):
+                review_update(self.root, invalid_path)
+            self.assertEqual(complete_snapshot(self.ws.course_dir), durable_before)
+
+    def test_reviewed_source_observation_ids_are_novel_append_only_identities(self):
+        append_source_observation(
+            self.ws,
+            "syllabus",
+            "full",
+            "no-relevant-change",
+            observed_at="2026-08-29",
+            observation_id="existing-observation",
+        )
+        existing_collision = self.write_candidate(
+            self.candidate(
+                [self.source_observation_operation(id="existing-observation")]
+            ),
+            "existing-observation-collision.json",
+        )
+        before = complete_snapshot(self.ws.course_dir)
+        with self.assertRaises(SchoolLearningError):
+            review_update(self.root, existing_collision)
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+        duplicate_candidate_id = self.write_candidate(
+            self.candidate(
+                [
+                    self.source_observation_operation(id="new-observation"),
+                    self.source_observation_operation(
+                        id="new-observation",
+                        observed_at="2026-08-30",
+                        note="Second operation reuses the identifier.",
+                    ),
+                ]
+            ),
+            "duplicate-candidate-observation.json",
+        )
+        with self.assertRaises(SchoolLearningError):
+            review_update(self.root, duplicate_candidate_id)
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+        valid = self.write_candidate(
+            self.candidate(
+                [
+                    self.source_observation_operation(
+                        id="new-observation-a",
+                        observed_at="2026-08-30T00:00:00.1Z",
+                    ),
+                    self.source_observation_operation(
+                        id="new-observation-b",
+                        observed_at="2026-08-30T00:00:00.100001-04:00",
+                    ),
+                ]
+            ),
+            "novel-candidate-observations.json",
+        )
+        reviewed = review_update(self.root, valid)
+        apply_update(self.root, valid, reviewed["digest"])
+        self.assertEqual(
+            {
+                item["id"]
+                for item in load_source_observations(self.ws)["observations"]
+            },
+            {
+                "existing-observation",
+                "new-observation-a",
+                "new-observation-b",
+            },
+        )
+
+    def test_reviewed_candidate_uses_canonical_school_timestamp_subset(self):
+        accepted = [
+            "2026-09-01T00:00:00Z",
+            "2026-09-01T00:00:00.1Z",
+            "2026-09-01T00:00:00.123Z",
+            "2026-09-01T00:00:00.123456Z",
+            "2026-09-01T00:00:00.123456-04:00",
+        ]
+        for index, value in enumerate(accepted):
+            operation = self.assessment_operation(
+                id=f"accepted-timestamp-{index}",
+                claims=[
+                    {
+                        "field": "due-at",
+                        "value": value,
+                        "source": "synthetic accepted timestamp",
+                        "observed_at": "2026-08-29",
+                        "status": "confirmed",
+                    }
+                ],
+            )
+            path = self.write_candidate(
+                self.candidate([operation]), f"accepted-timestamp-{index}.json"
+            )
+            with self.subTest(accepted=value):
+                self.assertEqual(
+                    review_update(self.root, path)["digest"],
+                    reviewed_update_digest(self.candidate([operation])),
+                )
+
+        rejected = [
+            "2026-09-01T00:00:00.1234567Z",
+            "2026-09-01T00:00Z",
+            "2026-09-01T00:00:00",
+            "2026-09-01T00:00:00+24:00",
+        ]
+        for index, value in enumerate(rejected):
+            operation = self.assessment_operation(
+                id=f"rejected-timestamp-{index}",
+                claims=[
+                    {
+                        "field": "due-at",
+                        "value": value,
+                        "source": "synthetic rejected timestamp",
+                        "observed_at": "2026-08-29",
+                        "status": "confirmed",
+                    }
+                ],
+            )
+            path = self.write_candidate(
+                self.candidate([operation]), f"rejected-timestamp-{index}.json"
+            )
+            with self.subTest(rejected=value), self.assertRaises(SchoolLearningError):
+                review_update(self.root, path)
+
+        first = append_source_observation(
+            self.ws,
+            "syllabus",
+            "full",
+            "no-relevant-change",
+            observed_at="2026-09-01T00:00:00.1Z",
+            observation_id="fractional-source-observation",
+        )
+        second = append_source_observation(
+            self.ws,
+            "syllabus",
+            "partial",
+            "changed",
+            observed_at="2026-09-01T00:00:00.123456-04:00",
+            observation_id="offset-source-observation",
+        )
+        self.assertEqual(first["observed_at"], "2026-09-01T00:00:00.1Z")
+        self.assertEqual(second["observed_at"], "2026-09-01T00:00:00.123456-04:00")
+        before = complete_snapshot(self.ws.course_dir)
+        with self.assertRaises(SchoolLearningError):
+            append_source_observation(
+                self.ws,
+                "syllabus",
+                "full",
+                "changed",
+                observed_at="2026-09-01T00:00:00.1234567Z",
+                observation_id="over-precision-source-observation",
+            )
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_reviewed_update_applies_ordered_operations_and_preserves_conflicts(self):
+        material = self.intake()
+        upsert_assessment(
+            self.ws,
+            "ps-2",
+            "Problem Set 2",
+            "problem-set",
+            "upcoming",
+            material_ids=[material["id"]],
+            claim_field="submission-format",
+            claim_value="Submit one PDF.",
+            claim_source="syllabus",
+            claim_observed_at="2026-08-28",
+            recorded_at="2026-08-28T12:00:00Z",
+        )
+        operations = [
+            {
+                "kind": "source-upsert",
+                "id": "course-site",
+                "title": "Course Site",
+                "reference": "local reviewed course-site reference",
+                "status": "confirmed",
+                "recorded_at": "2026-08-29T12:00:00Z",
+            },
+            {
+                "kind": "source-observation",
+                "id": "course-site-check-001",
+                "source_id": "course-site",
+                "observed_at": "2026-08-29",
+                "scope": "full",
+                "outcome": "changed",
+                "material_ids": [material["id"]],
+                "note": "Reviewed synthetic course-site changes.",
+            },
+            self.assessment_operation(
+                material_ids=[material["id"]],
+                claims=[
+                    {
+                        "field": "due-at",
+                        "value": "2026-08-30",
+                        "source": "course-site",
+                        "observed_at": "2026-08-29",
+                        "status": "confirmed",
+                    },
+                    {
+                        "field": "submission-format",
+                        "value": "Submit separate files.",
+                        "source": "assignment specification",
+                        "observed_at": "2026-08-29",
+                        "status": "provisional",
+                    },
+                ],
+            ),
+            {
+                "kind": "policy-upsert",
+                "id": "collaboration",
+                "title": "Collaboration",
+                "category": "collaboration",
+                "claims": [
+                    {
+                        "field": "rule",
+                        "value": "Discuss concepts but submit individual work.",
+                        "source": "syllabus",
+                        "observed_at": "2026-08-29",
+                        "status": "confirmed",
+                    }
+                ],
+                "recorded_at": "2026-08-29T12:00:00Z",
+            },
+        ]
+        candidate = self.candidate(operations)
+        path = self.write_candidate(candidate)
+        reviewed = review_update(self.root, path)
+        before = complete_snapshot(self.ws.course_dir)
+        with self.assertRaises(SchoolLearningError):
+            apply_update(self.root, path, "0" * 64)
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        topics_before = (self.ws.course_dir / "topics.json").read_bytes()
+        materials_before = (self.ws.course_dir / "materials.json").read_bytes()
+        applied = apply_update(self.root, path, reviewed["digest"])
+        self.assertEqual(
+            applied["changed_files"], ["course-core.json", "source-observations.json"]
+        )
+        self.assertEqual((self.ws.course_dir / "topics.json").read_bytes(), topics_before)
+        self.assertEqual((self.ws.course_dir / "materials.json").read_bytes(), materials_before)
+        applied_core = load_course_core(self.ws)
+        self.assertIn("course-site", {item["id"] for item in applied_core["sources"]})
+        assessment = next(item for item in applied_core["assessments"] if item["id"] == "ps-2")
+        format_claims = [item for item in assessment["claims"] if item["field"] == "submission-format"]
+        self.assertEqual({item["status"] for item in format_claims}, {"conflicted"})
+        self.assertEqual({item["value"] for item in format_claims}, {"Submit one PDF.", "Submit separate files."})
+        self.assertEqual(load_source_observations(self.ws)["observations"][0]["source_id"], "course-site")
+        self.assertEqual(applied_core["policies"][0]["status"], "confirmed")
+
+    def test_reviewed_update_rechecks_candidate_digest_and_base_context(self):
+        candidate = self.candidate([self.assessment_operation()])
+        path = self.write_candidate(candidate)
+        first = review_update(self.root, path)
+        changed = json.loads(json.dumps(candidate))
+        changed["operations"][0]["title"] = "Changed After Preview"
+        self.write_candidate(changed)
+        before = complete_snapshot(self.ws.course_dir)
+        with self.assertRaises(SchoolLearningError):
+            apply_update(self.root, path, first["digest"])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        second = review_update(self.root, path)
+        self.assertNotEqual(second["digest"], first["digest"])
+
+        upsert_source(
+            self.ws,
+            "announcements",
+            "Announcements",
+            "local announcements",
+            recorded_at="2026-08-30T14:00:00Z",
+        )
+        stale_before = complete_snapshot(self.ws.course_dir)
+        with self.assertRaises(SchoolLearningError):
+            apply_update(self.root, path, second["digest"])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), stale_before)
+
+        mismatched = json.loads(json.dumps(changed))
+        mismatched["base_context_sha256"] = "f" * 64
+        mismatch_path = self.write_candidate(mismatched, "mismatched-base.json")
+        with self.assertRaises(SchoolLearningError):
+            review_update(self.root, mismatch_path)
+
+    def test_reviewed_update_base_identity_covers_timestamp_only_core_changes(self):
+        candidate = self.candidate([self.assessment_operation()])
+        path = self.write_candidate(candidate, "timestamp-bound-update.json")
+        identity = course_context_sha256(self.ws)
+        self.assertEqual(course_context_sha256(self.ws), identity)
+        reviewed = review_update(self.root, path)
+        before_core = load_course_core(self.ws)
+
+        upsert_source(
+            self.ws,
+            "syllabus",
+            "Syllabus <official>",
+            "local syllabus",
+            status="confirmed",
+            recorded_at="2026-08-30T14:00:00Z",
+        )
+        after_core = load_course_core(self.ws)
+        self.assertEqual(after_core["sources"], before_core["sources"])
+        self.assertEqual(after_core["created_at"], before_core["created_at"])
+        self.assertNotEqual(after_core["updated_at"], before_core["updated_at"])
+        self.assertNotEqual(course_context_sha256(self.ws), identity)
+
+        stale_before = complete_snapshot(self.ws.course_dir)
+        with self.assertRaises(SchoolLearningError):
+            review_update(self.root, path)
+        with self.assertRaises(SchoolLearningError):
+            apply_update(self.root, path, reviewed["digest"])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), stale_before)
+
+    def test_reviewed_update_failure_restores_exact_multi_file_prior_state(self):
+        operations = [
+            {
+                "kind": "source-upsert",
+                "id": "course-site",
+                "title": "Course Site",
+                "reference": "synthetic local reference",
+                "status": "confirmed",
+                "recorded_at": "2026-08-29T12:00:00Z",
+            },
+            {
+                "kind": "source-observation",
+                "id": "course-site-check-001",
+                "source_id": "course-site",
+                "observed_at": "2026-08-29",
+                "scope": "full",
+                "outcome": "changed",
+                "material_ids": [],
+                "note": "Synthetic check.",
+            },
+        ]
+        path = self.write_candidate(self.candidate(operations))
+        digest = review_update(self.root, path)["digest"]
+        before = complete_snapshot(self.ws.course_dir)
+        real_write = core._atomic_write_json
+
+        def persist_observation_then_fail(ws, destination, value):
+            real_write(ws, destination, value)
+            if destination.name == "source-observations.json":
+                raise SchoolLearningError("synthetic post-persistence observation failure")
+
+        with mock.patch.object(core, "_atomic_write_json", side_effect=persist_observation_then_fail):
+            with self.assertRaises(SchoolLearningError):
+                apply_update(self.root, path, digest)
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        self.assertFalse((self.ws.course_dir / "source-observations.json").exists())
+
+        append_source_observation(
+            self.ws,
+            "syllabus",
+            "partial",
+            "no-relevant-change",
+            observed_at="2026-08-29",
+            observation_id="existing-check",
+        )
+        observations_path = self.ws.course_dir / "source-observations.json"
+        existing_value = json.loads(observations_path.read_text())
+        observations_path.write_text(json.dumps(existing_value), encoding="utf-8")
+        exact_existing = observations_path.read_bytes()
+        existing_core = (self.ws.course_dir / "course-core.json").read_bytes()
+        second_operations = [
+            {
+                "kind": "source-upsert",
+                "id": "syllabus",
+                "title": "Updated Syllabus",
+                "reference": "same local syllabus",
+                "status": "confirmed",
+                "recorded_at": "2026-08-30T12:00:00Z",
+            },
+            {
+                "kind": "source-observation",
+                "id": "second-check",
+                "source_id": "syllabus",
+                "observed_at": "2026-08-30",
+                "scope": "full",
+                "outcome": "changed",
+                "material_ids": [],
+                "note": "Second synthetic check.",
+            },
+        ]
+        second_path = self.write_candidate(self.candidate(second_operations), "second-update.json")
+        second_digest = review_update(self.root, second_path)["digest"]
+        with mock.patch.object(core, "_atomic_write_json", side_effect=persist_observation_then_fail):
+            with self.assertRaises(SchoolLearningError):
+                apply_update(self.root, second_path, second_digest)
+        self.assertEqual(observations_path.read_bytes(), exact_existing)
+        self.assertEqual((self.ws.course_dir / "course-core.json").read_bytes(), existing_core)
+
+    def test_course_handoff_rejects_update_contract_tampering_and_preserves_prior_package(self):
+        prior = prepare_course_handoff(self.ws)
+        before = complete_snapshot(prior["root"])
+        real_write = core._atomic_write_bytes
+
+        def tamper_contract(ws, destination, content):
+            if destination.name == "update-contract.json":
+                value = json.loads(content)
+                value["base_context_sha256"] = "0" * 64
+                content = (json.dumps(value, indent=2, sort_keys=True) + "\n").encode()
+            return real_write(ws, destination, content)
+
+        with mock.patch.object(core, "_atomic_write_bytes", side_effect=tamper_contract):
+            with self.assertRaises(SchoolLearningError):
+                prepare_course_handoff(self.ws)
+        self.assertEqual(complete_snapshot(prior["root"]), before)
+
+    def test_course_handoff_update_contract_has_complete_independent_constraint_matrix(self):
+        handoff = prepare_course_handoff(self.ws)
+        contract = json.loads(handoff["update_contract"].read_text(encoding="utf-8"))
+        base_digest = hashlib.sha256(handoff["context"].read_bytes()).hexdigest()
+        claim_statuses = ["confirmed", "provisional", "conflicted", "superseded"]
+        assessment_statuses = [
+            "upcoming",
+            "available",
+            "in-progress",
+            "submitted",
+            "graded",
+            "reviewed",
+        ]
+        operation_kinds = [
+            "assessment-upsert",
+            "policy-upsert",
+            "source-upsert",
+            "source-observation",
+        ]
+        candidate_keys = [
+            "base_context_sha256",
+            "course_id",
+            "operations",
+            "schema_version",
+            "term",
+        ]
+        claim_keys = ["field", "observed_at", "source", "status", "value"]
+        operation_keys = {
+            "assessment-upsert": [
+                "claims",
+                "id",
+                "kind",
+                "material_ids",
+                "points",
+                "recorded_at",
+                "status",
+                "title",
+                "topic_ids",
+                "type",
+                "weight",
+                "xp",
+            ],
+            "policy-upsert": [
+                "category",
+                "claims",
+                "id",
+                "kind",
+                "recorded_at",
+                "title",
+            ],
+            "source-upsert": [
+                "id",
+                "kind",
+                "recorded_at",
+                "reference",
+                "status",
+                "title",
+            ],
+            "source-observation": [
+                "id",
+                "kind",
+                "material_ids",
+                "note",
+                "observed_at",
+                "outcome",
+                "scope",
+                "source_id",
+            ],
+        }
+        self.assertEqual(
+            set(contract),
+            {
+                "allowed_operation_kinds",
+                "base_context_sha256",
+                "bounded_values",
+                "candidate_keys",
+                "claim_keys",
+                "constraints",
+                "course_id",
+                "max_operations",
+                "operation_keys",
+                "reviewed_update_schema_version",
+                "rules",
+                "schema_version",
+                "term",
+            },
+        )
+        self.assertEqual(contract["schema_version"], "aiden.school.update-contract/v0.1")
+        self.assertEqual(
+            contract["reviewed_update_schema_version"],
+            "aiden.school.reviewed-update/v0.1",
+        )
+        self.assertEqual(contract["term"], "2026-fall")
+        self.assertEqual(contract["course_id"], "cs3100")
+        self.assertEqual(contract["base_context_sha256"], base_digest)
+        self.assertEqual(contract["allowed_operation_kinds"], operation_kinds)
+        self.assertEqual(contract["candidate_keys"], candidate_keys)
+        self.assertEqual(contract["operation_keys"], operation_keys)
+        self.assertEqual(contract["claim_keys"], claim_keys)
+        self.assertEqual(contract["max_operations"], 100)
+        self.assertEqual(
+            contract["bounded_values"],
+            {
+                "assessment_status": assessment_statuses,
+                "claim_status": claim_statuses,
+                "planner_critical_claim_field": [
+                    "due-at",
+                    "available-at",
+                    "available-until",
+                ],
+                "source_observation_outcome": [
+                    "changed",
+                    "no-relevant-change",
+                    "unavailable",
+                ],
+                "source_observation_scope": ["full", "partial"],
+            },
+        )
+        self.assertEqual(
+            contract["rules"],
+            [
+                "Return one JSON object only, as data; do not return commands or executable code.",
+                "Use only the exact operation keys and bounded values declared by this contract.",
+                "Assessment and policy operations require one or more sourced claims with exact claim keys.",
+                "Identifier relationship lists must be sorted and unique; nullable grading measures use JSON null.",
+                "Source-observation IDs are append-only identities: each must be absent from base source observations and all prior source-observation operations in this ordered candidate.",
+                "Never use the legacy due field; use due-at for normalized forward scheduling.",
+                "Use due-at, available-at, and available-until for planner-critical claims, with YYYY-MM-DD or the canonical School Learning timestamp subset: seconds, an explicit Z/numeric offset, and optional 1-through-6-digit fractional seconds.",
+                "Do not include raw material bytes, intake requests, paths, arbitrary writes, or external actions.",
+                "Do not include learner, topic, session, mastery, or cross-course updates.",
+                "The returned JSON is only a reviewed candidate and does not change local state.",
+            ],
+        )
+
+        identifier_list = {
+            "items": {"ref": "identifier"},
+            "sorted": True,
+            "type": "array",
+            "unique": True,
+        }
+        claim_list = {
+            "items": {"ref": "claim"},
+            "min_items": 1,
+            "semantic_identity_fields": ["field", "value", "source", "observed_at"],
+            "semantic_identity_unique": True,
+            "type": "array",
+        }
+        expected_constraints = {
+            "base_identity": {
+                "algorithm": "sha256",
+                "attachment": "course-context.md",
+                "complete_semantic_sections": [
+                    "course",
+                    "course_core",
+                    "materials",
+                    "source_observations",
+                    "topics",
+                ],
+                "digest_field": "base_context_sha256",
+                "exact_attachment_bytes": True,
+            },
+            "candidate_file": {
+                "encoding": "UTF-8",
+                "max_bytes": 1_000_000,
+                "top_level_type": "object",
+            },
+            "claim": {
+                "exact_keys": claim_keys,
+                "fields": {
+                    "field": {
+                        "forbidden_values": ["due"],
+                        "planner_critical_values": [
+                            "due-at",
+                            "available-at",
+                            "available-until",
+                        ],
+                        "ref": "identifier",
+                    },
+                    "observed_at": {"ref": "observed_at"},
+                    "source": {"ref": "nonempty_string"},
+                    "status": {"enum": claim_statuses, "type": "string"},
+                    "value": {
+                        "planner_critical_ref": "planner_value",
+                        "ref": "nonempty_string",
+                    },
+                },
+                "type": "object",
+            },
+            "definitions": {
+                "date": {
+                    "calendar_valid": True,
+                    "pattern": r"^\d{4}-\d{2}-\d{2}$",
+                    "type": "string",
+                },
+                "identifier": {
+                    "forbidden_values": [".", ".."],
+                    "path_safe": True,
+                    "pattern": r"^[a-z0-9][a-z0-9._-]*$",
+                    "type": "string",
+                },
+                "identifier_list": identifier_list,
+                "nonempty_string": {
+                    "min_trimmed_length": 1,
+                    "normalization": "strip",
+                    "type": "string",
+                },
+                "nullable_measure": {
+                    "allowed_types": ["null", "string"],
+                    "string_min_trimmed_length": 1,
+                    "string_normalization": "strip",
+                },
+                "observed_at": {
+                    "calendar_valid": True,
+                    "one_of_patterns": [
+                        r"^\d{4}-\d{2}-\d{2}$",
+                        r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$",
+                    ],
+                    "timestamp_fractional_seconds": {
+                        "max_digits": 6,
+                        "min_digits_when_present": 1,
+                        "optional": True,
+                    },
+                    "timestamp_seconds": "required",
+                    "timestamp_subset": "canonical-school-learning",
+                    "timestamp_timezone": "explicit-Z-or-numeric-offset",
+                    "type": "string",
+                },
+                "plain_string": {"type": "string"},
+                "planner_value": {
+                    "calendar_valid": True,
+                    "one_of_patterns": [
+                        r"^\d{4}-\d{2}-\d{2}$",
+                        r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$",
+                    ],
+                    "timestamp_fractional_seconds": {
+                        "max_digits": 6,
+                        "min_digits_when_present": 1,
+                        "optional": True,
+                    },
+                    "timestamp_seconds": "required",
+                    "timestamp_subset": "canonical-school-learning",
+                    "timestamp_timezone": "explicit-Z-or-numeric-offset",
+                    "type": "string",
+                },
+                "sha256": {
+                    "algorithm": "sha256",
+                    "lowercase_hex": True,
+                    "pattern": r"^[0-9a-f]{64}$",
+                    "type": "string",
+                },
+                "utc_timestamp": {
+                    "calendar_valid": True,
+                    "pattern": r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$",
+                    "seconds": "required",
+                    "timezone": "Z",
+                    "type": "string",
+                },
+            },
+            "operations": {
+                "assessment-upsert": {
+                    "exact_keys": operation_keys["assessment-upsert"],
+                    "fields": {
+                        "claims": claim_list,
+                        "id": {"ref": "identifier"},
+                        "kind": {"const": "assessment-upsert", "type": "string"},
+                        "material_ids": {
+                            "must_resolve": "current-course-materials",
+                            "ref": "identifier_list",
+                        },
+                        "points": {"ref": "nullable_measure"},
+                        "recorded_at": {"ref": "utc_timestamp"},
+                        "status": {"enum": assessment_statuses, "type": "string"},
+                        "title": {"ref": "nonempty_string"},
+                        "topic_ids": {
+                            "must_resolve": "current-course-topics",
+                            "ref": "identifier_list",
+                        },
+                        "type": {
+                            "already_normalized": True,
+                            "max_length": 64,
+                            "pattern": r"^[a-z0-9]+(?:-[a-z0-9]+)*$",
+                            "type": "string",
+                        },
+                        "weight": {"ref": "nullable_measure"},
+                        "xp": {"ref": "nullable_measure"},
+                    },
+                    "type": "object",
+                },
+                "policy-upsert": {
+                    "exact_keys": operation_keys["policy-upsert"],
+                    "fields": {
+                        "category": {"ref": "identifier"},
+                        "claims": {**claim_list, "item_field_const": "rule"},
+                        "id": {"ref": "identifier"},
+                        "kind": {"const": "policy-upsert", "type": "string"},
+                        "recorded_at": {"ref": "utc_timestamp"},
+                        "title": {"ref": "nonempty_string"},
+                    },
+                    "type": "object",
+                },
+                "source-observation": {
+                    "exact_keys": operation_keys["source-observation"],
+                    "fields": {
+                        "id": {
+                            "append_only_identity": True,
+                            "novelty": {
+                                "existing_state_unique_against": (
+                                    "source_observations[*].id"
+                                ),
+                                "ordered_candidate_unique_against": (
+                                    "prior source-observation operations[*].id"
+                                ),
+                            },
+                            "overwrite_existing": False,
+                            "ref": "identifier",
+                            "reuse_existing": False,
+                        },
+                        "kind": {"const": "source-observation", "type": "string"},
+                        "material_ids": {
+                            "must_resolve": "current-course-materials",
+                            "ref": "identifier_list",
+                        },
+                        "note": {"ref": "plain_string"},
+                        "observed_at": {"ref": "observed_at"},
+                        "outcome": {
+                            "enum": ["changed", "no-relevant-change", "unavailable"],
+                            "type": "string",
+                        },
+                        "scope": {"enum": ["full", "partial"], "type": "string"},
+                        "source_id": {
+                            "must_resolve": "current-or-prior-operation-course-sources",
+                            "ref": "identifier",
+                        },
+                    },
+                    "type": "object",
+                },
+                "source-upsert": {
+                    "exact_keys": operation_keys["source-upsert"],
+                    "fields": {
+                        "id": {"ref": "identifier"},
+                        "kind": {"const": "source-upsert", "type": "string"},
+                        "recorded_at": {"ref": "utc_timestamp"},
+                        "reference": {"ref": "nonempty_string"},
+                        "status": {"enum": claim_statuses, "type": "string"},
+                        "title": {"ref": "nonempty_string"},
+                    },
+                    "type": "object",
+                },
+            },
+            "root": {
+                "exact_keys": candidate_keys,
+                "fields": {
+                    "base_context_sha256": {
+                        "const": base_digest,
+                        "ref": "sha256",
+                    },
+                    "course_id": {"const": "cs3100", "ref": "identifier"},
+                    "operations": {
+                        "discriminator": "kind",
+                        "kinds": operation_kinds,
+                        "max_items": 100,
+                        "min_items": 1,
+                        "ordered": True,
+                        "type": "array",
+                    },
+                    "schema_version": {
+                        "const": "aiden.school.reviewed-update/v0.1",
+                        "type": "string",
+                    },
+                    "term": {"const": "2026-fall", "ref": "identifier"},
+                },
+                "registered_course_required": True,
+                "type": "object",
+            },
+        }
+        self.assertEqual(contract["constraints"], expected_constraints)
+
+    def test_semester_plan_replays_weekend_work_conflicts_and_source_coverage(self):
+        plan_root = self.root / "planning-root"
+        sw = initialize_semester(
+            plan_root, "2026-fall", "Fall 2026", created_at="2026-08-29T10:00:00Z"
+        )
+
+        def course(course_id, title):
+            return register_course(
+                sw,
+                course_id,
+                title,
+                sources=[
+                    {
+                        "id": "course-site",
+                        "title": "Course Site",
+                        "reference": f"local {course_id} course-site reference",
+                        "status": "confirmed",
+                    }
+                ],
+                recorded_at="2026-08-29T10:01:00Z",
+            )
+
+        apma = course("apma", "Applied Mathematics")
+        eco = course("eco", "Ecology")
+        cs3240 = course("cs3240", "Advanced Software Development")
+        dsa = course("dsa", "Data Structures and Algorithms")
+        register_course(
+            sw,
+            "no-sources",
+            "Course Without Source Descriptors",
+            recorded_at="2026-08-29T10:01:30Z",
+        )
+        upsert_source(
+            eco,
+            "announcements",
+            "Announcements",
+            "local Eco announcements",
+            recorded_at="2026-08-29T10:02:00Z",
+        )
+
+        upsert_assessment(
+            apma,
+            "ps-2",
+            "APMA Problem Set 2",
+            "problem-set",
+            "in-progress",
+            claim_field="due-at",
+            claim_value="2026-08-30",
+            claim_source="course-site",
+            claim_observed_at="2026-08-29",
+            claim_status="confirmed",
+            recorded_at="2026-08-29T11:00:00Z",
+        )
+        for index, value in enumerate(("Submit one PDF.", "Submit separate files."), start=1):
+            upsert_assessment(
+                apma,
+                "ps-2",
+                "APMA Problem Set 2",
+                claim_field="submission-format",
+                claim_value=value,
+                claim_source=f"apma-source-{index}",
+                claim_observed_at=f"2026-08-{28 + index}",
+                recorded_at=f"2026-08-{28 + index}T11:01:00Z",
+            )
+        upsert_assessment(
+            apma,
+            "legacy-due",
+            "APMA Legacy Timestamp Check",
+            "homework",
+            "upcoming",
+            claim_field="due",
+            claim_value="Aug 30, 2026, 11:59 PM",
+            claim_source="legacy course record",
+            claim_observed_at="2026-08-29",
+            recorded_at="2026-08-29T11:02:00Z",
+        )
+        upsert_assessment(
+            apma,
+            "submitted",
+            "Already Submitted Work",
+            "homework",
+            "submitted",
+            claim_field="due-at",
+            claim_value="2026-08-30",
+            claim_source="course-site",
+            claim_observed_at="2026-08-29",
+            recorded_at="2026-08-29T11:03:00Z",
+        )
+        upsert_assessment(
+            apma,
+            "unstructured",
+            "Unsupported Scheduling Value",
+            "homework",
+            "upcoming",
+            claim_field="due",
+            claim_value="sometime next week",
+            claim_source="synthetic prose",
+            claim_observed_at="2026-08-29",
+            recorded_at="2026-08-29T11:04:00Z",
+        )
+        upsert_assessment(
+            apma,
+            "conflicted-date",
+            "Conflicted Date",
+            "homework",
+            "upcoming",
+            claim_field="due-at",
+            claim_value="2026-08-31",
+            claim_source="syllabus",
+            claim_observed_at="2026-08-29",
+            recorded_at="2026-08-29T11:05:00Z",
+        )
+        upsert_assessment(
+            apma,
+            "conflicted-date",
+            "Conflicted Date",
+            claim_field="due-at",
+            claim_value="2026-09-01",
+            claim_source="announcement",
+            claim_observed_at="2026-08-30",
+            recorded_at="2026-08-30T11:05:00Z",
+        )
+
+        upsert_assessment(
+            cs3240,
+            "django-next",
+            "Django Implementation Work",
+            "sprint",
+            "in-progress",
+            claim_field="due-at",
+            claim_value="2026-09-01",
+            claim_source="course-site",
+            claim_observed_at="2026-08-29",
+            recorded_at="2026-08-29T12:00:00Z",
+        )
+        for index, value in enumerate(("Sprint 1", "Sprint A"), start=1):
+            upsert_assessment(
+                cs3240,
+                "django-next",
+                "Django Implementation Work",
+                claim_field="sprint-label",
+                claim_value=value,
+                claim_source=f"cs-source-{index}",
+                claim_observed_at=f"2026-08-{28 + index}",
+                recorded_at=f"2026-08-{28 + index}T12:01:00Z",
+            )
+        for field, value, recorded_at in (
+            ("available-at", "2026-08-31", "2026-08-30T12:02:00Z"),
+            ("available-until", "2026-09-02T23:59:00-04:00", "2026-08-30T12:03:00Z"),
+        ):
+            upsert_assessment(
+                cs3240,
+                "django-next",
+                "Django Implementation Work",
+                claim_field=field,
+                claim_value=value,
+                claim_source="course-site",
+                claim_observed_at="2026-08-30",
+                recorded_at=recorded_at,
+            )
+        upsert_assessment(
+            dsa,
+            "ps-0",
+            "DSA Problem Set 0",
+            "problem-set",
+            "upcoming",
+            claim_field="due",
+            claim_value="Sep 8, 2026, 11:59pm",
+            claim_source="legacy course record",
+            claim_observed_at="2026-08-29",
+            recorded_at="2026-08-29T13:00:00Z",
+        )
+
+        for filename, content in (
+            ("truax.pdf", b"%PDF Truax reading"),
+            ("island.txt", b"Island listening reference"),
+            ("eco-snapshot.md", b"# Syllabus snapshot"),
+        ):
+            (plan_root / filename).write_bytes(content)
+        intake_material(
+            eco,
+            plan_root / "truax.pdf",
+            "truax-reading",
+            "Eco Truax Reading",
+            kind="reading",
+            status="upcoming",
+            relevant_date="2026-09-01",
+            added_at="2026-08-29T14:00:00Z",
+        )
+        intake_material(
+            eco,
+            plan_root / "island.txt",
+            "island-listening",
+            "Eco Island Listening",
+            kind="listening-reference",
+            status="upcoming",
+            relevant_date="2026-09-01",
+            added_at="2026-08-29T14:01:00Z",
+        )
+        intake_material(
+            eco,
+            plan_root / "eco-snapshot.md",
+            "syllabus-snapshot",
+            "Eco Syllabus Snapshot",
+            kind="syllabus",
+            status="reference",
+            relevant_date="2026-09-01",
+            added_at="2026-08-29T14:02:00Z",
+        )
+
+        for ws, outcome, scope in (
+            (apma, "changed", "full"),
+            (eco, "no-relevant-change", "full"),
+            (cs3240, "unavailable", "partial"),
+            (dsa, "no-relevant-change", "partial"),
+        ):
+            append_source_observation(
+                ws,
+                "course-site",
+                scope,
+                outcome,
+                observed_at="2026-08-30",
+                observation_id=f"{ws.course_id}-coverage",
+            )
+
+        destination = render_plan(sw, "2026-08-30")
+        first = destination.read_bytes()
+        self.assertEqual(render_plan(sw, "2026-08-30").read_bytes(), first)
+        text = first.decode()
+        self.assertIn("DUE TODAY 2026-08-30 — `apma` / `ps-2`", text)
+        self.assertIn("Eco Truax Reading", text)
+        self.assertIn("Eco Island Listening", text)
+        self.assertNotIn("Eco Syllabus Snapshot", text)
+        self.assertIn("Django Implementation Work", text)
+        self.assertIn("AVAILABLE 2026-08-31 — `cs3240` / `django-next`", text)
+        self.assertIn("CLOSES 2026-09-02 — `cs3240` / `django-next`", text)
+        due_sections = text.split("## Due / Overdue / Due Today", 1)[1].split(
+            "## Assessment Availability Windows", 1
+        )[0]
+        self.assertNotIn("2026-08-31 — `cs3240`", due_sections)
+        self.assertIn("`dsa` — next 2026-09-08 assessment `ps-0`", text)
+        self.assertNotIn("Already Submitted Work", text)
+        self.assertIn("active `submission-format` conflict", text)
+        self.assertIn("active `sprint-label` conflict", text)
+        self.assertIn("active `due-at` conflict", text)
+        next_three = text.split("## Next 3 Days", 1)[1].split("## Next 7 Days", 1)[0]
+        self.assertNotIn("conflicted-date", next_three)
+        self.assertIn("due=sometime next week", text)
+        self.assertIn("observed 2026-08-30 — changed", text)
+        self.assertIn("observed 2026-08-30 — no relevant change", text)
+        self.assertIn("observed 2026-08-30 — unavailable", text)
+        self.assertIn("`eco` / `announcements` — never observed in durable state", text)
+        self.assertIn("`no-sources` — no course source descriptors recorded", text)
+        self.assertNotIn("confidence", text.lower().replace("does not assign urgency or confidence scores", ""))
+        with self.assertRaises(SchoolLearningError):
+            render_plan(sw, "August 30")
+        with mock.patch("sys.stderr", new=io.StringIO()), self.assertRaises(SystemExit):
+            cli_parser().parse_args(["render-plan", "2026-fall"])
+
+    def test_semester_plan_source_coverage_uses_semantic_observation_recency(self):
+        cases = [
+            (
+                "fraction-equality",
+                [
+                    (
+                        "fraction-equality-a",
+                        "2026-09-01T00:00:00.1Z",
+                        "partial",
+                        "unavailable",
+                    ),
+                    (
+                        "fraction-equality-z",
+                        "2026-09-01T00:00:00.100000Z",
+                        "full",
+                        "changed",
+                    ),
+                ],
+                "- `cs3100` / `fraction-equality` — observed "
+                "2026-09-01T00:00:00.100000Z — changed (`full` scope)",
+            ),
+            (
+                "fraction-difference",
+                [
+                    (
+                        "fraction-difference-z",
+                        "2026-09-01T00:00:00.1Z",
+                        "full",
+                        "unavailable",
+                    ),
+                    (
+                        "fraction-difference-a",
+                        "2026-09-01T00:00:00.100001Z",
+                        "partial",
+                        "changed",
+                    ),
+                ],
+                "- `cs3100` / `fraction-difference` — observed "
+                "2026-09-01T00:00:00.100001Z — changed (`partial` scope)",
+            ),
+            (
+                "offset-equality",
+                [
+                    (
+                        "offset-equality-a",
+                        "2026-09-01T02:00:00+02:00",
+                        "partial",
+                        "unavailable",
+                    ),
+                    (
+                        "offset-equality-z",
+                        "2026-09-01T00:00:00Z",
+                        "full",
+                        "no-relevant-change",
+                    ),
+                ],
+                "- `cs3100` / `offset-equality` — observed "
+                "2026-09-01T00:00:00Z — no relevant change (`full` scope)",
+            ),
+            (
+                "offset-difference",
+                [
+                    (
+                        "offset-difference-z",
+                        "2026-09-01T02:00:00+02:00",
+                        "full",
+                        "unavailable",
+                    ),
+                    (
+                        "offset-difference-a",
+                        "2026-08-31T20:00:01-04:00",
+                        "partial",
+                        "changed",
+                    ),
+                ],
+                "- `cs3100` / `offset-difference` — observed "
+                "2026-08-31T20:00:01-04:00 — changed (`partial` scope)",
+            ),
+            (
+                "date-equality",
+                [
+                    (
+                        "date-equality-a",
+                        "2026-09-01T00:00:00Z",
+                        "full",
+                        "unavailable",
+                    ),
+                    (
+                        "date-equality-z",
+                        "2026-09-01",
+                        "partial",
+                        "changed",
+                    ),
+                ],
+                "- `cs3100` / `date-equality` — observed "
+                "2026-09-01 — changed (`partial` scope)",
+            ),
+            (
+                "timestamp-after-date",
+                [
+                    (
+                        "timestamp-after-date-z",
+                        "2026-09-01",
+                        "full",
+                        "unavailable",
+                    ),
+                    (
+                        "timestamp-after-date-a",
+                        "2026-09-01T00:00:01Z",
+                        "partial",
+                        "no-relevant-change",
+                    ),
+                ],
+                "- `cs3100` / `timestamp-after-date` — observed "
+                "2026-09-01T00:00:01Z — no relevant change (`partial` scope)",
+            ),
+            (
+                "date-after-timestamp",
+                [
+                    (
+                        "date-after-timestamp-z",
+                        "2026-08-31T23:59:59Z",
+                        "full",
+                        "unavailable",
+                    ),
+                    (
+                        "date-after-timestamp-a",
+                        "2026-09-01",
+                        "partial",
+                        "changed",
+                    ),
+                ],
+                "- `cs3100` / `date-after-timestamp` — observed "
+                "2026-09-01 — changed (`partial` scope)",
+            ),
+        ]
+
+        for source_id, observations, _expected_line in cases:
+            upsert_source(
+                self.ws,
+                source_id,
+                f"Synthetic {source_id}",
+                f"local {source_id} reference",
+                recorded_at="2026-08-30T12:00:00Z",
+            )
+            for observation_id, observed_at, scope, outcome in observations:
+                append_source_observation(
+                    self.ws,
+                    source_id,
+                    scope,
+                    outcome,
+                    observed_at=observed_at,
+                    observation_id=observation_id,
+                )
+
+        text = render_plan(self.sw, "2026-08-31").read_text()
+        coverage_section = text.split("## Source Coverage / Observations", 1)[1].split(
+            "## Planning-Relevant Unresolved Conflicts", 1
+        )[0]
+        coverage_lines = coverage_section.splitlines()
+        for source_id, _observations, expected_line in cases:
+            selected = [line for line in coverage_lines if f"/ `{source_id}` —" in line]
+            with self.subTest(source_id=source_id):
+                self.assertEqual(selected, [expected_line])
+
+    def test_semester_plan_treats_due_and_due_at_as_one_semantic_family(self):
+        def add_claim(
+            assessment_id,
+            title,
+            field,
+            value,
+            source,
+            observed_at,
+            recorded_at,
+            claim_status="confirmed",
+        ):
+            return upsert_assessment(
+                self.ws,
+                assessment_id,
+                title,
+                "homework",
+                "upcoming",
+                claim_field=field,
+                claim_value=value,
+                claim_source=source,
+                claim_observed_at=observed_at,
+                claim_status=claim_status,
+                recorded_at=recorded_at,
+            )
+
+        add_claim(
+            "legacy-only",
+            "Legacy Due Only",
+            "due",
+            "2026-09-01",
+            "legacy-only source",
+            "2026-08-28",
+            "2026-08-28T10:00:00Z",
+        )
+        add_claim(
+            "normalized-only",
+            "Normalized Due Only",
+            "due-at",
+            "2026-09-02",
+            "normalized-only source",
+            "2026-08-28",
+            "2026-08-28T10:01:00Z",
+        )
+        add_claim(
+            "equal-aliases",
+            "Equal Due Aliases",
+            "due",
+            "2026-09-03",
+            "legacy equal source",
+            "2026-08-28",
+            "2026-08-28T10:02:00Z",
+        )
+        add_claim(
+            "equal-aliases",
+            "Equal Due Aliases",
+            "due-at",
+            "2026-09-03",
+            "normalized equal source",
+            "2026-08-29",
+            "2026-08-29T10:02:00Z",
+        )
+        add_claim(
+            "conflicting-aliases",
+            "Conflicting Due Aliases",
+            "due",
+            "2026-09-01",
+            "legacy conflict source",
+            "2026-08-28",
+            "2026-08-28T10:03:00Z",
+        )
+        add_claim(
+            "conflicting-aliases",
+            "Conflicting Due Aliases",
+            "due-at",
+            "2026-09-02",
+            "normalized conflict source",
+            "2026-08-29",
+            "2026-08-29T10:03:00Z",
+        )
+        add_claim(
+            "superseded-legacy",
+            "Superseded Legacy Due",
+            "due",
+            "discarded unsupported phrase",
+            "legacy supersession source",
+            "2026-08-28",
+            "2026-08-28T10:04:00Z",
+        )
+        add_claim(
+            "superseded-legacy",
+            "Superseded Legacy Due",
+            "due",
+            "discarded unsupported phrase",
+            "legacy supersession source",
+            "2026-08-28",
+            "2026-08-29T10:04:00Z",
+            claim_status="superseded",
+        )
+        add_claim(
+            "superseded-legacy",
+            "Superseded Legacy Due",
+            "due-at",
+            "2026-09-02",
+            "normalized supersession source",
+            "2026-08-29",
+            "2026-08-29T10:05:00Z",
+        )
+        add_claim(
+            "unsupported-legacy",
+            "Unsupported Legacy Due",
+            "due",
+            "next Sunday",
+            "unsupported legacy source",
+            "2026-08-28",
+            "2026-08-29T10:06:00Z",
+        )
+        add_claim(
+            "same-field-mixed",
+            "Same-Field Supported Unsupported",
+            "due-at",
+            "2026-09-01",
+            "same-field supported source",
+            "2026-08-28",
+            "2026-08-29T10:07:00Z",
+        )
+        add_claim(
+            "same-field-mixed",
+            "Same-Field Supported Unsupported",
+            "due-at",
+            "next Sunday",
+            "same-field unsupported source",
+            "2026-08-29",
+            "2026-08-29T10:08:00Z",
+        )
+        add_claim(
+            "mixed-alias-supported-unsupported",
+            "Mixed-Alias Supported Unsupported",
+            "due",
+            "2026-09-02",
+            "mixed-alias supported source",
+            "2026-08-28",
+            "2026-08-29T10:09:00Z",
+        )
+        add_claim(
+            "mixed-alias-supported-unsupported",
+            "Mixed-Alias Supported Unsupported",
+            "due-at",
+            "after the review session",
+            "mixed-alias unsupported source",
+            "2026-08-29",
+            "2026-08-29T10:10:00Z",
+        )
+        add_claim(
+            "all-active-unsupported",
+            "All Active Unsupported",
+            "due",
+            "when announced",
+            "all-unsupported legacy source",
+            "2026-08-28",
+            "2026-08-29T10:11:00Z",
+        )
+        add_claim(
+            "all-active-unsupported",
+            "All Active Unsupported",
+            "due-at",
+            "after the lab",
+            "all-unsupported normalized source",
+            "2026-08-29",
+            "2026-08-29T10:12:00Z",
+        )
+
+        text = render_plan(self.sw, "2026-08-31").read_text()
+        due_sections = text.split("## Due / Overdue / Due Today", 1)[1].split(
+            "## Assessment Availability Windows", 1
+        )[0]
+        conflict_section = text.split("## Planning-Relevant Unresolved Conflicts", 1)[1].split(
+            "## Longer-Horizon Summary", 1
+        )[0]
+        unstructured_section = text.split(
+            "## Unstructured Scheduling Claims That Cannot Safely Be Interpreted", 1
+        )[1]
+
+        self.assertIn("2026-09-01 — `cs3100` / `legacy-only`", due_sections)
+        self.assertIn("2026-09-02 — `cs3100` / `normalized-only`", due_sections)
+        self.assertEqual(due_sections.count("`cs3100` / `equal-aliases`"), 1)
+        self.assertNotIn("`cs3100` / `conflicting-aliases`", due_sections)
+        self.assertIn("active `due/due-at` conflict", conflict_section)
+        self.assertIn(
+            "due=2026-09-01 — source: legacy conflict source", conflict_section
+        )
+        self.assertIn(
+            "due-at=2026-09-02 — source: normalized conflict source", conflict_section
+        )
+        self.assertIn("2026-09-02 — `cs3100` / `superseded-legacy`", due_sections)
+        self.assertNotIn("2026-09-01 — `cs3100` / `superseded-legacy`", due_sections)
+        self.assertNotIn("legacy supersession source", text)
+        self.assertNotIn("`cs3100` / `unsupported-legacy`", due_sections)
+        self.assertIn("due=next Sunday", unstructured_section)
+        self.assertIn("source: unsupported legacy source", unstructured_section)
+        self.assertNotIn("`cs3100` / `same-field-mixed`", due_sections)
+        self.assertIn(
+            "`cs3100` / `same-field-mixed` — active `due-at` conflict",
+            conflict_section,
+        )
+        self.assertIn(
+            "due-at=2026-09-01 — source: same-field supported source — observed: 2026-08-28",
+            conflict_section,
+        )
+        self.assertIn(
+            "due-at=next Sunday — source: same-field unsupported source — observed: 2026-08-29",
+            conflict_section,
+        )
+        self.assertIn("due-at=next Sunday", unstructured_section)
+        self.assertNotIn("`cs3100` / `mixed-alias-supported-unsupported`", due_sections)
+        self.assertIn(
+            "`cs3100` / `mixed-alias-supported-unsupported` — active `due/due-at` conflict",
+            conflict_section,
+        )
+        self.assertIn(
+            "due=2026-09-02 — source: mixed-alias supported source — observed: 2026-08-28",
+            conflict_section,
+        )
+        self.assertIn(
+            "due-at=after the review session — source: mixed-alias unsupported source — observed: 2026-08-29",
+            conflict_section,
+        )
+        self.assertIn("due-at=after the review session", unstructured_section)
+        self.assertNotIn("`cs3100` / `all-active-unsupported`", due_sections)
+        self.assertIn(
+            "`cs3100` / `all-active-unsupported` — active `due/due-at` conflict",
+            conflict_section,
+        )
+        self.assertIn(
+            "due=when announced — source: all-unsupported legacy source — observed: 2026-08-28",
+            conflict_section,
+        )
+        self.assertIn(
+            "due-at=after the lab — source: all-unsupported normalized source — observed: 2026-08-29",
+            conflict_section,
+        )
+        self.assertIn("due=when announced", unstructured_section)
+        self.assertIn("source: all-unsupported legacy source", unstructured_section)
+        self.assertIn("due-at=after the lab", unstructured_section)
+        self.assertIn("source: all-unsupported normalized source", unstructured_section)
+
+    def test_semester_plan_uses_canonical_timestamp_subset_and_fractional_instants(self):
+        def add_due(assessment_id, title, value, source, observed_at, recorded_at):
+            return upsert_assessment(
+                self.ws,
+                assessment_id,
+                title,
+                "homework",
+                "upcoming",
+                claim_field="due-at",
+                claim_value=value,
+                claim_source=source,
+                claim_observed_at=observed_at,
+                recorded_at=recorded_at,
+            )
+
+        accepted = {
+            "whole-seconds-z": "2026-09-01T00:00:00Z",
+            "fraction-1": "2026-09-01T00:00:00.1Z",
+            "fraction-3": "2026-09-01T00:00:00.123Z",
+            "fraction-6": "2026-09-01T00:00:00.123456Z",
+            "numeric-offset": "2026-09-01T00:00:00.123456-04:00",
+        }
+        for index, (assessment_id, value) in enumerate(accepted.items()):
+            add_due(
+                assessment_id,
+                f"Accepted {assessment_id}",
+                value,
+                f"accepted source {index}",
+                "2026-08-29",
+                f"2026-08-29T10:0{index}:00Z",
+            )
+
+        rejected = {
+            "fraction-7": "2026-09-01T00:00:00.1234567Z",
+            "seconds-omitted": "2026-09-01T00:00Z",
+            "timezone-omitted": "2026-09-01T00:00:00",
+            "malformed-offset": "2026-09-01T00:00:00+24:00",
+        }
+        for index, (assessment_id, value) in enumerate(rejected.items()):
+            add_due(
+                assessment_id,
+                f"Rejected {assessment_id}",
+                value,
+                f"rejected source {index}",
+                "2026-08-29",
+                f"2026-08-29T11:0{index}:00Z",
+            )
+
+        add_due(
+            "same-fractional-instant",
+            "Same Fractional Instant",
+            "2026-09-01T00:00:00.1Z",
+            "same instant short fraction",
+            "2026-08-29",
+            "2026-08-29T12:00:00Z",
+        )
+        add_due(
+            "same-fractional-instant",
+            "Same Fractional Instant",
+            "2026-09-01T00:00:00.100000Z",
+            "same instant six-digit fraction",
+            "2026-08-30",
+            "2026-08-30T12:00:00Z",
+        )
+        add_due(
+            "different-fractional-instants",
+            "Different Fractional Instants",
+            "2026-09-01T00:00:00.1Z",
+            "different instant first source",
+            "2026-08-29",
+            "2026-08-29T13:00:00Z",
+        )
+        add_due(
+            "different-fractional-instants",
+            "Different Fractional Instants",
+            "2026-09-01T00:00:00.100001Z",
+            "different instant second source",
+            "2026-08-30",
+            "2026-08-30T13:00:00Z",
+        )
+
+        text = render_plan(self.sw, "2026-08-31").read_text()
+        due_sections = text.split("## Due / Overdue / Due Today", 1)[1].split(
+            "## Assessment Availability Windows", 1
+        )[0]
+        conflict_section = text.split(
+            "## Planning-Relevant Unresolved Conflicts", 1
+        )[1].split("## Longer-Horizon Summary", 1)[0]
+        unstructured_section = text.split(
+            "## Unstructured Scheduling Claims That Cannot Safely Be Interpreted", 1
+        )[1]
+
+        for assessment_id in accepted:
+            self.assertEqual(due_sections.count(f"`cs3100` / `{assessment_id}`"), 1)
+        for assessment_id in rejected:
+            self.assertNotIn(f"`cs3100` / `{assessment_id}`", due_sections)
+            self.assertIn(f"`cs3100` / `{assessment_id}`", unstructured_section)
+        self.assertEqual(
+            due_sections.count("`cs3100` / `same-fractional-instant`"), 1
+        )
+        self.assertNotIn("same-fractional-instant", conflict_section)
+        self.assertNotIn("`cs3100` / `different-fractional-instants`", due_sections)
+        self.assertIn(
+            "`cs3100` / `different-fractional-instants` — active `due-at` conflict",
+            conflict_section,
+        )
+        self.assertIn("due-at=2026-09-01T00:00:00.1Z", conflict_section)
+        self.assertIn("due-at=2026-09-01T00:00:00.100001Z", conflict_section)
+
+    def test_operational_loop_cli_source_observe_review_apply_and_plan(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(
+                cli_main(
+                    [
+                        "--data-root",
+                        str(self.root),
+                        "source",
+                        "2026-fall",
+                        "cs3100",
+                        "course-site",
+                        "Course Site",
+                        "local course-site reference",
+                        "--status",
+                        "confirmed",
+                        "--recorded-at",
+                        "2026-08-29T12:00:00Z",
+                    ]
+                ),
+                0,
+            )
+            self.assertEqual(
+                cli_main(
+                    [
+                        "--data-root",
+                        str(self.root),
+                        "observe",
+                        "2026-fall",
+                        "cs3100",
+                        "course-site",
+                        "--scope",
+                        "full",
+                        "--outcome",
+                        "no-relevant-change",
+                        "--observed-at",
+                        "2026-08-29",
+                        "--id",
+                        "cli-course-site-check",
+                    ]
+                ),
+                0,
+            )
+        candidate = self.candidate([self.assessment_operation(id="cli-assessment")])
+        path = self.write_candidate(candidate, "cli-reviewed-update.json")
+        review_output = io.StringIO()
+        with redirect_stdout(review_output):
+            self.assertEqual(
+                cli_main(["--data-root", str(self.root), "review-update", str(path)]), 0
+            )
+        digest = reviewed_update_digest(candidate)
+        self.assertIn(f"Semantic candidate SHA-256: {digest}", review_output.getvalue())
+        self.assertIn(
+            f"apply-update {path} --confirm {digest}", review_output.getvalue()
+        )
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(
+                cli_main(
+                    [
+                        "--data-root",
+                        str(self.root),
+                        "apply-update",
+                        str(path),
+                        "--confirm",
+                        digest,
+                    ]
+                ),
+                0,
+            )
+            self.assertEqual(
+                cli_main(
+                    [
+                        "--data-root",
+                        str(self.root),
+                        "render-plan",
+                        "2026-fall",
+                        "--as-of",
+                        "2026-08-30",
+                    ]
+                ),
+                0,
+            )
+        self.assertIn(
+            "cli-assessment",
+            {item["id"] for item in load_course_core(self.ws)["assessments"]},
+        )
+        self.assertTrue((self.semester_generated_dir() / "semester-plan.md").exists())
+
     def test_course_and_semester_home_are_deterministic_and_html_safe(self):
         self.intake()
         upsert_policy(
@@ -1773,10 +3671,24 @@ class SemesterCoreTests(ExternalTemporaryTestCase):
             kind="reading",
             added_at="2026-08-26T12:08:00Z",
         )
+        observation = append_source_observation(
+            self.ws,
+            "syllabus",
+            "full",
+            "no-relevant-change",
+            material_ids=[second["id"]],
+            observed_at="2026-08-27",
+            observation_id="syllabus-check-001",
+        )
         handoff = prepare_course_handoff(self.ws, [first["id"], second["id"]])
         self.assertEqual(
             sorted(path.name for path in handoff["attachments"].iterdir()),
-            ["course-context.md", "material-lecture-02.pptx", "material-reading-01.pdf"],
+            [
+                "course-context.md",
+                "material-lecture-02.pptx",
+                "material-reading-01.pdf",
+                "update-contract.json",
+            ],
         )
         prompt = handoff["prompt"].read_text()
         self.assertIn("do not choose a silent winner", prompt)
@@ -1789,7 +3701,16 @@ class SemesterCoreTests(ExternalTemporaryTestCase):
         )
         self.assertEqual(
             manifest["attachment_filenames"],
-            ["course-context.md", "material-lecture-02.pptx", "material-reading-01.pdf"],
+            [
+                "course-context.md",
+                "update-contract.json",
+                "material-lecture-02.pptx",
+                "material-reading-01.pdf",
+            ],
+        )
+        self.assertEqual(
+            manifest["update_contract_attachment"]["attachment_filename"],
+            "update-contract.json",
         )
         self.assertFalse((handoff["root"] / "course-context.md").exists())
         start_here = (handoff["root"] / "START-HERE.md").read_text()
@@ -1799,9 +3720,91 @@ class SemesterCoreTests(ExternalTemporaryTestCase):
             path.name: path.read_bytes() for path in handoff["attachments"].iterdir()
         }
         self.assertIn("course-context.md", transferred)
+        self.assertIn("update-contract.json", transferred)
         self.assertIn(b'"capability_tags"', transferred["course-context.md"])
         self.assertIn(b'"assessments"', transferred["course-context.md"])
         self.assertIn(b'"policies"', transferred["course-context.md"])
+        self.assertIn(b'"course_core"', transferred["course-context.md"])
+        self.assertIn(b'"created_at"', transferred["course-context.md"])
+        self.assertIn(b'"updated_at"', transferred["course-context.md"])
+        self.assertIn(observation["id"].encode(), transferred["course-context.md"])
+        contract = json.loads(transferred["update-contract.json"])
+        self.assertEqual(contract["schema_version"], core.UPDATE_CONTRACT_SCHEMA)
+        self.assertEqual(
+            contract["base_context_sha256"],
+            hashlib.sha256(transferred["course-context.md"]).hexdigest(),
+        )
+        self.assertEqual(contract["allowed_operation_kinds"], list(core.REVIEWED_OPERATION_KINDS))
+        self.assertEqual(contract["candidate_keys"], sorted(core._REVIEWED_UPDATE_KEYS))
+        constraints = contract["constraints"]
+        self.assertEqual(
+            constraints["base_identity"]["complete_semantic_sections"],
+            ["course", "course_core", "materials", "source_observations", "topics"],
+        )
+        self.assertTrue(constraints["base_identity"]["exact_attachment_bytes"])
+        self.assertEqual(
+            constraints["root"]["fields"]["schema_version"]["const"],
+            core.REVIEWED_UPDATE_SCHEMA,
+        )
+        self.assertEqual(constraints["root"]["fields"]["operations"]["min_items"], 1)
+        self.assertEqual(constraints["root"]["fields"]["operations"]["max_items"], 100)
+        self.assertEqual(
+            constraints["definitions"]["identifier"]["pattern"],
+            r"^[a-z0-9][a-z0-9._-]*$",
+        )
+        self.assertEqual(
+            constraints["definitions"]["utc_timestamp"]["pattern"],
+            r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$",
+        )
+        self.assertEqual(
+            constraints["definitions"]["observed_at"]["one_of_patterns"],
+            [
+                r"^\d{4}-\d{2}-\d{2}$",
+                r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$",
+            ],
+        )
+        self.assertEqual(
+            constraints["definitions"]["planner_value"]["timestamp_seconds"],
+            "required",
+        )
+        assessment_fields = constraints["operations"]["assessment-upsert"]["fields"]
+        self.assertEqual(assessment_fields["type"]["max_length"], 64)
+        self.assertEqual(assessment_fields["type"]["pattern"], r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+        self.assertEqual(
+            assessment_fields["weight"], {"ref": "nullable_measure"}
+        )
+        self.assertEqual(
+            constraints["operations"]["policy-upsert"]["fields"]["claims"][
+                "item_field_const"
+            ],
+            "rule",
+        )
+        self.assertEqual(
+            constraints["operations"]["source-observation"]["fields"]["material_ids"][
+                "ref"
+            ],
+            "identifier_list",
+        )
+        observation_id = constraints["operations"]["source-observation"]["fields"]["id"]
+        self.assertTrue(observation_id["append_only_identity"])
+        self.assertEqual(
+            observation_id["novelty"],
+            {
+                "existing_state_unique_against": "source_observations[*].id",
+                "ordered_candidate_unique_against": (
+                    "prior source-observation operations[*].id"
+                ),
+            },
+        )
+        self.assertFalse(observation_id["overwrite_existing"])
+        self.assertFalse(observation_id["reuse_existing"])
+        self.assertEqual(
+            constraints["claim"]["fields"]["field"]["forbidden_values"], ["due"]
+        )
+        self.assertEqual(
+            constraints["claim"]["fields"]["source"], {"ref": "nonempty_string"}
+        )
+        self.assertIn("only a reviewed candidate", " ".join(contract["rules"]))
         self.assertIn("Use course-context.md", handoff["prompt"].read_text())
         self.assertEqual(
             core.sha256_file(handoff["attachments"] / "material-lecture-02.pptx"),
@@ -1810,19 +3813,22 @@ class SemesterCoreTests(ExternalTemporaryTestCase):
         refreshed = prepare_course_handoff(self.ws, [second["id"]])
         self.assertEqual(
             sorted(path.name for path in refreshed["attachments"].iterdir()),
-            ["course-context.md", "material-reading-01.pdf"],
+            ["course-context.md", "material-reading-01.pdf", "update-contract.json"],
         )
         (refreshed["attachments"] / "stale-material.txt").write_bytes(b"stale")
         (refreshed["attachments"] / "course-context-old.md").write_bytes(b"stale context")
         zero = prepare_course_handoff(self.ws, [])
         self.assertEqual(
             sorted(path.name for path in zero["attachments"].iterdir()),
-            ["course-context.md"],
+            ["course-context.md", "update-contract.json"],
         )
         zero_manifest = json.loads((zero["root"] / "manifest.json").read_text())
         self.assertEqual(zero_manifest["material_ids"], [])
         self.assertEqual(zero_manifest["materials"], [])
-        self.assertEqual(zero_manifest["attachment_filenames"], ["course-context.md"])
+        self.assertEqual(
+            zero_manifest["attachment_filenames"],
+            ["course-context.md", "update-contract.json"],
+        )
         cli_output = io.StringIO()
         with redirect_stdout(cli_output):
             self.assertEqual(

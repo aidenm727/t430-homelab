@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+from datetime import date, datetime, timedelta, timezone
 from html import escape
 from pathlib import Path
 
@@ -11,11 +13,24 @@ from .core import (
     _atomic_term_bytes,
     _atomic_write_bytes,
     _confined_path,
+    _date,
     _load_state,
+    _school_timestamp_datetime,
     _semester_generated_dir,
+    _source_observation_recency_key,
     _term_confined_path,
     load_semester,
     workspace,
+)
+
+_PLANNING_ACTIVE_ASSESSMENT_STATUSES = {"upcoming", "available", "in-progress"}
+_PLANNING_MATERIAL_KINDS = {"reading", "listening-reference", "lab-field-guide"}
+_CANONICAL_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_LEGACY_COMPACT_MERIDIEM = re.compile(
+    r"^[A-Z][a-z]{2} (?:[1-9]|[12]\d|3[01]), \d{4}, (?:[1-9]|1[0-2]):[0-5]\d(?:am|pm)$"
+)
+_LEGACY_SPACED_MERIDIEM = re.compile(
+    r"^[A-Z][a-z]{2} (?:[1-9]|[12]\d|3[01]), \d{4}, (?:[1-9]|1[0-2]):[0-5]\d (?:AM|PM)$"
 )
 
 
@@ -225,4 +240,357 @@ def render_semester(sw: SemesterWorkspace) -> Path:
     return destination
 
 
-__all__ = ("render_course", "render_semester")
+def _supported_planning_value(
+    value: object,
+) -> tuple[tuple[str, date | datetime], date] | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        if _CANONICAL_DATE.fullmatch(value):
+            _date(value, "planning date")
+            parsed_date = datetime.strptime(value, "%Y-%m-%d").date()
+            return ("date", parsed_date), parsed_date
+        if "T" in value:
+            parsed = _school_timestamp_datetime(value, "planning timestamp")
+            return ("instant", parsed.astimezone(timezone.utc)), parsed.date()
+        if _LEGACY_COMPACT_MERIDIEM.fullmatch(value):
+            parsed = datetime.strptime(value, "%b %d, %Y, %I:%M%p")
+            return ("legacy-local-time", parsed), parsed.date()
+        if _LEGACY_SPACED_MERIDIEM.fullmatch(value):
+            parsed = datetime.strptime(value, "%b %d, %Y, %I:%M %p")
+            return ("legacy-local-time", parsed), parsed.date()
+    except (ValueError, TypeError):
+        return None
+    return None
+
+
+def _active_claims(item: dict[str, object], field: str) -> list[dict[str, object]]:
+    return [
+        claim
+        for claim in item["claims"]  # type: ignore[index]
+        if claim["field"] == field and claim["status"] != "superseded"
+    ]
+
+
+def _due_claims(item: dict[str, object]) -> list[dict[str, object]]:
+    return [
+        claim
+        for claim in item["claims"]  # type: ignore[index]
+        if claim["field"] in {"due", "due-at"} and claim["status"] != "superseded"
+    ]
+
+
+def _append_section(lines: list[str], title: str, entries: list[str], empty: str) -> None:
+    lines.extend(["", f"## {title}", ""])
+    lines.extend(entries if entries else [f"- {empty}"])
+
+
+def _assessment_line(
+    due: date, course_id: str, assessment: dict[str, object], *, prefix: str = ""
+) -> str:
+    marker = f"{prefix} " if prefix else ""
+    return (
+        f"- {marker}{due.isoformat()} — `{course_id}` / `{assessment['id']}` — "
+        f"{assessment['title']} (`{assessment['status']}`)"
+    )
+
+
+def _conflict_line(
+    course_id: str, assessment: dict[str, object], field: str, claims: list[dict[str, object]]
+) -> str:
+    values = "; ".join(
+        f"{claim['field']}={claim['value']} — source: {claim['source']} — "
+        f"observed: {claim['observed_at']}"
+        for claim in sorted(claims, key=lambda item: str(item["id"]))
+    )
+    return (
+        f"- `{course_id}` / `{assessment['id']}` — active `{field}` conflict: {values}"
+    )
+
+
+def render_plan(sw: SemesterWorkspace, as_of: str) -> Path:
+    as_of_value = _date(as_of, "semester plan as-of date")
+    if as_of_value is None:  # pragma: no cover - non-optional contract
+        raise ValueError("as-of date is required")
+    today = datetime.strptime(as_of_value, "%Y-%m-%d").date()
+    three_days = today + timedelta(days=3)
+    seven_days = today + timedelta(days=7)
+    semester = load_semester(sw)
+    states = [
+        _load_state(workspace(sw.data_root, sw.term, course_id))
+        for course_id in semester["course_ids"]
+    ]
+
+    due_now: list[tuple[date, str, str, str]] = []
+    due_three: list[tuple[date, str, str, str]] = []
+    due_seven: list[tuple[date, str, str, str]] = []
+    availability: list[tuple[date, str, str, str, str]] = []
+    preparation: list[tuple[date, str, str, str]] = []
+    conflicts: list[tuple[str, str, str, str]] = []
+    unstructured: list[tuple[str, str, str, str, str]] = []
+    future_by_course: dict[str, list[tuple[date, str, str, str]]] = {
+        course_id: [] for course_id in semester["course_ids"]
+    }
+
+    for state in states:
+        course_id = state.course["course_id"]
+        if state.core is not None:
+            for assessment in state.core["assessments"]:
+                if assessment["status"] not in _PLANNING_ACTIVE_ASSESSMENT_STATUSES:
+                    continue
+                due_claims = _due_claims(assessment)
+                supported_due_values: list[
+                    tuple[dict[str, object], tuple[tuple[str, date | datetime], date]]
+                ] = []
+                for claim in due_claims:
+                    parsed = _supported_planning_value(claim["value"])
+                    if parsed is None:
+                        unstructured.append(
+                            (
+                                course_id,
+                                assessment["id"],
+                                claim["field"],
+                                claim["id"],
+                                _claim_text(claim),
+                            )
+                        )
+                    else:
+                        supported_due_values.append((claim, parsed))
+                resolved_due: date | None = None
+                unsupported_due_count = len(due_claims) - len(supported_due_values)
+                meanings = {item[1][0] for item in supported_due_values}
+                planning_dates = {item[1][1] for item in supported_due_values}
+                due_conflict = False
+                if unsupported_due_count and len(due_claims) > 1:
+                    due_conflict = True
+                elif len(meanings) == 1 and len(planning_dates) == 1:
+                    resolved_due = next(iter(planning_dates))
+                elif len(meanings) > 1 or len(planning_dates) > 1:
+                    due_conflict = True
+                if due_conflict:
+                    due_fields = sorted({str(claim["field"]) for claim in due_claims})
+                    conflict_field = due_fields[0] if len(due_fields) == 1 else "due/due-at"
+                    conflicts.append(
+                        (
+                            course_id,
+                            assessment["id"],
+                            conflict_field,
+                            _conflict_line(
+                                course_id, assessment, conflict_field, due_claims
+                            ),
+                        )
+                    )
+                if resolved_due is not None:
+                    line = _assessment_line(resolved_due, course_id, assessment)
+                    if resolved_due <= today:
+                        prefix = "DUE TODAY" if resolved_due == today else "OVERDUE"
+                        due_now.append(
+                            (
+                                resolved_due,
+                                course_id,
+                                assessment["id"],
+                                _assessment_line(
+                                    resolved_due, course_id, assessment, prefix=prefix
+                                ),
+                            )
+                        )
+                    elif resolved_due <= three_days:
+                        due_three.append((resolved_due, course_id, assessment["id"], line))
+                    elif resolved_due <= seven_days:
+                        due_seven.append((resolved_due, course_id, assessment["id"], line))
+                    else:
+                        future_by_course[course_id].append(
+                            (resolved_due, "assessment", assessment["id"], assessment["title"])
+                        )
+                near_term = resolved_due is not None and resolved_due <= seven_days
+                if near_term:
+                    conflict_fields = sorted(
+                        {
+                            claim["field"]
+                            for claim in assessment["claims"]
+                            if claim["status"] == "conflicted"
+                            and claim["field"] not in {"due", "due-at"}
+                        }
+                    )
+                    for field in conflict_fields:
+                        field_claims = _active_claims(assessment, field)
+                        conflicts.append(
+                            (
+                                course_id,
+                                assessment["id"],
+                                field,
+                                _conflict_line(course_id, assessment, field, field_claims),
+                            )
+                        )
+                for field in ("available-at", "available-until"):
+                    field_claims = _active_claims(assessment, field)
+                    distinct_values = sorted({claim["value"] for claim in field_claims})
+                    for claim in field_claims:
+                        if _supported_planning_value(claim["value"]) is None:
+                            unstructured.append(
+                                (
+                                    course_id,
+                                    assessment["id"],
+                                    field,
+                                    claim["id"],
+                                    _claim_text(claim),
+                                )
+                            )
+                    if len(distinct_values) > 1:
+                        conflicts.append(
+                            (
+                                course_id,
+                                assessment["id"],
+                                field,
+                                _conflict_line(course_id, assessment, field, field_claims),
+                            )
+                        )
+                    elif len(distinct_values) == 1:
+                        available_value = _supported_planning_value(distinct_values[0])
+                        available_date = None if available_value is None else available_value[1]
+                        if available_date is not None and today <= available_date <= seven_days:
+                            label = "AVAILABLE" if field == "available-at" else "CLOSES"
+                            availability.append(
+                                (
+                                    available_date,
+                                    course_id,
+                                    assessment["id"],
+                                    field,
+                                    f"- {label} {available_date.isoformat()} — `{course_id}` / "
+                                    f"`{assessment['id']}` — {assessment['title']}",
+                                )
+                            )
+
+        for material in state.materials["materials"]:
+            if (
+                material.get("kind") not in _PLANNING_MATERIAL_KINDS
+                or material.get("status") in {"completed", "superseded"}
+                or material.get("relevant_date") is None
+            ):
+                continue
+            relevant = datetime.strptime(material["relevant_date"], "%Y-%m-%d").date()
+            if today <= relevant <= seven_days:
+                preparation.append(
+                    (
+                        relevant,
+                        course_id,
+                        material["id"],
+                        f"- {relevant.isoformat()} — `{course_id}` / `{material['id']}` — "
+                        f"{material['title']} (`{material['kind']}` / `{material['status']}`)",
+                    )
+                )
+            elif relevant > seven_days:
+                future_by_course[course_id].append(
+                    (relevant, "material", material["id"], material["title"])
+                )
+
+    coverage: list[str] = []
+    for state in states:
+        course_id = state.course["course_id"]
+        if state.core is None or not state.core["sources"]:
+            coverage.append(f"- `{course_id}` — no course source descriptors recorded")
+            continue
+        observations = (
+            [] if state.source_observations is None else state.source_observations["observations"]
+        )
+        for source in state.core["sources"]:
+            matching = [item for item in observations if item["source_id"] == source["id"]]
+            if not matching:
+                coverage.append(
+                    f"- `{course_id}` / `{source['id']}` — never observed in durable state"
+                )
+                continue
+            latest = max(matching, key=_source_observation_recency_key)
+            outcome = latest["outcome"].replace("-", " ")
+            coverage.append(
+                f"- `{course_id}` / `{source['id']}` — observed {latest['observed_at']} — "
+                f"{outcome} (`{latest['scope']}` scope)"
+            )
+    if not states:
+        coverage.append("- No registered courses; no course source descriptors recorded.")
+
+    longer: list[str] = []
+    for course_id in semester["course_ids"]:
+        items = sorted(future_by_course[course_id], key=lambda item: (item[0], item[1], item[2]))
+        if not items:
+            longer.append(f"- `{course_id}` — no later dated active item recorded.")
+            continue
+        first = items[0]
+        remainder = len(items) - 1
+        count_text = f"; {remainder} additional later item" + ("s" if remainder != 1 else "")
+        if remainder == 0:
+            count_text = "; no additional later items"
+        longer.append(
+            f"- `{course_id}` — next {first[0].isoformat()} {first[1]} `{first[2]}` — "
+            f"{first[3]}{count_text}."
+        )
+
+    lines = [
+        f"# {semester['title']} Semester Plan",
+        "",
+        f"Term: `{semester['term']}`  ",
+        f"As of: `{as_of_value}`",
+        "",
+        "Derived only from durable School Learning state. This projection is not a source of truth and does not assign urgency or confidence scores.",
+    ]
+    _append_section(
+        lines,
+        "Due / Overdue / Due Today",
+        [item[3] for item in sorted(due_now)],
+        "No resolved active assessment is due today or overdue.",
+    )
+    _append_section(
+        lines,
+        "Next 3 Days",
+        [item[3] for item in sorted(due_three)],
+        "No resolved active assessment is due in the next 3 days.",
+    )
+    _append_section(
+        lines,
+        "Next 7 Days",
+        [item[3] for item in sorted(due_seven)],
+        "No additional resolved active assessment is due in days 4 through 7.",
+    )
+    _append_section(
+        lines,
+        "Assessment Availability Windows",
+        [item[4] for item in sorted(availability)],
+        "No resolved assessment availability boundary is recorded in the next 7 days.",
+    )
+    _append_section(
+        lines,
+        "Dated Course Preparation / Materials",
+        [item[3] for item in sorted(preparation)],
+        "No dated reading, listening reference, or lab/field guide is recorded in the next 7 days.",
+    )
+    _append_section(lines, "Source Coverage / Observations", coverage, "No source coverage recorded.")
+    _append_section(
+        lines,
+        "Planning-Relevant Unresolved Conflicts",
+        [item[3] for item in sorted(set(conflicts))],
+        "No planning-relevant active assessment conflict is recorded.",
+    )
+    _append_section(
+        lines,
+        "Longer-Horizon Summary",
+        longer,
+        "No registered courses or later dated active items are recorded.",
+    )
+    _append_section(
+        lines,
+        "Unstructured Scheduling Claims That Cannot Safely Be Interpreted",
+        [f"- `{item[0]}` / `{item[1]}` — {item[4]}" for item in sorted(set(unstructured))],
+        "No unsupported active scheduling claim is recorded.",
+    )
+    lines.append("")
+    destination = _term_confined_path(
+        sw,
+        _semester_generated_dir(sw) / "semester-plan.md",
+        label="semester plan destination",
+        regular_if_present=True,
+    )
+    _atomic_term_bytes(sw, destination, "\n".join(lines).encode("utf-8"))
+    return destination
+
+
+__all__ = ("render_course", "render_plan", "render_semester")

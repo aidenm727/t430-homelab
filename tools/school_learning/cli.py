@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shlex
 from pathlib import Path
 
 from .core import (
@@ -13,8 +14,12 @@ from .core import (
     CLAIM_STATUSES,
     MATERIAL_KINDS,
     MATERIAL_LIFECYCLES,
+    SOURCE_OBSERVATION_OUTCOMES,
+    SOURCE_OBSERVATION_SCOPES,
     SchoolLearningError,
     add_material,
+    append_source_observation,
+    apply_update,
     default_data_root,
     ensure_topic,
     initialize_course,
@@ -24,12 +29,14 @@ from .core import (
     prepare_study_handoff,
     record_session,
     register_course,
+    review_update,
     semester_workspace,
     upsert_assessment,
     upsert_policy,
+    upsert_source,
     workspace,
 )
-from .render import render_course, render_semester
+from .render import render_course, render_plan, render_semester
 
 
 def _root(value: str | None) -> Path:
@@ -81,6 +88,26 @@ def parser() -> argparse.ArgumentParser:
     course.add_argument("--capability", action="append", choices=CAPABILITY_TAGS, default=[])
     course.add_argument("--source", action="append", default=[], metavar="ID|TITLE|REF|STATUS")
     course.add_argument("--metadata", action="append", default=[], metavar="KEY=VALUE")
+
+    source = commands.add_parser("source", help="add or maintain one course source descriptor")
+    source.add_argument("term")
+    source.add_argument("course_id")
+    source.add_argument("source_id")
+    source.add_argument("title")
+    source.add_argument("reference")
+    source.add_argument("--status", choices=CLAIM_STATUSES, default="provisional")
+    source.add_argument("--recorded-at")
+
+    observe = commands.add_parser("observe", help="append one durable course source observation")
+    observe.add_argument("term")
+    observe.add_argument("course_id")
+    observe.add_argument("source_id")
+    observe.add_argument("--scope", choices=SOURCE_OBSERVATION_SCOPES, required=True)
+    observe.add_argument("--outcome", choices=SOURCE_OBSERVATION_OUTCOMES, required=True)
+    observe.add_argument("--material", action="append", default=[])
+    observe.add_argument("--note", default="")
+    observe.add_argument("--observed-at")
+    observe.add_argument("--id", dest="observation_id")
 
     add = commands.add_parser("add-material")
     add.add_argument("term")
@@ -170,6 +197,13 @@ def parser() -> argparse.ArgumentParser:
     context.add_argument("course_id")
     context.add_argument("--material", action="append", default=[])
 
+    review = commands.add_parser("review-update", help="validate and preview a reviewed candidate")
+    review.add_argument("path")
+
+    apply = commands.add_parser("apply-update", help="atomically apply a confirmed reviewed candidate")
+    apply.add_argument("path")
+    apply.add_argument("--confirm", required=True)
+
     record = commands.add_parser("record")
     record.add_argument("term")
     record.add_argument("course_id")
@@ -187,6 +221,10 @@ def parser() -> argparse.ArgumentParser:
 
     semester_render = commands.add_parser("render-semester")
     semester_render.add_argument("term")
+
+    plan = commands.add_parser("render-plan", help="render a deterministic derived semester plan")
+    plan.add_argument("term")
+    plan.add_argument("--as-of", required=True)
     return result
 
 
@@ -212,6 +250,28 @@ def main(argv: list[str] | None = None) -> int:
                 metadata=_metadata(args.metadata),
             )
             print(ws.course_dir)
+        elif args.command == "source":
+            value = upsert_source(
+                workspace(root, args.term, args.course_id),
+                args.source_id,
+                args.title,
+                args.reference,
+                status=args.status,
+                recorded_at=args.recorded_at,
+            )
+            print(json.dumps(value, sort_keys=True))
+        elif args.command == "observe":
+            value = append_source_observation(
+                workspace(root, args.term, args.course_id),
+                args.source_id,
+                args.scope,
+                args.outcome,
+                material_ids=args.material,
+                note=args.note,
+                observed_at=args.observed_at,
+                observation_id=args.observation_id,
+            )
+            print(json.dumps(value, sort_keys=True))
         elif args.command == "add-material":
             ws = workspace(root, args.term, args.course_id)
             value = add_material(ws, args.source, args.material_id, args.title, replace=args.replace)
@@ -320,6 +380,25 @@ def main(argv: list[str] | None = None) -> int:
                 "Attach every required file under "
                 f"{handoff['attachments']} to the approved AI interface, then paste prompt.txt."
             )
+        elif args.command == "review-update":
+            result = review_update(root, args.path)
+            print(result["preview"], end="")
+            print("Apply command:")
+            print(
+                shlex.join(
+                    [
+                        "./school",
+                        "--data-root",
+                        str(root),
+                        "apply-update",
+                        str(result["path"]),
+                        "--confirm",
+                        result["digest"],
+                    ]
+                )
+            )
+        elif args.command == "apply-update":
+            print(json.dumps(apply_update(root, args.path, args.confirm), sort_keys=True, default=str))
         elif args.command == "record":
             value = record_session(
                 workspace(root, args.term, args.course_id),
@@ -336,6 +415,8 @@ def main(argv: list[str] | None = None) -> int:
             print("\n".join(str(path) for path in render_course(workspace(root, args.term, args.course_id))))
         elif args.command == "render-semester":
             print(render_semester(semester_workspace(root, args.term)))
+        elif args.command == "render-plan":
+            print(render_plan(semester_workspace(root, args.term), args.as_of))
         else:  # pragma: no cover
             raise AssertionError(args.command)
     except SchoolLearningError as error:

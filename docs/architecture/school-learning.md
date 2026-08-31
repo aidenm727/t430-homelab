@@ -8,7 +8,7 @@ and owner-reviewed learning state. Repository code and architecture are
 engineering state; personal course content and runtime state remain outside Git
 under the owner's selected data root.
 
-## Proven Baseline and SL2-A Evolution
+## Proven Baseline and Operational-Loop Evolution
 
 v0.1.1 proved the bounded course loop: initialize a course, copy PDF/Markdown/
 text materials with exact identity, select a topic, prepare a Guided Study
@@ -27,21 +27,46 @@ Initialize semester
   -> Manually use an approved AI consumer
 ```
 
-It does not add adaptive learner dimensions, model invocation, or an external
+The Tier-2 School Learning Operational Loop extends that foundation without
+changing the learner-state boundary:
+
+```text
+Existing material intake and durable course evidence
+  -> manual course-chat interpretation
+  -> structured reviewed candidate
+  -> deterministic local preview
+  -> explicit owner digest confirmation
+  -> one bounded atomic apply
+  -> durable academic and operational state
+  -> derived semester planning projection
+```
+
+It does not add adaptive learner dimensions, model invocation, automatic AI
+writes, raw material intake through reviewed updates, or an external
 integration.
 
 ## Truth Boundaries
 
-School Learning keeps three kinds of truth distinct:
+School Learning keeps four state/view categories distinct:
 
-- **Academic truth** is explicit stored course identity, source descriptors,
+- **Academic state** is explicit stored course identity, source descriptors,
   materials, assessments, policies, dates, and provenance claims. Conflicting
   consequential claims remain side by side with their status and source.
-- **Learner truth** is owner-reviewed topic and session state. The retained
+- **Learner state** is owner-reviewed topic and session state. The retained
   statuses are `unseen`, `learning`, `review`, and `solid`; retained outcomes are
-  `correct`, `partial`, and `incorrect`. Intake never changes learner truth.
-- **Operational truth** is the local file identity and workflow state: confined
-  paths, SHA-256, byte counts, generated packages, and atomic persistence.
+  `correct`, `partial`, and `incorrect`. Intake, source observations, reviewed
+  candidates, and planning renders never infer or change learner state.
+- **Operational source observation** records which registered course source
+  surface was checked, when, whether the check was full or partial, its bounded
+  outcome, and any explicitly related material. It is evidence about a check,
+  not academic or learner truth.
+- **Derived planning projection** is a temporary deterministic "what matters
+  now?" view over durable state for an explicit as-of date. It is never
+  canonical state and never chooses a winner from conflicting claims.
+
+Workflow integrity remains an independent implementation boundary: confined
+paths, SHA-256 identities, byte counts, generated packages, exact validation,
+and atomic persistence protect all four categories.
 
 No one truth category silently creates another. In particular, a file upload,
 assessment deadline, or AI response cannot establish mastery.
@@ -57,10 +82,12 @@ outside this repository and every Git worktree.
 ├── .school-learning/
 │   ├── semester.json
 │   └── generated/
-│       └── semester-home.md
+│       ├── semester-home.md
+│       └── semester-plan.md
 └── <course-id>/
     ├── course.json
     ├── course-core.json
+    ├── source-observations.json        # optional
     ├── materials.json
     ├── topics.json
     ├── materials/
@@ -76,8 +103,12 @@ ordinary sibling course workspaces and can never alias semester state or
 generated output. Each course continues to own its existing workspace; SL2-A
 does not move material, topic, session, or generated directories. `course-core.json`
 owns the additive v0.2 course profile, authoritative source descriptors,
-structured metadata, assessments, policies, and their claims. `course.json`,
-topics, and sessions retain their proven v0.1 contracts.
+structured metadata, assessments, policies, and their claims. Optional
+`source-observations.json` owns append-only operational source checks. Its
+absence is valid and means only that no source-observation state has been
+recorded; it does not prove a source was never checked in reality and does not
+mean that no coursework exists. `course.json`, topics, and sessions retain
+their proven v0.1 contracts.
 
 Every persisted schema uses exact-key validation. Identifiers are path-safe.
 Reads and writes reject symlinks and path escapes. State and generated-file
@@ -125,6 +156,28 @@ creative/applied work, project based, team based, tool skill,
 reading/listening, attendance sensitivity, equipment/logistics, and AI-policy
 sensitivity. Runtime owner data supplies actual course choices; none are
 hard-coded in the repository.
+
+One source descriptor can be added or maintained by ID with `./school source`
+without reconstructing the complete profile. The operation preserves unrelated
+capability tags, metadata, assessments, policies, and source descriptors, and
+the resulting source list remains unique and deterministically sorted.
+
+## Operational Source Observations
+
+`source-observations.json` uses the exact-key
+`aiden.school.source-observations/v0.1` schema. Each append-only record preserves
+an ID, registered `source_id`, explicit observed date or canonical School
+Learning timestamp, scope (`full` or `partial`), outcome (`changed`,
+`no-relevant-change`, or `unavailable`), sorted course-local material
+relationships, and a note. Source and material references must resolve before
+mutation. Duplicate IDs, malformed persisted state, invalid enums or dates, and
+unknown references fail closed.
+
+`./school observe` appends only explicit operational evidence. Intake never
+infers an observation. The latest observation per source is derived from the
+records rather than persisted separately, and no observation operation changes
+topics, sessions, outcomes, review priority, mastery, or any other learner
+state.
 
 ## Materials, Topics, Assessments, and Policies
 
@@ -187,6 +240,73 @@ to provisional until explicitly confirmed. No value is deleted or selected as
 a winner. Policy aggregate status is deterministically derived from its claims
 and persisted state is rejected if the aggregate diverges.
 
+## Reviewed Structured Update Return Path
+
+The manual course-chat return path is:
+
+```text
+evidence -> candidate -> preview -> owner approval -> bounded apply
+```
+
+`aiden.school.reviewed-update/v0.1` is an exact-key, data-only candidate
+schema. Its root names one term and course, the SHA-256 of the exact current
+`course-context.md` bytes, and an ordered operation list. Those deterministic
+context bytes are the reviewed semantic-state identity: they include the exact
+complete course core, including `created_at` and `updated_at`, plus the course,
+materials, topics, and source-observation state that reviewed operations inspect,
+validate against, or may overwrite. The initial operation allowlist is
+assessment upsert, policy upsert, source upsert, and source observation.
+Assessment and policy operations contain one or more sourced claims and reuse
+the existing provenance/conflict model. The schema cannot express shell
+commands, executable code, raw byte intake, arbitrary paths or file writes,
+external actions, learner/mastery changes, or references outside the named
+course.
+
+New reviewed candidates cannot use the legacy scheduling field `due`; they use
+`due-at` for normalized forward scheduling. `due-at`, `available-at`, and
+`available-until` values must be canonical `YYYY-MM-DD` or use the canonical
+School Learning timestamp subset. That timestamp subset requires the complete
+date and time through whole seconds plus an explicit `Z` or numeric
+`+/-HH:MM` offset. Fractional seconds are optional; when present they contain
+exactly 1 through 6 digits. Seven or more digits, an omitted seconds field, an
+omitted timezone, or a malformed offset is invalid. The runtime parses those
+validated components deterministically and right-pads accepted fractional
+digits for microsecond representation; it never delegates grammar acceptance
+to a Python-version-specific ISO parser and never truncates excess precision.
+Source-observation timestamps use the same canonical subset. Other claim fields
+remain extensible human-readable strings and continue to preserve conflicts.
+
+Reviewed source-observation material relationships must already be valid,
+sorted, and unique; candidate validation never repairs their ordering or
+duplicates before semantic digesting. A source-observation ID is an append-only
+identity, not an update key: it must satisfy the identifier grammar, must not
+already occur in `source_observations[*].id` from the supplied base context, and
+must not match an ID from any earlier source-observation operation in the same
+ordered candidate. Existing observation IDs cannot be overwritten or reused.
+
+`./school review-update PATH` exactly validates the candidate and all proposed
+cross-references, recomputes the current strict course-context identity,
+simulates the complete ordered operation list in memory, prints a deterministic
+durable-state diff, and prints the semantic SHA-256 of canonical validated JSON.
+Preview performs no durable or generated-state mutation. A base-context mismatch
+fails as stale before approval.
+
+`./school apply-update PATH --confirm DIGEST` rereads and revalidates the file,
+requires the exact semantic digest, rechecks the context base, and re-simulates
+all operations. Immediately before final persistence it reloads the complete
+mutation-relevant state, recomputes the same semantic-state identity used by
+preview, rejects any mismatch, and simulates from that rechecked state. A changed
+candidate needs a new preview and digest; even a timestamp-only course-core
+mutation makes the old candidate stale. The complete proposed academic and
+observation state is validated before persistence. When more than one state file
+changes, exact prior bytes and existence are retained and a failure restores the
+complete prior state; a newly created observation file is removed on rollback.
+No partial reviewed update may survive.
+
+Returning a candidate from an AI interface does not approve it and does not
+change local state. The owner remains the only approval boundary, and reviewed
+updates never accept raw material-byte intake.
+
 ## Generated Views
 
 Course Home remains static deterministic HTML and escapes user-supplied values.
@@ -199,14 +319,68 @@ shows courses, known assessments and their claims, and provisional/conflicted
 information. It does not claim knowledge of personal availability, work shifts,
 Calendar state, or recommended study scheduling.
 
+Semester Plan is a separate derived Markdown projection written to
+`.school-learning/generated/semester-plan.md`. `./school render-plan TERM
+--as-of YYYY-MM-DD` requires an explicit date so repeated rendering over the
+same durable bytes is deterministic. The compact view separates due/overdue,
+next-three-day, next-seven-day, dated preparation material, source coverage,
+assessment availability windows, planning conflicts, longer-horizon summaries,
+and scheduling values that cannot safely be interpreted. It assigns no urgency
+or confidence score and never becomes canonical state.
+
+Active assessment planning treats active legacy `due` and normalized `due-at`
+claims as one complete semantic due-date family and ignores superseded claims.
+A due value may be ranked only when every active family member is supported by
+the bounded parser and every interpreted value has the same semantic meaning.
+Equal supported aliases therefore rank once. Differing supported meanings, or
+any mixture of supported and unsupported active family members, produce no
+winner; the complete active set, including source and observation provenance,
+remains in the conflict section, and each unsupported value is also shown as
+unstructured scheduling information. If every active member is unsupported,
+all remain unstructured and none is ranked; when that set has multiple members,
+the complete set also remains a planning conflict. A single supported active
+member ranks normally, while a single unsupported member remains unstructured.
+Submitted, graded, and reviewed assessments are not active due work. Dated
+preparation is limited to explicit relevant dates on planner-useful reading,
+listening-reference, and lab/field-guide materials; syllabus and course
+snapshots do not become preparation merely because they have a date. Source
+coverage shows the latest durable observation or explicitly says that a
+registered source has never been observed in durable state; it does not decide
+whether a source is fresh enough. For Semester Plan source-coverage recency,
+canonical timestamps are compared as UTC instants using the shared School
+Learning timestamp parser, with observation ID used only to break a semantic
+instant tie. For this ordering only, a date-only observation is represented by
+the UTC start-of-day sentinel for that date, so `2026-09-01` orders equally with
+`2026-09-01T00:00:00Z`. This deterministic cross-precision convention is not
+evidence that a date-only observation actually occurred at midnight and does
+not assign it local-time semantics.
+
+The normalized formats above are the forward contract. For existing SL2-A
+state, the planner also has a small explicit legacy parser for `Sep 8, 2026,
+11:59pm`, `Aug 30, 2026, 11:59 PM`, and `YYYY-MM-DD` shapes. It is not a natural
+language parser. Unsupported values are reported under unstructured scheduling
+claims and are never guessed. Semester Home remains the complete audit-oriented
+inventory; Semester Plan is the as-of operational projection.
+
 ## Local AI Boundary and Portable Handoffs
 
 The existing Guided Study Handoff remains intact. SL2-A also provides a course
 handoff that does not require a study topic. It contains strict durable course
-context, a grounding prompt, a manifest, and every and only explicitly selected
-material attachment. `attachments/course-context.md` is a required,
-distinguished context/support attachment even when zero materials are selected;
-the manifest records it separately from selected material records and IDs.
+context, a grounding prompt, a manifest, a deterministic update contract, and
+every and only explicitly selected material attachment.
+`attachments/course-context.md` includes exact source-observation state and is
+a required distinguished context/support attachment even when zero materials
+are selected. `attachments/update-contract.json` is a second required
+distinguished attachment. It records the reviewed-update schema, term, course,
+exact course-context SHA-256, operation keys, bounded enums, and a deterministic
+machine-readable constraint map. That map is self-contained for candidate
+construction: it states exact keys and constants, identifier and assessment-type
+grammars, string and nullability rules, the canonical timestamp/date forms,
+source-observation append-only identity plus base-state and prior-operation
+novelty scopes, list and claim constraints, cross-reference rules, operation
+bounds, the complete base identity coverage, and the fact that AI output is
+only a candidate. The manifest records both required attachments separately
+from selected material records and IDs.
 `START-HERE.md` and CLI output direct the owner to attach every required file in
 `attachments/` and then paste `prompt.txt`, so durable profile, assessment,
 policy, provenance, and conflict state reach the consumer. Each selected
@@ -218,15 +392,22 @@ The production runtime has no network or model dependency. The owner manually
 transfers a prepared package to an approved AI consumer. The prompt requires
 the consumer to preserve conflicts, distinguish general knowledge, disclose
 insufficient evidence, and not invent course facts, deadlines, policies,
-permission, grades, readiness, or mastery. AI output is never ingested or used
-to update learner state automatically.
+permission, grades, readiness, or mastery. When the owner explicitly asks to
+synchronize reviewed findings, the prompt requires a candidate matching the
+attached contract and forbids claiming that the candidate changed local state.
+AI output is never automatically applied or used to update learner state.
 
 ## Explicit Exclusions and Future SL2-B
 
-SL2-A excludes LMS/Canvas scraping, Calendar, email, OCR, semantic extraction,
-embeddings, vector databases, knowledge graphs, provider/model APIs, automatic
-assistant-response ingestion, autonomous scheduling or notifications, grade or
-readiness inference, and live personal-data migration.
+This checkpoint excludes LMS/Canvas scraping, Calendar, Gmail/email, OCR,
+audio/MP3 intake, semantic extraction, embeddings, vector databases, knowledge
+graphs, provider/model APIs, automatic assistant-response application,
+automatic mastery inference, planner-confidence scoring, class-calendar
+models, autonomous scheduling or notifications, assessment-status event
+history, claim-taxonomy redesign, and live personal-data migration or rewrite.
+Future Canvas, Calendar, or email capabilities could be separately designed as
+producers or consumers of bounded state, but they are not integrations or an
+architecture established here.
 
 SL2-B is future adaptive learning and coursework behavior. Multidimensional
 learner state, prerequisite adaptation, automatic mastery inference, policy

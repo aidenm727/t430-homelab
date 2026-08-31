@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import difflib
 import hashlib
 import json
 import os
@@ -9,7 +10,7 @@ import re
 import stat
 import tempfile
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Iterable
 
@@ -21,7 +22,10 @@ COURSE_CORE_SCHEMA = "aiden.school.course-core/v0.2"
 MATERIALS_V02_SCHEMA = "aiden.school.materials/v0.2"
 SESSION_SCHEMA = "aiden.school.session/v0.1"
 STUDY_HANDOFF_SCHEMA = "aiden.school.study-handoff/v0.1.1"
-COURSE_HANDOFF_SCHEMA = "aiden.school.course-handoff/v0.2"
+COURSE_HANDOFF_SCHEMA = "aiden.school.course-handoff/v0.3"
+SOURCE_OBSERVATIONS_SCHEMA = "aiden.school.source-observations/v0.1"
+REVIEWED_UPDATE_SCHEMA = "aiden.school.reviewed-update/v0.1"
+UPDATE_CONTRACT_SCHEMA = "aiden.school.update-contract/v0.1"
 SUPPORTED_SUFFIXES = {
     ".pdf": "pdf",
     ".md": "markdown",
@@ -83,12 +87,38 @@ ASSESSMENT_STATUSES = (
     "reviewed",
 )
 CLAIM_STATUSES = ("confirmed", "provisional", "conflicted", "superseded")
+SOURCE_OBSERVATION_SCOPES = ("full", "partial")
+SOURCE_OBSERVATION_OUTCOMES = ("changed", "no-relevant-change", "unavailable")
+REVIEWED_OPERATION_KINDS = (
+    "assessment-upsert",
+    "policy-upsert",
+    "source-upsert",
+    "source-observation",
+)
+PLANNER_CRITICAL_CLAIM_FIELDS = ("due-at", "available-at", "available-until")
+_UPDATE_CONTRACT_RULES = (
+    "Return one JSON object only, as data; do not return commands or executable code.",
+    "Use only the exact operation keys and bounded values declared by this contract.",
+    "Assessment and policy operations require one or more sourced claims with exact claim keys.",
+    "Identifier relationship lists must be sorted and unique; nullable grading measures use JSON null.",
+    "Source-observation IDs are append-only identities: each must be absent from base source observations and all prior source-observation operations in this ordered candidate.",
+    "Never use the legacy due field; use due-at for normalized forward scheduling.",
+    "Use due-at, available-at, and available-until for planner-critical claims, with YYYY-MM-DD or the canonical School Learning timestamp subset: seconds, an explicit Z/numeric offset, and optional 1-through-6-digit fractional seconds.",
+    "Do not include raw material bytes, intake requests, paths, arbitrary writes, or external actions.",
+    "Do not include learner, topic, session, mastery, or cross-course updates.",
+    "The returned JSON is only a reviewed candidate and does not change local state.",
+)
 _COMPONENT = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 _TIMESTAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_SCHOOL_TIMESTAMP = re.compile(
+    r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$"
+)
 _DIGEST = re.compile(r"^[0-9a-f]{64}$")
 _ASSESSMENT_TYPE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 _ASSESSMENT_TYPE_MAX_LENGTH = 64
+_REVIEWED_UPDATE_MAX_OPERATIONS = 100
+_REVIEWED_UPDATE_MAX_BYTES = 1_000_000
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 _REQUIRED_DIRECTORIES = ("materials", "sessions", "generated")
 _SEMESTER_METADATA_DIRECTORY = ".school-learning"
@@ -191,12 +221,61 @@ _COURSE_HANDOFF_KEYS = frozenset(
         "term",
         "attachment_filenames",
         "context_attachment",
+        "update_contract_attachment",
         "material_ids",
         "materials",
     }
 )
 _COURSE_HANDOFF_CONTEXT_KEYS = frozenset(
     {"role", "attachment_filename", "sha256", "bytes"}
+)
+_SOURCE_OBSERVATIONS_KEYS = frozenset({"schema_version", "observations"})
+_SOURCE_OBSERVATION_KEYS = frozenset(
+    {"id", "source_id", "observed_at", "scope", "outcome", "material_ids", "note"}
+)
+_REVIEWED_UPDATE_KEYS = frozenset(
+    {"schema_version", "term", "course_id", "base_context_sha256", "operations"}
+)
+_REVIEWED_CLAIM_KEYS = frozenset({"field", "value", "source", "observed_at", "status"})
+_REVIEWED_ASSESSMENT_KEYS = frozenset(
+    {
+        "kind",
+        "id",
+        "title",
+        "type",
+        "status",
+        "weight",
+        "points",
+        "xp",
+        "material_ids",
+        "topic_ids",
+        "claims",
+        "recorded_at",
+    }
+)
+_REVIEWED_POLICY_KEYS = frozenset(
+    {"kind", "id", "title", "category", "claims", "recorded_at"}
+)
+_REVIEWED_SOURCE_KEYS = frozenset(
+    {"kind", "id", "title", "reference", "status", "recorded_at"}
+)
+_REVIEWED_OBSERVATION_KEYS = _SOURCE_OBSERVATION_KEYS | frozenset({"kind"})
+_UPDATE_CONTRACT_KEYS = frozenset(
+    {
+        "schema_version",
+        "reviewed_update_schema_version",
+        "term",
+        "course_id",
+        "base_context_sha256",
+        "allowed_operation_kinds",
+        "candidate_keys",
+        "operation_keys",
+        "claim_keys",
+        "bounded_values",
+        "max_operations",
+        "constraints",
+        "rules",
+    }
 )
 
 
@@ -226,6 +305,7 @@ class _State:
     topics: dict[str, Any]
     sessions: tuple[dict[str, Any], ...]
     core: dict[str, Any] | None = None
+    source_observations: dict[str, Any] | None = None
 
 
 def utc_now() -> str:
@@ -278,7 +358,49 @@ def _date(value: object, label: str, *, optional: bool = False) -> str | None:
 def _observed_at(value: object, label: str) -> str:
     if isinstance(value, str) and _DATE.fullmatch(value):
         return _date(value, label) or ""  # pragma: no cover - non-optional contract
-    return _timestamp(value, label)
+    _school_timestamp_datetime(value, label)
+    return value
+
+
+def _school_timestamp_datetime(value: object, label: str) -> datetime:
+    if not isinstance(value, str) or not _SCHOOL_TIMESTAMP.fullmatch(value):
+        raise SchoolLearningError(
+            f"{label} must use the canonical School Learning timestamp subset with "
+            "seconds, an explicit Z/offset, and at most 6 fractional-second digits"
+        )
+    date_text = value[:10]
+    zone_text = "Z" if value.endswith("Z") else value[-6:]
+    clock_text = value[11:-1] if zone_text == "Z" else value[11:-6]
+    whole_seconds, separator, fraction = clock_text.partition(".")
+    if separator:
+        microsecond = int(fraction.ljust(6, "0"))
+    else:
+        microsecond = 0
+    if zone_text == "Z":
+        zone = timezone.utc
+    else:
+        offset_hours = int(zone_text[1:3])
+        offset_minutes = int(zone_text[4:6])
+        if offset_hours > 23 or offset_minutes > 59:
+            raise SchoolLearningError(f"{label} has an invalid numeric timezone offset")
+        offset = timedelta(hours=offset_hours, minutes=offset_minutes)
+        zone = timezone(-offset if zone_text[0] == "-" else offset)
+    try:
+        parsed = datetime(
+            int(date_text[0:4]),
+            int(date_text[5:7]),
+            int(date_text[8:10]),
+            int(whole_seconds[0:2]),
+            int(whole_seconds[3:5]),
+            int(whole_seconds[6:8]),
+            microsecond=microsecond,
+            tzinfo=zone,
+        )
+    except ValueError as error:
+        raise SchoolLearningError(
+            f"{label} must be a valid canonical School Learning timestamp"
+        ) from error
+    return parsed
 
 
 def _nonempty_string(value: object, label: str) -> str:
@@ -1587,6 +1709,82 @@ def _validate_course_core(value: object, ws: Workspace) -> dict[str, Any]:
     return record
 
 
+def _empty_source_observations() -> dict[str, Any]:
+    return {"schema_version": SOURCE_OBSERVATIONS_SCHEMA, "observations": []}
+
+
+def _validate_source_observation(value: object, label: str = "source observation") -> dict[str, Any]:
+    record = _exact_object(value, _SOURCE_OBSERVATION_KEYS, label)
+    _component(record["id"], f"{label} id")
+    _component(record["source_id"], f"{label} source id")
+    _observed_at(record["observed_at"], f"{label} observed date")
+    if record["scope"] not in SOURCE_OBSERVATION_SCOPES:
+        raise SchoolLearningError(f"{label} scope is invalid")
+    if record["outcome"] not in SOURCE_OBSERVATION_OUTCOMES:
+        raise SchoolLearningError(f"{label} outcome is invalid")
+    material_ids = _identifier_list(record["material_ids"], f"{label} material ids")
+    if material_ids != sorted(material_ids):
+        raise SchoolLearningError(f"{label} material ids must be sorted")
+    if not isinstance(record["note"], str):
+        raise SchoolLearningError(f"{label} note must be a string")
+    return record
+
+
+def _source_observation_recency_key(value: object) -> tuple[datetime, str]:
+    record = _validate_source_observation(value, "source observation recency candidate")
+    observed_at = record["observed_at"]
+    if _DATE.fullmatch(observed_at):
+        _date(observed_at, "source observation recency date")
+        instant = datetime(
+            int(observed_at[0:4]),
+            int(observed_at[5:7]),
+            int(observed_at[8:10]),
+            tzinfo=timezone.utc,
+        )
+    else:
+        instant = _school_timestamp_datetime(
+            observed_at, "source observation recency timestamp"
+        ).astimezone(timezone.utc)
+    return instant, record["id"]
+
+
+def _validate_source_observations(value: object) -> dict[str, Any]:
+    state = _exact_object(value, _SOURCE_OBSERVATIONS_KEYS, "source observations state")
+    if state["schema_version"] != SOURCE_OBSERVATIONS_SCHEMA:
+        raise SchoolLearningError("unsupported source observations schema")
+    if not isinstance(state["observations"], list):
+        raise SchoolLearningError("source observations must be a list")
+    records = [
+        _validate_source_observation(item, "source observation entry")
+        for item in state["observations"]
+    ]
+    ids = [item["id"] for item in records]
+    if len(set(ids)) != len(ids):
+        raise SchoolLearningError("source observation identifiers must be unique")
+    return state
+
+
+def _validate_source_observation_references(
+    observations: dict[str, Any], materials: dict[str, Any], core: dict[str, Any] | None
+) -> None:
+    if observations["observations"] and core is None:
+        raise SchoolLearningError("source observations require registered v0.2 course core state")
+    source_ids = set() if core is None else {item["id"] for item in core["sources"]}
+    material_ids = {item["id"] for item in materials["materials"]}
+    for observation in observations["observations"]:
+        if observation["source_id"] not in source_ids:
+            raise SchoolLearningError(
+                f"source observation {observation['id']} references unknown source: "
+                f"{observation['source_id']}"
+            )
+        unknown = set(observation["material_ids"]) - material_ids
+        if unknown:
+            raise SchoolLearningError(
+                f"source observation {observation['id']} references unknown materials: "
+                + ", ".join(sorted(unknown))
+            )
+
+
 def _identifier_list(value: object, label: str) -> list[str]:
     if not isinstance(value, list):
         raise SchoolLearningError(f"{label} must be a list")
@@ -1711,6 +1909,282 @@ def _validate_study_handoff_manifest(value: object) -> dict[str, Any]:
     return manifest
 
 
+def _update_contract_value(term: str, course_id: str, base_context_sha256: str) -> dict[str, Any]:
+    definitions = {
+        "date": {
+            "calendar_valid": True,
+            "pattern": _DATE.pattern,
+            "type": "string",
+        },
+        "identifier": {
+            "forbidden_values": [".", ".."],
+            "path_safe": True,
+            "pattern": _COMPONENT.pattern,
+            "type": "string",
+        },
+        "identifier_list": {
+            "items": {"ref": "identifier"},
+            "sorted": True,
+            "type": "array",
+            "unique": True,
+        },
+        "nonempty_string": {
+            "min_trimmed_length": 1,
+            "normalization": "strip",
+            "type": "string",
+        },
+        "nullable_measure": {
+            "allowed_types": ["null", "string"],
+            "string_min_trimmed_length": 1,
+            "string_normalization": "strip",
+        },
+        "observed_at": {
+            "calendar_valid": True,
+            "one_of_patterns": [_DATE.pattern, _SCHOOL_TIMESTAMP.pattern],
+            "timestamp_fractional_seconds": {
+                "max_digits": 6,
+                "min_digits_when_present": 1,
+                "optional": True,
+            },
+            "timestamp_seconds": "required",
+            "timestamp_subset": "canonical-school-learning",
+            "timestamp_timezone": "explicit-Z-or-numeric-offset",
+            "type": "string",
+        },
+        "plain_string": {"type": "string"},
+        "planner_value": {
+            "calendar_valid": True,
+            "one_of_patterns": [_DATE.pattern, _SCHOOL_TIMESTAMP.pattern],
+            "timestamp_fractional_seconds": {
+                "max_digits": 6,
+                "min_digits_when_present": 1,
+                "optional": True,
+            },
+            "timestamp_seconds": "required",
+            "timestamp_subset": "canonical-school-learning",
+            "timestamp_timezone": "explicit-Z-or-numeric-offset",
+            "type": "string",
+        },
+        "sha256": {
+            "algorithm": "sha256",
+            "lowercase_hex": True,
+            "pattern": _DIGEST.pattern,
+            "type": "string",
+        },
+        "utc_timestamp": {
+            "calendar_valid": True,
+            "pattern": _TIMESTAMP.pattern,
+            "seconds": "required",
+            "timezone": "Z",
+            "type": "string",
+        },
+    }
+    claim = {
+        "exact_keys": sorted(_REVIEWED_CLAIM_KEYS),
+        "fields": {
+            "field": {
+                "forbidden_values": ["due"],
+                "planner_critical_values": list(PLANNER_CRITICAL_CLAIM_FIELDS),
+                "ref": "identifier",
+            },
+            "observed_at": {"ref": "observed_at"},
+            "source": {"ref": "nonempty_string"},
+            "status": {"enum": list(CLAIM_STATUSES), "type": "string"},
+            "value": {
+                "planner_critical_ref": "planner_value",
+                "ref": "nonempty_string",
+            },
+        },
+        "type": "object",
+    }
+    claim_list = {
+        "items": {"ref": "claim"},
+        "min_items": 1,
+        "semantic_identity_fields": ["field", "value", "source", "observed_at"],
+        "semantic_identity_unique": True,
+        "type": "array",
+    }
+    operations = {
+        "assessment-upsert": {
+            "exact_keys": sorted(_REVIEWED_ASSESSMENT_KEYS),
+            "fields": {
+                "claims": claim_list,
+                "id": {"ref": "identifier"},
+                "kind": {"const": "assessment-upsert", "type": "string"},
+                "material_ids": {
+                    "must_resolve": "current-course-materials",
+                    "ref": "identifier_list",
+                },
+                "points": {"ref": "nullable_measure"},
+                "recorded_at": {"ref": "utc_timestamp"},
+                "status": {"enum": list(ASSESSMENT_STATUSES), "type": "string"},
+                "title": {"ref": "nonempty_string"},
+                "topic_ids": {
+                    "must_resolve": "current-course-topics",
+                    "ref": "identifier_list",
+                },
+                "type": {
+                    "already_normalized": True,
+                    "max_length": _ASSESSMENT_TYPE_MAX_LENGTH,
+                    "pattern": _ASSESSMENT_TYPE.pattern,
+                    "type": "string",
+                },
+                "weight": {"ref": "nullable_measure"},
+                "xp": {"ref": "nullable_measure"},
+            },
+            "type": "object",
+        },
+        "policy-upsert": {
+            "exact_keys": sorted(_REVIEWED_POLICY_KEYS),
+            "fields": {
+                "category": {"ref": "identifier"},
+                "claims": {**claim_list, "item_field_const": "rule"},
+                "id": {"ref": "identifier"},
+                "kind": {"const": "policy-upsert", "type": "string"},
+                "recorded_at": {"ref": "utc_timestamp"},
+                "title": {"ref": "nonempty_string"},
+            },
+            "type": "object",
+        },
+        "source-observation": {
+            "exact_keys": sorted(_REVIEWED_OBSERVATION_KEYS),
+            "fields": {
+                "id": {
+                    "append_only_identity": True,
+                    "novelty": {
+                        "existing_state_unique_against": "source_observations[*].id",
+                        "ordered_candidate_unique_against": (
+                            "prior source-observation operations[*].id"
+                        ),
+                    },
+                    "overwrite_existing": False,
+                    "ref": "identifier",
+                    "reuse_existing": False,
+                },
+                "kind": {"const": "source-observation", "type": "string"},
+                "material_ids": {
+                    "must_resolve": "current-course-materials",
+                    "ref": "identifier_list",
+                },
+                "note": {"ref": "plain_string"},
+                "observed_at": {"ref": "observed_at"},
+                "outcome": {
+                    "enum": list(SOURCE_OBSERVATION_OUTCOMES),
+                    "type": "string",
+                },
+                "scope": {"enum": list(SOURCE_OBSERVATION_SCOPES), "type": "string"},
+                "source_id": {
+                    "must_resolve": "current-or-prior-operation-course-sources",
+                    "ref": "identifier",
+                },
+            },
+            "type": "object",
+        },
+        "source-upsert": {
+            "exact_keys": sorted(_REVIEWED_SOURCE_KEYS),
+            "fields": {
+                "id": {"ref": "identifier"},
+                "kind": {"const": "source-upsert", "type": "string"},
+                "recorded_at": {"ref": "utc_timestamp"},
+                "reference": {"ref": "nonempty_string"},
+                "status": {"enum": list(CLAIM_STATUSES), "type": "string"},
+                "title": {"ref": "nonempty_string"},
+            },
+            "type": "object",
+        },
+    }
+    return {
+        "schema_version": UPDATE_CONTRACT_SCHEMA,
+        "reviewed_update_schema_version": REVIEWED_UPDATE_SCHEMA,
+        "term": term,
+        "course_id": course_id,
+        "base_context_sha256": base_context_sha256,
+        "allowed_operation_kinds": list(REVIEWED_OPERATION_KINDS),
+        "candidate_keys": sorted(_REVIEWED_UPDATE_KEYS),
+        "operation_keys": {
+            "assessment-upsert": sorted(_REVIEWED_ASSESSMENT_KEYS),
+            "policy-upsert": sorted(_REVIEWED_POLICY_KEYS),
+            "source-upsert": sorted(_REVIEWED_SOURCE_KEYS),
+            "source-observation": sorted(_REVIEWED_OBSERVATION_KEYS),
+        },
+        "claim_keys": sorted(_REVIEWED_CLAIM_KEYS),
+        "bounded_values": {
+            "assessment_status": list(ASSESSMENT_STATUSES),
+            "claim_status": list(CLAIM_STATUSES),
+            "planner_critical_claim_field": list(PLANNER_CRITICAL_CLAIM_FIELDS),
+            "source_observation_outcome": list(SOURCE_OBSERVATION_OUTCOMES),
+            "source_observation_scope": list(SOURCE_OBSERVATION_SCOPES),
+        },
+        "max_operations": _REVIEWED_UPDATE_MAX_OPERATIONS,
+        "constraints": {
+            "base_identity": {
+                "algorithm": "sha256",
+                "attachment": "course-context.md",
+                "complete_semantic_sections": [
+                    "course",
+                    "course_core",
+                    "materials",
+                    "source_observations",
+                    "topics",
+                ],
+                "digest_field": "base_context_sha256",
+                "exact_attachment_bytes": True,
+            },
+            "candidate_file": {
+                "encoding": "UTF-8",
+                "max_bytes": _REVIEWED_UPDATE_MAX_BYTES,
+                "top_level_type": "object",
+            },
+            "claim": claim,
+            "definitions": definitions,
+            "operations": operations,
+            "root": {
+                "exact_keys": sorted(_REVIEWED_UPDATE_KEYS),
+                "fields": {
+                    "base_context_sha256": {
+                        "const": base_context_sha256,
+                        "ref": "sha256",
+                    },
+                    "course_id": {"const": course_id, "ref": "identifier"},
+                    "operations": {
+                        "discriminator": "kind",
+                        "kinds": list(REVIEWED_OPERATION_KINDS),
+                        "max_items": _REVIEWED_UPDATE_MAX_OPERATIONS,
+                        "min_items": 1,
+                        "ordered": True,
+                        "type": "array",
+                    },
+                    "schema_version": {
+                        "const": REVIEWED_UPDATE_SCHEMA,
+                        "type": "string",
+                    },
+                    "term": {"const": term, "ref": "identifier"},
+                },
+                "registered_course_required": True,
+                "type": "object",
+            },
+        },
+        "rules": list(_UPDATE_CONTRACT_RULES),
+    }
+
+
+def _validate_update_contract(value: object) -> dict[str, Any]:
+    record = _exact_object(value, _UPDATE_CONTRACT_KEYS, "course update contract")
+    if record["schema_version"] != UPDATE_CONTRACT_SCHEMA:
+        raise SchoolLearningError("unsupported course update contract schema")
+    if record["reviewed_update_schema_version"] != REVIEWED_UPDATE_SCHEMA:
+        raise SchoolLearningError("course update contract reviewed-update schema is invalid")
+    term = _component(record["term"], "course update contract term")
+    course_id = _component(record["course_id"], "course update contract course id")
+    digest = record["base_context_sha256"]
+    if not isinstance(digest, str) or not _DIGEST.fullmatch(digest):
+        raise SchoolLearningError("course update contract base context digest is invalid")
+    expected = _update_contract_value(term, course_id, digest)
+    if record != expected:
+        raise SchoolLearningError("course update contract rules or operation bounds are invalid")
+    return record
+
+
 def _validate_course_handoff_manifest(value: object) -> dict[str, Any]:
     manifest = _exact_object(value, _COURSE_HANDOFF_KEYS, "course handoff manifest")
     if manifest["schema_version"] != COURSE_HANDOFF_SCHEMA:
@@ -1740,6 +2214,21 @@ def _validate_course_handoff_manifest(value: object) -> dict[str, Any]:
         raise SchoolLearningError("course handoff context attachment digest is invalid")
     if type(context["bytes"]) is not int or context["bytes"] < 0:
         raise SchoolLearningError("course handoff context attachment byte count is invalid")
+    contract = _exact_object(
+        manifest["update_contract_attachment"],
+        _COURSE_HANDOFF_CONTEXT_KEYS,
+        "course handoff update contract attachment",
+    )
+    if contract["role"] != "update-contract":
+        raise SchoolLearningError("course handoff update contract attachment role is invalid")
+    if _attachment_filename(
+        contract["attachment_filename"], "course handoff update contract attachment filename"
+    ) != "update-contract.json":
+        raise SchoolLearningError("course handoff update contract attachment filename is invalid")
+    if not isinstance(contract["sha256"], str) or not _DIGEST.fullmatch(contract["sha256"]):
+        raise SchoolLearningError("course handoff update contract attachment digest is invalid")
+    if type(contract["bytes"]) is not int or contract["bytes"] < 0:
+        raise SchoolLearningError("course handoff update contract attachment byte count is invalid")
     material_ids = _identifier_list(manifest["material_ids"], "course handoff material ids")
     if material_ids != sorted(material_ids):
         raise SchoolLearningError("course handoff material ids must be sorted")
@@ -1762,7 +2251,7 @@ def _validate_course_handoff_manifest(value: object) -> dict[str, Any]:
         records.append(record)
     if [item["id"] for item in records] != material_ids:
         raise SchoolLearningError("course handoff materials do not match sorted material ids")
-    expected_filenames = [context["attachment_filename"]] + [
+    expected_filenames = [context["attachment_filename"], contract["attachment_filename"]] + [
         item["attachment_filename"] for item in records
     ]
     if filenames != expected_filenames:
@@ -1940,8 +2429,15 @@ def _load_state(ws: Workspace, *, skip_material_id: str | None = None) -> _State
     core = None
     if core_path.exists() or core_path.is_symlink():
         core = _validate_course_core(_read_json(ws, core_path, "course core state file"), ws)
+    observations_path = ws.course_dir / "source-observations.json"
+    source_observations = _empty_source_observations()
+    if observations_path.exists() or observations_path.is_symlink():
+        source_observations = _validate_source_observations(
+            _read_json(ws, observations_path, "source observations state file")
+        )
     _validate_references(materials, topics, sessions)
     _validate_v02_references(materials, topics, core)
+    _validate_source_observation_references(source_observations, materials, core)
     for record in materials["materials"]:
         path = _material_path(ws, record)
         if record["id"] != skip_material_id:
@@ -1953,7 +2449,7 @@ def _load_state(ws: Workspace, *, skip_material_id: str | None = None) -> _State
                 label=f"stored material {record['id']}",
                 regular_if_present=True,
             )
-    return _State(course, materials, topics, sessions, core)
+    return _State(course, materials, topics, sessions, core, source_observations)
 
 
 def initialize_course(
@@ -2065,6 +2561,13 @@ def load_materials(ws: Workspace) -> dict[str, Any]:
 
 def load_topics(ws: Workspace) -> dict[str, Any]:
     return _load_state(ws).topics
+
+
+def load_source_observations(ws: Workspace) -> dict[str, Any]:
+    observations = _load_state(ws).source_observations
+    if observations is None:  # pragma: no cover - _load_state always supplies the optional default
+        return _empty_source_observations()
+    return observations
 
 
 def initialize_semester(
@@ -2475,6 +2978,153 @@ def _write_course_core(ws: Workspace, core: dict[str, Any]) -> dict[str, Any]:
         raise _as_school_error("course core update failed", error) from error
 
 
+def _upsert_source_record(
+    core: dict[str, Any],
+    source_id: str,
+    title: str,
+    reference: str,
+    status: str,
+    recorded_at: str,
+) -> dict[str, Any]:
+    record = {
+        "id": _component(source_id, "course source id"),
+        "title": _nonempty_string(title, "course source title").strip(),
+        "reference": _nonempty_string(reference, "course source reference").strip(),
+        "status": status,
+    }
+    _validate_source(record)
+    existing = next((item for item in core["sources"] if item["id"] == record["id"]), None)
+    if existing is None:
+        core["sources"].append(record)
+    else:
+        core["sources"][core["sources"].index(existing)] = record
+    core["sources"].sort(key=lambda item: item["id"])
+    core["updated_at"] = _timestamp(recorded_at, "course source update timestamp")
+    return record
+
+
+def upsert_source(
+    ws: Workspace,
+    source_id: str,
+    title: str,
+    reference: str,
+    *,
+    status: str = "provisional",
+    recorded_at: str | None = None,
+) -> dict[str, Any]:
+    core = json.loads(json.dumps(load_course_core(ws)))
+    record = _upsert_source_record(
+        core,
+        source_id,
+        title,
+        reference,
+        status,
+        recorded_at if recorded_at is not None else utc_now(),
+    )
+    written = _write_course_core(ws, core)
+    return next(item for item in written["sources"] if item["id"] == record["id"])
+
+
+def _source_observation_record(
+    source_id: str,
+    scope: str,
+    outcome: str,
+    *,
+    material_ids: Iterable[str] = (),
+    note: str = "",
+    observed_at: str,
+    observation_id: str | None = None,
+) -> dict[str, Any]:
+    safe_source = _component(source_id, "source observation source id")
+    safe_materials = _normalize_material_ids(material_ids)
+    if not isinstance(note, str):
+        raise SchoolLearningError("source observation note must be a string")
+    safe_observed = _observed_at(observed_at, "source observation observed date")
+    if observation_id is None:
+        identity = json.dumps(
+            [safe_source, safe_observed, scope, outcome, safe_materials, note],
+            separators=(",", ":"),
+            ensure_ascii=False,
+        ).encode("utf-8")
+        safe_id = "observation-" + hashlib.sha256(identity).hexdigest()[:20]
+    else:
+        safe_id = _component(observation_id, "source observation id")
+    record = {
+        "id": safe_id,
+        "source_id": safe_source,
+        "observed_at": safe_observed,
+        "scope": scope,
+        "outcome": outcome,
+        "material_ids": safe_materials,
+        "note": note,
+    }
+    return _validate_source_observation(record)
+
+
+def _append_source_observation_record(
+    observations: dict[str, Any],
+    record: dict[str, Any],
+    materials: dict[str, Any],
+    core: dict[str, Any],
+) -> None:
+    _validate_source_observations(observations)
+    _validate_source_observation(record)
+    if any(item["id"] == record["id"] for item in observations["observations"]):
+        raise SchoolLearningError("source observation identifier already exists")
+    observations["observations"].append(record)
+    _validate_source_observations(observations)
+    _validate_source_observation_references(observations, materials, core)
+
+
+def append_source_observation(
+    ws: Workspace,
+    source_id: str,
+    scope: str,
+    outcome: str,
+    *,
+    material_ids: Iterable[str] = (),
+    note: str = "",
+    observed_at: str | None = None,
+    observation_id: str | None = None,
+) -> dict[str, Any]:
+    state = _load_state(ws)
+    if state.core is None or state.source_observations is None:
+        raise SchoolLearningError("source observation requires v0.2 course registration")
+    record = _source_observation_record(
+        source_id,
+        scope,
+        outcome,
+        material_ids=material_ids,
+        note=note,
+        observed_at=observed_at if observed_at is not None else utc_now(),
+        observation_id=observation_id,
+    )
+    proposed = json.loads(json.dumps(state.source_observations))
+    _append_source_observation_record(proposed, record, state.materials, state.core)
+    path = ws.course_dir / "source-observations.json"
+    existed = path.exists()
+    previous = _read_regular_bytes(ws, path, "source observations state file") if existed else None
+    attempted = False
+    try:
+        attempted = True
+        _atomic_write_json(ws, path, proposed)
+        validated = load_source_observations(ws)
+        return next(item for item in validated["observations"] if item["id"] == record["id"])
+    except Exception as error:
+        if attempted:
+            try:
+                if previous is None:
+                    _safe_unlink(ws, path, "failed source observation append", missing_ok=True)
+                else:
+                    _atomic_write_bytes(ws, path, previous)
+            except SchoolLearningError as rollback_error:
+                raise SchoolLearningError(
+                    "source observation append failed and rollback was incomplete: "
+                    f"{rollback_error}"
+                ) from error
+        raise _as_school_error("source observation append failed", error) from error
+
+
 def upsert_assessment(
     ws: Workspace,
     assessment_id: str,
@@ -2588,6 +3238,499 @@ def upsert_policy(
     )
     written = _write_course_core(ws, core)
     return next(item for item in written["policies"] if item["id"] == safe_id)
+
+
+def _canonical_planner_claim_value(value: object, label: str) -> str:
+    text = _nonempty_string(value, label).strip()
+    if _DATE.fullmatch(text):
+        return _date(text, label) or ""  # pragma: no cover - non-optional contract
+    _school_timestamp_datetime(text, label)
+    return text
+
+
+def _validate_reviewed_claim(value: object, label: str) -> dict[str, Any]:
+    record = _exact_object(value, _REVIEWED_CLAIM_KEYS, label)
+    field = _component(record["field"], f"{label} field")
+    if field == "due":
+        raise SchoolLearningError(f"{label} field due is legacy; use due-at")
+    claim_value = _nonempty_string(record["value"], f"{label} value").strip()
+    if field in PLANNER_CRITICAL_CLAIM_FIELDS:
+        claim_value = _canonical_planner_claim_value(claim_value, f"{label} value")
+    source = _nonempty_string(record["source"], f"{label} source").strip()
+    observed_at = _observed_at(record["observed_at"], f"{label} observed date")
+    if record["status"] not in CLAIM_STATUSES:
+        raise SchoolLearningError(f"{label} status is invalid")
+    return {
+        "field": field,
+        "value": claim_value,
+        "source": source,
+        "observed_at": observed_at,
+        "status": record["status"],
+    }
+
+
+def _validate_reviewed_claims(value: object, label: str) -> list[dict[str, Any]]:
+    if not isinstance(value, list) or not value:
+        raise SchoolLearningError(f"{label} must contain one or more sourced claims")
+    records = [_validate_reviewed_claim(item, f"{label} entry") for item in value]
+    identities = [
+        _new_claim(
+            item["field"], item["value"], item["source"], item["observed_at"], item["status"]
+        )["id"]
+        for item in records
+    ]
+    if len(set(identities)) != len(identities):
+        raise SchoolLearningError(f"{label} must not contain duplicate claims")
+    return [item for _, item in sorted(zip(identities, records, strict=True))]
+
+
+def _reviewed_identifier_list(value: object, label: str) -> list[str]:
+    result = _identifier_list(value, label)
+    if result != sorted(result):
+        raise SchoolLearningError(f"{label} must be sorted")
+    return result
+
+
+def _validate_reviewed_operation(value: object, index: int) -> dict[str, Any]:
+    label = f"reviewed operation {index}"
+    if not isinstance(value, dict):
+        raise SchoolLearningError(f"{label} must be an object")
+    kind = value.get("kind")
+    if kind not in REVIEWED_OPERATION_KINDS:
+        raise SchoolLearningError(f"{label} kind is unsupported")
+    if kind == "assessment-upsert":
+        record = _exact_object(value, _REVIEWED_ASSESSMENT_KEYS, label)
+        assessment_type = _normalize_assessment_type(record["type"], f"{label} type")
+        if assessment_type != record["type"]:
+            raise SchoolLearningError(f"{label} type must use its canonical normalized form")
+        if record["status"] not in ASSESSMENT_STATUSES:
+            raise SchoolLearningError(f"{label} status is invalid")
+        return {
+            "kind": kind,
+            "id": _component(record["id"], f"{label} id"),
+            "title": _nonempty_string(record["title"], f"{label} title").strip(),
+            "type": assessment_type,
+            "status": record["status"],
+            "weight": _optional_measure(record["weight"], f"{label} weight"),
+            "points": _optional_measure(record["points"], f"{label} points"),
+            "xp": _optional_measure(record["xp"], f"{label} XP"),
+            "material_ids": _reviewed_identifier_list(
+                record["material_ids"], f"{label} material ids"
+            ),
+            "topic_ids": _reviewed_identifier_list(record["topic_ids"], f"{label} topic ids"),
+            "claims": _validate_reviewed_claims(record["claims"], f"{label} claims"),
+            "recorded_at": _timestamp(record["recorded_at"], f"{label} timestamp"),
+        }
+    if kind == "policy-upsert":
+        record = _exact_object(value, _REVIEWED_POLICY_KEYS, label)
+        claims = _validate_reviewed_claims(record["claims"], f"{label} claims")
+        if any(item["field"] != "rule" for item in claims):
+            raise SchoolLearningError(f"{label} claims must use the policy field rule")
+        return {
+            "kind": kind,
+            "id": _component(record["id"], f"{label} id"),
+            "title": _nonempty_string(record["title"], f"{label} title").strip(),
+            "category": _component(record["category"], f"{label} category"),
+            "claims": claims,
+            "recorded_at": _timestamp(record["recorded_at"], f"{label} timestamp"),
+        }
+    if kind == "source-upsert":
+        record = _exact_object(value, _REVIEWED_SOURCE_KEYS, label)
+        source = {
+            "id": _component(record["id"], f"{label} id"),
+            "title": _nonempty_string(record["title"], f"{label} title").strip(),
+            "reference": _nonempty_string(record["reference"], f"{label} reference").strip(),
+            "status": record["status"],
+        }
+        _validate_source(source)
+        return {
+            "kind": kind,
+            **source,
+            "recorded_at": _timestamp(record["recorded_at"], f"{label} timestamp"),
+        }
+    record = _exact_object(value, _REVIEWED_OBSERVATION_KEYS, label)
+    material_ids = _reviewed_identifier_list(
+        record["material_ids"], f"{label} material ids"
+    )
+    observation = _source_observation_record(
+        record["source_id"],
+        record["scope"],
+        record["outcome"],
+        material_ids=material_ids,
+        note=record["note"],
+        observed_at=record["observed_at"],
+        observation_id=record["id"],
+    )
+    return {"kind": kind, **observation}
+
+
+def _validate_reviewed_update(value: object) -> dict[str, Any]:
+    record = _exact_object(value, _REVIEWED_UPDATE_KEYS, "reviewed update")
+    if record["schema_version"] != REVIEWED_UPDATE_SCHEMA:
+        raise SchoolLearningError("unsupported reviewed update schema")
+    term = _component(record["term"], "reviewed update term")
+    course_id = _component(record["course_id"], "reviewed update course id")
+    base = record["base_context_sha256"]
+    if not isinstance(base, str) or not _DIGEST.fullmatch(base):
+        raise SchoolLearningError("reviewed update base context digest is invalid")
+    if not isinstance(record["operations"], list) or not record["operations"]:
+        raise SchoolLearningError("reviewed update must contain one or more operations")
+    if len(record["operations"]) > _REVIEWED_UPDATE_MAX_OPERATIONS:
+        raise SchoolLearningError(
+            f"reviewed update may contain at most {_REVIEWED_UPDATE_MAX_OPERATIONS} operations"
+        )
+    operations = [
+        _validate_reviewed_operation(item, index)
+        for index, item in enumerate(record["operations"], start=1)
+    ]
+    return {
+        "schema_version": REVIEWED_UPDATE_SCHEMA,
+        "term": term,
+        "course_id": course_id,
+        "base_context_sha256": base,
+        "operations": operations,
+    }
+
+
+def _canonical_json_bytes(value: object) -> bytes:
+    try:
+        return json.dumps(
+            value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        ).encode("utf-8")
+    except (TypeError, ValueError) as error:
+        raise SchoolLearningError("value cannot be encoded as canonical JSON") from error
+
+
+def reviewed_update_digest(value: object) -> str:
+    return hashlib.sha256(_canonical_json_bytes(_validate_reviewed_update(value))).hexdigest()
+
+
+def _read_reviewed_update(path: Path | str) -> tuple[Path, dict[str, Any]]:
+    candidate = Path(path).expanduser().absolute()
+    try:
+        inspected = os.lstat(candidate)
+        if not stat.S_ISREG(inspected.st_mode):
+            raise SchoolLearningError("reviewed update path must be a regular non-symlink file")
+        if inspected.st_size > _REVIEWED_UPDATE_MAX_BYTES:
+            raise SchoolLearningError(
+                f"reviewed update file exceeds the {_REVIEWED_UPDATE_MAX_BYTES:,}-byte limit"
+            )
+        fd = os.open(candidate, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        with os.fdopen(fd, "rb") as handle:
+            opened = os.fstat(handle.fileno())
+            if _stat_signature(opened) != _stat_signature(inspected):
+                raise SchoolLearningError("reviewed update file changed before it could be read")
+            content = handle.read(_REVIEWED_UPDATE_MAX_BYTES + 1)
+            if _stat_signature(os.fstat(handle.fileno())) != _stat_signature(opened):
+                raise SchoolLearningError("reviewed update file changed while it was being read")
+    except SchoolLearningError:
+        raise
+    except OSError as error:
+        raise SchoolLearningError("reviewed update file cannot be read safely") from error
+    if len(content) > _REVIEWED_UPDATE_MAX_BYTES:
+        raise SchoolLearningError(
+            f"reviewed update file exceeds the {_REVIEWED_UPDATE_MAX_BYTES:,}-byte limit"
+        )
+    try:
+        value = json.loads(content.decode("utf-8"))
+    except (UnicodeError, json.JSONDecodeError) as error:
+        raise SchoolLearningError("reviewed update file is not valid UTF-8 JSON") from error
+    return candidate, _validate_reviewed_update(value)
+
+
+def _simulate_reviewed_update(
+    ws: Workspace, state: _State, candidate: dict[str, Any]
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    if state.core is None or state.source_observations is None:
+        raise SchoolLearningError("reviewed update requires v0.2 course registration")
+    core = json.loads(json.dumps(state.core))
+    observations = json.loads(json.dumps(state.source_observations))
+    for operation in candidate["operations"]:
+        kind = operation["kind"]
+        if kind == "source-upsert":
+            _upsert_source_record(
+                core,
+                operation["id"],
+                operation["title"],
+                operation["reference"],
+                operation["status"],
+                operation["recorded_at"],
+            )
+        elif kind == "source-observation":
+            record = {key: operation[key] for key in _SOURCE_OBSERVATION_KEYS}
+            _append_source_observation_record(observations, record, state.materials, core)
+        elif kind == "assessment-upsert":
+            existing = next(
+                (item for item in core["assessments"] if item["id"] == operation["id"]), None
+            )
+            claims = [] if existing is None else json.loads(json.dumps(existing["claims"]))
+            for candidate_claim in operation["claims"]:
+                _append_claim_preserving_conflict(
+                    claims,
+                    _new_claim(
+                        candidate_claim["field"],
+                        candidate_claim["value"],
+                        candidate_claim["source"],
+                        candidate_claim["observed_at"],
+                        candidate_claim["status"],
+                    ),
+                )
+            assessment = {
+                "id": operation["id"],
+                "title": operation["title"],
+                "type": operation["type"],
+                "status": operation["status"],
+                "weight": operation["weight"],
+                "points": operation["points"],
+                "xp": operation["xp"],
+                "material_ids": operation["material_ids"],
+                "topic_ids": operation["topic_ids"],
+                "claims": claims,
+            }
+            _validate_assessment(assessment)
+            if existing is None:
+                core["assessments"].append(assessment)
+            else:
+                core["assessments"][core["assessments"].index(existing)] = assessment
+            core["assessments"].sort(key=lambda item: item["id"])
+            core["updated_at"] = operation["recorded_at"]
+        elif kind == "policy-upsert":
+            existing = next(
+                (item for item in core["policies"] if item["id"] == operation["id"]), None
+            )
+            claims = [] if existing is None else json.loads(json.dumps(existing["claims"]))
+            for candidate_claim in operation["claims"]:
+                _append_claim_preserving_conflict(
+                    claims,
+                    _new_claim(
+                        candidate_claim["field"],
+                        candidate_claim["value"],
+                        candidate_claim["source"],
+                        candidate_claim["observed_at"],
+                        candidate_claim["status"],
+                    ),
+                )
+            policy = {
+                "id": operation["id"],
+                "title": operation["title"],
+                "category": operation["category"],
+                "status": _aggregate_claim_status(claims),
+                "claims": claims,
+            }
+            _validate_policy(policy)
+            if existing is None:
+                core["policies"].append(policy)
+            else:
+                core["policies"][core["policies"].index(existing)] = policy
+            core["policies"].sort(key=lambda item: item["id"])
+            core["updated_at"] = operation["recorded_at"]
+        else:  # pragma: no cover - exact operation validation guards this branch
+            raise AssertionError(kind)
+        _validate_course_core(core, ws)
+        _validate_v02_references(state.materials, state.topics, core)
+        _validate_source_observations(observations)
+        _validate_source_observation_references(observations, state.materials, core)
+    return core, observations
+
+
+def _pretty_json_bytes(value: object) -> bytes:
+    try:
+        return (json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n").encode(
+            "utf-8"
+        )
+    except (TypeError, ValueError) as error:
+        raise SchoolLearningError("state cannot be encoded as JSON") from error
+
+
+def _reviewed_update_preview(
+    candidate: dict[str, Any],
+    digest: str,
+    current_core: dict[str, Any],
+    proposed_core: dict[str, Any],
+    current_observations: dict[str, Any],
+    proposed_observations: dict[str, Any],
+) -> str:
+    lines = [
+        "Reviewed update preview",
+        f"Term: {candidate['term']}",
+        f"Course: {candidate['course_id']}",
+        f"Base course-context SHA-256: {candidate['base_context_sha256']}",
+        f"Semantic candidate SHA-256: {digest}",
+        "Operations:",
+    ]
+    for index, operation in enumerate(candidate["operations"], start=1):
+        lines.append(f"  {index}. {operation['kind']} {operation['id']}")
+    lines.append("Durable state diff:")
+    pairs = (
+        ("course-core.json", current_core, proposed_core),
+        ("source-observations.json", current_observations, proposed_observations),
+    )
+    changed = False
+    for filename, before, after in pairs:
+        before_lines = _pretty_json_bytes(before).decode("utf-8").splitlines()
+        after_lines = _pretty_json_bytes(after).decode("utf-8").splitlines()
+        if before_lines == after_lines:
+            continue
+        changed = True
+        lines.extend(
+            difflib.unified_diff(
+                before_lines,
+                after_lines,
+                fromfile=f"current/{filename}",
+                tofile=f"proposed/{filename}",
+                lineterm="",
+            )
+        )
+    if not changed:
+        lines.append("  No semantic durable-state change.")
+    return "\n".join(lines) + "\n"
+
+
+def _reviewed_semantic_state_sha256(state: _State) -> str:
+    return hashlib.sha256(_course_context_bytes(state)).hexdigest()
+
+
+def _prepare_reviewed_update(
+    data_root: Path | str, candidate_path: Path | str
+) -> tuple[Path, Workspace, _State, dict[str, Any], dict[str, Any], dict[str, Any], str]:
+    path, candidate = _read_reviewed_update(candidate_path)
+    sw = semester_workspace(data_root, candidate["term"])
+    semester = load_semester(sw)
+    if candidate["course_id"] not in semester["course_ids"]:
+        raise SchoolLearningError("reviewed update course is not registered in the named semester")
+    ws = workspace(sw.data_root, candidate["term"], candidate["course_id"])
+    state = _load_state(ws)
+    context_digest = _reviewed_semantic_state_sha256(state)
+    if candidate["base_context_sha256"] != context_digest:
+        raise SchoolLearningError("reviewed update base course context is stale or mismatched")
+    proposed_core, proposed_observations = _simulate_reviewed_update(ws, state, candidate)
+    digest = reviewed_update_digest(candidate)
+    return path, ws, state, candidate, proposed_core, proposed_observations, digest
+
+
+def review_update(data_root: Path | str, candidate_path: Path | str) -> dict[str, Any]:
+    (
+        path,
+        _ws,
+        state,
+        candidate,
+        proposed_core,
+        proposed_observations,
+        digest,
+    ) = _prepare_reviewed_update(data_root, candidate_path)
+    if state.core is None or state.source_observations is None:  # pragma: no cover - prepared above
+        raise SchoolLearningError("reviewed update requires v0.2 course registration")
+    return {
+        "path": path,
+        "digest": digest,
+        "preview": _reviewed_update_preview(
+            candidate,
+            digest,
+            state.core,
+            proposed_core,
+            state.source_observations,
+            proposed_observations,
+        ),
+    }
+
+
+def _restore_reviewed_update_file(
+    ws: Workspace, path: Path, previous: bytes | None, label: str
+) -> None:
+    if previous is None:
+        _safe_unlink(ws, path, label, missing_ok=True)
+    else:
+        _atomic_write_bytes(ws, path, previous)
+
+
+def apply_update(
+    data_root: Path | str, candidate_path: Path | str, confirm: str
+) -> dict[str, Any]:
+    path, candidate = _read_reviewed_update(candidate_path)
+    digest = reviewed_update_digest(candidate)
+    if not isinstance(confirm, str) or not _DIGEST.fullmatch(confirm) or confirm != digest:
+        raise SchoolLearningError("reviewed update confirmation digest does not match the candidate")
+    (
+        prepared_path,
+        ws,
+        state,
+        prepared_candidate,
+        proposed_core,
+        proposed_observations,
+        prepared_digest,
+    ) = _prepare_reviewed_update(data_root, path)
+    if prepared_path != path or prepared_candidate != candidate or prepared_digest != digest:
+        raise SchoolLearningError("reviewed update changed while it was being prepared")
+    if state.core is None or state.source_observations is None:  # pragma: no cover - prepared above
+        raise SchoolLearningError("reviewed update requires v0.2 course registration")
+
+    latest_path, latest_candidate = _read_reviewed_update(path)
+    latest_state = _load_state(ws)
+    if latest_path != path or latest_candidate != candidate:
+        raise SchoolLearningError("reviewed update changed before persistence")
+    if _reviewed_semantic_state_sha256(latest_state) != candidate["base_context_sha256"]:
+        raise SchoolLearningError("reviewed update base course context became stale before persistence")
+    state = latest_state
+    proposed_core, proposed_observations = _simulate_reviewed_update(ws, state, candidate)
+
+    core_path = ws.course_dir / "course-core.json"
+    observations_path = ws.course_dir / "source-observations.json"
+    old_core = _read_regular_bytes(ws, core_path, "course core state file")
+    observations_existed = observations_path.exists()
+    old_observations = (
+        _read_regular_bytes(ws, observations_path, "source observations state file")
+        if observations_existed
+        else None
+    )
+    writes = []
+    if proposed_core != state.core:
+        writes.append((core_path, proposed_core, old_core, "course-core.json"))
+    if proposed_observations != state.source_observations:
+        writes.append(
+            (
+                observations_path,
+                proposed_observations,
+                old_observations,
+                "source-observations.json",
+            )
+        )
+    attempted: list[tuple[Path, bytes | None, str]] = []
+    try:
+        for destination, value, previous, label in writes:
+            attempted.append((destination, previous, label))
+            _atomic_write_json(ws, destination, value)
+        persisted = _load_state(ws)
+        if persisted.core != proposed_core or persisted.source_observations != proposed_observations:
+            raise SchoolLearningError("reviewed update did not persist the complete proposed state")
+    except Exception as error:
+        rollback_errors: list[str] = []
+        for destination, previous, label in reversed(attempted):
+            try:
+                _restore_reviewed_update_file(
+                    ws, destination, previous, f"failed reviewed update rollback for {label}"
+                )
+            except SchoolLearningError as rollback_error:
+                rollback_errors.append(str(rollback_error))
+        for destination, previous, label in attempted:
+            try:
+                if previous is None:
+                    if destination.exists() or destination.is_symlink():
+                        rollback_errors.append(f"{label} should be absent after rollback")
+                elif _read_regular_bytes(ws, destination, f"rollback verification for {label}") != previous:
+                    rollback_errors.append(f"{label} bytes differ after rollback")
+            except SchoolLearningError as rollback_error:
+                rollback_errors.append(str(rollback_error))
+        if rollback_errors:
+            raise SchoolLearningError(
+                "reviewed update failed and rollback was incomplete: " + "; ".join(rollback_errors)
+            ) from error
+        raise _as_school_error("reviewed update failed; exact prior state was restored", error) from error
+    return {
+        "path": path,
+        "digest": digest,
+        "operation_count": len(candidate["operations"]),
+        "changed_files": [item[3] for item in writes],
+    }
 
 
 def _copy_source_to_temp(ws: Workspace, source: Path, destination_parent: Path) -> tuple[Path, str, int]:
@@ -3219,10 +4362,11 @@ def _validate_staged_handoff(
 
 
 def _course_context_bytes(state: _State) -> bytes:
-    if state.core is None:
+    if state.core is None or state.source_observations is None:
         raise SchoolLearningError("course context requires v0.2 course core state")
     payload = {
         "course": state.course,
+        "course_core": state.core,
         "profile": {
             "capability_tags": state.core["capability_tags"],
             "sources": state.core["sources"],
@@ -3231,6 +4375,7 @@ def _course_context_bytes(state: _State) -> bytes:
         "materials": state.materials["materials"],
         "assessments": state.core["assessments"],
         "policies": state.core["policies"],
+        "source_observations": state.source_observations,
         "topics": state.topics["topics"],
     }
     encoded = json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False)
@@ -3243,6 +4388,14 @@ def _course_context_bytes(state: _State) -> bytes:
     ).encode("utf-8")
 
 
+def course_context_bytes(ws: Workspace) -> bytes:
+    return _course_context_bytes(_load_state(ws))
+
+
+def course_context_sha256(ws: Workspace) -> str:
+    return _reviewed_semantic_state_sha256(_load_state(ws))
+
+
 def _course_prompt_bytes(course: dict[str, Any]) -> bytes:
     return (
         f"Use course-context.md and the exact selected attachments to assist with "
@@ -3250,8 +4403,10 @@ def _course_prompt_bytes(course: dict[str, Any]) -> bytes:
         "Treat stored claims as claims with their recorded provenance and status. Preserve conflicts; "
         "do not choose a silent winner. Do not invent missing course facts, dates, deadlines, policies, "
         "permission, grades, readiness, or learner mastery. Clearly separate general knowledge from "
-        "course-grounded statements. If evidence is insufficient, say so. This package stays manual: "
-        "do not assume your response updates local state.\n"
+        "course-grounded statements. If evidence is insufficient, say so. When the user explicitly asks "
+        "to synchronize reviewed findings, return one candidate matching update-contract.json. The "
+        "candidate is data only: never claim that returning it changed local state. This package stays "
+        "manual and no AI response updates local state automatically.\n"
     ).encode("utf-8")
 
 
@@ -3296,6 +4451,20 @@ def _validate_staged_course_handoff(
         context_entry["bytes"],
     ):
         raise SchoolLearningError("course context attachment has the wrong identity")
+    contract_entry = manifest["update_contract_attachment"]
+    contract_path = attachments / contract_entry["attachment_filename"]
+    if _hash_confined_file(ws, contract_path, "course update contract attachment") != (
+        contract_entry["sha256"],
+        contract_entry["bytes"],
+    ):
+        raise SchoolLearningError("course update contract attachment has the wrong identity")
+    contract = _validate_update_contract(
+        _read_json(ws, contract_path, "course update contract attachment")
+    )
+    if contract["term"] != manifest["term"] or contract["course_id"] != manifest["course_id"]:
+        raise SchoolLearningError("course update contract identity does not match the handoff")
+    if contract["base_context_sha256"] != context_entry["sha256"]:
+        raise SchoolLearningError("course update contract base digest does not match course context")
     for entry in manifest["materials"]:
         record = selected_by_id.get(entry["id"])
         if record is None:
@@ -3454,13 +4623,28 @@ def prepare_course_handoff(
         "sha256": hashlib.sha256(context).hexdigest(),
         "bytes": len(context),
     }
+    update_contract = _update_contract_value(
+        ws.term, ws.course_id, context_entry["sha256"]
+    )
+    _validate_update_contract(update_contract)
+    update_contract_bytes = _pretty_json_bytes(update_contract)
+    update_contract_entry = {
+        "role": "update-contract",
+        "attachment_filename": "update-contract.json",
+        "sha256": hashlib.sha256(update_contract_bytes).hexdigest(),
+        "bytes": len(update_contract_bytes),
+    }
     manifest = {
         "schema_version": COURSE_HANDOFF_SCHEMA,
         "course_id": ws.course_id,
         "term": ws.term,
-        "attachment_filenames": [context_entry["attachment_filename"]]
+        "attachment_filenames": [
+            context_entry["attachment_filename"],
+            update_contract_entry["attachment_filename"],
+        ]
         + [item["attachment_filename"] for item in entries],
         "context_attachment": context_entry,
+        "update_contract_attachment": update_contract_entry,
         "material_ids": selected_ids,
         "materials": entries,
     }
@@ -3470,7 +4654,7 @@ def prepare_course_handoff(
         "# Start Here\n\n"
         "1. Open `attachments/`.\n"
         "2. Attach every file in that directory, including the required distinguished "
-        "`course-context.md`, to the approved AI interface.\n"
+        "`course-context.md` and `update-contract.json`, to the approved AI interface.\n"
         "3. Paste the complete contents of `prompt.txt` as the opening message.\n"
         "4. Do not substitute similarly named files from elsewhere in the course workspace.\n"
         "5. Review the AI result yourself. It does not update local state automatically.\n"
@@ -3494,11 +4678,13 @@ def prepare_course_handoff(
             "START-HERE.md": start,
             "prompt.txt": prompt,
             "attachments/course-context.md": context,
+            "attachments/update-contract.json": update_contract_bytes,
             "manifest.json": manifest_bytes,
         }
         _atomic_write_bytes(ws, staging / "START-HERE.md", start)
         _atomic_write_bytes(ws, staging / "prompt.txt", prompt)
         _atomic_write_bytes(ws, attachments / "course-context.md", context)
+        _atomic_write_bytes(ws, attachments / "update-contract.json", update_contract_bytes)
         _atomic_write_bytes(ws, staging / "manifest.json", manifest_bytes)
         for record, entry in zip(selected, entries, strict=True):
             _copy_verified_material_attachment(
@@ -3524,6 +4710,7 @@ def prepare_course_handoff(
         "attachments": destination / "attachments",
         "prompt": destination / "prompt.txt",
         "context": destination / "attachments" / "course-context.md",
+        "update_contract": destination / "attachments" / "update-contract.json",
     }
 
 
@@ -3601,10 +4788,26 @@ def iter_sessions(ws: Workspace) -> list[dict[str, Any]]:
 
 
 __all__ = (
+    "ASSESSMENT_STATUSES",
+    "ASSESSMENT_TYPES",
+    "CAPABILITY_TAGS",
+    "CLAIM_STATUSES",
+    "COURSE_CORE_SCHEMA",
+    "COURSE_HANDOFF_SCHEMA",
     "COURSE_SCHEMA",
+    "MATERIALS_V02_SCHEMA",
     "MATERIALS_SCHEMA",
+    "MATERIAL_KINDS",
+    "MATERIAL_LIFECYCLES",
     "OUTCOMES",
+    "PLANNER_CRITICAL_CLAIM_FIELDS",
+    "REVIEWED_OPERATION_KINDS",
+    "REVIEWED_UPDATE_SCHEMA",
     "SESSION_SCHEMA",
+    "SEMESTER_SCHEMA",
+    "SOURCE_OBSERVATIONS_SCHEMA",
+    "SOURCE_OBSERVATION_OUTCOMES",
+    "SOURCE_OBSERVATION_SCOPES",
     "STUDY_HANDOFF_SCHEMA",
     "STUDY_MODES",
     "SUPPORTED_SUFFIXES",
@@ -3613,16 +4816,33 @@ __all__ = (
     "TOPIC_STATUSES",
     "Workspace",
     "add_material",
+    "append_source_observation",
+    "apply_update",
     "build_study_brief",
+    "course_context_bytes",
+    "course_context_sha256",
     "default_data_root",
     "ensure_topic",
     "initialize_course",
+    "initialize_semester",
+    "intake_material",
     "iter_sessions",
     "load_course",
+    "load_course_core",
     "load_materials",
+    "load_semester",
+    "load_source_observations",
     "load_topics",
+    "prepare_course_handoff",
     "prepare_study_handoff",
     "record_session",
+    "register_course",
+    "review_update",
+    "reviewed_update_digest",
+    "semester_workspace",
     "sha256_file",
+    "upsert_assessment",
+    "upsert_policy",
+    "upsert_source",
     "workspace",
 )
