@@ -57,7 +57,8 @@
 - **Next decision boundary:** Fresh independent Tier-2 review of the exact
   implemented-and-verified candidate, finding disposition if needed, then
   explicit owner acceptance or rejection. Staging, commit, publication, and
-  deployment remain separate later decisions.
+  deployment were separate later decisions. Their completed results are
+  finalized below; future work still requires a new owner decision.
 
 ## Base and Preflight
 
@@ -351,11 +352,10 @@ checkpoint and seven-path boundary:
    closed before planning.
 
 All previous material and minor findings remain dispositioned as recorded
-above. The exact final verification commands and freeze sequencing below remain
-unchanged: this record completes before candidate freeze, final post-freeze
-values remain owner-facing rather than being written back afterward, a fresh
-independent review remains pending, owner acceptance remains pending, and
-staging, commit, publication, and deployment remain unauthorized.
+above. At this historical freeze point, the exact final verification commands
+and sequencing below remained unchanged, and fresh independent review, owner
+acceptance, staging, commit, and publication were still pending. Their later
+results are finalized below.
 
 ## Pre-Freeze Candidate Checks (Not Final)
 
@@ -426,20 +426,17 @@ git branch --show-current
 git rev-parse HEAD
 ```
 
-Final post-freeze verification results are reported in the owner-facing handoff
-because recording those results into this repository record afterward would
-itself mutate the exact candidate and invalidate their post-last-mutation
-status. This evidence record remains unchanged after the freeze and does not
-invent final result values.
-
-If final external results must later become repository-owned under the compound
-evidence standard, that is a later publication/lifecycle sequencing concern
-requiring its own explicit authorization. It is not performed in this
-correction pass.
+At the implementation freeze, final post-freeze verification results were
+reported in the owner-facing handoff because recording them here at that time
+would have mutated the exact candidate and invalidated their post-last-mutation
+status. This record remained unchanged through implementation publication.
+The separately authorized lifecycle synchronization below now records the
+later review, acceptance, and publication facts without recharacterizing them
+as part of the original frozen verification run.
 
 ## Final Candidate Boundary and Lifecycle Status
 
-Final expected changed-path list for this implementation candidate:
+Exact seven-path identity of the frozen implementation candidate:
 
 - `docs/architecture/school-learning.md`
 - `docs/reviews/school-learning-operational-loop-implementation-evidence-2026-08-30.md`
@@ -457,12 +454,53 @@ Final expected changed-path list for this implementation candidate:
   and M2 material findings; both are corrected above**.
 - Latest pre-current-correction independent Tier-2 review: **completed with the
   M3 material finding; it is corrected above**.
-- New fresh independent Tier-2 review of the exact frozen candidate:
-  **pending**.
-- Owner acceptance of the exact final candidate: **pending**.
-- Candidate state: uncommitted implementation candidate based on
-  `73fb72237a172f1bf64a80c15e7357651c274b59`; no future commit identity is
-  claimed.
-- Staging, commit/ref mutation, fetching/pulling, push/publication, deployment,
-  dependency/configuration changes, external writes, network access, and live
-  School Learning data access: **not authorized and not performed**.
+- Final fresh independent Tier-2 review, owner acceptance, publication, and
+  checkpoint completion are finalized below.
+- The exact frozen seven-path candidate was based on
+  `73fb72237a172f1bf64a80c15e7357651c274b59` and was later published unchanged
+  at `00805e67057fcd68e9ea465749a2c8a1df2cd7f7`.
+
+## Final Independent Review
+
+- Final result: **PASS**.
+- Findings: no BLOCKING, MATERIAL, or MINOR findings.
+- Recommendation: ready for owner acceptance of the exact final candidate.
+
+## Owner Acceptance
+
+The owner explicitly accepted the exact frozen seven-path candidate identified
+above and reviewed on `main` at base HEAD
+`73fb72237a172f1bf64a80c15e7357651c274b59`.
+
+## Publication Authority
+
+The owner separately authorized staging exactly the seven accepted paths, one
+local commit on `main`, and an ordinary non-force push of `main` to
+`origin/main`. That authority did not include fetch, pull, merge, rebase, amend,
+force-push, unrelated repository paths, deployment, or lifecycle
+synchronization.
+
+## Publication Result
+
+- Commit: `00805e67057fcd68e9ea465749a2c8a1df2cd7f7`.
+- Subject: `School Learning: publish operational loop`.
+- Parent: `73fb72237a172f1bf64a80c15e7357651c274b59`.
+- Target and result: successful ordinary push to `origin/main`.
+- Post-publication verification: `main` equaled `origin/main`; local divergence
+  was `0` ahead / `0` behind; the worktree was clean; staging was empty; Atlas
+  was Valid, reported no missing definitions, was Synchronized and healthy,
+  and reported no blockers or unknowns.
+- No fetch, pull, rebase, merge, amend, or force-push occurred. The only
+  authorized external write was the push to `origin/main`.
+
+## Lifecycle Status
+
+- Implementation: **OWNER-ACCEPTED AND PUBLISHED**.
+- Checkpoint: **COMPLETE** as of 2026-08-31.
+- Published identity: `00805e67057fcd68e9ea465749a2c8a1df2cd7f7`.
+- This narrow follow-up synchronizes canonical lifecycle values after the
+  publication event; it does not invent a future lifecycle-sync commit.
+- No deployment, live migration, Canvas/Gmail/Calendar integration, or live
+  School Learning data access occurred.
+- Work selection remains intentional idle with no selected checkpoint. SL2-B
+  and all other future work remain unselected pending a new owner decision.

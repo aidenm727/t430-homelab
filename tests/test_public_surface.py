@@ -606,7 +606,7 @@ class PublicSurfaceTests(unittest.TestCase):
                 missing.append(target)
         self.assertEqual(missing, [])
 
-    def test_active_state_preserves_published_sl2a_and_intentional_idle(self) -> None:
+    def test_active_state_preserves_published_school_learning_and_intentional_idle(self) -> None:
         state = json.loads(self.text["docs/current-state.json"])
         self.assertEqual(state["phase"]["id"], "engineering-workflow-v1-1")
         self.assertEqual(state["phase"]["lifecycle"], "published")
@@ -621,7 +621,16 @@ class PublicSurfaceTests(unittest.TestCase):
         self.assertEqual(state["decision_required"]["evidence_refs"], [])
         self.assertEqual(state["blockers"], [])
         self.assertEqual(state["unknowns"], [])
-        self.assertEqual(state["freshness"]["effective_date"], "2026-08-27")
+        self.assertEqual(state["freshness"]["effective_date"], "2026-08-31")
+        self.assertIn(
+            {
+                "id": "school-learning-operational-loop-publication",
+                "path": "docs/reviews/school-learning-operational-loop-implementation-evidence-2026-08-30.md",
+                "relation": "supports_checkpoint",
+                "commit": "00805e67057fcd68e9ea465749a2c8a1df2cd7f7",
+            },
+            state["evidence_links"],
+        )
         self.assertEqual(
             state["authority"],
             {
@@ -636,27 +645,18 @@ class PublicSurfaceTests(unittest.TestCase):
             r"SL2-A — School Learning v0\.2 Semester\s+Core & Intake is owner-accepted, published, and complete\.",
         )
         self.assertIn(
-            "SL2-A lifecycle: Owner-accepted, published, and complete; not active selected\n  work.",
-            mission,
+            "SL2-A lifecycle: Owner-accepted, published, and complete; not active selected\n  work.", mission
         )
         self.assertNotIn("SL2-A lifecycle: Selected", mission)
         self.assertNotIn("SL2-A is selected implementation work", mission)
-        self.assertIn(
-            "Owner selection of future work; no checkpoint or later capability is\npreselected.",
-            mission,
-        )
+        self.assertRegex(mission, r"final\s+independent Tier-2 review with no BLOCKING, MATERIAL, or MINOR findings")
+        self.assertIn("School Learning Operational Loop lifecycle: Owner-accepted, published, and\n  complete at `00805e67057fcd68e9ea465749a2c8a1df2cd7f7`; not active selected\n  work.", mission)
+        self.assertIn("Owner selection of future work; no checkpoint or later capability is\npreselected.", mission)
         self.assertIn("S1, F2, F3, SL2-B", mission)
         self.assertIn("remain unselected", mission)
         self.assertIn("Status: Intentional idle", mission)
-        self.assertIn(
-            "No deployment, live-data migration, Canvas/Calendar/email integration, or\noperational-runtime state is established.",
-            mission,
-        )
-        self.assertIsNotNone(
-            definition_for(
-                "docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md"
-            )
-        )
+        self.assertRegex(mission, r"No deployment, live-data\s+migration, Canvas/Gmail/Calendar integration, or operational-runtime state is\s+established\.")
+        self.assertIsNotNone(definition_for("docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md"))
 
     def test_renamed_documents_and_evidence_are_registered(self) -> None:
         infrastructure = infrastructure_documents()

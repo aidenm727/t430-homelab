@@ -27,10 +27,16 @@
       "path": "docs/reviews/engineering-workflow-v1-1-evidence-2026-08-01.md",
       "relation": "records_phase",
       "commit": "27d99c1eb0ab30f7fcd11158f4c1d856bd6913de"
+    },
+    {
+      "id": "school-learning-operational-loop-publication",
+      "path": "docs/reviews/school-learning-operational-loop-implementation-evidence-2026-08-30.md",
+      "relation": "supports_checkpoint",
+      "commit": "00805e67057fcd68e9ea465749a2c8a1df2cd7f7"
     }
   ],
   "freshness": {
-    "effective_date": "2026-08-27",
+    "effective_date": "2026-08-31",
     "review_after": null
   },
   "authority": {
