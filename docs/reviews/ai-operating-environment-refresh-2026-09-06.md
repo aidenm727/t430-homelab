@@ -3,18 +3,24 @@
 ## Status and Evidence Class
 
 Ordinary dated non-canonical compound review/evidence record for **September AI
-Operating Refresh — Documentation and Ownership Reconciliation**. The design
-is owner-accepted and implementation is authorized within the exact scope
-below, including the owner-accepted one-path R1 test correction. The current
-scope is exactly 14 paths. This candidate is **UNCOMMITTED**, based on
-`ebee0428541f141c432807703c9b1f9c4f1fc0b4` on `main`.
-Design acceptance is not owner acceptance of the implementation candidate.
+Operating Refresh — Documentation and Ownership Reconciliation**. The exact
+14-path substantive candidate passed verification and fresh independent
+Tier-3 review, received explicit owner acceptance, and was committed and
+published on 2026-09-06 as
+`979942a775867468adf4634a17f325172ccdf99e` on `origin/main`.
 
-This record carries the current owner's supplied design boundary and
-provisional operating conclusions. It does not originate authority, change
-typed active state, or supersede canonical architecture.
+Lifecycle: design accepted → implementation → verification → independent
+review → owner candidate acceptance → substantive commit → publication →
+narrow durable attestation finalization.
 
-## Checkpoint Brief
+This record preserves the owner-supplied design and provisional operating
+conclusions, earlier failure/correction chronology, and completed-action
+evidence. It does not originate authority, change typed active state, or
+supersede canonical architecture. The substantive publication is distinct
+from the later two-path attestation edit described at the end; no commit
+identity or publication is claimed for that edit.
+
+## Original Checkpoint Brief — Historical Implementation Scope
 
 - **Why:** Make current AI capabilities immediately usable while removing
   misleading ownership, implementation-status, and workflow statements.
@@ -215,7 +221,7 @@ Explicit current-repository smoke checks are Atlas and Git observations.
 No live/private School Learning data, credentials, protected content,
 dependencies, devices, services, or network access were needed.
 
-## Exact Changed Paths
+## Substantive Committed Paths
 
 1. `docs/architecture/ai-operating-model.md`
 2. `docs/architecture/platform.md`
@@ -357,7 +363,12 @@ Correction verification, in the owner-required order:
   checks follow the last content mutation. The exact full-suite process-local
   override is recorded above; it changes fixture placement only.
 
-## Current Review, Acceptance, and Stop Boundary
+## Substantive Pre-Commit Review Boundary — Historical Snapshot
+
+The following paragraphs preserve the record-writing boundary before final
+verification, independent review, owner acceptance, commit, and publication.
+Their pending and uncommitted statements describe that earlier point only;
+completed-action evidence follows below.
 
 At record-writing time, the correction has passed focused and context
 verification. Final post-mutation full-suite verification and fresh independent
@@ -382,3 +393,124 @@ No staging, commit, push, publication, remote alignment, deployment, or external
 completion is claimed. No generator was run; generated files remain unchanged
 and Atlas has reported synchronization within its declared scope. The
 candidate remains UNCOMMITTED.
+
+## Completed Substantive Verification, Review, and Acceptance
+
+The substantive verification sequence established the following results; the
+full native suite followed the substantive candidate's last mutation:
+
+- Focused R1 correction test: 1 passed (0.011 seconds).
+- Context suite: 233 tests, OK, 1 skipped (31.275 seconds).
+- Final full native suite: 538 tests, OK, 1 skipped (43.440 seconds), using
+  the owner-authorized process-local temporary-fixture redirection recorded
+  above. The guarded historical integration remained skipped.
+- Atlas validate, missing, and sync passed: Valid, all discovered documents
+  defined, Synchronized, zero errors or warnings.
+- `git diff --check` passed. The complete tracked diff and the then-untracked
+  record were inspected separately; exactly the authorized 14 paths changed.
+- Generated artifacts and active-state files matched the base byte-for-byte,
+  the staging area was empty, and synthetic fixtures were cleaned.
+
+A fresh separate read-only agent performed the required independent Tier-3
+adversarial review of that exact candidate and returned **no BLOCKING,
+MATERIAL, or MINOR findings**. The reviewer inspected the full scope, governing
+contracts, complete diff, and evidence record; independently checked the
+immutable R1 endpoint, exact changed-path boundary and blob identities; and
+confirmed unchanged negative rejection semantics. Review hashes matched the
+implementation handoff and remained unchanged during review.
+
+Review limitations: no test-suite rerun, external product verification,
+protected-reference access, or writes. The reviewer relied on the reported
+native test execution evidence and independently observed valid/synchronized
+Atlas state and a passing diff check. Review did not grant acceptance.
+
+The owner then explicitly accepted the exact verified and independently
+reviewed 14-path candidate. This was candidate acceptance, separately following
+design acceptance, implementation, verification, and independent review.
+The owner separately authorized staging those paths and one local commit,
+then separately authorized the exact publication push.
+
+## Substantive Commit and Publication Attestation
+
+- Substantive commit: `979942a775867468adf4634a17f325172ccdf99e`.
+- Subject: `AI operating refresh: reconcile environment and ownership`.
+- Parent: `ebee0428541f141c432807703c9b1f9c4f1fc0b4`.
+- Local commit boundary: exactly one commit on `main`; only the 14 paths
+  listed above were staged and committed. Staged and committed bytes matched
+  the accepted candidate exactly; no additional file edits occurred.
+- Publication date: 2026-09-06.
+- Remote and target: `origin`, `refs/heads/main`.
+- Mode: one normal non-force fast-forward push of the exact substantive
+  commit; no tags or submodules were pushed.
+- Pre-push remote main: `ebee0428541f141c432807703c9b1f9c4f1fc0b4`,
+  confirmed by `git ls-remote --exit-code --refs origin refs/heads/main`.
+- Push command: `git push --porcelain --no-follow-tags --recurse-submodules=no origin 979942a775867468adf4634a17f325172ccdf99e:refs/heads/main`.
+- Post-push remote main: `979942a775867468adf4634a17f325172ccdf99e`,
+  confirmed by the same read-only remote query.
+- Post-publication local `main` and tracking `origin/main`: both resolved
+  to that exact commit; divergence was 0 ahead / 0 behind.
+- Post-publication `git status --short --branch`: `## main...origin/main`;
+  full porcelain status was empty and the working tree was clean.
+- No other external write occurred. No deployment occurred; deployment remains
+  unauthorized.
+
+These publication facts were observed in the completed same-session commands
+and explicitly supplied again by the owner for this attestation. Local-only
+checks before finalization re-established the exact commit, subject, committed
+path set, local/tracking identity, cached 0/0 divergence, clean worktree, and
+healthy Atlas startup. No remote query was repeated during attestation
+preparation. Cached tracking does not prove continuous remote freshness.
+
+## Narrow Post-Publication Attestation Finalization
+
+This is a bounded continuation of the completed substantive checkpoint.
+The owner authorized recording facts that could not exist before acceptance,
+commit, and publication, and correcting only the September navigation entry.
+
+- **Why:** Preserve durable completed-action evidence and remove stale
+  substantive-candidate status from repository navigation.
+- **Risk tier:** Tier 3 continuation: publication chronology and authority
+  claims require exact evidence and independent review.
+- **Exact scope:** `docs/reviews/ai-operating-environment-refresh-2026-09-06.md`
+  and only its September entry in `docs/docs-map.md`.
+- **Exclusions:** Every other path, active state, architecture, tests,
+  production code, schemas/policies, opportunities, generated files,
+  configuration, dependencies, staging, commits, ref mutation, publication,
+  deployment, and external writes.
+- **Authority established:** Explicit current owner authorization for this
+  two-path attestation edit and repository-native verification only. Prior
+  substantive acceptance and publication do not accept or publish this edit.
+- **Protected boundaries:** Historical chronology, exact substantive identity,
+  canonical/generated ownership, private data, credentials, protected content,
+  and unrelated changes.
+- **Observable result:** A legible completed substantive lifecycle and durable
+  navigation wording, with this attestation edit separately identified.
+- **Verification:** Public/documentation checks and final full native suite,
+  Atlas validate/missing/sync, complete diff/path inspection, generated-file
+  comparison, and fresh read-only independent Tier-3 attestation review.
+- **Stop conditions:** Any third path, conflict with publication evidence,
+  required active-state/architecture changes, unexpected generated change,
+  material verification failure, or required external action.
+- **Next decision boundary:** Owner acceptance of the exact verified and
+  independently reviewed two-path attestation candidate; commit and push
+  remain separately unauthorized.
+
+Pre-mutation baseline: `main` at the substantive commit, clean worktree,
+cached tracking 0/0, healthy Atlas bootstrap. Python 3.10.12 and Git 2.34.1
+remain available; the two targets are writable. The existing authorized
+`/var/tmp/aiden-ai-refresh-20260906` fixture directory was empty and writable.
+Public/documentation preflight passed: 19 tests in 0.372 seconds.
+
+Finalization verification uses the already authorized temporary root and
+process-local full-suite override recorded above. After this final content
+mutation, run `python3 -m unittest discover -s tests -p 'test_public_surface.py'`,
+the full suite with that override, Atlas validate/missing/sync,
+`git diff --check`, complete diff inspection, exact two-path checks, and
+generated-file comparison. Obtain a fresh read-only independent review
+focused on factual chronology, authority, historical preservation, and scope.
+
+At this writing, this two-path attestation edit is uncommitted and its final
+verification/review results will be reported in the owner-facing handoff
+after execution; no future pass, acceptance, commit identity, or publication
+is predicted here. No staging, commit, push, deployment, configuration change,
+or external write has been performed during this finalization.
