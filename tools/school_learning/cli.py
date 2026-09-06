@@ -3,10 +3,17 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import os
 import json
 import shlex
-from pathlib import Path
+import platform
+import shutil
+import subprocess
+import sys
+from pathlib import Path, PureWindowsPath
 
+from . import core
 from .core import (
     ASSESSMENT_STATUSES,
     ASSESSMENT_TYPES,
@@ -26,6 +33,7 @@ from .core import (
     initialize_semester,
     intake_material,
     prepare_course_handoff,
+    prepare_refresh,
     prepare_study_handoff,
     record_session,
     register_course,
@@ -63,6 +71,89 @@ def _sources(values: list[str]) -> list[dict[str, str]]:
             raise SchoolLearningError("course source must use ID|TITLE|REFERENCE|STATUS")
         result.append(dict(zip(("id", "title", "reference", "status"), parts, strict=True)))
     return result
+
+
+def _refresh_open_identity(path: Path) -> tuple[int, int]:
+    """Validate the completed content-addressed package without following links.
+
+    This is an opening guard, not candidate review or package generation.
+    No owner-return bytes are read and no source evidence paths are accessed.
+    """
+    _, manifest_bytes, _ = core._read_refresh_source(path / "manifest.json", 1_000_000)
+    manifest = json.loads(manifest_bytes.decode("utf-8"))
+    package_id = manifest.pop("package_id")
+    if (manifest.get("schema_version") != core.REFRESH_PACKAGE_SCHEMA
+            or hashlib.sha256(core._canonical_json_bytes(manifest)).hexdigest() != package_id
+            or path.name != "refresh-package-" + package_id):
+        raise SchoolLearningError("completed refresh package identity does not match")
+    # Reconstruct only the fixed course location, never a manifest-provided path.
+    ws = workspace(path.parent.parent.parent.parent, manifest["term"], manifest["course_id"])
+    if path != ws.course_dir / "generated" / ("refresh-package-" + package_id):
+        raise SchoolLearningError("refresh opening target is outside its course location")
+    core._inspect_real_tree(ws, path, "refresh opening target")
+    before = os.lstat(path)
+    required = {
+        "START-HERE.md", "prompt.txt", "attachments/course-context.md",
+        "attachments/update-contract.json", "attachments/refresh-context.json",
+    }
+    if set(manifest["generated_files"]) != required:
+        raise SchoolLearningError("refresh opening target is incomplete")
+    expected = {"manifest.json": manifest_bytes}
+    for relative, identity in manifest["generated_files"].items():
+        _, content, _ = core._read_refresh_source(path / relative, identity["bytes"])
+        if len(content) != identity["bytes"] or hashlib.sha256(content).hexdigest() != identity["sha256"]:
+            raise SchoolLearningError("refresh generated content changed before opening")
+        expected[relative] = content
+    entries = manifest["materials"] + manifest["evidence"]
+    filenames = [entry["attachment_filename"] for entry in entries]
+    if any(not isinstance(name, str) or Path(name).name != name or name in {".", ".."}
+           or "/" in name or "\\" in name for name in filenames):
+        raise SchoolLearningError("unsafe refresh opening attachment name")
+    if manifest["attachment_filenames"] != sorted(
+        ["course-context.md", "update-contract.json", "refresh-context.json"] + filenames
+    ):
+        raise SchoolLearningError("refresh opening attachment list is incomplete")
+    manifest["package_id"] = package_id
+    core._validate_refresh_package(ws, path, expected, manifest)
+    core._confined_path(ws, path, label="refresh opening target", must_exist=True,
+                        require_directory=True)
+    after = os.lstat(path)
+    if (before.st_dev, before.st_ino) != (after.st_dev, after.st_ino):
+        raise SchoolLearningError("refresh opening target was replaced during validation")
+    return after.st_dev, after.st_ino
+
+
+def _open_refresh_directory(path: Path) -> None:
+    """Best-effort WSL/Windows convenience, independent of package success."""
+    try:
+        if sys.platform != "linux" or "microsoft" not in platform.release().lower():
+            raise OSError("directory opening is unsupported on this host")
+        converter = shutil.which("wslpath")
+        explorer = shutil.which("explorer.exe")
+        if not converter or not explorer:
+            raise OSError("wslpath or explorer.exe is unavailable")
+        prepared_identity = _refresh_open_identity(path)
+        converted = subprocess.run(
+            [converter, "-w", str(path)], check=True, capture_output=True,
+            text=True, encoding="utf-8", timeout=5,
+        ).stdout.removesuffix("\n")
+        if (not PureWindowsPath(converted).is_absolute()
+                or any(char in converted for char in "\r\n\x00")):
+            raise OSError("invalid Windows package path conversion")
+        roundtrip = subprocess.run(
+            [converter, "-u", converted], check=True, capture_output=True,
+            text=True, encoding="utf-8", timeout=5,
+        ).stdout.removesuffix("\n")
+        if roundtrip != str(path):
+            raise OSError("Windows package path conversion did not round-trip exactly")
+        # The conversion calls can yield to another process. Recheck the exact
+        # completed package and inode immediately before the host launch.
+        if _refresh_open_identity(path) != prepared_identity:
+            raise SchoolLearningError("refresh opening target was replaced before launch")
+        subprocess.run([explorer, converted], check=True, capture_output=True, timeout=5)
+    except (OSError, subprocess.SubprocessError, ValueError, KeyError, TypeError) as error:
+        print(f"Warning: package is ready but could not be opened ({type(error).__name__}). "
+              f"Open the package directory manually: {path}", file=sys.stderr)
 
 
 def parser() -> argparse.ArgumentParser:
@@ -196,6 +287,16 @@ def parser() -> argparse.ArgumentParser:
     context.add_argument("term")
     context.add_argument("course_id")
     context.add_argument("--material", action="append", default=[])
+
+    refresh = commands.add_parser("prepare-refresh", help="prepare an explicit course refresh package")
+    refresh.add_argument("term")
+    refresh.add_argument("course_id")
+    refresh.add_argument("--material", action="append", nargs="+", default=[])
+    refresh.add_argument("--evidence", action="append", nargs="+", default=[])
+    refresh_notes = refresh.add_mutually_exclusive_group()
+    refresh_notes.add_argument("--notes")
+    refresh_notes.add_argument("--notes-file")
+    refresh.add_argument("--open", action="store_true")
 
     review = commands.add_parser("review-update", help="validate and preview a reviewed candidate")
     review.add_argument("path")
@@ -380,6 +481,23 @@ def main(argv: list[str] | None = None) -> int:
                 "Attach every required file under "
                 f"{handoff['attachments']} to the approved AI interface, then paste prompt.txt."
             )
+        elif args.command == "prepare-refresh":
+            package = prepare_refresh(
+                workspace(root, args.term, args.course_id),
+                [item for group in args.material for item in group],
+                [item for group in args.evidence for item in group],
+                notes=args.notes, notes_file=args.notes_file,
+            )
+            print("Refresh package ready.")
+            print(f"Package: {package['root']}")
+            print(f"Attach every file in: {package['attachments']}")
+            print(f"Then paste: {package['prompt']}")
+            print(f"Save the UTF-8 candidate to: {package['reviewed_update']}")
+            print("Review command:")
+            print(shlex.join(["./school", "--data-root", str(root), "review-update",
+                              str(package["reviewed_update"])]))
+            if args.open:
+                _open_refresh_directory(package["root"])
         elif args.command == "review-update":
             result = review_update(root, args.path)
             print(result["preview"], end="")

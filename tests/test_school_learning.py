@@ -4,7 +4,7 @@ import json
 import os
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stdout, redirect_stderr
 from pathlib import Path
 from unittest import mock
 
@@ -27,6 +27,7 @@ from tools.school_learning import (
     load_source_observations,
     load_topics,
     prepare_course_handoff,
+    prepare_refresh,
     record_session,
     register_course,
     render_course,
@@ -390,12 +391,17 @@ class SchoolLearningTests(WorkspaceTestCase):
             Path(__import__("tools.school_learning.render", fromlist=["x"]).__file__),
             Path(__import__("tools.school_learning.cli", fromlist=["x"]).__file__),
         ]
-        forbidden = ("socket", "requests", "urllib", "httpx", "openai", "anthropic", "subprocess")
+        forbidden = ("socket", "requests", "urllib", "httpx", "openai", "anthropic")
         combined = "\n".join(path.read_text(encoding="utf-8") for path in production)
         for token in forbidden:
             with self.subTest(token=token):
                 self.assertNotIn(f"import {token}", combined)
                 self.assertNotIn(f"from {token}", combined)
+        # The accepted refresh opener is CLI-only; core/render retain no process capability.
+        for path in production[:2]:
+            text = path.read_text(encoding="utf-8")
+            self.assertNotIn("import subprocess", text)
+            self.assertNotIn("from subprocess", text)
 
 
 class StudyHandoffTests(WorkspaceTestCase):
@@ -4333,6 +4339,477 @@ class SemesterCoreTests(ExternalTemporaryTestCase):
         for command in commands:
             with self.subTest(command=command[0]), redirect_stdout(io.StringIO()):
                 self.assertEqual(cli_main(["--data-root", str(root), *command]), 0)
+
+class RefreshPackageTests(ExternalTemporaryTestCase):
+    def setUp(self):
+        super().setUp()
+        self.sw = initialize_semester(self.root, "2026-fall", "Synthetic Fall", created_at=TIMESTAMP)
+        self.ws = register_course(self.sw, "apma", "Synthetic APMA", recorded_at=TIMESTAMP)
+
+    def source(self, name="Assignments.png", content=b"synthetic assignments"):
+        path = self.root / name
+        path.write_bytes(content)
+        return path
+
+    def durable_snapshot(self):
+        return {key: value for key, value in complete_snapshot(self.ws.course_dir).items()
+                if key != "generated" and not key.startswith("generated/")}
+
+    def test_apma_explicit_refresh_has_exact_attachments_and_no_promotion(self):
+        paths = [self.source(), self.source("Modules.png", b"modules"),
+                 self.source("new-assignment.pdf", b"new assignment")]
+        durable = add_material(self.ws, self.source("lecture.pdf", b"lecture"), "lecture", "Lecture")
+        before = self.durable_snapshot()
+        result = prepare_refresh(self.ws, [durable["id"]], paths, notes="Post-class refresh")
+        manifest = json.loads((result["root"] / "manifest.json").read_bytes())
+        context = json.loads(result["refresh_context"].read_bytes())
+        self.assertEqual(self.durable_snapshot(), before)
+        self.assertEqual(manifest["material_ids"], ["lecture"])
+        self.assertEqual(len(manifest["evidence"]), 3)
+        self.assertEqual(sorted(p.name for p in result["attachments"].iterdir()),
+                         manifest["attachment_filenames"])
+        self.assertEqual(context["attachment_filenames"], manifest["attachment_filenames"])
+        self.assertFalse(result["reviewed_update"].exists())
+        for path in paths:
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            entry = next(x for x in manifest["evidence"] if x["id"] == "evidence-" + digest)
+            self.assertEqual((result["attachments"] / entry["attachment_filename"]).read_bytes(),
+                             path.read_bytes())
+        for path in [result["refresh_context"], result["root"] / "manifest.json", result["prompt"]]:
+            self.assertNotIn(str(self.root), path.read_text())
+        identity = manifest.pop("package_id")
+        self.assertEqual(identity, hashlib.sha256(core._canonical_json_bytes(manifest)).hexdigest())
+        self.assertEqual(result["root"].name, "refresh-package-" + identity)
+        self.assertFalse((self.ws.course_dir / "generated/course-handoff").exists())
+
+    def test_cs3240_partial_lecture_preserves_exact_notes_separately(self):
+        ws = register_course(self.sw, "cs3240", "Synthetic CS3240", recorded_at=TIMESTAMP)
+        notes = b"  stopped around slide 25\r\n\r\n  "
+        note_file = self.source("owner-notes.txt", notes)
+        result = prepare_refresh(ws, evidence=[self.source("partial.pptx", b"slides")], notes_file=note_file)
+        owner = json.loads(result["refresh_context"].read_bytes())["owner_notes"]
+        self.assertEqual(owner["text"].encode("utf-8"), notes)
+        self.assertEqual(owner["sha256"], hashlib.sha256(notes).hexdigest())
+        self.assertEqual(owner["bytes"], len(notes))
+        self.assertNotIn("stopped around slide 25", result["prompt"].read_text())
+        inline = prepare_refresh(ws, evidence=[self.root / "partial.pptx"], notes=notes.decode())
+        self.assertEqual(result, inline)
+        changed = prepare_refresh(ws, evidence=[self.root / "partial.pptx"], notes=notes.decode().strip())
+        self.assertNotEqual(result["root"], changed["root"])
+
+    def test_transient_collision_with_selected_or_unselected_durable_id_is_atomic(self):
+        evidence = self.source(content=b"transient collision bytes")
+        identity = "evidence-" + hashlib.sha256(evidence.read_bytes()).hexdigest()
+        durable = add_material(self.ws, self.source("durable.txt", b"different durable bytes"),
+                               identity, "Existing compatible durable ID")
+        self.assertEqual(durable["id"], identity)
+        self.assertIn(identity, [item["id"] for item in load_materials(self.ws)["materials"]])
+        prior = prepare_refresh(self.ws, notes="existing package")
+        prior["reviewed_update"].write_bytes(b"preserve owner return")
+        before = complete_snapshot(self.ws.course_dir)
+        for selected in ([], [identity]):
+            with self.subTest(selected=bool(selected)), \
+                 mock.patch.object(core, "_create_temp_directory") as staging, \
+                 mock.patch.object(core, "_publish_directory") as publication:
+                with self.assertRaisesRegex(SchoolLearningError, "collides with an existing durable material ID"):
+                    prepare_refresh(self.ws, selected, [evidence])
+                staging.assert_not_called()
+                publication.assert_not_called()
+                self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        normal = prepare_refresh(self.ws, [identity], [self.source("normal.txt", b"non-colliding")])
+        manifest = json.loads((normal["root"] / "manifest.json").read_bytes())
+        self.assertEqual(manifest["material_ids"], [identity])
+        self.assertNotEqual(manifest["evidence"][0]["id"], identity)
+        self.assertEqual(prior["reviewed_update"].read_bytes(), b"preserve owner return")
+
+    def test_evidence_shaped_durable_id_remains_valid_for_review_and_apply(self):
+        identity = "evidence-" + hashlib.sha256(b"synthetic identity").hexdigest()
+        add_material(self.ws, self.source("durable.txt", b"durable bytes"), identity, "Durable")
+        package = prepare_refresh(self.ws, [identity], [self.source(content=b"other evidence")])
+        candidate = {
+            "schema_version": core.REVIEWED_UPDATE_SCHEMA, "term": self.ws.term,
+            "course_id": self.ws.course_id, "base_context_sha256": course_context_sha256(self.ws),
+            "operations": [{"kind": "assessment-upsert", "id": "hw", "title": "Homework",
+                "type": "homework", "status": "submitted", "weight": None, "points": None,
+                "xp": None, "material_ids": [identity], "topic_ids": [], "recorded_at": TIMESTAMP,
+                "claims": [{"field": "submission", "value": "Submitted",
+                            "source": "Synthetic owner", "observed_at": "2026-09-06",
+                            "status": "confirmed"}]}],
+        }
+        path = package["reviewed_update"]
+        path.write_text(json.dumps(candidate), encoding="utf-8")
+        before = complete_snapshot(self.ws.course_dir)
+        preview = review_update(self.root, path)
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        with self.assertRaisesRegex(SchoolLearningError, "confirmation digest"):
+            apply_update(self.root, path, "0" * 64)
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        apply_update(self.root, path, preview["digest"])
+        self.assertEqual(load_course_core(self.ws)["assessments"][0]["material_ids"], [identity])
+        with self.assertRaisesRegex(SchoolLearningError, "stale"):
+            review_update(self.root, path)
+
+    def test_filename_drift_preserves_evidence_identity_but_changes_metadata_package(self):
+        first = self.source("Assignments.png", b"same bytes")
+        second = self.source("Assignments (1).png", b"same bytes")
+        a = prepare_refresh(self.ws, evidence=[first])
+        b = prepare_refresh(self.ws, evidence=[second])
+        ea = json.loads(a["refresh_context"].read_bytes())["evidence"][0]
+        eb = json.loads(b["refresh_context"].read_bytes())["evidence"][0]
+        self.assertEqual(ea["id"], eb["id"])
+        self.assertEqual(ea["attachment_filename"], eb["attachment_filename"])
+        self.assertNotEqual(ea["source_name"], eb["source_name"])
+        self.assertNotEqual(a["root"], b["root"])
+
+    def test_deterministic_order_and_return_preservation_without_trusting_json(self):
+        paths = [self.source(), self.source("Modules.png", b"modules")]
+        result = prepare_refresh(self.ws, evidence=paths)
+        result["reviewed_update"].write_bytes(b"```json\nnot valid\n```")
+        before = complete_snapshot(self.ws.course_dir)
+        rerun = prepare_refresh(self.ws, evidence=reversed(paths))
+        self.assertEqual(result, rerun)
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        with self.assertRaises(SchoolLearningError):
+            review_update(self.root, result["reviewed_update"])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_submission_candidate_unchanged_review_confirm_and_stale_path(self):
+        result = prepare_refresh(self.ws, evidence=[self.source()])
+        evidence_id = json.loads(result["refresh_context"].read_bytes())["evidence"][0]["id"]
+        candidate = {
+            "schema_version": core.REVIEWED_UPDATE_SCHEMA, "term": self.ws.term,
+            "course_id": self.ws.course_id,
+            "base_context_sha256": hashlib.sha256(result["context"].read_bytes()).hexdigest(),
+            "operations": [{"kind": "assessment-upsert", "id": "hw-1", "title": "Homework 1",
+                "type": "homework", "status": "submitted", "weight": None, "points": None,
+                "xp": None, "material_ids": [], "topic_ids": [], "recorded_at": TIMESTAMP,
+                "claims": [{"field": "submission", "value": "Submitted by owner",
+                            "source": evidence_id, "observed_at": "2026-09-06",
+                            "status": "confirmed"}]}],
+        }
+        path = result["reviewed_update"]
+        path.write_text(json.dumps(candidate), encoding="utf-8")
+        before = self.durable_snapshot()
+        preview = review_update(self.root, path)
+        self.assertEqual(self.durable_snapshot(), before)
+        with self.assertRaisesRegex(SchoolLearningError, "confirmation digest"):
+            apply_update(self.root, path, "0" * 64)
+        self.assertEqual(self.durable_snapshot(), before)
+        apply_update(self.root, path, preview["digest"])
+        self.assertEqual(load_course_core(self.ws)["assessments"][0]["status"], "submitted")
+        after = self.durable_snapshot()
+        with self.assertRaisesRegex(SchoolLearningError, "stale"):
+            review_update(self.root, path)
+        self.assertEqual(self.durable_snapshot(), after)
+        candidate["base_context_sha256"] = course_context_sha256(self.ws)
+        candidate["operations"][0]["material_ids"] = [evidence_id]
+        path.write_text(json.dumps(candidate))
+        with self.assertRaises(SchoolLearningError):
+            review_update(self.root, path)
+        self.assertEqual(self.durable_snapshot(), after)
+
+    def test_invalid_excessive_duplicate_and_notes_inputs_leave_workspace_unchanged(self):
+        source = self.source()
+        duplicate = self.source("copy.png", source.read_bytes())
+        bad_type = self.source("bad.exe")
+        bad_notes = self.source("bad-notes.txt", b"\xff")
+        cases = [dict(evidence=[source, duplicate]), dict(evidence=[source] * 101),
+                 dict(evidence=[bad_type]), dict(evidence=[self.root / "missing.pdf"]),
+                 dict(evidence=str(source)), dict(notes="x", notes_file=bad_notes),
+                 dict(notes_file=bad_notes), dict(notes="x" * (core._REFRESH_NOTES_MAX_BYTES + 1)),
+                 dict(material_ids=["missing"]), dict(evidence=[self.root])]
+        before = complete_snapshot(self.ws.course_dir)
+        for kwargs in cases:
+            with self.subTest(kwargs=list(kwargs)):
+                with self.assertRaises(SchoolLearningError):
+                    prepare_refresh(self.ws, **kwargs)
+                self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        with mock.patch.object(core, "_REFRESH_MAX_BYTES", 3):
+            with self.assertRaisesRegex(SchoolLearningError, "byte limit"):
+                prepare_refresh(self.ws, evidence=[source])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_aggregate_budget_includes_durable_and_transient_bytes(self):
+        material = add_material(self.ws, self.source("durable.pdf", b"1234"), "m", "M")
+        evidence = self.source(content=b"5678")
+        before = complete_snapshot(self.ws.course_dir)
+        with mock.patch.object(core, "_REFRESH_MAX_BYTES", 7):
+            with self.assertRaisesRegex(SchoolLearningError, "byte limit"):
+                prepare_refresh(self.ws, [material["id"]], [evidence])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_external_symlink_ancestor_traversal_fifo_and_notes_links_rejected(self):
+        source = self.source()
+        alias = self.root / "alias.png"
+        alias.symlink_to(source)
+        directory = self.root / "linked"
+        directory.symlink_to(self.root, target_is_directory=True)
+        fifo = self.root / "pipe.png"
+        os.mkfifo(fifo)
+        before = complete_snapshot(self.ws.course_dir)
+        for path in [alias, directory / source.name, self.root / "unused/../Assignments.png", fifo]:
+            with self.subTest(path=path.name), self.assertRaises(SchoolLearningError):
+                prepare_refresh(self.ws, evidence=[path])
+        with self.assertRaises(SchoolLearningError):
+            prepare_refresh(self.ws, notes_file=alias)
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_changed_source_during_copy_fails_closed_and_removes_staging(self):
+        source = self.source()
+        before = complete_snapshot(self.ws.course_dir)
+        write = core._atomic_write_bytes
+        def change(ws, path, content):
+            write(ws, path, content)
+            if path.name.startswith("evidence-"):
+                source.write_bytes(b"changed evidence")
+        with mock.patch.object(core, "_atomic_write_bytes", side_effect=change):
+            with self.assertRaisesRegex(SchoolLearningError, "changed|byte limit"):
+                prepare_refresh(self.ws, evidence=[source])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_source_replaced_by_symlink_during_copy_fails_closed(self):
+        source = self.source()
+        target = self.source("other.png", b"other")
+        before = complete_snapshot(self.ws.course_dir)
+        write = core._atomic_write_bytes
+        def change(ws, path, content):
+            write(ws, path, content)
+            if path.name.startswith("evidence-"):
+                source.unlink()
+                source.symlink_to(target)
+        with mock.patch.object(core, "_atomic_write_bytes", side_effect=change):
+            with self.assertRaises(SchoolLearningError):
+                prepare_refresh(self.ws, evidence=[source])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_existing_package_tampering_rejected_without_overwriting_return(self):
+        source = self.source()
+        result = prepare_refresh(self.ws, evidence=[source])
+        result["reviewed_update"].write_bytes(b"owner return")
+        targets = [result["prompt"], result["refresh_context"], result["root"] / "manifest.json",
+                   next(result["attachments"].glob("evidence-*"))]
+        for target in targets:
+            original = target.read_bytes()
+            target.write_bytes(b"tampered")
+            before = complete_snapshot(self.ws.course_dir)
+            with self.assertRaisesRegex(SchoolLearningError, "tampered"):
+                prepare_refresh(self.ws, evidence=[source])
+            self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+            target.write_bytes(original)
+        result["reviewed_update"].unlink()
+        result["reviewed_update"].symlink_to(source)
+        with self.assertRaises(SchoolLearningError):
+            prepare_refresh(self.ws, evidence=[source])
+
+    def test_staged_tampering_rejected(self):
+        source = self.source()
+        before = complete_snapshot(self.ws.course_dir)
+        write = core._atomic_write_bytes
+        def tamper(ws, path, content):
+            write(ws, path, b"tampered" if path.name == "prompt.txt" else content)
+        with mock.patch.object(core, "_atomic_write_bytes", side_effect=tamper):
+            with self.assertRaises(SchoolLearningError):
+                prepare_refresh(self.ws, evidence=[source])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_publication_failure_before_and_after_rename_restores_absence(self):
+        source = self.source()
+        replace = core.os.replace
+        before = complete_snapshot(self.ws.course_dir)
+        for after_effect in [False, True]:
+            def fail(src, dst):
+                if Path(src).name.startswith(".refresh-package.staging."):
+                    if after_effect:
+                        replace(src, dst)
+                    raise OSError("synthetic publication failure")
+                return replace(src, dst)
+            with mock.patch.object(core.os, "replace", side_effect=fail):
+                with self.assertRaises(SchoolLearningError):
+                    prepare_refresh(self.ws, evidence=[source])
+            self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_cleanup_failure_reports_incomplete_recovery(self):
+        source = self.source()
+        recover = core._recover_remove_tree
+        def fail(ws, path, label, causal):
+            if label == "failed refresh package staging directory":
+                raise SchoolLearningError("synthetic recovery incomplete")
+            return recover(ws, path, label, causal)
+        with mock.patch.object(core, "_validate_refresh_package", side_effect=SchoolLearningError("tamper")), \
+             mock.patch.object(core, "_recover_remove_tree", side_effect=fail):
+            with self.assertRaisesRegex(SchoolLearningError, "recovery incomplete"):
+                prepare_refresh(self.ws, evidence=[source])
+        self.assertFalse(list((self.ws.course_dir / "generated").glob("refresh-package-*")))
+
+    def test_cli_prepare_and_open_is_opt_in(self):
+        source = self.source()
+        argv = ["--data-root", str(self.root), "prepare-refresh", self.ws.term,
+                self.ws.course_id, "--evidence", str(source), "--notes", "stopped around slide 25"]
+        output = io.StringIO()
+        with mock.patch("tools.school_learning.cli._open_refresh_directory") as opener, redirect_stdout(output):
+            self.assertEqual(cli_main(argv), 0)
+            opener.assert_not_called()
+            self.assertEqual(cli_main(argv + ["--open"]), 0)
+            opener.assert_called_once()
+            self.assertTrue(opener.call_args.args[0].is_dir())
+        self.assertIn("review-update", output.getvalue())
+        self.assertIn("Refresh package ready", output.getvalue())
+
+    def test_opener_safe_arrays_exact_conversion_and_failures_warn(self):
+        from tools.school_learning import cli
+        package = prepare_refresh(self.ws)["root"]
+        windows = "C:" + chr(92) + "Synthetic folder" + chr(92) + "package"
+        replies = [mock.Mock(stdout=windows + "\n"), mock.Mock(stdout=str(package) + "\n"), mock.Mock()]
+        with mock.patch.object(cli.sys, "platform", "linux"), \
+             mock.patch.object(cli.platform, "release", return_value="microsoft-standard-WSL2"), \
+             mock.patch.object(cli.shutil, "which", side_effect=lambda name: "/synthetic/" + name), \
+             mock.patch.object(cli.subprocess, "run", side_effect=replies) as run:
+            cli._open_refresh_directory(package)
+            self.assertEqual(run.call_args_list[-1].args[0], ["/synthetic/explorer.exe", windows])
+            for call in run.call_args_list:
+                self.assertIsInstance(call.args[0], list)
+                self.assertNotIn("shell", call.kwargs)
+                self.assertEqual(call.kwargs["timeout"], 5)
+        failures = [OSError("missing"), cli.subprocess.TimeoutExpired("synthetic", 5),
+                    cli.subprocess.CalledProcessError(1, "synthetic")]
+        for failure in failures:
+            with mock.patch.object(cli.sys, "platform", "linux"), \
+                 mock.patch.object(cli.platform, "release", return_value="microsoft"), \
+                 mock.patch.object(cli.shutil, "which", return_value="synthetic"), \
+                 mock.patch.object(cli.subprocess, "run", side_effect=failure), redirect_stderr(io.StringIO()) as warning:
+                cli._open_refresh_directory(package)
+                self.assertIn(str(package), warning.getvalue())
+        with mock.patch.object(cli.sys, "platform", "unsupported"), \
+             mock.patch.object(cli.subprocess, "run") as run, redirect_stderr(io.StringIO()) as warning:
+            cli._open_refresh_directory(package)
+            run.assert_not_called()
+            self.assertIn("Warning", warning.getvalue())
+
+    def test_notes_source_changes_and_course_changes_during_copy_are_rejected(self):
+        source = self.source()
+        notes = self.source("notes.txt", b"exact notes")
+        before = complete_snapshot(self.ws.course_dir)
+        write = core._atomic_write_bytes
+        def change(ws, path, content):
+            write(ws, path, content)
+            if path.name.startswith("evidence-"):
+                notes.write_bytes(b"other notes")
+        with mock.patch.object(core, "_atomic_write_bytes", side_effect=change):
+            with self.assertRaises(SchoolLearningError):
+                prepare_refresh(self.ws, evidence=[source], notes_file=notes)
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        with mock.patch.object(core, "course_context_bytes", return_value=b"changed"):
+            with self.assertRaisesRegex(SchoolLearningError, "course context changed"):
+                prepare_refresh(self.ws, evidence=[source])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+
+    def test_generated_parent_symlink_and_extra_package_attachment_are_rejected(self):
+        source = self.source()
+        result = prepare_refresh(self.ws, evidence=[source])
+        extra = result["attachments"] / "extra.txt"
+        extra.write_bytes(b"unselected")
+        before = complete_snapshot(self.ws.course_dir)
+        with self.assertRaises(SchoolLearningError):
+            prepare_refresh(self.ws, evidence=[source])
+        self.assertEqual(complete_snapshot(self.ws.course_dir), before)
+        ws = register_course(self.sw, "isolated", "Synthetic", recorded_at=TIMESTAMP)
+        generated = ws.course_dir / "generated"
+        generated.rmdir()
+        generated.symlink_to(self.root, target_is_directory=True)
+        with self.assertRaises(SchoolLearningError):
+            prepare_refresh(ws, evidence=[source])
+
+    def test_cli_real_opener_failure_still_returns_success_and_usable_package(self):
+        from tools.school_learning import cli
+        source = self.source()
+        output, warning = io.StringIO(), io.StringIO()
+        with mock.patch.object(cli.sys, "platform", "unsupported"), \
+             redirect_stdout(output), redirect_stderr(warning):
+            code = cli_main(["--data-root", str(self.root), "prepare-refresh", self.ws.term,
+                             self.ws.course_id, "--evidence", str(source), "--open"])
+        self.assertEqual(code, 0)
+        package = prepare_refresh(self.ws, evidence=[source])
+        self.assertIn(str(package["root"]), output.getvalue())
+        self.assertIn(str(package["root"]), warning.getvalue())
+
+    def test_open_revalidates_symlink_replacement_and_tampering_after_conversion(self):
+        from tools.school_learning import cli
+        import shutil
+        for attack in ("symlink", "replacement", "tamper", "missing"):
+            with self.subTest(attack=attack):
+                package = prepare_refresh(self.ws, notes=attack)["root"]
+                saved = package.with_name("saved-" + package.name)
+                calls = []
+                def convert(argv, **kwargs):
+                    calls.append(argv)
+                    self.assertNotIn("explorer.exe", argv[0])
+                    if argv[1] == "-w":
+                        return mock.Mock(stdout="C:/synthetic/package\n")
+                    if attack == "tamper":
+                        (package / "prompt.txt").write_bytes(b"tampered")
+                    else:
+                        package.rename(saved)
+                        if attack == "symlink":
+                            package.symlink_to(saved, target_is_directory=True)
+                        elif attack == "replacement":
+                            shutil.copytree(saved, package)
+                    return mock.Mock(stdout=str(package) + "\n")
+                with mock.patch.object(cli.sys, "platform", "linux"), \
+                     mock.patch.object(cli.platform, "release", return_value="microsoft"), \
+                     mock.patch.object(cli.shutil, "which", side_effect=lambda name: "/synthetic/" + name), \
+                     mock.patch.object(cli.subprocess, "run", side_effect=convert), \
+                     redirect_stderr(io.StringIO()) as warning:
+                    cli._open_refresh_directory(package)
+                self.assertEqual(len(calls), 2)
+                self.assertIn("Warning", warning.getvalue())
+                self.assertIn(str(package), warning.getvalue())
+
+    def test_cli_package_swap_after_preparation_warns_without_host_launch(self):
+        from tools.school_learning import cli
+        prepare = cli.prepare_refresh
+        saved = []
+        def swap(*args, **kwargs):
+            result = prepare(*args, **kwargs)
+            original = result["root"]
+            moved = original.with_name("saved-" + original.name)
+            original.rename(moved)
+            original.symlink_to(moved, target_is_directory=True)
+            saved.append(moved)
+            return result
+        with mock.patch.object(cli, "prepare_refresh", side_effect=swap), \
+             mock.patch.object(cli.sys, "platform", "linux"), \
+             mock.patch.object(cli.platform, "release", return_value="microsoft"), \
+             mock.patch.object(cli.shutil, "which", return_value="synthetic"), \
+             mock.patch.object(cli.subprocess, "run") as run, \
+             redirect_stdout(io.StringIO()) as output, redirect_stderr(io.StringIO()) as warning:
+            code = cli_main(["--data-root", str(self.root), "prepare-refresh", self.ws.term,
+                             self.ws.course_id, "--notes", "swap after prepare", "--open"])
+        self.assertEqual(code, 0)
+        run.assert_not_called()
+        self.assertIn("Refresh package ready", output.getvalue())
+        self.assertIn("Warning", warning.getvalue())
+        self.assertTrue((saved[0] / "manifest.json").is_file())
+
+    def test_opener_rejects_bad_conversion_and_missing_tools(self):
+        from tools.school_learning import cli
+        package = prepare_refresh(self.ws)["root"]
+        for replies in [[mock.Mock(stdout="relative\n")],
+                        [mock.Mock(stdout="C:/valid\n"), mock.Mock(stdout="/wrong\n")]]:
+            with mock.patch.object(cli.sys, "platform", "linux"), \
+                 mock.patch.object(cli.platform, "release", return_value="microsoft"), \
+                 mock.patch.object(cli.shutil, "which", return_value="synthetic"), \
+                 mock.patch.object(cli.subprocess, "run", side_effect=replies) as run, \
+                 redirect_stderr(io.StringIO()) as warning:
+                cli._open_refresh_directory(package)
+                self.assertEqual(run.call_count, len(replies))
+                self.assertIn("Warning", warning.getvalue())
+        with mock.patch.object(cli.sys, "platform", "linux"), \
+             mock.patch.object(cli.platform, "release", return_value="microsoft"), \
+             mock.patch.object(cli.shutil, "which", return_value=None), \
+             mock.patch.object(cli.subprocess, "run") as run, redirect_stderr(io.StringIO()):
+            cli._open_refresh_directory(package)
+            run.assert_not_called()
+
 
 class PersistedStateValidationTests(WorkspaceTestCase):
     def test_missing_keys_are_rejected_before_mutation(self):

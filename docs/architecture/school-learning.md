@@ -397,6 +397,116 @@ synchronize reviewed findings, the prompt requires a candidate matching the
 attached contract and forbids claiming that the candidate changed local state.
 AI output is never automatically applied or used to update learner state.
 
+## Refresh Transport and Packaging
+
+`./school prepare-refresh TERM COURSE [--material ID ...] [--evidence PATH ...]
+[--notes TEXT | --notes-file PATH] [--open]` prepares a complete refresh in one
+step. Repeated selection options are supported. It shares course-handoff
+content construction, exact course-context and update-contract generation,
+verified durable-material copying, confinement, and atomic publication/recovery
+with `prepare_course_handoff`; ordinary `course-context` behavior is unchanged.
+There is no prepare/finalize draft or separate reviewed-update architecture.
+
+The completed directory is
+`generated/refresh-package-<full-package-sha256>/`. It contains:
+
+- `START-HERE.md` and stable `prompt.txt` protocol instructions;
+- `manifest.json` using `aiden.school.refresh-package/v0.1`;
+- required `attachments/course-context.md`, `attachments/update-contract.json`,
+  and `attachments/refresh-context.json`;
+- every and only explicitly selected durable material and transient evidence
+  attachment; and
+- an initially absent `reviewed-update.json` owner/external-return slot.
+
+The refresh context uses `aiden.school.refresh-context/v0.1` and carries term,
+course, the complete attachment filename list, exact owner notes, and transient
+evidence metadata. Notes are situational context, not stable protocol, academic
+truth, or executable instructions. UTF-8 note content is preserved without
+trimming, newline conversion, or Unicode normalization; its exact UTF-8 byte
+count and full SHA-256 are recorded. An inline note and a notes file containing
+identical UTF-8 bytes have the same identity. Invalid UTF-8 fails closed.
+
+Transient evidence supports the existing opaque material suffix set. It is
+never parsed, classified, discovered by crawling, or promoted to durable
+materials. Each item has the identity `evidence-<full-content-sha256>` and an
+attachment filename consisting of that identity plus its lowercase accepted
+suffix. Original/display basename and type are metadata; the absolute source
+path is not exported. Duplicate selected evidence bytes fail clearly, even
+under different names or suffixes. Filename drift preserves evidence identity;
+changed display metadata creates a different package so provenance remains
+exact. Before staging or publication, refresh preparation rejects any computed
+transient evidence identity that equals any existing durable material ID in the
+course, including materials not selected for attachment. This refresh-boundary
+check prevents ambiguous identities without reserving a global prefix or changing
+the existing durable material ID grammar, reviewed-update validation, or apply
+semantics. A transient identity in a successfully prepared package therefore
+cannot resolve as a durable `material_ids` entry in its base course state.
+Packaging creates no source observation, source descriptor, or academic fact.
+
+Selection is bounded to 100 combined durable-material/evidence inputs and
+100,000,000 aggregate selected attachment bytes. Notes are separately bounded
+to 1,000,000 bytes. These follow School Learning's explicit 100-item/1 MB
+bounded-input convention, with a larger aggregate allowance for opaque slide
+decks and images. The aggregate budget also bounds transient in-memory
+snapshots; context/contract generation retains the existing course-state
+behavior. External reads require POSIX descriptor-relative no-follow support
+(as available in the native WSL environment); unsupported hosts fail closed.
+Each ancestor and the final file are opened without following symlinks, parent
+traversal is rejected, and only regular files are read. Descriptor signatures,
+bounded reads, and exact source-byte rechecks after copying detect source
+changes before publication. No source is opened by the GUI.
+
+The manifest records hashes and byte counts for deterministic generated files
+and selected attachments. Package identity hashes the canonical manifest
+before its `package_id` field is added. It includes protocol and refresh
+context identities, selected bytes and display metadata, but excludes the
+later owner-return bytes; there is no hash cycle. Identical reruns validate all
+generated content and selected attachment identities, then reuse the package
+without replacing it. An existing regular owner-return file is preserved
+regardless of its contents and is never accepted as valid by package
+validation. Tampered generated content, extra attachments, unsafe paths, or
+source changes fail closed. Changed inputs use a different package directory.
+New package publication reuses the existing rollback/recovery machinery. No
+automatic retention or deletion policy is introduced.
+
+The owner attaches every file in `attachments/` and pastes `prompt.txt` into an
+approved AI interface. Generated instructions require completeness checks,
+current-package grounding, preservation of provenance/uncertainty/conflicts,
+and separation of notes from protocol. When transient evidence materially
+supports a returned claim, human-readable provenance/source text should include
+its deterministic `evidence-<sha256>` identity where practical. This requires
+no candidate-schema change.
+
+The preferred return is a downloadable UTF-8 `reviewed-update.json`. If file
+artifact creation is unavailable, the fallback is exactly one raw fenced JSON
+object; the owner manually saves only the JSON object as UTF-8. School Learning
+never strips fences, repairs Markdown, or loosens strict validation. When no
+durable update is warranted, the AI should say so rather than manufacture an
+invalid empty candidate. The owner uses the unchanged `review-update` preview,
+stale-base check, semantic digest, explicit approval, and `apply-update
+--confirm` path. Package location grants no trust and no AI return changes
+local state automatically.
+
+`--open` is optional CLI-side convenience. On supported WSL/Windows hosts,
+argument-array calls to `wslpath` convert the completed directory to an absolute
+Windows path and require an exact reverse conversion before invoking
+`explorer.exe` with that one directory argument. Before conversion and again
+immediately before Explorer launch, the CLI validates the content-addressed
+manifest, expected course confinement, complete generated content and attachment
+identities, and non-symlink package tree. It also requires the directory's device
+and inode to remain the same across conversion, rejecting even a byte-identical
+directory replacement. The owner-return slot remains untrusted and its bytes are
+not read by this guard. Validation failure warns without changing package
+construction success. Explorer accepts a pathname, not the validated directory
+descriptor; this last-moment check cannot make the later host filesystem lookup
+atomic against a concurrent writer. Calls have five-second
+timeouts and use no shell interpolation or `cmd /c`. Unsupported hosts, absent
+tools, invalid conversion, timeout, or opener failure warn and retain the
+successful package and printed usable path. Without `--open`, no opener or
+conversion process runs. Actual GUI behavior is separate from core package
+semantics and requires host verification; mocked subprocess checks do not
+claim that a real window opened.
+
 ## Explicit Exclusions and Future SL2-B
 
 This checkpoint excludes LMS/Canvas scraping, Calendar, Gmail/email, OCR,
