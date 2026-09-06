@@ -77,6 +77,30 @@ A vague request should be clarified or bounded before provider selection.
 
 ---
 
+## Arrangement Selection
+
+Select the parts of an arrangement deliberately, separately where appropriate:
+
+- Execution environment: where tools run and which workspace or applications
+  they can access.
+- Model and provider: the inference capability and the service or local runtime
+  supplying it.
+- Reasoning or effort: the task-appropriate depth and resource allowance.
+- Tools and integrations: the minimum capabilities and data access required.
+- Approval posture: the explicit action boundary and consequential-action gates.
+- Validation and fallback: evidence of success, independent review when required,
+  and the bounded response to failure.
+
+A desktop, chat, or background-work surface does not by itself select the model,
+native runtime, data-transfer boundary, or permission to act. Changing any part
+requires checking whether task scope, data exposure, or approval remains valid.
+This is human-applied selection, not authorization for automatic model or
+environment routing.
+
+Dated product choices and operating evidence belong in
+`docs/reviews/ai-operating-environment-refresh-2026-09-06.md`, not in this
+durable selection contract.
+
 ## Selection Criteria
 
 A model, provider, or tool should be evaluated against the task using the following criteria.
@@ -165,6 +189,19 @@ Selection is contextual.
 The same model may be appropriate for one task and inappropriate for another.
 
 ---
+
+## Execution, Inference, and Data Transfer
+
+Local execution means tools run on the owner's machine or selected local native
+environment. Local inference means the model computation runs locally. Hosted
+inference means that computation runs with a provider. Local execution may use
+hosted inference and therefore does not establish local-only data handling.
+
+Data transfer is a separate boundary: prompts, file excerpts, tool results, and
+integration traffic may leave the execution environment. Assess what is sent,
+to whom, and under which approved sensitivity and retention constraints.
+A local UI or local repository path is not evidence that inference or all data
+stays local.
 
 ## Deployment Assignment
 
@@ -272,7 +309,12 @@ Generated context may summarize canonical sources but remains derived.
 
 Candidate findings must remain visibly non-canonical.
 
-Task-scoped context compilation remains a future capability represented by EO-2026-013.
+The bounded task-context compilation library is implemented. Its snapshot,
+selector, selection, materialization, compilation, and validation boundaries
+are owned by `docs/architecture/task-scoped-agent-context-compilation.md`;
+`docs/task-context/index.md` owns the structured resources. Generated packages
+remain non-canonical. A general CLI, automatic routing, and production runtime
+remain deferred.
 
 ---
 
@@ -421,6 +463,6 @@ Before adopting an AI arrangement, answer:
 - `docs/vision.md` owns human authority and durable platform principles.
 - `docs/architecture/capabilities.md` owns capability identity.
 - `docs/roadmaps/platform-strategy.md` owns strategic sequencing.
-- `docs/current-mission.md` owns active work.
+- `docs/current-state.json` owns typed active state; `docs/current-mission.md` is its human-readable companion.
 - EO-2026-008 preserves the strategic AI Engineering Excellence direction.
 - EO-2026-009 preserves the Personal AI Platform direction.

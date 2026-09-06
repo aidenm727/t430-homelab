@@ -28,6 +28,7 @@ from atlas.platform.context_compilation.models import ModelValueError, deep_free
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = "de97f3d87cc7a90e404c3cf4ea313e6f12e5410a"
 R1_BASELINE = "d8a0f0d319c80b9c63258b737b20c6eb538ee289"
+R1_PUBLICATION = "483f1111257c9b1608c100cb88c8304a17d85314"
 HISTORICAL_B1A_BOUNDARY = frozenset(
     {
         "docs/task-context/index.md",
@@ -868,7 +869,8 @@ class SelectorCapabilityBoundaryTests(unittest.TestCase):
         self.assertEqual(historical.stdout, b"")
 
         # R1 separately authorized changes to exactly two paths inside the
-        # complete historical six-path boundary.
+        # complete historical six-path boundary. Prove that immutable published
+        # candidate, not the evolving current worktree.
         expanded = fixture_git(
             None,
             "diff",
@@ -876,6 +878,7 @@ class SelectorCapabilityBoundaryTests(unittest.TestCase):
             "--no-renames",
             "-z",
             R1_BASELINE,
+            R1_PUBLICATION,
             "--",
             *paths,
         )
@@ -887,7 +890,9 @@ class SelectorCapabilityBoundaryTests(unittest.TestCase):
         }
 
         actual_blobs = {
-            path: fixture_git(None, "hash-object", path)
+            path: fixture_git(
+                None, "rev-parse", "--verify", f"{R1_PUBLICATION}:{path}"
+            )
             .stdout.decode("ascii")
             .strip()
             for path in authorized_paths

@@ -182,4 +182,4 @@ This document owns why the Aiden Platform exists and where it is going.
 - `docs/architecture/capabilities.md` defines the capability taxonomy.
 - `docs/architecture/ai.md` defines AI and Personal AI architecture.
 - `docs/roadmaps/platform-strategy.md` defines dated strategic sequencing.
-- `docs/current-mission.md` defines the active engineering milestone.
+- `docs/current-state.json` owns typed active state; `docs/current-mission.md` is its human-readable companion.

@@ -20,7 +20,9 @@ The Aiden Platform consists of several complementary systems.
 
 The repository is the canonical engineering record.
 
-Aiden represents the long-term intelligence and assistant capabilities of the platform.
+Personal AI is the cross-cutting intelligence subsystem of the Aiden Platform,
+as defined in `docs/architecture/ai.md`. The Aiden Platform names the broader
+ecosystem, not that subsystem.
 
 Atlas is the deterministic engineering interface that allows engineers and AI assistants to understand, inspect, validate, and evolve the repository.
 
@@ -367,37 +369,11 @@ there is no selected checkpoint, milestone completion is not applicable, and
 Atlas must not recommend inventing a milestone rule or imply implementation
 readiness.
 
-Atlas should guide engineers through the engineering lifecycle:
-
-```text
-Design
-
-↓
-
-Implement
-
-↓
-
-Verify
-
-↓
-
-Document
-
-↓
-
-Synchronize
-
-↓
-
-Commit
-
-↓
-
-Push
-```
-
-This keeps Atlas aligned with the engineering methodology of the Aiden Platform while preserving human architectural judgment.
+Atlas provides observations and recommendations within the lifecycle owned by
+`docs/architecture/engineering-lifecycle.md`. The tiered verification,
+independent review, owner candidate acceptance, and separate publication or
+deployment gates are owned by `docs/standards/engineering-collaboration.md`.
+Atlas does not advance those gates or grant authority.
 
 ---
 

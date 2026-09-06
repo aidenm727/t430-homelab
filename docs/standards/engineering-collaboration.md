@@ -260,9 +260,21 @@ cannot address and a concrete near-term consumer.
 
 ## Implementation Artifact Standard
 
-Implementation artifacts should prioritize low-friction terminal execution.
+Choose the implementation mechanism for the authorized execution setting.
 
-During implementation-focused sessions, the default response should provide one copy-pasteable terminal-native artifact unless the user explicitly requests another format.
+When an authorized engineering agent operates directly in the selected
+repository workspace, direct bounded editing is an appropriate default. Before
+editing, state the exact authorized path set and scope, preserve unrelated
+changes, and complete canonical startup and native preflight. Review the
+resulting diff and run the required verification. Direct access grants no
+additional authority.
+
+When implementation must be transported from chat to a human-operated
+terminal, provide one copy-pasteable terminal-native artifact by default.
+The transport protections below apply wherever such transport is needed.
+Both mechanisms preserve exact path boundaries, independent review when
+required, owner candidate acceptance, and separate publication/deployment
+authority.
 
 Preferred formats:
 
@@ -271,11 +283,11 @@ Preferred formats:
 3. Complete section replacement
 4. Exact verification command sequence
 
-Manual editing should be the fallback, not the default.
+For chat-to-terminal transport, avoid requiring the human to reconstruct edits manually.
 
 ChatGPT should choose the safest transport format for the artifact size and complexity.
 
-Default transport guidance:
+Default chat-to-terminal transport guidance:
 
 1. Use shell commands for simple changes.
 2. Use heredoc file replacement only for simple text files.
@@ -347,7 +359,9 @@ When friction is observed during implementation-focused work, ChatGPT should cla
 2. Capture for later.
 3. Discard as not worth solving.
 
-If the decision is implement now, ChatGPT should provide one terminal-native implementation artifact.
+If the decision is implement now, use direct bounded workspace editing when
+already authorized and available, or provide one terminal-native implementation
+artifact when transport is needed.
 
 If the decision is capture for later, ChatGPT should briefly state where the idea belongs and then continue the active engineering work.
 

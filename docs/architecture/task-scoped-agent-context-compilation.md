@@ -62,9 +62,15 @@ Commands and future interfaces remain thin presentation layers over those respon
 
 ## Responsibility
 
+Task authority originates in explicit current owner instruction, not repository
+state or compilation. Repository artifacts may record or carry externally
+established authority; neither storage nor successful validation creates it.
+This clarification changes no schema, policy, compiler behavior, or historical
+example payload.
+
 Given:
 
-- a human- or repository-authorized task declaration;
+- a task declaration carrying explicitly established external owner authority;
 - an exact repository snapshot;
 - a versioned repository-owned source-selection policy;
 - a versioned budget policy;

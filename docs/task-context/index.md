@@ -8,6 +8,24 @@ The artifact family provides versioned machine-readable contracts and policy val
 
 The canonical architecture remains `docs/architecture/task-scoped-agent-context-compilation.md`. This index owns the identity, inventory, classification, loading contract, and maintenance boundary of the structured resource family; it does not replace or broaden that architecture.
 
+## Current Implementation and Historical Boundaries
+
+The bounded library is implemented under
+`tools/atlas/platform/context_compilation/`, with deterministic selection in
+`tools/atlas/platform/reasoning/context_selection.py` and native snapshot,
+selector, selection, materialization, compilation, and validation tests.
+`docs/architecture/task-scoped-agent-context-compilation.md` owns its current
+boundary. A general Atlas context command, production runtime, automatic
+routing, and Personal AI implementation are not established.
+
+The checkpoint-specific authorization and exclusion statements below preserve
+the boundaries at those historical checkpoints. In particular, statements
+that B2 remains unauthorized describe that checkpoint era; they do not deny
+the later bounded library implementation or grant current authority.
+Technical contracts, versions, policy values, and historical meaning remain
+unchanged. Current task and implementation authority must be established
+externally under `AGENTS.md`.
+
 ## First-Slice Inventory
 
 The following JSON Schema Draft 2020-12 documents are canonical machine-readable repository knowledge:
@@ -26,7 +44,7 @@ The JSON files under `tests/fixtures/task_context/requests/` and `tests/fixtures
 
 ## Consumers
 
-Checkpoint A consumers are repository-local validators, digest and canonicalization tests, implementation review, and future Checkpoint B code after separate authorization. Future Atlas interfaces and replaceable AI consumers may consume validated outputs only through separately reviewed capabilities; they do not become owners of these contracts or policies.
+At Checkpoint A, consumers were repository-local validators, digest and canonicalization tests, implementation review, and future Checkpoint B code after separate authorization. The implemented bounded library now consumes these resources within the current architecture boundary. Future Atlas interfaces and replaceable AI consumers may consume validated outputs only through separately reviewed capabilities; they do not become owners of these contracts or policies.
 
 The schema `$id` values use stable repository-owned, non-network URNs because no HTTPS namespace has been established as a canonical authority for this family. They are evidence identities, not network-loading instructions, and no network resolution is required or permitted by the v1 loader contract.
 

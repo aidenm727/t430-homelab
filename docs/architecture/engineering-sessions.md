@@ -6,7 +6,7 @@ An engineering session is a focused period of work used to evolve the Aiden Plat
 
 Engineering sessions may involve a human engineer, an AI assistant, Atlas, or some combination of them.
 
-The purpose of this document is to define how engineering sessions should begin, what must be understood before implementation, and how Atlas should eventually support deterministic session startup.
+The purpose of this document is to define how engineering sessions should begin, what must be understood before implementation, and how the implemented Atlas interface supports deterministic session startup.
 
 A new session should not depend on memory, assumptions, or conversational context alone.
 
@@ -61,15 +61,12 @@ state.
 
 Atlas is the deterministic engineering interface for beginning and guiding engineering sessions.
 
-Atlas should eventually answer:
+The implemented startup and inspection interface reports repository metadata
+validity, typed active state and mission context, relevant architecture,
+generated synchronization, documentation gaps, and recommended next action.
 
-- Is the local engineering environment ready?
-- Is repository metadata valid?
-- What is the active mission?
-- Which architecture documents are relevant?
-- Are generated artifacts synchronized?
-- Are there known documentation gaps?
-- What is the next responsible action?
+Native execution-environment readiness still requires the human/agent
+preflight below. Repository health and Atlas guidance do not establish it.
 
 The current repository-local Atlas invocation is:
 
@@ -332,16 +329,15 @@ Its responsibility is to define how engineering work should begin and how sessio
 
 Future Atlas capabilities should make session startup increasingly automatic.
 
-Possible future improvements include:
+The current bootstrap, state, validation, synchronization, missing-definition,
+review, and next-action interfaces already provide the bounded repository
+inspection baseline. Generated context and the bounded task-context compilation
+library also exist under their canonical owners.
 
-- session bootstrap command
-- engineering readiness report
-- synchronization report
-- fresh-session checklist
-- AI context preparation
-- architecture relevance detection
-- current mission summary
-- next-action recommendation
+Possible future improvements include interactive session assistance,
+provider-specific context delivery, and broader environment or architecture
+relevance assistance. These remain future capabilities, not prerequisites or
+new requirements for the current startup procedure.
 
 The long-term goal is for any future engineering session to begin from the same reliable platform understanding, regardless of whether the session is led by a human, an AI assistant, or Atlas itself.
 

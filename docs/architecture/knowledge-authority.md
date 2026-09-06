@@ -73,7 +73,7 @@ Examples include:
 - Vision.
 - Architecture.
 - Standards.
-- Current Mission.
+- Typed active state (`docs/current-state.json`) and its Current Mission companion.
 - Infrastructure records.
 - Operations records.
 - Roadmaps.
@@ -113,7 +113,8 @@ Examples include:
 
 - `docs/aiden-context.md`.
 - `docs/infrastructure-snapshot.md`.
-- Future task context packages.
+- Bounded generated task-context packages from the implemented compilation library
+  described in `docs/architecture/task-scoped-agent-context-compilation.md`.
 - Generated summaries.
 
 Generated context should identify its sources and managing process.
@@ -222,7 +223,7 @@ Examples:
 - AI architecture -> `docs/architecture/ai.md`.
 - AI operating rules -> `docs/architecture/ai-operating-model.md`.
 - Knowledge authority -> this document.
-- Active work -> `docs/current-mission.md`.
+- Typed active state -> `docs/current-state.json`; human-readable companion -> `docs/current-mission.md`.
 - Deployed state -> infrastructure records.
 - Repeatable expectations -> standards.
 - Change evidence -> operations.

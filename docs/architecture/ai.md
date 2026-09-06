@@ -224,7 +224,10 @@ High-impact actions remain independently gated, including architecture changes, 
 
 ## Relationship to Atlas and AidenOS
 
-Atlas owns deterministic engineering state and contracts.
+Canonical repository owners own engineering state and contracts.
+Atlas deterministically observes, validates, interprets, and presents them
+within `docs/architecture/atlas.md` responsibilities. Atlas evidence grants no
+task, implementation, publication, deployment, or external-write authority.
 
 AI systems consume Atlas evidence rather than redefining repository state through conversational confidence.
 
@@ -248,6 +251,14 @@ Evaluation should remain explainable rather than becoming one opaque universal s
 
 Near-term work should prioritize AI operating rules, data classification, provider evaluation, Personal AI boundaries, knowledge ownership, career and research intelligence, and manual proof of useful workflows.
 
-Later work may include local AI experiments, task-scoped context, task contracts, autonomy policy, versioned skills, execution evidence, bounded repair loops, and AidenOS experiences.
+The bounded task-context compilation library is implemented under
+`docs/architecture/task-scoped-agent-context-compilation.md`, with structured
+resources owned by `docs/task-context/index.md`. This does not establish a
+general context CLI, production runtime, or Personal AI implementation.
+
+Later work may include local AI experiments, additional context consumers,
+task contracts, autonomy policy, versioned skills, execution evidence, bounded
+repair loops, and AidenOS experiences. Personal AI implementation remains
+deferred.
 
 The platform should become progressively more capable without becoming progressively more dependent.

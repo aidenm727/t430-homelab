@@ -134,13 +134,20 @@ belong in Git.
 
 ## Portfolio Reviews
 
+- `docs/reviews/ai-operating-environment-refresh-2026-09-06.md` — Dated non-canonical September operating profile and Tier-3 documentation/ownership reconciliation evidence; uncommitted candidate with verification, review, acceptance, and publication boundaries.
+
+July AI/environment records below are dated historical operating evidence, not
+permanent current configuration. The September record preserves the accepted
+refresh without rewriting those historical bodies.
+
+
 - `docs/reviews/g14-storage-orientation-snapshot-implementation-evidence-2026-08-08.md` — Compact Tier 3 G14 metadata-only collection, analysis/reporting, sanitization, correction, residual-limitation, final verification, adversarial/privacy review, owner-acceptance, and publication-boundary evidence; no live collection, deployment, or operational runtime is claimed.
 - `docs/reviews/repository-identity-r1-evidence-2026-08-02.md` — Compact
   Tier 3 record preserving the original R1 boundary, first publication and
   verified rename, post-rename identity finalization, lifecycle-correction
   cycles, fresh review and renewed owner acceptance, and final R1 publication
   at immutable commit `483f1111257c9b1608c100cb88c8304a17d85314`.
-- `docs/reviews/engineering-workflow-v1-1-evidence-2026-08-01.md` — Compact dated W1 checkpoint brief and local implementation evidence preserving the Tier 3 scope, preflight, verification, pending independent review and owner acceptance, and withheld publication/deployment authority.
+- `docs/reviews/engineering-workflow-v1-1-evidence-2026-08-01.md` — Compact dated W1 compound evidence preserving Tier-3 scope, preflight, verification, completed independent review, owner acceptance, publication at `27d99c1eb0ab30f7fcd11158f4c1d856bd6913de`, and final lifecycle synchronization; no follow-on authority.
 - `docs/reviews/school-learning-v0-1-pilot-evaluation-2026-07-21.md` — Dated non-canonical pilot evidence recording confirmed v0.1 strengths and friction, the bounded v0.1.1 Guided Study Handoff decision, local verification, independent acceptance, owner acceptance, preserved human authority, and bounded publication authority.
 - `docs/reviews/school-learning-v0-1-authorization-review-2026-07-21.md` — Accepted dated non-canonical owner decision evidence for the exact School Learning v0.1 implementation and publication boundary.
 - `docs/reviews/school-learning-v0-2-a-semester-core-intake-evidence-2026-08-26.md` — Compact compound record covering Tier-2 SL2-A implementation, correction/review history, final product ACCEPT, owner acceptance, Tier-3 repository finalization, the accepted non-blocking public-surface review finding, publication of SL2-A, and post-publication lifecycle synchronization.
@@ -149,7 +156,7 @@ belong in Git.
 - `docs/reviews/aiden-platform-portfolio-recalibration-owner-decision-2026-07-20.md` — Owner-accepted non-canonical decision record preserving the bounded recalibration promotion, accepted 90-day sequence, EO-2026-013 B2b authorization and hard kill switch, next-consumer condition, rejected claims, and explicit exclusions.
 - `docs/reviews/aiden-platform-operating-model-overlap-review-2026-07-17.md` — Accepted non-canonical portfolio evidence mapping July 17 operating-model concepts to existing Engineering Opportunities, identifying one distinct Human Engineering Control Surface candidate, and preserving all implementation and mission boundaries.
 - `docs/reviews/aiden-platform-operating-model-owner-decision-2026-07-17.md` — Non-canonical owner decision evidence preserving the accepted hybrid task-state model, minimal console scope, four approval gates, draft-pull-request authority ceiling, pilot criteria, and open naming question.
-- `docs/reviews/aiden-platform-operating-model-validation-study-2026-07-17.md` — Non-canonical external design-validation evidence supporting a Git-native operating model, durable task state, human approval, explicit execution evidence, and a narrowed first control-surface checkpoint.
+- `docs/reviews/aiden-platform-operating-model-validation-study-2026-07-17.md` — Non-canonical dated external design-validation evidence supporting a Git-native operating model, durable task state, human approval, explicit execution evidence, and a narrowed first control-surface checkpoint. Its preserved serialized JSON study payload remains in the `.md` file; read it as historical structured evidence, not ordinary Markdown or current authority.
 - `docs/reviews/aiden-platform-operating-model-validation-request-2026-07-17.md` — Non-canonical dated research request preserving the exact questions, evidence requirements, authority boundaries, and requested source ledger used for the external validation study.
 - `docs/reviews/aiden-platform-operating-model-discovery-2026-07-17.md` — Non-canonical architecture discovery evidence preserving the proposed operating model, human control-surface problem, domain vocabulary, protocol model, workspace handoff, and bounded-autonomy direction.
 - `docs/reviews/eo-2026-013-implementation-planning-review-2026-07-15.md` — Non-canonical evidence preserving accepted EO-2026-013 architecture completion, owner-approved mission advancement into implementation planning, the bounded vertical-slice plan and two future checkpoints, and the explicit withholding of implementation authorization.
@@ -159,7 +166,7 @@ belong in Git.
 - `docs/reviews/mission-selection-review-2026-07-15.md` — Non-canonical evidence preserving completed mission evidence, candidate directions, session-health assessment, the accepted EO-2026-013 owner decision, and the deferred AI Engineering Environment Review.
 - `docs/reviews/knowledge-promotion-pilot-engineering-validation-2026-07-15.md` — Non-canonical accepted promotion-pilot record preserving the decision, application, evidence, and validation.
 - `docs/reviews/engineering-opportunity-portfolio-recalibration.md` — Accepted human-reviewed interpretation of the complete Engineering Opportunity portfolio, including capability alignment, relationships, dispositions, priorities, and the Distinctness branch decision.
-- `docs/reviews/ai-operating-baseline-2026-07-14.md` — Dated current AI access and workflow baseline, including task profiles, provider decisions, privacy boundaries, challenger policy, evaluation evidence, and reassessment triggers.
+- `docs/reviews/ai-operating-baseline-2026-07-14.md` — Dated historical July AI access and workflow baseline, including task profiles, provider decisions, privacy boundaries, challenger policy, evaluation evidence, and reassessment triggers.
 - `docs/reviews/ai-workflow-evaluation-cycle-2026-07.md` — Completed human-reviewed AI workflow evaluation cycle containing configuration checks, firsthand evidence, validation, challenger comparisons, and the final operating decision.
 - `docs/reviews/ai-debugging-evaluation-g14-touchpad-2026-07-15.md` — Non-canonical sanitized dated diagnostic evidence for the G14 touchpad failure, normal-restart recovery, uncertainty boundary, and operational follow-up.
 - `docs/reviews/ai-capability-landscape-work-research-2026-07-14.md` — Non-canonical dated research evidence preserving the complete ChatGPT Work cloud-AI capability landscape artifact under explicit authority and re-verification limits.

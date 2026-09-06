@@ -140,21 +140,38 @@ The repository remains the canonical engineering record regardless of which AI s
 
 ---
 
+## Desktop and Native Execution
+
+The desktop, editor, browser, or assistant UI may run in a different environment
+from repository tools and tests. Select the native execution environment
+explicitly and verify its runtime, filesystem, permissions, and temporary
+fixture boundary under `docs/architecture/engineering-sessions.md`.
+
+A local desktop interface does not imply local inference or local-only data
+handling. `docs/architecture/ai-operating-model.md` owns those distinctions.
+Exact current products, distributions, and operating recommendations are dated
+evidence in `docs/reviews/ai-operating-environment-refresh-2026-09-06.md`;
+they are not machine configuration owned by this architecture.
+
 ## AI Session Bootstrap
 
 The engineering environment should help new AI sessions regain engineering context quickly and accurately.
 
 A new AI session should not depend on the engineer manually reconstructing the platform state.
 
-Atlas should eventually support an AI bootstrap workflow that can:
+The implemented `./atlas bootstrap` and supporting inspection interfaces
+report canonical phase and work
+selection, milestone applicability, validation and synchronization findings,
+relevant documents, current context sources, and suggested commands. Startup
+and native preflight remain owned by
+`docs/architecture/engineering-sessions.md`; bootstrap does not establish
+execution-environment readiness or action authority by itself.
 
-- Report the current engineering phase.
-- Report the current mission and next milestone.
-- Detect whether generated AI context is current.
-- Identify the canonical architecture documents.
-- Identify the required AI context files.
-- Detect when ChatGPT Project sources or instructions may require updating.
-- Recommend the commands necessary to regain engineering context.
+Provider-specific source/instruction synchronization, continuous environment
+assistance, and automatic preparation for additional AI surfaces remain
+deferred. The bounded task-context library described in
+`docs/architecture/task-scoped-agent-context-compilation.md` is implemented;
+it does not provide those integrations.
 
 The goal is to reduce the cognitive effort required to begin a new AI-assisted engineering session while preserving the repository as the canonical source of truth.
 

@@ -220,24 +220,23 @@ Examples:
 
 ## Evolution Model
 
-```text
-Vision
-  -> Capability Architecture
-  -> System Architecture
-  -> Roadmap or Opportunity
-  -> Current Mission
-  -> Implementation
-  -> Verification
-  -> Documentation
-  -> Synchronization
-  -> Review
-```
+Vision and capability architecture guide system design; roadmaps and
+Engineering Opportunities preserve possible work. Explicit owner decisions
+select and authorize bounded checkpoints.
+
+`docs/architecture/engineering-lifecycle.md` owns the implementation,
+verification, independent review, candidate acceptance, and separately
+authorized publication or deployment lifecycle.
+`docs/standards/engineering-collaboration.md` owns its tiered assurance and
+authority gates.
 
 Engineering Opportunities preserve possibilities.
 
 Roadmaps organize direction.
 
-Current Mission owns active work.
+`docs/current-state.json` owns typed active state. `docs/current-mission.md`
+is its human-readable companion; machine-readable state wins on conflict.
+Neither record grants permission.
 
 Architecture owns durable design.
 
